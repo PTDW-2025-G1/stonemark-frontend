@@ -19,6 +19,7 @@
       "@core/*": ["src/app/core/*"],
       "@shared/*": ["src/app/shared/*"],
       "@features/*": ["src/app/features/*"],
+      "@services/*": ["src/app/services/*"],
       "@layout/*": ["src/app/layout/*"]
     }
   },

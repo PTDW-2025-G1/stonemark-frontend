@@ -1,0 +1,46 @@
+<section class="min-h-[80vh] flex flex-col items-center justify-center text-center bg-[--color-surface] text-[--color-text] px-6">
+  <h1 class="text-5xl font-serif mb-6 max-w-4xl">
+    Discover the Story Behind Every <span class="text-info">Stone</span>
+  </h1>
+  <p class="text-xl text-[--color-text-muted] mb-12 max-w-2xl">
+    Preserving the Legacy Carved in Stone
+  </p>
+
+  <div class="flex flex-wrap gap-4 justify-center">
+    <a routerLink="/monuments" class="px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all duration-200 text-lg font-medium">
+      Explore Monuments
+    </a>
+    <a routerLink="/guilds" class="px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all duration-200 text-lg font-medium">
+      Discover Guilds
+    </a>
+    <a routerLink="/marks" class="px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all duration-200 text-lg font-medium">
+      View Marks
+    </a>
+  </div>
+</section>
+
+<section class="py-16 lg:py-24 bg-[--color-surface]">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center">
+      <p class="text-sm font-semibold uppercase tracking-wider text-text-muted] mb-2">Monuments</p>
+      <h2 class="text-4xl font-serif font-semibold mb-12 text-text">Most Popular</h2>
+    </div>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <app-entity-card
+        image="https://t3.ftcdn.net/jpg/03/93/35/48/360_F_393354815_Ju7YcCJ6QHbhBahy3FeQpcObzkl03faD.jpg"
+        title="Castelo de Guimarães"
+        location="Guimarães, Portugal"
+      />
+      <app-entity-card
+        image="https://www.viveromundo.org/wp-content/uploads/2019/07/DSC_0386-1-e1584724820977.jpg"
+        title="Mosteiro de Alcobaça"
+        location="Alcobaça, Portugal"
+      />
+      <app-entity-card
+        image="https://static-resources-elementor.mirai.com/wp-content/uploads/sites/1079/post_04_featured.jpg"
+        title="Mosteiro dos Jerónimos"
+        location="Lisboa, Portugal"
+      />
+    </div>
+    </div>
+</section>

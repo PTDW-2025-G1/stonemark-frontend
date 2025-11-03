@@ -20,11 +20,9 @@
         >
           {{ item.label }}
         </a>
-        <button
-          class="px-6 py-2 border-2 border-primary text-primary rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-200 font-medium text-sm"
-        >
-          Login
-        </button>
+        <a routerLink="/login" class="inline-block">
+          <app-button variant="secondary">Login</app-button>
+        </a>
       </nav>
 
       <!-- Mobile menu button -->
@@ -89,11 +87,11 @@
         {{ item.label }}
       </a>
       <div class="pt-2">
-        <button
-          class="w-full px-6 py-3 border-2 border-primary text-primary rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-200 font-medium"
-        >
-          Login
-        </button>
+        <a routerLink="/login" class="w-full block" (click)="closeMenu()">
+          <app-button variant="secondary" [fullWidth]="true">
+            Login
+          </app-button>
+        </a>
       </div>
     </div>
   </div>

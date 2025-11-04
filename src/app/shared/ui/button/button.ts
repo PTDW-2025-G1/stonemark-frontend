@@ -9,17 +9,20 @@ import { CommonModule } from '@angular/common';
     <button
       [type]="type"
       [disabled]="disabled || loading"
+      [class.w-full]="fullWidth"
       [ngClass]="buttonClasses"
       [attr.aria-busy]="loading"
-      class="relative inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-lg border-2 transition-all duration-200 ease-ease-soft whitespace-nowrap"
+      class="relative inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-lg border-2 transition-all duration-200 ease-soft whitespace-nowrap select-none"
     >
       <!-- Spinner -->
-      <span
-        *ngIf="loading"
-        class="absolute w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
-      ></span>
+      @if (loading) {
+        <i
+          class="bi bi-arrow-repeat animate-spin text-base absolute"
+          aria-hidden="true"
+        ></i>
+      }
 
-      <!-- Content -->
+      <!-- Button content -->
       <span [class.opacity-0]="loading">
         <ng-content></ng-content>
       </span>
@@ -28,7 +31,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ButtonComponent {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() variant: 'primary' | 'secondary' = 'primary';
+  @Input() variant: 'primary' | 'secondary' | 'outline' = 'primary';
   @Input() disabled = false;
   @Input() loading = false;
   @Input() fullWidth = false;
@@ -38,6 +41,8 @@ export class ButtonComponent {
       'focus:outline-none',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
+      'transition-all',
+      'duration-200',
     ];
 
     const variants: Record<string, string[]> = {
@@ -51,14 +56,19 @@ export class ButtonComponent {
       secondary: [
         'bg-surface',
         'text-text',
-        'border-border]',
+        'border-border',
         'hover:bg-surface-alt',
+        'active:scale-95',
+      ],
+      outline: [
+        'bg-transparent',
+        'text-primary',
+        'border-primary',
+        'hover:bg-primary hover:text-primary-foreground',
         'active:scale-95',
       ],
     };
 
-    const width = this.fullWidth ? ['w-full'] : [];
-
-    return [...base, ...(variants[this.variant] || []), ...width];
+    return [...base, ...(variants[this.variant] || [])];
   }
 }

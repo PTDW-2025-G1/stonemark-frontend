@@ -1,38 +1,47 @@
-import {Component, AfterViewInit, ElementRef, ViewChild, OnInit} from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import { fromLonLat } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
+import Overlay from 'ol/Overlay';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
-import Overlay from 'ol/Overlay';
-import { MonumentService } from '@services/monument.service';
-import { RouterLink } from '@angular/router';
-import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
-import {HomeService, NewsItem} from '@features/home/home.service';
+import { fromLonLat } from 'ol/proj';
+import { MonumentService } from '@core/services/monument.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-map-section',
   standalone: true,
-  imports: [CommonModule, RouterLink, EntityCardComponent],
-  templateUrl: './home.html'
+  imports: [CommonModule],
+  template: `
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 sm:mb-12 lg:mb-16">
+          <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-text-muted mb-2">
+            Explore
+          </p>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-text">
+            Heritage in Maps
+          </h2>
+        </div>
+
+        <div
+          id="map"
+          class="w-full h-[600px] rounded-2xl shadow-md border border-border overflow-hidden"
+        ></div>
+        <div #popup class="absolute z-50"></div>
+      </div>
+    </section>
+  `
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class MapSectionComponent implements AfterViewInit {
   @ViewChild('popup') popupRef!: ElementRef<HTMLDivElement>;
-  news: NewsItem[] = [];
 
-  constructor(private monumentService: MonumentService, private homeService: HomeService) {}
-
-  ngOnInit(): void {
-    this.homeService.getLatestNews().subscribe(data => {
-      this.news = data.slice(0, 5);
-    });
-  }
+  constructor(private monumentService: MonumentService) {}
 
   ngAfterViewInit(): void {
     const map = new Map({
@@ -54,11 +63,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
     map.addOverlay(popup);
 
-    // Carregar monumentos
     this.monumentService.getMonumentsPortugal().subscribe(monuments => {
       monuments.forEach(monument => {
         const feature = new Feature({
-          geometry: new Point(fromLonLat([monument.lon, monument.lat])),
+          geometry: new Point(fromLonLat([monument.lon ?? 0, monument.lat ?? 0])),
           name: monument.name,
           image: monument.image,
           wikidata: monument.wikidata
@@ -68,7 +76,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           new Style({
             image: new Icon({
               src: 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/geo-alt-fill.svg',
-              scale: 1.4,
+              scale: 1.4
             })
           })
         );
@@ -77,7 +85,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
     });
 
-    // Clique para abrir popup
     map.on('singleclick', event => {
       const feature = map.forEachFeatureAtPixel(event.pixel, f => f) as Feature | undefined;
       const popupEl = this.popupRef.nativeElement;
@@ -92,10 +99,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
           <div class="popup-card shadow-lg rounded-xl border border-gray-300 bg-white/95 backdrop-blur-md px-5 py-4 w-[260px]">
             ${image ? `
               <div class="mb-3">
-                <img src="${image}" alt="${name}"
-                     class="rounded-lg w-full h-[140px] object-cover border border-gray-200 shadow-sm"/>
-              </div>
-            ` : ''}
+                <img
+                  ngSrc="${image}"
+                  alt="${name}"
+                  width="260"
+                  height="140"
+                  class="rounded-lg w-full h-[140px] object-cover border border-gray-200 shadow-sm"/>
+              </div>` : ''}
             <h3 class="text-[17px] font-semibold text-gray-900 leading-snug mb-1">${name}</h3>
             <p class="text-[13px] text-gray-600 mb-2">Historic monument in Portugal</p>
             ${
@@ -112,12 +122,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       } else {
         popup.setPosition(undefined);
       }
-    });
-
-    // Fechar popup ao clicar fora
-    map.on('click', event => {
-      const feature = map.forEachFeatureAtPixel(event.pixel, f => f);
-      if (!feature) popup.setPosition(undefined);
     });
   }
 }

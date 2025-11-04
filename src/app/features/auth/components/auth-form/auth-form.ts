@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputFieldComponent } from '@shared/ui/input-field/input-field';
@@ -15,13 +15,7 @@ export interface AuthFormData {
 @Component({
   selector: 'app-auth-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    InputFieldComponent,
-    ButtonComponent,
-    SocialAuthButtonsComponent
-  ],
+  imports: [CommonModule, ReactiveFormsModule, InputFieldComponent, ButtonComponent, SocialAuthButtonsComponent],
   template: `
     <div class="w-full bg-surface shadow-lg rounded-2xl p-8 mt-12 mb-12">
       <!-- Title -->
@@ -33,38 +27,41 @@ export interface AuthFormData {
       </p>
 
       <!-- Social Buttons (top for signup) -->
-      <app-social-auth-buttons
-        *ngIf="showSocialAuth && socialAuthPosition === 'top'"
-        (googleClick)="onGoogleAuth()"
-        (githubClick)="onGithubAuth()"
-      />
+      @if (showSocialAuth && socialAuthPosition === 'top') {
+        <app-social-auth-buttons
+          (googleClick)="onGoogleAuth()"
+          (githubClick)="onGithubAuth()"
+        />
 
-      <div *ngIf="showSocialAuth && socialAuthPosition === 'top'" class="relative my-8">
-        <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-border"></div>
+        <div class="relative my-8">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-border"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-4 bg-surface text-text-muted">Or</span>
+          </div>
         </div>
-        <div class="relative flex justify-center text-sm">
-          <span class="px-4 bg-surface text-text-muted">Or</span>
-        </div>
-      </div>
+      }
 
       <!-- Form -->
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-left">
         <!-- Name fields (signup only) -->
-        <div *ngIf="mode === 'register'" class="grid grid-cols-2 gap-4 mb-4">
-          <app-input-field
-            label="First Name"
-            placeholder="eg. John"
-            formControlName="firstName"
-            [error]="getError('firstName')"
-          />
-          <app-input-field
-            label="Last Name"
-            placeholder="eg. Francisco"
-            formControlName="lastName"
-            [error]="getError('lastName')"
-          />
-        </div>
+        @if (mode === 'register') {
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <app-input-field
+              label="First Name"
+              placeholder="eg. John"
+              formControlName="firstName"
+              [error]="getError('firstName')"
+            />
+            <app-input-field
+              label="Last Name"
+              placeholder="eg. Francisco"
+              formControlName="lastName"
+              [error]="getError('lastName')"
+            />
+          </div>
+        }
 
         <div class="mb-4">
           <app-input-field
@@ -85,9 +82,11 @@ export interface AuthFormData {
             [error]="getError('password')"
             [showPasswordToggle]="true"
           />
-          <p *ngIf="!form.get('password')?.errors" class="text-xs text-text-muted mt-2">
-            Must be at least 8 characters.
-          </p>
+          @if (!form.get('password')?.errors) {
+            <p class="text-xs text-text-muted mt-2">
+              Must be at least 8 characters.
+            </p>
+          }
         </div>
 
         <app-button
@@ -102,15 +101,18 @@ export interface AuthFormData {
       </form>
 
       <!-- Toggle Auth Mode -->
-      <p class="text-sm text-[--color-text-muted] text-center mt-8">
+      <p class="text-sm text-text-muted text-center mt-8">
         {{ toggleText }}
-        <a (click)="onToggleMode($event)" class="text-text font-semibold hover:opacity-70 cursor-pointer">
+        <a
+          (click)="onToggleMode($event)"
+          class="text-text font-semibold hover:opacity-70 cursor-pointer"
+        >
           {{ toggleLinkText }}
         </a>
       </p>
 
       <!-- Social Buttons (bottom for login) -->
-      <ng-container *ngIf="showSocialAuth && socialAuthPosition === 'bottom'">
+      @if (showSocialAuth && socialAuthPosition === 'bottom') {
         <div class="relative my-8">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-border"></div>
@@ -124,11 +126,11 @@ export interface AuthFormData {
           (googleClick)="onGoogleAuth()"
           (githubClick)="onGithubAuth()"
         />
-      </ng-container>
+      }
     </div>
   `
 })
-export class AuthFormComponent {
+export class AuthFormComponent implements OnInit, OnChanges {
   @Input() mode: 'login' | 'register' = 'register';
   @Input() loading = false;
   @Input() showSocialAuth = true;
@@ -144,12 +146,14 @@ export class AuthFormComponent {
     this.form = this.createForm();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateFormValidators();
   }
 
-  ngOnChanges() {
-    this.updateFormValidators();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['mode']) {
+      this.updateFormValidators();
+    }
   }
 
   get title(): string {
@@ -157,17 +161,19 @@ export class AuthFormComponent {
   }
 
   get subtitle(): string {
-    return 'Enter your personal data to create your account.';
+    return this.mode === 'register'
+      ? 'Enter your personal data to create your account.'
+      : 'Welcome back! Please enter your credentials.';
   }
 
   get submitButtonText(): string {
-    return this.mode === 'register' ? 'Sign Up' : 'Sign Up';
+    return this.mode === 'register' ? 'Sign Up' : 'Login';
   }
 
   get toggleText(): string {
     return this.mode === 'register'
       ? 'Already have an account?'
-      : 'Don\'t have an account?';
+      : "Don't have an account?";
   }
 
   get toggleLinkText(): string {
@@ -205,29 +211,20 @@ export class AuthFormComponent {
 
   getError(fieldName: string): string | null {
     const control = this.form.get(fieldName);
+    if (!control || !control.touched || !control.errors) return null;
 
-    if (!control || !control.touched || !control.errors) {
-      return null;
-    }
-
-    if (control.errors['required']) {
-      return 'This field is required';
-    }
-
-    if (control.errors['email']) {
-      return 'Please enter a valid email';
-    }
-
-    if (control.errors['minlength']) {
+    if (control.errors['required']) return 'This field is required';
+    if (control.errors['email']) return 'Please enter a valid email';
+    if (control.errors['minlength'])
       return `Must be at least ${control.errors['minlength'].requiredLength} characters`;
-    }
-
     return null;
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       this.submit.emit(this.form.value);
+    } else {
+      this.form.markAllAsTouched();
     }
   }
 

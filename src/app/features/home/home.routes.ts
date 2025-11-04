@@ -4,7 +4,7 @@ export const HOME_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/home').then(m => m.HomeComponent),
-    title: 'Home - StoneMark'
+      import('@features/home/home').then(m => m.HomeComponent),
+    title: 'Home'
   }
 ];

@@ -14,13 +14,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
     },
   ],
   template: `
-    <div class="flex flex-col gap-1">
+    <div class="flex flex-col gap-1 w-full">
       <!-- Label -->
-      <label *ngIf="label" class="text-sm font-medium text-text">
-        {{ label }}
-      </label>
+      @if (label) {
+        <label class="text-sm font-medium text-text">{{ label }}</label>
+      }
 
-      <!-- Wrapper -->
+      <!-- Input wrapper -->
       <div class="relative">
         <input
           [type]="currentType"
@@ -29,63 +29,36 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
           [disabled]="disabled"
           (input)="onInput($event)"
           (blur)="onTouched()"
-          [ngClass]="[
-            'w-full rounded-lg border px-4 py-2.5 text-sm transition-all duration-200',
-            'bg-surface text-text',
-            disabled ? 'opacity-50 cursor-not-allowed' : '',
-            error
-              ? 'border-error focus:border-error focus:ring-2 focus:ring-error/30'
-              : 'border-border focus:border-primary focus:ring-2 focus:ring-primary/20'
-          ]"
+          class="w-full rounded-lg border px-4 py-2.5 text-sm transition-all duration-200
+                 bg-surface text-text placeholder:text-text-muted
+                 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                 disabled:opacity-50 disabled:cursor-not-allowed
+                 border-border"
+          [class.border-error]="error"
         />
 
-        <!-- Toggle password -->
-        <button
-          *ngIf="showPasswordToggle && type === 'password'"
-          type="button"
-          (click)="togglePasswordVisibility()"
-          tabindex="-1"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text transition-colors"
-        >
-          <svg
-            *ngIf="!passwordVisible"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        <!-- Password toggle -->
+        @if (showPasswordToggle && type === 'password') {
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text transition-colors"
+            aria-label="Toggle password visibility"
           >
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-          <svg
-            *ngIf="passwordVisible"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
-            ></path>
-            <line x1="1" y1="1" x2="23" y2="23"></line>
-          </svg>
-        </button>
+            @if (!passwordVisible) {
+              <i class="bi bi-eye text-lg"></i>
+            } @else {
+              <i class="bi bi-eye-slash text-lg"></i>
+            }
+          </button>
+        }
       </div>
 
-      <!-- Error -->
-      <span *ngIf="error" class="text-xs text-error mt-1">
-        {{ error }}
-      </span>
+      <!-- Error message -->
+      @if (error) {
+        <span class="text-xs text-error mt-1">{{ error }}</span>
+      }
     </div>
   `,
 })
@@ -108,7 +81,7 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.value = value || '';
+    this.value = value ?? '';
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -119,8 +92,8 @@ export class InputFieldComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState(disabled: boolean): void {
-    this.disabled = disabled;
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   onInput(event: Event): void {

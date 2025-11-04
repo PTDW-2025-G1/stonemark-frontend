@@ -22,19 +22,16 @@ export class HomeService {
   getLatestNews(): Observable<NewsItem[]> {
     return this.http.get<any>(this.rssUrl).pipe(
       map(res => {
-        // caso venha array em res.items
         if (Array.isArray(res.items)) {
           return res.items;
         }
-        // caso venha apenas um objeto
         if (res.id && res.title) {
           return [res];
         }
-        // caso inesperado → devolve vazio
         return [];
       }),
       catchError(err => {
-        console.error('Erro ao carregar RSS:', err);
+        console.error('Error fetching RSS:', err);
         return of([]);
       })
     );

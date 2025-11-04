@@ -1,25 +1,28 @@
-<header class="bg-surface-alt shadow-sm">
+<header class="bg-surface-alt shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
+
       <!-- Logo -->
       <div class="flex-shrink-0">
         <a routerLink="/" class="flex items-center space-x-2">
-          <div class="text-2xl font-bold text-primary">
+          <span class="text-2xl font-bold text-primary tracking-tight">
             StoneMark<span class="text-info">.</span>
-          </div>
+          </span>
         </a>
       </div>
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-8">
-        <a
-          *ngFor="let item of menuItems"
-          [routerLink]="item.route"
-          routerLinkActive="text-primary"
-          class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-sm"
-        >
-          {{ item.label }}
-        </a>
+        @for (item of menuItems; track item.route) {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="text-primary"
+            class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-sm"
+          >
+            {{ item.label }}
+          </a>
+        }
+
         <a routerLink="/login" class="inline-block">
           <app-button variant="secondary">Login</app-button>
         </a>
@@ -32,37 +35,13 @@
           class="inline-flex items-center justify-center p-2 rounded-lg text-text-muted hover:text-primary hover:bg-surface-muted transition-colors duration-200"
           [attr.aria-expanded]="isMenuOpen"
         >
-          <span class="sr-only">Open main menu</span>
-          <!-- Hamburger Icon -->
-          <svg
-            *ngIf="!isMenuOpen"
-            class="block h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-          <!-- Close Icon -->
-          <svg
-            *ngIf="isMenuOpen"
-            class="block h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <span class="sr-only">Toggle menu</span>
+
+          @if (!isMenuOpen) {
+            <i class="bi bi-list text-2xl"></i>
+          } @else {
+            <i class="bi bi-x-lg text-2xl"></i>
+          }
         </button>
       </div>
     </div>
@@ -70,22 +49,24 @@
 
   <!-- Mobile menu -->
   <div
-    class="md:hidden transition-all duration-300 ease-in-out"
-    [ngClass]="{
-      'max-h-96 opacity-100': isMenuOpen,
-      'max-h-0 opacity-0 overflow-hidden': !isMenuOpen
-    }"
+    class="md:hidden transition-all duration-300 ease-in-out overflow-hidden"
+    [class.max-h-96]="isMenuOpen"
+    [class.max-h-0]="!isMenuOpen"
+    [class.opacity-100]="isMenuOpen"
+    [class.opacity-0]="!isMenuOpen"
   >
-    <div class="px-4 pt-2 pb-6 space-y-1 bg-surface">
-      <a
-        *ngFor="let item of menuItems"
-        [routerLink]="item.route"
-        routerLinkActive="bg-surface-muted text-primary"
-        (click)="closeMenu()"
-        class="block px-4 py-3 rounded-lg text-text-muted hover:bg-surface-muted hover:text-primary transition-colors duration-200 font-medium"
-      >
-        {{ item.label }}
-      </a>
+    <div class="px-4 pt-2 pb-6 space-y-1 bg-surface rounded-b-2xl shadow-md">
+      @for (item of menuItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="bg-surface-muted text-primary"
+          (click)="closeMenu()"
+          class="block px-4 py-3 rounded-lg text-text-muted hover:bg-surface-muted hover:text-primary transition-colors duration-200 font-medium"
+        >
+          {{ item.label }}
+        </a>
+      }
+
       <div class="pt-2">
         <a routerLink="/login" class="w-full block" (click)="closeMenu()">
           <app-button variant="secondary" [fullWidth]="true">

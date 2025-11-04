@@ -36,8 +36,20 @@ export class LoginComponent {
   }
 
   onToggleMode(): void {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/register'])
+      .then(success => {
+        if (success) {
+          // successfull navigation
+        } else {
+          // failed navigation
+        }
+      })
+      .catch(error => {
+        // Trate o erro de navegação aqui
+        console.error('Erro ao navegar:', error);
+      });
   }
+
 
   onGoogleAuth(): void {
     console.log('Google auth');

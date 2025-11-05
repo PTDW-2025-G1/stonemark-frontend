@@ -15,7 +15,7 @@ export class Header {
 
   menuItems = [
     { label: 'Monuments', route: '/monuments' },
-    { label: 'Guilds', route: '/guilds' },
+    { label: 'Marks', route: '/marks' },
     { label: 'About', route: '/about' },
     { label: 'Contact', route: '/contact' }
   ];

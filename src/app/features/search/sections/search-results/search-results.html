@@ -1,0 +1,50 @@
+<!-- Results Grid -->
+<main class="flex-1">
+  @if (items$ | async; as items) {
+    <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      @for (item of items; track item.id) {
+        <article
+          class="group bg-gradient-to-br from-surface-alt to-surface rounded-2xl overflow-hidden border border-border hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+          (click)="onItemClick(item)">
+          <!-- Image -->
+          <div class="relative aspect-[4/3] overflow-hidden">
+            <img
+              [src]="getItemImage(item)"
+              [alt]="getItemName(item)"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-4 sm:p-5">
+            <h3
+              class="text-base sm:text-lg font-serif font-semibold mb-1 group-hover:text-primary transition-colors line-clamp-2">
+              {{ getItemName(item) }}
+            </h3>
+            <p class="text-xs sm:text-sm text-text-muted mb-3 sm:mb-4 flex items-center gap-1.5">
+              <i class="bi bi-geo-alt-fill text-primary text-xs"></i>
+              {{ getItemLocation(item) }}
+            </p>
+
+            <button
+              class="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all duration-300 text-xs sm:text-sm font-medium shadow-sm hover:shadow-md flex items-center justify-center gap-2 group/btn">
+              See Details
+              <i class="bi bi-arrow-right group-hover/btn:translate-x-1 transition-transform duration-300"></i>
+            </button>
+          </div>
+        </article>
+      } @empty {
+        <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+          <i class="bi bi-search text-6xl text-text-muted mb-4"></i>
+          <h3 class="text-xl font-serif font-semibold text-text mb-2">No results found</h3>
+          <p class="text-text-muted">Try adjusting your search or filters</p>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="flex items-center justify-center py-16">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  }
+</main>

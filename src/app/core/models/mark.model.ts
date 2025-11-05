@@ -3,4 +3,5 @@ export interface Mark {
   title: string;
   location: string;
   image: string;
+  monumentId?: number;
 }

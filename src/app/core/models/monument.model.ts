@@ -6,4 +6,9 @@ export interface Monument {
   wikidata?: string;
   image?: string;
   location?: string;
+  description?: string;
+  artist_name?: string;
+  material?: 'stone' | 'bronze' | 'iron' | 'wood';
+  start_date?: number;
+  architect?: string;
 }

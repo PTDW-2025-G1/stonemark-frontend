@@ -1,0 +1,32 @@
+<!-- Search Header Section -->
+<section class="border-b border-border">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <!-- Page Title -->
+    <div class="flex flex-col gap-4 mb-6">
+      <div>
+        <p class="text-xs sm:text-sm text-text-muted mb-1 flex items-center gap-2">
+          <i class="bi bi-geo-alt-fill text-primary"></i>
+          Displaying {{ type === 'marks' ? 'Marks' : 'Monuments' }}
+        </p>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-text">
+          {{ title }}
+        </h1>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="relative group">
+      <div class="absolute inset-y-0 left-3 sm:left-4 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
+        <i class="bi bi-search text-lg sm:text-xl"></i>
+      </div>
+      <input
+        type="text"
+        placeholder="Search..."
+        (input)="onSearchInput($event)"
+        class="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-surface border-2 border-border rounded-xl
+               focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm sm:text-base text-text placeholder-text-muted
+               transition-all duration-300 shadow-sm hover:shadow-md"
+      />
+    </div>
+  </div>
+</section>

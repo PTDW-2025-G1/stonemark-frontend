@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
   {
+    path: 'about',
+    loadChildren: () =>
+      import('./features/about/about.routes').then(m => m.ABOUT_ROUTES)
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./features/search/search.routes').then(m => m.SEARCH_ROUTES)
@@ -20,5 +25,5 @@ export const routes: Routes = [
     path: 'monuments',
     loadChildren: () =>
       import('./features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
-  }
+  },
 ];

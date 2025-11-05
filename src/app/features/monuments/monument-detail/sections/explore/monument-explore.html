@@ -4,79 +4,37 @@
   </h2>
 
   <div class="space-y-4">
-    <!-- See Marks -->
-    <button
-      (click)="onSeeMarks()"
-      class="w-full group relative overflow-hidden bg-primary text-primary-foreground rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
-    >
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
-      ></div>
-      <div class="relative flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center"
-          >
-            <i class="bi bi-eye text-2xl"></i>
-          </div>
-          <div class="text-left">
-            <p class="font-semibold text-lg">See Marks</p>
-            <p class="text-sm opacity-90">View {{ stats.marks }} stone marks</p>
-          </div>
-        </div>
-        <i
-          class="bi bi-arrow-right text-xl group-hover:translate-x-2 transition-transform"
-        ></i>
-      </div>
-    </button>
+    <app-action-button
+      [title]="'See Marks'"
+      [subtitle]="'View ' + stats.marks + ' stone marks'"
+      [iconClass]="'bi bi-eye text-2xl'"
+      [buttonClass]="'w-full group relative overflow-hidden bg-primary text-primary-foreground rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1'"
+      [iconBgClass]="'w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center'"
+      [gradientClass]="'absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700'"
+      [onClick]="onSeeMarks"
+    />
+    <app-action-button
+      [title]="'Capture Mark'"
+      [subtitle]="'Add new discovery'"
+      [iconClass]="'bi bi-camera text-primary text-2xl'"
+      [buttonClass]="'w-full group relative overflow-hidden bg-surface-alt border-2 border-border text-text rounded-2xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1'"
+      [iconBgClass]="'w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center'"
+      [subtitleClass]="'text-text-muted'"
+      [onClick]="onCaptureMark"
+    />
+    <app-action-button
+      [title]="'Report Issue'"
+      [subtitle]="'Suggest correction'"
+      [iconClass]="'bi bi-flag text-primary text-2xl'"
+      [buttonClass]="'w-full group relative overflow-hidden bg-surface-alt border-2 border-border text-text rounded-2xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1'"
+      [iconBgClass]="'w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center'"
+      [subtitleClass]="'text-text-muted'"
+      [onClick]="onReportIssue"
+    />
+  </div>
 
-    <!-- Capture Mark -->
-    <button
-      (click)="onCaptureMark()"
-      class="w-full group relative overflow-hidden bg-surface-alt border-2 border-border text-text rounded-2xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-    >
-      <div class="relative flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center"
-          >
-            <i class="bi bi-camera text-primary text-2xl"></i>
-          </div>
-          <div class="text-left">
-            <p class="font-semibold text-lg">Capture Mark</p>
-            <p class="text-sm text-text-muted">Add new discovery</p>
-          </div>
-        </div>
-        <i
-          class="bi bi-arrow-right text-xl group-hover:translate-x-2 transition-transform"
-        ></i>
-      </div>
-    </button>
 
-    <!-- Report Issue -->
-    <button
-      (click)="onReportIssue()"
-      class="w-full group relative overflow-hidden bg-surface-alt border-2 border-border text-text rounded-2xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-    >
-      <div class="relative flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center"
-          >
-            <i class="bi bi-flag text-primary text-2xl"></i>
-          </div>
-          <div class="text-left">
-            <p class="font-semibold text-lg">Report Issue</p>
-            <p class="text-sm text-text-muted">Suggest correction</p>
-          </div>
-        </div>
-        <i
-          class="bi bi-arrow-right text-xl group-hover:translate-x-2 transition-transform"
-        ></i>
-      </div>
-    </button>
-
-    <!-- Stats Card -->
+  <!-- Stats Card -->
     <div
       class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl p-6 border border-border mt-6"
     >
@@ -112,5 +70,4 @@
         </div>
       </div>
     </div>
-  </div>
 </section>

@@ -1,17 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Monument } from '@core/models/monument.model';
+import {ActionButtonComponent} from '@shared/ui/action-button/action-button';
 
 @Component({
   selector: 'app-monument-explore',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ActionButtonComponent],
   templateUrl: './monument-explore.html'
 })
 export class MonumentExploreComponent {
   @Input({ required: true }) monument!: Monument;
 
-  // Estes valores podem vir da API no futuro
   stats = {
     marks: 12,
     guilds: 5,

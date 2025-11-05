@@ -8,99 +8,36 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
 
     @if (monument.artist_name) {
-      <!-- Artist Card -->
-      <div
-        class="group relative overflow-hidden bg-gradient-to-br from-surface-alt to-surface rounded-2xl p-6 sm:p-8 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl"
-      >
-        <div
-          class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500"
-        ></div>
-        <div class="relative">
-          <div
-            class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-          >
-            <i class="bi bi-palette-fill text-primary text-2xl"></i>
-          </div>
-          <p class="text-sm text-text-muted uppercase tracking-wider font-semibold mb-2">
-            Artist
-          </p>
-          <p class="text-xl sm:text-2xl font-semibold text-text">
-            {{ monument.artist_name }}
-          </p>
-        </div>
-      </div>
+      <app-monument-info-card
+        [icon]="'bi bi-palette-fill'"
+        label="Artist"
+        [value]="monument.artist_name"
+      />
     }
 
     @if (monument.architect) {
-      <!-- Architect Card -->
-      <div
-        class="group relative overflow-hidden bg-gradient-to-br from-surface-alt to-surface rounded-2xl p-6 sm:p-8 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl"
-      >
-        <div
-          class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500"
-        ></div>
-        <div class="relative">
-          <div
-            class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-          >
-            <i class="bi bi-rulers text-primary text-2xl"></i>
-          </div>
-          <p class="text-sm text-text-muted uppercase tracking-wider font-semibold mb-2">
-            Architect
-          </p>
-          <p class="text-xl sm:text-2xl font-semibold text-text">
-            {{ monument.architect }}
-          </p>
-        </div>
-      </div>
+      <app-monument-info-card
+        [icon]="'bi bi-rulers'"
+        label="Architect"
+        [value]="monument.architect"
+      />
     }
 
     @if (monument.material) {
-      <!-- Material Card -->
-      <div
-        class="group relative overflow-hidden bg-gradient-to-br from-surface-alt to-surface rounded-2xl p-6 sm:p-8 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl"
-      >
-        <div
-          class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500"
-        ></div>
-        <div class="relative">
-          <div
-            class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-          >
-            <i class="bi bi-gem text-primary text-2xl"></i>
-          </div>
-          <p class="text-sm text-text-muted uppercase tracking-wider font-semibold mb-2">
-            Material
-          </p>
-          <p class="text-xl sm:text-2xl font-semibold text-text capitalize">
-            {{ monument.material }}
-          </p>
-        </div>
-      </div>
+      <app-monument-info-card
+        [icon]="'bi bi-gem'"
+        label="Material"
+        [value]="monument.material"
+        valueClass="capitalize"
+      />
     }
 
     @if (monument.start_date) {
-      <!-- Construction Date Card -->
-      <div
-        class="group relative overflow-hidden bg-gradient-to-br from-surface-alt to-surface rounded-2xl p-6 sm:p-8 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl"
-      >
-        <div
-          class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500"
-        ></div>
-        <div class="relative">
-          <div
-            class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-          >
-            <i class="bi bi-calendar-event text-primary text-2xl"></i>
-          </div>
-          <p class="text-sm text-text-muted uppercase tracking-wider font-semibold mb-2">
-            Construction Started
-          </p>
-          <p class="text-xl sm:text-2xl font-semibold text-text">
-            {{ monument.start_date }}
-          </p>
-        </div>
-      </div>
+      <app-monument-info-card
+        [icon]="'bi bi-calendar-event'"
+        label="Construction Started"
+        [value]="monument.start_date + ''"
+      />
     }
 
   </div>

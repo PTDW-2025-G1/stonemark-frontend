@@ -20,13 +20,12 @@ export class Footer {
   exploreLinks = [
     { label: 'Monuments', route: '/monuments' },
     { label: 'Marks', route: '/marks' },
-    { label: 'Features', route: '/features' }
+    { label: 'Features', route: '/about' }
   ];
 
   supportLinks = [
     { label: 'Help Center', route: '/help' },
     { label: 'Contact', route: '/contact' },
-    { label: 'FAQ', route: '/faq' },
     { label: 'Terms of Service', route: '/terms' },
     { label: 'Privacy Policy', route: '/privacy' }
   ];

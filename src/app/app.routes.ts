@@ -17,6 +17,11 @@ export const routes: Routes = [
       import('./features/about/about.routes').then(m => m.ABOUT_ROUTES)
   },
   {
+    path: 'contact',
+    loadChildren: () =>
+      import('./features/contact/contact.routes').then(m => m.CONTACT_ROUTES)
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./features/search/search.routes').then(m => m.SEARCH_ROUTES)

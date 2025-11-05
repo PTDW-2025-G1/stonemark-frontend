@@ -1,0 +1,116 @@
+<section>
+  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold text-text mb-6 sm:mb-8">
+    Explore
+  </h2>
+
+  <div class="space-y-4">
+    <!-- See Marks -->
+    <button
+      (click)="onSeeMarks()"
+      class="w-full group relative overflow-hidden bg-primary text-primary-foreground rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+      ></div>
+      <div class="relative flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center"
+          >
+            <i class="bi bi-eye text-2xl"></i>
+          </div>
+          <div class="text-left">
+            <p class="font-semibold text-lg">See Marks</p>
+            <p class="text-sm opacity-90">View {{ stats.marks }} stone marks</p>
+          </div>
+        </div>
+        <i
+          class="bi bi-arrow-right text-xl group-hover:translate-x-2 transition-transform"
+        ></i>
+      </div>
+    </button>
+
+    <!-- Capture Mark -->
+    <button
+      (click)="onCaptureMark()"
+      class="w-full group relative overflow-hidden bg-surface-alt border-2 border-border text-text rounded-2xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+    >
+      <div class="relative flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center"
+          >
+            <i class="bi bi-camera text-primary text-2xl"></i>
+          </div>
+          <div class="text-left">
+            <p class="font-semibold text-lg">Capture Mark</p>
+            <p class="text-sm text-text-muted">Add new discovery</p>
+          </div>
+        </div>
+        <i
+          class="bi bi-arrow-right text-xl group-hover:translate-x-2 transition-transform"
+        ></i>
+      </div>
+    </button>
+
+    <!-- Report Issue -->
+    <button
+      (click)="onReportIssue()"
+      class="w-full group relative overflow-hidden bg-surface-alt border-2 border-border text-text rounded-2xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+    >
+      <div class="relative flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center"
+          >
+            <i class="bi bi-flag text-primary text-2xl"></i>
+          </div>
+          <div class="text-left">
+            <p class="font-semibold text-lg">Report Issue</p>
+            <p class="text-sm text-text-muted">Suggest correction</p>
+          </div>
+        </div>
+        <i
+          class="bi bi-arrow-right text-xl group-hover:translate-x-2 transition-transform"
+        ></i>
+      </div>
+    </button>
+
+    <!-- Stats Card -->
+    <div
+      class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl p-6 border border-border mt-6"
+    >
+      <p
+        class="text-sm text-text-muted uppercase tracking-wider font-semibold mb-4"
+      >
+        Monument Stats
+      </p>
+
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-text flex items-center gap-2">
+            <i class="bi bi-eye-fill text-primary"></i>
+            Stone Marks
+          </span>
+          <span class="font-semibold text-text">{{ stats.marks }}</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-text flex items-center gap-2">
+            <i class="bi bi-people-fill text-primary"></i>
+            Guilds Active
+          </span>
+          <span class="font-semibold text-text">{{ stats.guilds }}</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-text flex items-center gap-2">
+            <i class="bi bi-camera-fill text-primary"></i>
+            Contributions
+          </span>
+          <span class="font-semibold text-text">{{ stats.contributions }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

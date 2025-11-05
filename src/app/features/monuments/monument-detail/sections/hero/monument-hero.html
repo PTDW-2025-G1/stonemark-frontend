@@ -1,0 +1,93 @@
+<section class="relative h-[60vh] sm:h-[70vh] lg:h-[80vh] overflow-hidden mt-6 rounded-3xl">
+  <!-- Background Image -->
+  <div class="absolute inset-0">
+    <img
+      [src]="monument.image"
+      [alt]="monument.name"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/80"></div>
+  </div>
+
+  <!-- Overlay -->
+  <div
+    class="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between py-8 sm:py-12"
+  >
+    <!-- Breadcrumb + Bookmark -->
+    <div class="flex items-start justify-between">
+      <nav class="backdrop-blur-md bg-white/10 rounded-full px-4 py-2 border border-white/20">
+        <ol class="flex items-center gap-2 text-xs sm:text-sm text-white">
+          <li>
+            <a routerLink="/" class="hover:text-white/80 transition-colors">Home</a>
+          </li>
+          <li><i class="bi bi-chevron-right text-xs opacity-60"></i></li>
+          <li>
+            <a routerLink="/monuments" class="hover:text-white/80 transition-colors">Monuments</a>
+          </li>
+        </ol>
+      </nav>
+
+      <button
+        class="backdrop-blur-md bg-white/10 w-12 h-12 flex items-center justify-center rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300 group -mt-4"
+        aria-label="Bookmark monument"
+      >
+        <i class="bi bi-bookmark text-white text-xl group-hover:scale-110 transition-transform"></i>
+      </button>
+    </div>
+
+    <!-- Monument Info -->
+    <div>
+      <div class="mb-6 sm:mb-8">
+        <h1
+          class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold text-white mb-3 sm:mb-4 drop-shadow-2xl"
+        >
+          {{ monument.name }}
+        </h1>
+        <p
+          class="text-lg sm:text-xl lg:text-2xl text-white/90 flex items-center gap-2 drop-shadow-lg"
+        >
+          <i class="bi bi-geo-alt-fill"></i>
+          {{ monument.location }}
+        </p>
+      </div>
+
+      <!-- Info Pills -->
+      <div class="flex flex-wrap gap-3 sm:gap-4">
+        @if (monument.start_date) {
+          <div
+            class="backdrop-blur-md bg-white/10 rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-white/20 flex items-center gap-2"
+          >
+            <i class="bi bi-calendar-event text-white"></i>
+            <span class="text-sm sm:text-base text-white font-medium">{{
+                monument.start_date
+              }}</span>
+          </div>
+        }
+        @if (monument.material) {
+          <div
+            class="backdrop-blur-md bg-white/10 rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-white/20 flex items-center gap-2"
+          >
+            <i class="bi bi-gem text-white"></i>
+            <span class="text-sm sm:text-base text-white font-medium capitalize">{{
+                monument.material
+              }}</span>
+          </div>
+        }
+        <div
+          class="backdrop-blur-md bg-white/10 rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-white/20 flex items-center gap-2"
+        >
+          <i class="bi bi-eye text-white"></i>
+          <span class="text-sm sm:text-base text-white font-medium">12 Marks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden sm:block cursor-pointer"
+    (click)="onScrollToContent()"
+  >
+    <i class="bi bi-chevron-down text-white text-2xl drop-shadow-lg"></i>
+  </div>
+</section>

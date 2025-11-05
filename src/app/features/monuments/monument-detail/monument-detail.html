@@ -1,0 +1,15 @@
+@if (monument$ | async; as monument) {
+  <app-monument-hero [monument]="monument" (scrollToContent)="scrollToContent()"></app-monument-hero>
+  <div id="main-content" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+    <app-monument-about [monument]="monument"></app-monument-about>
+    <app-monument-details [monument]="monument"></app-monument-details>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+      <div class="lg:col-span-3">
+        <app-monument-location [monument]="monument"></app-monument-location>
+      </div>
+      <div class="lg:col-span-2">
+        <app-monument-explore [monument]="monument"></app-monument-explore>
+      </div>
+    </div>
+  </div>
+}

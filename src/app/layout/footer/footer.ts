@@ -15,12 +15,10 @@ export class Footer {
   partnershipsLinks = [
     { label: 'UNESCO', route: 'https://www.unesco.org/en', external: true },
     { label: 'APPRUPP', route: 'https://aprupp.org/', external: true },
-    { label: 'Our Partnerships', route: '/partnerships', external: false }
   ];
 
   exploreLinks = [
     { label: 'Monuments', route: '/monuments' },
-    { label: 'Guilds', route: '/guilds' },
     { label: 'Marks', route: '/marks' },
     { label: 'Features', route: '/features' }
   ];

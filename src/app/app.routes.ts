@@ -15,5 +15,10 @@ export const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./features/search/search.routes').then(m => m.SEARCH_ROUTES)
+  },
+  {
+    path: 'monuments',
+    loadChildren: () =>
+      import('./features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
   }
 ];

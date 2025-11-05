@@ -27,12 +27,17 @@ export interface FilterValues {
 })
 export class SearchFiltersComponent {
   @Input() filters: SearchFilters = {};
-
   @Output() filtersChange = new EventEmitter<FilterValues>();
+
+  isFiltersOpen = false;
 
   private currentFilters: FilterValues = {
     material: []
   };
+
+  toggleFilters(): void {
+    this.isFiltersOpen = !this.isFiltersOpen;
+  }
 
   onFilterChange(filterName: string, event: Event): void {
     const target = event.target as HTMLInputElement | HTMLSelectElement;

@@ -26,7 +26,7 @@ export class MonumentExploreComponent {
     console.log('→ Capturing new mark for:', this.monument.name);
   }
 
-  onReportIssue() {
+  onSubmitCorrection() {
     console.log('→ Reporting issue for:', this.monument.name);
   }
 }

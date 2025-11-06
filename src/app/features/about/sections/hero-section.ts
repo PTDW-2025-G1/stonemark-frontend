@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-hero-section',
   standalone: true,
   template: `
-    <section class="relative overflow-hidden text-primary">
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
+    <section class="relative text-primary overflow-hidden">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div class="max-w-4xl mx-auto text-center">
           <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm rounded-full mb-6 border border-white/20">
             <i class="bi bi-info-circle"></i>

@@ -31,8 +31,8 @@ import {FeatureCardComponent} from '@shared/ui/feature-card/feature-card';
           ></app-feature-card>
           <app-feature-card
             icon="bi bi-search"
-            title="Search Monuments & Guilds"
-            description="Discover monuments, guilds, and stonemason symbols through a fast and intuitive search experience."
+            title="Search Monuments"
+            description="Discover monuments and stonemason symbols through a fast and intuitive search experience."
           ></app-feature-card>
           <app-feature-card
             icon="bi bi-funnel-fill"
@@ -42,7 +42,7 @@ import {FeatureCardComponent} from '@shared/ui/feature-card/feature-card';
           <app-feature-card
             icon="bi bi-bookmark-fill"
             title="Bookmarks & Collections"
-            description="Save your favourite monuments, guilds, or marks to personalized collections — perfect for research, teaching, or exploration."
+            description="Save your favourite monuments, or marks to personalized collections — perfect for research, teaching, or exploration."
           ></app-feature-card>
           <app-feature-card
             icon="bi bi-geo-alt-fill"

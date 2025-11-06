@@ -14,7 +14,6 @@ export class MonumentExploreComponent {
 
   stats = {
     marks: 12,
-    guilds: 5,
     contributions: 28
   };
 

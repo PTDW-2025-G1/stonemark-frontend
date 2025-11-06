@@ -58,7 +58,7 @@ import { CommonModule } from '@angular/common';
               </span>
             </a>
 
-            <a routerLink="/about"
+            <a routerLink="/help"
                class="group px-8 py-4 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold text-lg hover:border-primary hover:bg-surface transition-all duration-300">
               <span class="flex items-center justify-center gap-2">
                 Learn More

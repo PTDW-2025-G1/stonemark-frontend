@@ -75,7 +75,7 @@ export class FaqSectionComponent {
     {
       id: 3,
       question: 'How can I contribute to the project?',
-      answer: 'You can contribute by photographing and submitting new stonemason marks, sharing information about monuments or guilds, or helping verify existing data. Simply create an account, log in, and start exploring the database.',
+      answer: 'You can contribute by photographing and submitting new stonemason marks, sharing information about monuments or helping verify existing data. Simply create an account, log in, and start exploring the database.',
       isOpen: false
     },
     {
@@ -87,7 +87,7 @@ export class FaqSectionComponent {
     {
       id: 5,
       question: 'Can I use Stone Mark for academic or research purposes?',
-      answer: 'Absolutely. Stone Mark supports historians, archaeologists, and students in their research. All monuments, marks, and guilds are documented with metadata that can be cited in academic work. If you need specific datasets or collaboration opportunities, please contact our team.',
+      answer: 'Absolutely. Stone Mark supports historians, archaeologists, and students in their research. All monuments, marks are documented with metadata that can be cited in academic work. If you need specific datasets or collaboration opportunities, please contact our team.',
       isOpen: false
     },
     {

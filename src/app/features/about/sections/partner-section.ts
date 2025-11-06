@@ -100,14 +100,6 @@ import { Component } from '@angular/core';
             </div>
 
           </div>
-
-          <!-- Banner Inferior -->
-          <div class="bg-primary text-primary-foreground px-8 sm:px-12 lg:px-16 py-6">
-            <p class="text-center text-sm sm:text-base font-medium">
-              <i class="bi bi-heart-fill text-red-400 mr-2"></i>
-              Together for Urban and Cultural Heritage
-            </p>
-          </div>
         </div>
       </div>
     </section>

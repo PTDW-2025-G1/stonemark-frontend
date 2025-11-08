@@ -17,117 +17,117 @@ export interface AuthFormData {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InputFieldComponent, ButtonComponent, SocialAuthButtonsComponent],
   template: `
-    <div class="w-full bg-surface shadow-lg rounded-2xl p-8 mt-12 mb-12">
-      <!-- Title -->
-      <h1 class="font-serif text-3xl font-normal text-primary mb-2">
-        {{ title }}
-      </h1>
-      <p class="text-sm text-text-muted mb-8">
-        {{ subtitle }}
-      </p>
+        <div class="bg-surface shadow-lg rounded-2xl p-8 my-12">
+          <!-- Title -->
+          <h1 class="font-serif text-3xl font-normal text-primary mb-2">
+            {{ title }}
+          </h1>
+          <p class="text-sm text-text-muted mb-8">
+            {{ subtitle }}
+          </p>
 
-      <!-- Social Buttons (top for signup) -->
-      @if (showSocialAuth && socialAuthPosition === 'top') {
-        <app-social-auth-buttons
-          (googleClick)="onGoogleAuth()"
-          (githubClick)="onGithubAuth()"
-        />
-
-        <div class="relative my-8">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-border"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-4 bg-surface text-text-muted">Or</span>
-          </div>
-        </div>
-      }
-
-      <!-- Form -->
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-left">
-        <!-- Name fields (signup only) -->
-        @if (mode === 'register') {
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <app-input-field
-              label="First Name"
-              placeholder="eg. John"
-              formControlName="firstName"
-              [error]="getError('firstName')"
+          <!-- Social Buttons (top for signup) -->
+          @if (showSocialAuth && socialAuthPosition === 'top') {
+            <app-social-auth-buttons
+              (googleClick)="onGoogleAuth()"
+              (githubClick)="onGithubAuth()"
             />
-            <app-input-field
-              label="Last Name"
-              placeholder="eg. Francisco"
-              formControlName="lastName"
-              [error]="getError('lastName')"
+
+            <div class="relative my-8">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-border"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-surface text-text-muted">Or</span>
+              </div>
+            </div>
+          }
+
+          <!-- Form -->
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-left">
+            <!-- Name fields (signup only) -->
+            @if (mode === 'register') {
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <app-input-field
+                  label="First Name"
+                  placeholder="eg. John"
+                  formControlName="firstName"
+                  [error]="getError('firstName')"
+                />
+                <app-input-field
+                  label="Last Name"
+                  placeholder="eg. Francisco"
+                  formControlName="lastName"
+                  [error]="getError('lastName')"
+                />
+              </div>
+            }
+
+            <div class="mb-4">
+              <app-input-field
+                label="Email"
+                type="email"
+                placeholder="eg. johnfrans@gmail.com"
+                formControlName="email"
+                [error]="getError('email')"
+              />
+            </div>
+
+            <div class="mb-8">
+              <app-input-field
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                formControlName="password"
+                [error]="getError('password')"
+                [showPasswordToggle]="true"
+              />
+              @if (!form.get('password')?.errors) {
+                <p class="text-xs text-text-muted mt-2">
+                  Must be at least 8 characters.
+                </p>
+              }
+            </div>
+
+            <app-button
+              type="submit"
+              variant="primary"
+              [fullWidth]="true"
+              [disabled]="form.invalid || loading"
+              [loading]="loading"
+            >
+              {{ submitButtonText }}
+            </app-button>
+          </form>
+
+          <!-- Toggle Auth Mode -->
+          <p class="text-sm text-text-muted text-center mt-8">
+            {{ toggleText }}
+            <a
+              (click)="onToggleMode($event)"
+              class="text-text font-semibold hover:opacity-70 cursor-pointer"
+            >
+              {{ toggleLinkText }}
+            </a>
+          </p>
+
+          <!-- Social Buttons (bottom for login) -->
+          @if (showSocialAuth && socialAuthPosition === 'bottom') {
+            <div class="relative my-8">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-border"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-surface text-text-muted">Or</span>
+              </div>
+            </div>
+
+            <app-social-auth-buttons
+              (googleClick)="onGoogleAuth()"
+              (githubClick)="onGithubAuth()"
             />
-          </div>
-        }
-
-        <div class="mb-4">
-          <app-input-field
-            label="Email"
-            type="email"
-            placeholder="eg. johnfrans@gmail.com"
-            formControlName="email"
-            [error]="getError('email')"
-          />
-        </div>
-
-        <div class="mb-8">
-          <app-input-field
-            label="Password"
-            type="password"
-            placeholder="Enter your password"
-            formControlName="password"
-            [error]="getError('password')"
-            [showPasswordToggle]="true"
-          />
-          @if (!form.get('password')?.errors) {
-            <p class="text-xs text-text-muted mt-2">
-              Must be at least 8 characters.
-            </p>
           }
         </div>
-
-        <app-button
-          type="submit"
-          variant="primary"
-          [fullWidth]="true"
-          [disabled]="form.invalid || loading"
-          [loading]="loading"
-        >
-          {{ submitButtonText }}
-        </app-button>
-      </form>
-
-      <!-- Toggle Auth Mode -->
-      <p class="text-sm text-text-muted text-center mt-8">
-        {{ toggleText }}
-        <a
-          (click)="onToggleMode($event)"
-          class="text-text font-semibold hover:opacity-70 cursor-pointer"
-        >
-          {{ toggleLinkText }}
-        </a>
-      </p>
-
-      <!-- Social Buttons (bottom for login) -->
-      @if (showSocialAuth && socialAuthPosition === 'bottom') {
-        <div class="relative my-8">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-border"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-4 bg-surface text-text-muted">Or</span>
-          </div>
-        </div>
-
-        <app-social-auth-buttons
-          (googleClick)="onGoogleAuth()"
-          (githubClick)="onGithubAuth()"
-        />
-      }
-    </div>
   `
 })
 export class AuthFormComponent implements OnInit, OnChanges {

@@ -8,8 +8,8 @@ import { Monument } from '@core/models/monument.model';
 export class MonumentService {
   private readonly overpassUrl = 'https://overpass-api.de/api/interpreter';
 
-  // 🔹 Array global reutilizável
-  private readonly POPULAR_MONUMENTS: Monument[] = [
+  // Array global reutilizável
+  private readonly MONUMENTS: Monument[] = [
     {
       id: 1,
       name: 'Castelo de Guimarães',
@@ -94,7 +94,7 @@ export class MonumentService {
   constructor(private http: HttpClient) {}
 
   /**
-   * 🔹 Consulta Overpass API (dados dinâmicos de monumentos reais)
+   * Consulta Overpass API (dados dinâmicos de monumentos reais)
    */
   getMonumentsPortugal(): Observable<Monument[]> {
     const query = `
@@ -129,17 +129,17 @@ export class MonumentService {
   }
 
   /**
-   * 🔹 Devolve a lista de monumentos populares
+   * Devolve a lista de monumentos populares
    */
   getPopularMonuments(): Observable<Monument[]> {
-    return of(this.POPULAR_MONUMENTS);
+    return of(this.MONUMENTS);
   }
 
   /**
-   * 🔹 Obtém um monumento específico por ID
+   * Obtém um monumento específico por ID
    */
   getMonumentById(id: number): Observable<Monument | undefined> {
-    const monument = this.POPULAR_MONUMENTS.find(m => m.id === id);
+    const monument = this.MONUMENTS.find(m => m.id === id);
     return of(monument);
   }
 }

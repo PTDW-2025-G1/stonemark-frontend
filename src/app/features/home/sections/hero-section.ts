@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
           </h1>
 
           <!-- Subtitle -->
-          <p class="text-lg sm:text-xl lg:text-2xl text-text-muted max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 animate-fade-in-delay">
+          <p class="text-lg sm:text-xl lg:text-xl text-text-muted max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 animate-fade-in-delay">
             Document and explore stonemason marks across centuries. Join a global community preserving architectural heritage, one symbol at a time.
           </p>
 
@@ -144,61 +144,6 @@ import { CommonModule } from '@angular/common';
       </button>
 
     </section>
-
-    <style>
-      @keyframes fade-in {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @keyframes slide-up {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      .animate-gradient {
-        background-size: 200% 200%;
-        animation: gradient 3s ease infinite;
-      }
-
-      .animate-fade-in {
-        animation: fade-in 0.6s ease-out forwards;
-      }
-
-      .animate-fade-in-delay {
-        animation: fade-in 0.6s ease-out 0.1s forwards;
-        opacity: 0;
-      }
-
-      .animate-fade-in-delay-2 {
-        animation: fade-in 0.6s ease-out 0.2s forwards;
-        opacity: 0;
-      }
-
-      .animate-fade-in-delay-3 {
-        animation: fade-in 0.6s ease-out 0.3s forwards;
-        opacity: 0;
-      }
-
-      .animate-fade-in-delay-4 {
-        animation: fade-in 0.6s ease-out 0.4s forwards;
-        opacity: 0;
-      }
-
-      .animate-fade-in-delay-5 {
-        animation: fade-in 0.6s ease-out 0.5s forwards;
-        opacity: 0;
-      }
-
-      .animate-fade-in-delay-6 {
-        animation: fade-in 0.6s ease-out 0.6s forwards;
-        opacity: 0;
-      }
-
-      .animate-slide-up {
-        animation: slide-up 0.8s ease-out forwards;
-      }
-    </style>
   `,
 })
 export class HeroSectionComponent {

@@ -1,0 +1,49 @@
+<div class="min-h-screen bg-surface">
+  <!-- Header Section -->
+  <app-bookmarks-header-section
+    [rangeStart]="(currentPage - 1) * itemsPerPage + 1"
+    [rangeEnd]="Math.min(currentPage * itemsPerPage, filteredItems.length)"
+    [total]="filteredItems.length"
+    title="Bookmarks">
+  </app-bookmarks-header-section>
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <!-- Tabs -->
+    <app-bookmarks-tabs-section
+      [activeTab]="activeTab"
+      [tabs]="[
+            { type: 'all', label: 'All', count: getTotalCount() },
+            { type: 'monuments', label: 'Monuments', count: monuments.length },
+            { type: 'marks', label: 'Marks', count: marks.length }
+      ]"
+      (tabChange)="changeTab($event)">
+    </app-bookmarks-tabs-section>
+    @if (filteredItems.length === 0) {
+      <app-bookmarks-empty-state-section
+        title="No bookmarks yet"
+        subtitle="Start exploring and save your favorite monuments and marks to access them easily later."
+        [actions]="[
+          { label: 'Explore Monuments', routerLink: '/monuments', variant: 'primary' },
+          { label: 'Browse Marks', routerLink: '/marks', variant: 'secondary' }
+        ]">
+      </app-bookmarks-empty-state-section>
+    }
+    @if (paginatedItems.length > 0) {
+      <app-bookmarks-grid-section
+        [items]="paginatedItems"
+        (remove)="removeBookmark($event.id, $event.type)"
+        (viewDetails)="viewDetails($event)">
+      </app-bookmarks-grid-section>
+    }
+    @if (paginatedItems.length > 0 && totalPages > 1) {
+      <app-bookmarks-pagination-section
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        [pageNumbers]="getPageNumbers()"
+        (goToPage)="goToPage($event)"
+        (previousPage)="previousPage()"
+        (nextPage)="nextPage()">
+      </app-bookmarks-pagination-section>
+    }
+  </div>
+</div>

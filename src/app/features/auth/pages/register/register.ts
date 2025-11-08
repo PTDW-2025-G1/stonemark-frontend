@@ -8,6 +8,7 @@ import { AuthFormComponent, AuthFormData } from '@features/auth/components/auth-
   standalone: true,
   imports: [CommonModule, AuthFormComponent],
   template: `
+    <section class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-12 pb-24">
       <app-auth-form
         mode="register"
         [loading]="loading"
@@ -16,6 +17,7 @@ import { AuthFormComponent, AuthFormData } from '@features/auth/components/auth-
         (googleAuth)="onGoogleAuth()"
         (githubAuth)="onGithubAuth()"
       />
+    </section>
   `
 })
 export class SignupComponent {

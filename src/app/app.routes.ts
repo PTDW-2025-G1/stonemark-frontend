@@ -27,6 +27,11 @@ export const routes: Routes = [
       import('./features/help/help.routes').then(m => m.HELP_ROUTES)
   },
   {
+    path: 'bookmarks',
+    loadChildren: () =>
+      import('./features/bookmarks/bookmarks.routes').then(m => m.BOOKMARKS_ROUTES)
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./features/search/search.routes').then(m => m.SEARCH_ROUTES)

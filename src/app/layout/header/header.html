@@ -23,14 +23,40 @@
           </a>
         }
 
-        @if (authService.getAccessToken()){
-          <button (click)="onLogout()" class="inline-block">
-            <app-button variant="secondary">Logout</app-button>
-          </button>
+        @if (authService.getAccessToken() && user){
+          <div class="relative">
+            <button
+              (click)="toggleDropdown()"
+              class="flex items-center gap-2 text-sm font-semibold text-text-muted hover:text-primary transition"
+            >
+              <span>{{ user.firstName }}</span>
+              <i class="bi" [ngClass]="isDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+            </button>
+
+            <!-- Dropdown -->
+            @if (isDropdownOpen) {
+              <div
+                class="absolute right-0 mt-2 w-40 bg-surface-alt border border-border rounded-lg shadow-lg py-2"
+              >
+                <button
+                  (click)="goToProfile()"
+                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
+                >
+                  Profile
+                </button>
+                <button
+                  (click)="onLogout()"
+                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-error"
+                >
+                  Logout
+                </button>
+              </div>
+            }
+          </div>
         } @else {
-        <a routerLink="/login" class="inline-block">
-         <app-button variant="secondary">Login</app-button>
-        </a>
+          <a routerLink="/login" class="inline-block">
+            <app-button variant="secondary">Login</app-button>
+          </a>
         }
       </nav>
 
@@ -70,6 +96,18 @@
           class="block px-4 py-3 rounded-lg text-text-muted hover:bg-surface-muted hover:text-primary transition-colors duration-200 font-medium"
         >
           {{ item.label }}
+        </a>
+      }
+
+      @if (authService.getAccessToken() && user) {
+        <div class="h-px bg-border my-2"></div>
+
+        <a
+          routerLink="/profile"
+          (click)="closeMenu()"
+          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold"
+        >
+          Profile
         </a>
       }
 

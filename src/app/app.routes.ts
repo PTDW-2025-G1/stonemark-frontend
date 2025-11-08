@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {authGuard} from '@core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,12 @@ export const routes: Routes = [
       import('./features/bookmarks/bookmarks.routes').then(m => m.BOOKMARKS_ROUTES)
   },
   {
+    path: 'profile',
+    loadChildren: () =>
+      import('./features/profile/profile.routes').then(m => m.PROFILE_ROUTES),
+    canActivate: [authGuard]
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./features/search/search.routes').then(m => m.SEARCH_ROUTES)
@@ -40,5 +47,5 @@ export const routes: Routes = [
     path: 'monuments',
     loadChildren: () =>
       import('./features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
-  },
+  }
 ];

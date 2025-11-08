@@ -13,6 +13,9 @@ declare const google: any;
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/auth`;
   private googleAuthSubject = new Subject<any>();
+  private authStateSubject = new Subject<boolean>();
+
+  authState$ = this.authStateSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.loadGoogleGISSDK();
@@ -51,6 +54,7 @@ export class AuthService {
       tap((apiResponse: any) => {
         if (apiResponse?.accessToken && apiResponse?.refreshToken) {
           this.saveTokens(apiResponse.accessToken, apiResponse.refreshToken);
+          this.authStateSubject.next(true);
         }
         this.googleAuthSubject.next(apiResponse);
       }),
@@ -74,20 +78,26 @@ export class AuthService {
   // GitHub Auth
   githubAuth(): Observable<any> {
     console.log('Github authentication initiated');
-    return of({ message: 'Github auth successful' }).pipe(); // Removed delay as it's not an API call
+    return of({ message: 'Github auth successful' }).pipe();
   }
 
   // Core Auth
   login(data: AuthFormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/authenticate`, data).pipe(
-      tap((response: any) => this.saveTokens(response.accessToken, response.refreshToken)),
+      tap((response: any) => {
+        this.saveTokens(response.accessToken, response.refreshToken);
+        this.authStateSubject.next(true);
+      }),
       catchError(this.handleError('Login failed'))
     );
   }
 
   register(data: AuthFormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, data).pipe(
-      tap((response: any) => this.saveTokens(response.accessToken, response.refreshToken)),
+      tap((response: any) => {
+        this.saveTokens(response.accessToken, response.refreshToken);
+        this.authStateSubject.next(true);
+      }),
       catchError(this.handleError('Registration failed'))
     );
   }
@@ -97,24 +107,29 @@ export class AuthService {
 
     if (!token) {
       this.removeTokens();
+      this.authStateSubject.next(false);
       return of({ message: 'Logged out locally.' });
     }
 
     return this.http.post(`${this.baseUrl}/logout`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     }).pipe(
-      tap(() => this.removeTokens()),
+      tap(() => {
+        this.removeTokens();
+        this.authStateSubject.next(false);
+      }),
       catchError((error: HttpErrorResponse) => {
         if ([401, 403].includes(error.status)) {
           this.removeTokens();
+          this.authStateSubject.next(false);
           return of({ message: 'Forced local logout.' });
         }
         this.removeTokens();
+        this.authStateSubject.next(false);
         return throwError(() => error);
       })
     );
   }
-
 
   // Token Management
   saveTokens(accessToken: string, refreshToken: string): void {
@@ -132,7 +147,10 @@ export class AuthService {
 
   refreshToken(refreshToken: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/refresh-token`, { refreshToken }).pipe(
-      tap((response: any) => this.saveTokens(response.accessToken, response.refreshToken)),
+      tap((response: any) => {
+        this.saveTokens(response.accessToken, response.refreshToken);
+        this.authStateSubject.next(true);
+      }),
       catchError(this.handleError('Token refresh failed'))
     );
   }

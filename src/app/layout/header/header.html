@@ -23,9 +23,15 @@
           </a>
         }
 
+        @if (authService.getAccessToken()){
+          <button (click)="onLogout()" class="inline-block">
+            <app-button variant="secondary">Logout</app-button>
+          </button>
+        } @else {
         <a routerLink="/login" class="inline-block">
-          <app-button variant="secondary">Login</app-button>
+         <app-button variant="secondary">Login</app-button>
         </a>
+        }
       </nav>
 
       <!-- Mobile menu button -->
@@ -68,11 +74,15 @@
       }
 
       <div class="pt-2">
-        <a routerLink="/login" class="w-full block" (click)="closeMenu()">
-          <app-button variant="secondary" [fullWidth]="true">
-            Login
-          </app-button>
-        </a>
+        @if (authService.getAccessToken()){
+          <button (click)="onLogout()" class="inline-block">
+            <app-button variant="secondary">Logout</app-button>
+          </button>
+        } @else {
+          <a routerLink="/login" class="w-full inline-block">
+            <app-button variant="secondary" [fullWidth]="true">Login</app-button>
+          </a>
+        }
       </div>
     </div>
   </div>

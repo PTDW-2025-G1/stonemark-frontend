@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthFormComponent, AuthFormData} from '@features/auth/components/auth-form/auth-form';
 import { AuthService } from '@core/services/auth.service';
 import { NotificationService } from '@core/services/notification.service';
-
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { AuthFormComponent } from '@features/auth/components/auth-form/auth-form';
+import { BaseAuthComponent } from '@shared/directives/base-auth';
 
 @Component({
   selector: 'app-login',
@@ -25,46 +23,12 @@ import { finalize } from 'rxjs/operators';
     </section>
   `
 })
-export class LoginComponent {
-  loading = false;
+export class LoginComponent extends BaseAuthComponent {
+  override mode: 'login' = 'login';
+  override successMessage = 'Login successful!';
+  override navigateTo = '/register';
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private notificationService: NotificationService // Inject NotificationService
-  ) {}
-
-  onSubmit(data: AuthFormData): void {
-    this._handleAuthRequest(this.authService.login(data), 'Login successful!');
-  }
-
-  onToggleMode(): void {
-    this.router.navigate(['/register']).catch(error => {
-      this.notificationService.showError('Navigation failed.', error);
-    });
-  }
-
-  onGoogleAuth(): void {
-    this._handleAuthRequest(this.authService.googleAuth(), 'Google authentication successful!');
-  }
-
-  onGithubAuth(): void {
-    this._handleAuthRequest(this.authService.githubAuth(), 'GitHub authentication successful!');
-  }
-
-  private _handleAuthRequest(auth$: Observable<any>, successMessage: string): void {
-    this.loading = true;
-    auth$.pipe(
-      finalize(() => this.loading = false)
-    ).subscribe({
-      next: () => {
-        this.notificationService.showSuccess(successMessage);
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        const errorMessage = err.error?.message || 'Authentication failed. Please try again.';
-        this.notificationService.showError(errorMessage, err);
-      }
-    });
+  constructor(router: Router, authService: AuthService, notificationService: NotificationService) {
+    super(router, authService, notificationService);
   }
 }

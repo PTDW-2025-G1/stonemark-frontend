@@ -4,12 +4,12 @@ export const AUTH_ROUTES: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent),
-    title: 'Login - StoneMark'
+    title: 'Login'
   },
   {
     path: 'register',
-    loadComponent: () => import('./pages/register/register').then(m => m.SignupComponent),
-    title: 'Register - StoneMark'
+    loadComponent: () => import('./pages/register/register').then(m => m.RegisterComponent),
+    title: 'Register'
   },
   {
     path: '',

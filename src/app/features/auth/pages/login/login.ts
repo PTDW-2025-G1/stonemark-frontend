@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthFormComponent, AuthFormData} from '@features/auth/components/auth-form/auth-form';
+import { AuthService } from '@core/services/auth.service';
+import { NotificationService } from '@core/services/notification.service';
+
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -23,43 +28,43 @@ import { AuthFormComponent, AuthFormData} from '@features/auth/components/auth-f
 export class LoginComponent {
   loading = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private notificationService: NotificationService // Inject NotificationService
+  ) {}
 
   onSubmit(data: AuthFormData): void {
-    this.loading = true;
-    console.log('Login data:', data);
-
-    // Simulate API call
-    setTimeout(() => {
-      this.loading = false;
-      // Handle login logic here
-      // this.router.navigate(['/dashboard']);
-    }, 2000);
+    this._handleAuthRequest(this.authService.login(data), 'Login successful!');
   }
 
   onToggleMode(): void {
-    this.router.navigate(['/register'])
-      .then(success => {
-        if (success) {
-          // successfull navigation
-        } else {
-          // failed navigation
-        }
-      })
-      .catch(error => {
-        // error handling
-        console.error('Erro ao navegar:', error);
-      });
+    this.router.navigate(['/register']).catch(error => {
+      this.notificationService.showError('Navigation failed.', error);
+    });
   }
 
-
   onGoogleAuth(): void {
-    console.log('Google auth');
-    // Handle Google authentication
+    this._handleAuthRequest(this.authService.googleAuth(), 'Google authentication successful!');
   }
 
   onGithubAuth(): void {
-    console.log('Github auth');
-    // Handle Github authentication
+    this._handleAuthRequest(this.authService.githubAuth(), 'GitHub authentication successful!');
+  }
+
+  private _handleAuthRequest(auth$: Observable<any>, successMessage: string): void {
+    this.loading = true;
+    auth$.pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: () => {
+        this.notificationService.showSuccess(successMessage);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || 'Authentication failed. Please try again.';
+        this.notificationService.showError(errorMessage, err);
+      }
+    });
   }
 }

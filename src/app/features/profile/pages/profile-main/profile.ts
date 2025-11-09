@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {ProfileService, UserDto} from '@core/services/profile.service';
 import {AuthService} from '@core/services/auth.service';
 
@@ -46,6 +46,10 @@ export class ProfileComponent implements OnInit {
 
   editProfile(): void {
     this.router.navigate(['/profile/edit']);
+  }
+
+  changePassword(): void {
+    this.router.navigate(['/profile/change-password']);
   }
 
   onLogout(): void {

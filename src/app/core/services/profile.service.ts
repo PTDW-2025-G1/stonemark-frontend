@@ -24,4 +24,12 @@ export class ProfileService {
   getCurrentUser(): Observable<UserDto> {
     return this.http.get<UserDto>(`${this.baseUrl}/me`);
   }
+
+  changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/change-password`, {
+      oldPassword,
+      newPassword
+    });
+  }
+
 }

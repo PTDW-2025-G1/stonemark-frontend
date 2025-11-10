@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { AuthFormData } from '@features/auth/components/auth-form/auth-form';
@@ -88,21 +88,28 @@ export class AuthService {
   }
 
   // Core Auth
-  login(data: AuthFormData): Observable<any> {
-    return this.http.post(`${this.baseUrl}/authenticate`, data).pipe(
-      tap((response: any) => {
-        this.saveTokens(response.accessToken, response.refreshToken);
-        this.authStateSubject.next(true);
-      }),
-      catchError(this.handleError('Login failed'))
-    );
+  login(data: AuthFormData): Observable<HttpResponse<any>> {
+    return this.http.post(`${this.baseUrl}/authenticate`, data, { observe: 'response' })
+      .pipe(
+        tap((response: HttpResponse<any>) => {
+          if (response.body?.accessToken) {
+            this.saveTokens(response.body.accessToken, response.body.refreshToken);
+            this.authStateSubject.next(true);
+          }
+        }),
+        catchError(this.handleError('Login failed'))
+      );
   }
 
-  register(data: AuthFormData): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, data).pipe(
-      tap((response: any) => {
-        this.saveTokens(response.accessToken, response.refreshToken);
-        this.authStateSubject.next(true);
+  register(data: AuthFormData): Observable<HttpResponse<any>> {
+    return this.http.post(`${this.baseUrl}/register`, data, {
+      observe: 'response' as const
+    }).pipe(
+      tap((response: HttpResponse<any>) => {
+        if(response.status == 200 && response.body?.accessToken){
+          this.saveTokens(response.body.accessToken, response.body.refreshToken);
+          this.authStateSubject.next(true);
+        }
       }),
       catchError(this.handleError('Registration failed'))
     );

@@ -28,6 +28,10 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(auth$, this.successMessage);
   }
 
+  onForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
+  }
+
   onToggleMode(): void {
     this.router.navigate([this.navigateTo]).catch(error => {
       this.notificationService.showError('Navigation failed.', error);

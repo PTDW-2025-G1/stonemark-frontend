@@ -7,6 +7,12 @@ import { environment } from 'src/environments/environment';
 
 declare const google: any;
 
+export interface ConfirmationResponse {
+  status: 'SUCCESS' | 'ERROR' | 'PASSWORD_RESET_REQUIRED';
+  message?: string;
+  token?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -128,6 +134,26 @@ export class AuthService {
         this.authStateSubject.next(false);
         return throwError(() => error);
       })
+    );
+  }
+
+  requestPasswordReset(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/request-password-reset`, { email }).pipe(
+      tap(() => console.log('Password reset request sent')),
+      catchError(this.handleError('Password reset request failed'))
+    );
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword }).pipe(
+      tap(() => console.log('Password reset successful')),
+      catchError(this.handleError('Password reset failed'))
+    );
+  }
+
+  confirmCode(code: string): Observable<ConfirmationResponse> {
+    return this.http.post<ConfirmationResponse>(`${this.baseUrl}/confirm-code`, { code }).pipe(
+      catchError(this.handleError('Code confirmation failed'))
     );
   }
 

@@ -12,6 +12,26 @@ export const AUTH_ROUTES: Routes = [
     title: 'Register'
   },
   {
+    path: 'forgot-password',
+    loadComponent: () => import('./pages/forgot-password/forgot-password').then(m => m.ForgotPasswordComponent),
+    title: 'Forgot Password'
+  },
+  {
+    path: 'verify',
+    loadComponent: () => import('./pages/verify/verify').then(m => m.VerifyComponent),
+    title: 'Account Verification'
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./pages/reset-password/reset-password').then(m => m.ResetPasswordComponent),
+    title: 'Reset Password'
+  },
+  {
+    path: 'confirm',
+    loadComponent: () => import('./pages/confirm/confirm').then(m => m.ConfirmComponent),
+    title: 'Confirm Token'
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'

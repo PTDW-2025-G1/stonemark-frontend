@@ -14,7 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
     },
   ],
   template: `
-    <div class="flex flex-col gap- w-full">
+    <div class="flex flex-col gap-1 w-full">
       <!-- Label -->
       @if (label) {
         <label class="text-sm font-medium text-text">{{ label }}</label>

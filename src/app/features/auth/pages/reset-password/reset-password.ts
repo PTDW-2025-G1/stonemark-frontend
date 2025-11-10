@@ -1,88 +1,66 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { AuthService } from '@core/services/auth.service';
+import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
+import { PasswordService } from '@shared/services/password.service';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, PasswordContainerComponent],
   templateUrl: './reset-password.html'
 })
 export class ResetPasswordComponent implements OnInit {
-  loading = false;
-  success = false;
   token: string | null = null;
-  form: FormGroup;
+  loading = false;
+  passwordForm!: FormGroup;
 
-  showPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
 
-  // Password requirements checks
+  passwordStrength: 'weak' | 'medium' | 'strong' = 'weak';
   hasMinLength = false;
   hasUpperCase = false;
   hasLowerCase = false;
   hasNumber = false;
+  hasSpecialChar = false;
 
   constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
+    private passwordService: PasswordService,
     private auth: AuthService,
-    private router: Router
-  ) {
-    this.form = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(8)]]
-    });
-  }
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.passwordForm = this.passwordService.createForm('reset');
     this.token = this.route.snapshot.queryParamMap.get('token');
-    this.setupPasswordValidation();
-  }
-
-  private setupPasswordValidation(): void {
-    this.form.get('newPassword')?.valueChanges.subscribe(password => {
-      if (password) {
-        this.checkPasswordRequirements(password);
-      } else {
-        this.resetPasswordRequirements();
-      }
+    this.passwordService.setupValidationListener(this.passwordForm, (reqs, strength) => {
+      Object.assign(this, reqs);
+      this.passwordStrength = strength;
     });
   }
 
-  private checkPasswordRequirements(password: string): void {
-    this.hasMinLength = password.length >= 8;
-    this.hasUpperCase = /[A-Z]/.test(password);
-    this.hasLowerCase = /[a-z]/.test(password);
-    this.hasNumber = /\d/.test(password);
-  }
-
-  private resetPasswordRequirements(): void {
-    this.hasMinLength = false;
-    this.hasUpperCase = false;
-    this.hasLowerCase = false;
-    this.hasNumber = false;
-  }
-
-  togglePassword(): void {
-    this.showPassword = !this.showPassword;
-  }
-
-  onSubmit() {
-    if (this.form.invalid || !this.token) {
-      this.form.markAllAsTouched();
+  onSubmit(): void {
+    if (this.passwordForm.invalid || !this.token) {
+      this.passwordForm.markAllAsTouched();
       return;
     }
 
     this.loading = true;
-    this.auth.resetPassword(this.token, this.form.value.newPassword!).subscribe({
+    const newPassword = this.passwordForm.value.newPassword;
+
+    this.auth.resetPassword(this.token, newPassword).subscribe({
       next: () => {
-        this.success = true;
         this.loading = false;
+        this.passwordService.showSuccessToast('Password reset successfully! 🎉');
         setTimeout(() => this.router.navigate(['/login']), 2500);
       },
       error: () => {
         this.loading = false;
+        this.passwordService.showErrorToast('Something went wrong. Try again.');
       }
     });
   }

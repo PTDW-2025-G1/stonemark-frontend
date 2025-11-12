@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../../../projects/shared/src/lib/core/services/auth.service';
-import { NotificationService } from '../../../../../../projects/shared/src/lib/core/services/notification.service';
-import { AuthFormComponent } from '@features/auth/components/auth-form/auth-form';
-import { BaseAuthComponent } from '../../../../../../projects/shared/src/lib/shared/directives/base-auth';
+import { AuthService } from '@core/services/auth.service';
+import { NotificationService } from '@core/services/notification.service';
+import { AuthFormComponent } from '../../components/auth-form/auth-form';
+import { BaseAuthComponent } from '@shared/directives/base-auth';
 
 @Component({
   selector: 'app-register',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FeatureCardComponent} from '../../../../../projects/shared/src/lib/shared/ui/feature-card/feature-card';
+import {FeatureCardComponent} from '@shared/ui/feature-card/feature-card';
 
 @Component({
   selector: 'app-features-section',

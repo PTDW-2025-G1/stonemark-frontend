@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
-import { MonumentService } from '../../../../../projects/shared/src/lib/core/services/monument.service';
-import { Monument } from '../../../../../projects/shared/src/lib/core/models/monument.model';
+import { MonumentService } from '@core/services/monument.service';
+import { Monument } from '@core/models/monument.model';
 import { Observable, switchMap } from 'rxjs';
 import {MonumentHeroComponent} from '@features/monuments/monument-detail/sections/hero/monument-hero';
 import {MonumentAboutComponent} from '@features/monuments/monument-detail/sections/about/monument-about';

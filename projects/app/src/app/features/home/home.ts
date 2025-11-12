@@ -5,10 +5,10 @@ import { PopularSectionComponent } from '@features/home/sections/popular-section
 import { LastMarkSectionComponent } from '@features/home/sections/last-marks-section';
 import { MapSectionComponent } from '@features/home/sections/map-section';
 import { LastNewsComponent } from '@features/home/sections/last-news-section';
-import {MonumentService} from '../../../../projects/shared/src/lib/core/services/monument.service';
-import {MarkService} from '../../../../projects/shared/src/lib/core/services/mark.service';
-import {Monument} from '../../../../projects/shared/src/lib/core/models/monument.model';
-import {Mark} from '../../../../projects/shared/src/lib/core/models/mark.model';
+import {MonumentService} from '@core/services/monument.service';
+import {MarkService} from '@core/services/mark.service';
+import {Monument} from '@core/models/monument.model';
+import {Mark} from '@core/models/mark.model';
 
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {HighlightCardComponent} from '../../../../../projects/shared/src/lib/shared/ui/highlight-card/highlight-card';
+import {HighlightCardComponent} from '@shared/ui/highlight-card/highlight-card';
 
 @Component({
   selector: 'app-unesco-section',

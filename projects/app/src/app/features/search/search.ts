@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MonumentService } from '../../../../projects/shared/src/lib/core/services/monument.service';
-import { MarkService } from '../../../../projects/shared/src/lib/core/services/mark.service';
-import { Monument } from '../../../../projects/shared/src/lib/core/models/monument.model';
-import { Mark } from '../../../../projects/shared/src/lib/core/models/mark.model';
+import { MonumentService } from '@core/services/monument.service';
+import { MarkService } from '@core/services/mark.service';
+import { Monument } from '@core/models/monument.model';
+import { Mark } from '@core/models/mark.model';
 import { Observable, of, switchMap } from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {SearchHeaderComponent} from '@features/search/sections/search-header/search-header';

@@ -11,7 +11,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import { MonumentService } from '../../../../../projects/shared/src/lib/core/services/monument.service';
+import { MonumentService } from '@core/services/monument.service';
 
 @Component({
   selector: 'app-map-section',

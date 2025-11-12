@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../../../app/src/environment/environment';
 
 @Component({
   selector: 'app-footer',
@@ -11,6 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class Footer {
   currentYear = new Date().getFullYear();
+  baseUrl = environment.baseUrl;
 
   partnershipsLinks = [
     { label: 'UNESCO', route: 'https://www.unesco.org/en', external: true },
@@ -18,16 +20,16 @@ export class Footer {
   ];
 
   exploreLinks = [
-    { label: 'Monuments', route: '/monuments' },
-    { label: 'Marks', route: '/marks' },
-    { label: 'Features', route: '/about' }
+    { label: 'Monuments', route: `${this.baseUrl}/monuments`, external: false },
+    { label: 'Marks', route: `${this.baseUrl}/marks`, external: false },
+    { label: 'Features', route: `${this.baseUrl}/about`, external: false }
   ];
 
   supportLinks = [
-    { label: 'Help Center', route: '/help' },
-    { label: 'Contact', route: '/contact' },
-    { label: 'Terms of Service', route: '/terms' },
-    { label: 'Privacy Policy', route: '/privacy' }
+    { label: 'Help Center', route: `${this.baseUrl}/help`, external: false },
+    { label: 'Contact', route: `${this.baseUrl}/contact`, external: false },
+    { label: 'Terms of Service', route: `${this.baseUrl}/terms`, external: false },
+    { label: 'Privacy Policy', route: `${this.baseUrl}/privacy`, external: false }
   ];
 
   socialLinks = [

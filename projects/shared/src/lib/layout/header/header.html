@@ -3,19 +3,22 @@
     <div class="flex items-center justify-between h-20">
 
       <!-- Logo -->
-      <div class="flex-shrink-0">
-        <a routerLink="/" class="flex items-center space-x-2">
-          <span class="text-2xl font-bold text-primary tracking-tight">
-            StoneMark<span class="text-info">.</span>
-          </span>
-        </a>
+      <div
+        (click)="onHome()"
+        class="flex items-center space-x-2 cursor-pointer select-none"
+        aria-label="StoneMark — Início"
+        title="StoneMark"
+      >
+        <span class="text-2xl font-bold text-primary tracking-tight">
+          StoneMark<span class="text-info">.</span>
+        </span>
       </div>
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-8">
         @for (item of menuItems; track item.route) {
           <a
-            [routerLink]="item.route"
+            [href]="item.route"
             routerLinkActive="text-primary"
             class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-sm"
           >
@@ -54,7 +57,7 @@
             }
           </div>
         } @else {
-          <a routerLink="/login" class="inline-block">
+          <a (click)="onLogin()" class="inline-block">
             <app-button variant="secondary">Login</app-button>
           </a>
         }

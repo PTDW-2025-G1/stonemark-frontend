@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import {Monument} from '../../../../../../projects/shared/src/lib/core/models/monument.model';
-import {Mark} from '../../../../../../projects/shared/src/lib/core/models/mark.model';
+import {Monument} from '@core/models/monument.model';
+import {Mark} from '@core/models/mark.model';
 
 type SearchItem = Monument | Mark;
 

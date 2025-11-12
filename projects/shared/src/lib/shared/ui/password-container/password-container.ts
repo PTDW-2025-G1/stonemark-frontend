@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {PasswordHeaderComponent} from '@shared/ui/password-container/sections/password-header';
-import {PasswordFormComponent} from '@shared/ui/password-container/sections/password-form';
-import {PasswordMessagesComponent} from '@shared/ui/password-container/sections/password-messages';
-import {PasswordHelpComponent} from '@shared/ui/password-container/sections/password-help';
+import {PasswordHeaderComponent} from './sections/password-header';
+import {PasswordFormComponent} from './sections/password-form';
+import {PasswordMessagesComponent} from './sections/password-messages';
+import {PasswordHelpComponent} from './sections/password-help';
 
 @Component({
   selector: 'app-password-container',

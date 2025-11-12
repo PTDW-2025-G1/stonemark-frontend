@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MissionCardComponent} from '../../../../../projects/shared/src/lib/shared/ui/mission-card/mission-card';
+import {MissionCardComponent} from '@shared/ui/mission-card/mission-card';
 
 @Component({
   selector: 'app-mission-section',

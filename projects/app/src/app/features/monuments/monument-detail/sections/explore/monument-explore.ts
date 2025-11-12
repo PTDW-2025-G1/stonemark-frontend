@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Monument } from '../../../../../../../projects/shared/src/lib/core/models/monument.model';
-import {ActionButtonComponent} from '../../../../../../../projects/shared/src/lib/shared/ui/action-button/action-button';
+import { Monument } from '@core/models/monument.model';
+import {ActionButtonComponent} from '@shared/ui/action-button/action-button';
 
 @Component({
   selector: 'app-monument-explore',

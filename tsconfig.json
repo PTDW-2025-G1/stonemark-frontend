@@ -1,5 +1,3 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -16,11 +14,13 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@features/*": ["src/app/features/*"],
-      "@services/*": ["src/app/services/*"],
-      "@layout/*": ["src/app/layout/*"]
+      "@env/*": ["projects/shared/src/lib/core/environments/*"],
+      "@core/*": ["projects/shared/src/lib/core/*"],
+      "@layout/*": ["projects/shared/src/lib/layout/*"],
+      "@shared/*": ["projects/shared/src/lib/shared/*"],
+      "@features/*": ["projects/app/src/app/features/*"],
+      "@services/*": ["projects/app/src/app/services/*"],
+      "shared": ["./dist/shared"]
     }
   },
   "angularCompilerOptions": {
@@ -32,11 +32,15 @@
   },
   "files": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" },
+    { "path": "./projects/app/tsconfig.app.json" },
+    { "path": "./projects/app/tsconfig.spec.json" },
+    { "path": "./projects/auth/tsconfig.app.json" },
+    { "path": "./projects/auth/tsconfig.spec.json" },
+    { "path": "./projects/profile/tsconfig.app.json" },
+    { "path": "./projects/profile/tsconfig.spec.json" },
+    { "path": "./projects/shared/tsconfig.lib.json" },
+    { "path": "./projects/shared/tsconfig.spec.json" }
   ]
 }

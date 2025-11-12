@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonModule, DatePipe, NgOptimizedImage} from '@angular/common';
-import { HomeService, NewsItem } from '@features/home/home.service';
+import { HomeService, NewsItem } from '../home.service';
 
 @Component({
   selector: 'app-last-news-section',

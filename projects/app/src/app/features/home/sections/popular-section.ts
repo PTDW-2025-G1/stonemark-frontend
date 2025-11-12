@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EntityCardComponent } from '../../../../../projects/shared/src/lib/shared/ui/entity-card/entity-card';
-import {Monument} from '../../../../../projects/shared/src/lib/core/models/monument.model';
+import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
+import {Monument} from '@core/models/monument.model';
 
 
 @Component({

@@ -4,7 +4,7 @@ export const BOOKMARKS_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('@features/bookmarks/bookmarks').then(m => m.BookmarksComponent),
+      import('./bookmarks').then(m => m.BookmarksComponent),
     title: 'Bookmarks'
   }
 ];

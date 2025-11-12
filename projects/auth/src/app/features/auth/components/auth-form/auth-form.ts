@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputFieldComponent } from '../../../../../../projects/shared/src/lib/shared/ui/input-field/input-field';
-import { ButtonComponent } from '../../../../../../projects/shared/src/lib/shared/ui/button/button';
-import { SocialAuthButtonsComponent } from '@features/auth/components/social-auth-buttons/social-auth-buttons';
+import { InputFieldComponent } from '@shared/ui/input-field/input-field';
+import { ButtonComponent } from '@shared/ui/button/button';
+import { SocialAuthButtonsComponent } from '../social-auth-buttons/social-auth-buttons';
 
 export interface AuthFormData {
   email: string;

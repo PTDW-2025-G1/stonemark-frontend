@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ProfileService } from '../../../../../../projects/shared/src/lib/core/services/profile.service';
-import { PasswordContainerComponent } from '../../../../../../projects/shared/src/lib/shared/ui/password-container/password-container';
-import { PasswordService } from '../../../../../../projects/shared/src/lib/shared/services/password.service';
+import { ProfileService } from '@core/services/profile.service';
+import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
+import { PasswordService } from '@shared/services/password.service';
 
 @Component({
   selector: 'app-change-password',

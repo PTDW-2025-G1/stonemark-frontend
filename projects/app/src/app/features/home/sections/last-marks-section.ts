@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EntityCardComponent } from '../../../../../projects/shared/src/lib/shared/ui/entity-card/entity-card';
-import {Mark} from '../../../../../projects/shared/src/lib/core/models/mark.model';
+import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
+import {Mark} from '@core/models/mark.model';
 
 @Component({
   selector: 'app-last-marks-section',

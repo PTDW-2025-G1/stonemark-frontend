@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PasswordUtils } from '@shared/utils/password.utils';
+import { PasswordUtils } from '../utils/password.utils';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordService {

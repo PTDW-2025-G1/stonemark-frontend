@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { NotificationService } from '@core/services/notification.service';
 import { AuthService } from '@core/services/auth.service';
-import { AuthFormData } from '@features/auth/components/auth-form/auth-form';
+import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import {HttpResponse} from '@angular/common/http';
+import { environment } from 'projects/auth/src/environment/environment';
 
 @Directive()
 export abstract class BaseAuthComponent {
@@ -56,7 +57,7 @@ export abstract class BaseAuthComponent {
 
         if (status === 200 && body?.accessToken) {
           this.notificationService.showSuccess(successMessage);
-          this.router.navigate(['']);
+          window.location.href = environment.appUrl
         }else if(status === 202){
           const email = body?.email || '';
           this.router.navigate(['/verify-pending'], {

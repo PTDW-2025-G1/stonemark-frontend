@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { AuthFormData } from '@features/auth/components/auth-form/auth-form';
-import { environment } from 'src/environments/environment';
+import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
+import { environment } from '@env/environment';
 
 declare const google: any;
 

@@ -53,7 +53,7 @@
       <ul class="space-y-3">
         @for (link of exploreLinks; track link) {
           <li>
-            <a [routerLink]="link.route" class="text-text-muted hover:text-info transition-colors duration-200 text-sm">
+            <a [href]="link.route" class="text-text-muted hover:text-info transition-colors duration-200 text-sm">
               {{ link.label }}
             </a>
           </li>
@@ -67,7 +67,7 @@
       <ul class="space-y-3">
         @for (link of supportLinks; track link) {
           <li>
-            <a [routerLink]="link.route" class="text-text-muted hover:text-info transition-colors duration-200 text-sm">
+            <a [href]="link.route" class="text-text-muted hover:text-info transition-colors duration-200 text-sm">
               {{ link.label }}
             </a>
           </li>

@@ -4,7 +4,7 @@ export const CONTACT_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('@features/contact/contact').then(m => m.ContactComponent),
+      import('./contact').then(m => m.ContactComponent),
     title: 'Contact'
   }
 ];

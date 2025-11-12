@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-import { AuthService } from '../../../../../../projects/shared/src/lib/core/services/auth.service';
-import { PasswordContainerComponent } from '../../../../../../projects/shared/src/lib/shared/ui/password-container/password-container';
-import { PasswordService } from '../../../../../../projects/shared/src/lib/shared/services/password.service';
+import { AuthService } from '@core/services/auth.service';
+import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
+import { PasswordService } from '@shared/services/password.service';
 
 @Component({
   selector: 'app-reset-password',

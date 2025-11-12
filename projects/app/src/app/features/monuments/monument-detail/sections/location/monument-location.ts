@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Monument } from '../../../../../../../projects/shared/src/lib/core/models/monument.model';
+import { Monument } from '@core/models/monument.model';
 
 @Component({
   selector: 'app-monument-location',

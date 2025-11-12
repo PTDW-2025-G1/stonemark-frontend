@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Router, RouterModule} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {ButtonComponent} from '@shared/ui/button/button';
 import { AuthService } from '@core/services/auth.service';
 import { ProfileService, UserDto } from '@core/services/profile.service';
 import { Subscription } from 'rxjs';
+import {environment} from '../../../../../app/src/environment/environment';
 
 @Component({
   selector: 'app-header',
@@ -20,13 +21,13 @@ export class Header implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
 
   menuItems = [
-    { label: 'Monuments', route: '/monuments' },
-    { label: 'Marks', route: '/marks' },
-    { label: 'About', route: '/about' },
-    { label: 'Contact', route: '/contact' }
+    { label: 'Monuments', route: `${environment.baseUrl}/monuments` },
+    { label: 'Marks', route: `${environment.baseUrl}/marks` },
+    { label: 'About', route: `${environment.baseUrl}/about` },
+    { label: 'Contact', route: `${environment.baseUrl}/contact` }
   ];
 
-  constructor(protected authService: AuthService, private profileService: ProfileService, private router: Router) {}
+  constructor(protected authService: AuthService, private profileService: ProfileService) {}
 
   ngOnInit(): void {
     if (this.authService.getAccessToken()) {
@@ -65,15 +66,23 @@ export class Header implements OnInit, OnDestroy {
     this.isMenuOpen = false;
   }
 
+  onHome(): void {
+    window.location.href = environment.baseUrl;
+  }
+
+  onLogin(): void {
+    window.location.href = `${environment.authUrl}/login`;
+  }
+
   onLogout(): void {
     this.authService.logout().subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: () => this.router.navigate(['/login'])
+      next: () => (window.location.href = `${environment.authUrl}/login`),
+      error: () => (window.location.href = `${environment.authUrl}/login`)
     });
   }
 
   goToProfile(): void {
     this.isDropdownOpen = false;
-    this.router.navigate(['/profile']);
+    window.location.href = `${environment.profileUrl}/profile`;
   }
 }

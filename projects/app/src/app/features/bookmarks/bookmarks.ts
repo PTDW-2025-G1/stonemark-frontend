@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { MonumentService } from '../../../../projects/shared/src/lib/core/services/monument.service';
-import { MarkService } from '../../../../projects/shared/src/lib/core/services/mark.service';
+import { MonumentService } from '@core/services/monument.service';
+import { MarkService } from '@core/services/mark.service';
 import { forkJoin } from 'rxjs';
 import {HeaderSectionComponent} from '@features/bookmarks/sections/header-section';
 import {TabsSectionComponent} from '@features/bookmarks/sections/tabs-section';

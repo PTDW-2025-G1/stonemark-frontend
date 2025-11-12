@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {SharedHeroSectionComponent} from '../../../../../projects/shared/src/lib/shared/ui/hero-section/hero-section';
+import {SharedHeroSectionComponent} from '@shared/ui/hero-section/hero-section';
 
 @Component({
   selector: 'app-hero-section',

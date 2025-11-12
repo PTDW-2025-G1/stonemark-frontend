@@ -4,6 +4,7 @@ export const HELP_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('@features/help/help').then(m => m.HelpComponent),
+      import('./help').then(m => m.HelpComponent),
+    title: 'Help'
   }
 ]

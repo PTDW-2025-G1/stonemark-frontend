@@ -8,6 +8,12 @@ export const PROFILE_ROUTES: Routes = [
     title: 'Profile'
   },
   {
+    path: 'change-email',
+    loadComponent: () =>
+      import('./pages/change-email/change-email').then(m => m.ChangeEmailComponent),
+    title: 'Change Email'
+  },
+  {
     path: 'change-password',
     loadComponent: () =>
       import('./pages/change-password/change-password').then(m => m.ChangePasswordComponent),

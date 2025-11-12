@@ -48,6 +48,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/profile/edit']);
   }
 
+  changeEmail(): void {
+    this.router.navigate(['/profile/change-email']);
+  }
+
   changePassword(): void {
     this.router.navigate(['/profile/change-password']);
   }

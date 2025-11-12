@@ -25,6 +25,12 @@ export class ProfileService {
     return this.http.get<UserDto>(`${this.baseUrl}/me`);
   }
 
+  changeEmail(newEmail: string): Observable<any>{
+    return this.http.post(`${this.baseUrl}/request-email-change`, {
+      newEmail
+    });
+  }
+
   changePassword(oldPassword: string, newPassword: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/change-password`, {
       oldPassword,

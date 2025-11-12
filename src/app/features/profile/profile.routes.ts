@@ -9,7 +9,7 @@ export const PROFILE_ROUTES: Routes = [
   {
     path: 'change-password',
     loadComponent: () =>
-      import('@features/profile/pages/change-password/change-password').then(m => m.ChangePassword),
+      import('@features/profile/pages/change-password/change-password').then(m => m.ChangePasswordComponent),
   }
 
 ]

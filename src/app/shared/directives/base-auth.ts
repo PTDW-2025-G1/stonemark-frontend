@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { NotificationService } from '@core/services/notification.service';
 import { AuthService } from '@core/services/auth.service';
 import { AuthFormData } from '@features/auth/components/auth-form/auth-form';
+import {HttpResponse} from '@angular/common/http';
 
 @Directive()
 export abstract class BaseAuthComponent {
@@ -28,6 +29,10 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(auth$, this.successMessage);
   }
 
+  onForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
+  }
+
   onToggleMode(): void {
     this.router.navigate([this.navigateTo]).catch(error => {
       this.notificationService.showError('Navigation failed.', error);
@@ -42,12 +47,22 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(this.authService.githubAuth(), 'GitHub authentication successful!');
   }
 
-  private _handleAuthRequest(auth$: Observable<any>, successMessage: string): void {
+  private _handleAuthRequest(auth$: Observable<HttpResponse<any>>, successMessage: string): void {
     this.loading = true;
     auth$.pipe(finalize(() => (this.loading = false))).subscribe({
-      next: () => {
-        this.notificationService.showSuccess(successMessage);
-        this.router.navigate(['']);
+      next: (response) => {
+        const status = response.status;
+        const body = response.body;
+
+        if (status === 200 && body?.accessToken) {
+          this.notificationService.showSuccess(successMessage);
+          this.router.navigate(['']);
+        }else if(status === 202){
+          const email = body?.email || '';
+          this.router.navigate(['/verify-pending'], {
+            queryParams: { email }
+          });
+        }
       },
       error: (err) => {
         const errorMessage = err.error?.message || 'Authentication failed. Please try again.';

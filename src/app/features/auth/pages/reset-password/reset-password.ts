@@ -1,25 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { ProfileService } from '@core/services/profile.service';
+import { AuthService } from '@core/services/auth.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
 import { PasswordService } from '@shared/services/password.service';
 
 @Component({
-  selector: 'app-change-password',
+  selector: 'app-reset-password',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, PasswordContainerComponent],
-  templateUrl: './change-password.html',
+  templateUrl: './reset-password.html'
 })
-export class ChangePasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
+  token: string | null = null;
+  loading = false;
   passwordForm!: FormGroup;
 
-  showCurrentPassword = false;
   showNewPassword = false;
   showConfirmPassword = false;
-  isSubmitting = false;
 
   passwordStrength: 'weak' | 'medium' | 'strong' = 'weak';
   hasMinLength = false;
@@ -30,13 +29,14 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private passwordService: PasswordService,
-    private profileService: ProfileService,
+    private auth: AuthService,
     private router: Router,
-    private location: Location
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.passwordForm = this.passwordService.createForm('change');
+    this.passwordForm = this.passwordService.createForm('reset');
+    this.token = this.route.snapshot.queryParamMap.get('token');
     this.passwordService.setupValidationListener(this.passwordForm, (reqs, strength) => {
       Object.assign(this, reqs);
       this.passwordStrength = strength;
@@ -44,28 +44,24 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.passwordForm.invalid) {
+    if (this.passwordForm.invalid || !this.token) {
       this.passwordForm.markAllAsTouched();
       return;
     }
 
-    this.isSubmitting = true;
-    const { currentPassword, newPassword } = this.passwordForm.value;
+    this.loading = true;
+    const newPassword = this.passwordForm.value.newPassword;
 
-    this.profileService.changePassword(currentPassword, newPassword).subscribe({
+    this.auth.resetPassword(this.token, newPassword).subscribe({
       next: () => {
-        this.isSubmitting = false;
-        this.passwordService.showSuccessToast('Password changed successfully! 🎉');
-        setTimeout(() => this.router.navigate(['/profile']), 2500);
+        this.loading = false;
+        this.passwordService.showSuccessToast('Password reset successfully! 🎉');
+        setTimeout(() => this.router.navigate(['/login']), 2500);
       },
-      error: err => {
-        this.isSubmitting = false;
-        this.passwordService.showErrorToast('Current password is incorrect');
+      error: () => {
+        this.loading = false;
+        this.passwordService.showErrorToast('Something went wrong. Try again.');
       }
     });
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 }

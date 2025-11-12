@@ -19,6 +19,7 @@ import { BaseAuthComponent } from '@shared/directives/base-auth';
         (toggleMode)="onToggleMode()"
         (googleAuth)="onGoogleAuth()"
         (githubAuth)="onGithubAuth()"
+        (forgotPassword)="onForgotPassword()"
       />
     </section>
   `

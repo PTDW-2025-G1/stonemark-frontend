@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
-} from '@angular/common/http';
+import {HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse} from '@angular/common/http';
 import { Observable, throwError, switchMap, catchError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
@@ -29,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (!isApiRequest) return throwError(() => error);
 
-        if (error.status === 401) {
+        if (error.status === 401 || error.status === 403) {
           const isAuthEndpoint = [
             '/auth/authenticate',
             '/auth/register',

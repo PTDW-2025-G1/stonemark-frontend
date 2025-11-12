@@ -5,7 +5,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
 import { AuthService } from '@core/services/auth.service';
 import { ProfileService, UserDto } from '@core/services/profile.service';
 import { Subscription } from 'rxjs';
-import {environment} from '../../../../../app/src/environment/environment';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-header',

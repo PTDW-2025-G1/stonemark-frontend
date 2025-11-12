@@ -6,7 +6,7 @@ import { NotificationService } from '@core/services/notification.service';
 import { AuthService } from '@core/services/auth.service';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import {HttpResponse} from '@angular/common/http';
-import { environment } from 'projects/auth/src/environment/environment';
+import { environment } from '@env/environment';
 
 @Directive()
 export abstract class BaseAuthComponent {
@@ -57,7 +57,7 @@ export abstract class BaseAuthComponent {
 
         if (status === 200 && body?.accessToken) {
           this.notificationService.showSuccess(successMessage);
-          window.location.href = environment.appUrl
+          window.location.href = environment.baseUrl
         }else if(status === 202){
           const email = body?.email || '';
           this.router.navigate(['/verify-pending'], {

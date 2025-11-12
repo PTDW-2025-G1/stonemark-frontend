@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import { environment } from '@env/environment';
+import { CookieService } from './cookie.service';
 
 declare const google: any;
 
@@ -23,7 +24,7 @@ export class AuthService {
 
   authState$ = this.authStateSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.loadGoogleGISSDK();
   }
 
@@ -166,16 +167,16 @@ export class AuthService {
 
   // Token Management
   saveTokens(accessToken: string, refreshToken: string): void {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    this.cookieService.set('accessToken', accessToken, 1);
+    this.cookieService.set('refreshToken', refreshToken, 7);
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return this.cookieService.get('accessToken');
   }
 
   getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
+    return this.cookieService.get('refreshToken');
   }
 
   refreshToken(refreshToken: string): Observable<any> {
@@ -189,8 +190,8 @@ export class AuthService {
   }
 
   removeTokens(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    this.cookieService.delete('accessToken');
+    this.cookieService.delete('refreshToken');
   }
 
   // Helpers

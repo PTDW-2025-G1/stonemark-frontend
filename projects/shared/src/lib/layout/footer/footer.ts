@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { environment } from '../../../../../app/src/environment/environment';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-footer',

@@ -16,8 +16,8 @@ import { AuthService } from '@core/services/auth.service';
           <div>
             <!-- Header -->
             <div class="text-center mb-8">
-              <div class="inline-flex items-center justify-center w-20 h-20 bg-info/10 rounded-2xl mb-4">
-                <i class="bi bi-envelope-check text-info text-4xl"></i>
+              <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-2xl mb-4">
+                <i class="bi bi-envelope-check text-primary text-4xl"></i>
               </div>
               <h2 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-3">
                 Verify Your Email
@@ -83,8 +83,8 @@ import { AuthService } from '@core/services/auth.service';
                 <button
                   type="submit"
                   [disabled]="verifyForm.invalid || loading"
-                  class="w-full group relative overflow-hidden px-6 py-3.5 bg-info text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none mb-3">
-                  <div class="absolute inset-0 bg-gradient-to-r from-info/80 to-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none mb-3">
+                  <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-info/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <span class="relative flex items-center justify-center gap-2">
                 @if (loading) {
                   <i class="bi bi-hourglass-split animate-spin"></i>
@@ -118,9 +118,9 @@ import { AuthService } from '@core/services/auth.service';
             </div>
 
             <!-- Help Text -->
-            <div class="mt-6 p-4 bg-info/5 rounded-xl border border-info/20">
+            <div class="mt-6 p-4 bg-info/5 rounded-xl border border-b-primary/20">
               <div class="flex items-start gap-3">
-                <i class="bi bi-info-circle text-info text-lg"></i>
+                <i class="bi bi-info-circle text-primary text-lg"></i>
                 <div class="text-xs text-text-muted">
                   <p class="font-semibold text-text mb-1">Can't find the email?</p>
                   <ul class="space-y-1">

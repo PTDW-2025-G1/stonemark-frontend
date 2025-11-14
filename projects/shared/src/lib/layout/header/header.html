@@ -93,8 +93,7 @@
     <div class="px-4 pt-2 pb-6 space-y-1 bg-surface rounded-b-2xl shadow-md">
       @for (item of menuItems; track item.route) {
         <a
-          [routerLink]="item.route"
-          routerLinkActive="bg-surface-muted text-primary"
+          [href]="item.route"
           (click)="closeMenu()"
           class="block px-4 py-3 rounded-lg text-text-muted hover:bg-surface-muted hover:text-primary transition-colors duration-200 font-medium"
         >
@@ -106,9 +105,8 @@
         <div class="h-px bg-border my-2"></div>
 
         <a
-          routerLink="/profile"
-          (click)="closeMenu()"
-          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold"
+          (click)="closeMenu(); goToProfile()"
+          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold cursor-pointer"
         >
           Profile
         </a>
@@ -120,7 +118,7 @@
             <app-button variant="secondary">Logout</app-button>
           </button>
         } @else {
-          <a routerLink="/login" class="w-full inline-block">
+          <a (click)="onLogin()" class="w-full inline-block cursor-pointer">
             <app-button variant="secondary" [fullWidth]="true">Login</app-button>
           </a>
         }

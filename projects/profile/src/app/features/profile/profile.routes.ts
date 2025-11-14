@@ -8,6 +8,12 @@ export const PROFILE_ROUTES: Routes = [
     title: 'Profile'
   },
   {
+    path: 'edit',
+    loadComponent: () =>
+      import('./pages/edit-profile/edit-profile').then(m => m.EditProfileComponent),
+    title: 'Edit Profile'
+  },
+  {
     path: 'change-email',
     loadComponent: () =>
       import('./pages/change-email/change-email').then(m => m.ChangeEmailComponent),

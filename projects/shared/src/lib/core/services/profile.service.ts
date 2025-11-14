@@ -26,7 +26,7 @@ export class ProfileService {
   }
 
   updateProfile(profile: { firstName: string; lastName: string; telephone: string }): Observable<any> {
-    return this.http.put(`${this.baseUrl}/profile`, profile);
+    return this.http.put(`${this.baseUrl}/account`, profile);
   }
 
   changeEmail(newEmail: string): Observable<any>{

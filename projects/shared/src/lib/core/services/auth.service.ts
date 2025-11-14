@@ -4,7 +4,7 @@ import { Observable, of, Subject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import { environment } from '@env/environment';
-import { CookieService } from './cookie.service';
+import { CookieService } from '@core/services/cookie.service';
 
 declare const google: any;
 
@@ -57,10 +57,10 @@ export class AuthService {
       return;
     }
 
-    this.http.post(`${this.baseUrl}/google`, { token: response.credential }).pipe(
-      tap((apiResponse: any) => {
-        if (apiResponse?.accessToken && apiResponse?.refreshToken) {
-          this.saveTokens(apiResponse.accessToken, apiResponse.refreshToken);
+    this.http.post(`${this.baseUrl}/google`, { token: response.credential }, { observe: 'response' }).pipe(
+      tap((apiResponse: HttpResponse<any>) => {
+        if (apiResponse.body?.accessToken && apiResponse.body?.refreshToken) {
+          this.saveTokens(apiResponse.body.accessToken, apiResponse.body.refreshToken);
           this.authStateSubject.next(true);
         }
         this.googleAuthSubject.next(apiResponse);

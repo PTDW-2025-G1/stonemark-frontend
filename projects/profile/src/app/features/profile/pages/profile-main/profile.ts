@@ -8,6 +8,9 @@ import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
 import {ProfileSuggestionsComponent} from './sections/profile-suggestions/profile-suggestions';
 import { Suggestion } from '@core/models/suggestions.model';
+import {ProfileService, UserDto} from '@core/services/profile.service';
+import {environment} from '@env/environment';
+import {AuthService} from '@core/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,28 +30,40 @@ export class ProfileComponent implements OnInit {
   suggestionFilter: 'all' | 'validated' | 'pending' | 'rejected' = 'all';
 
   constructor(private router: Router,
-              private markService: MarkService) {}
+              private profileService: ProfileService,
+              private markService: MarkService,
+              private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.loadMockUser();
+    this.loadUserProfile();
     this.loadMarks();
     this.loadMockSuggestions();
   }
 
-  loadMockUser(): void {
-    this.user = {
-      name: "John Doe",
-      email: "john.doe@email.com",
-      avatar: "https://i.pravatar.cc/300?img=12",
-      memberSince: "January 2024",
-      stats: {
-        totalMarks: 5,
-        pendings: 2,
-        rejected: 1
+  loadUserProfile(): void {
+    this.profileService.getCurrentUser().subscribe({
+      next: (data: UserDto) => {
+        this.user = {
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email,
+          avatar: 'https://i.pravatar.cc/300?img=12',
+          memberSince: new Date(data.createdAt).toLocaleString('default', {
+            month: 'long',
+            year: 'numeric'
+          }),
+          stats: {
+            totalMarks: 0, // Atualizar com dados reais quando disponíveis
+            pendings: 0,   // Atualizar com dados reais quando disponíveis
+            rejected: 0    // Atualizar com dados reais quando disponíveis
+          }
+        };
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Failed to load user:', err);
+        this.loading = false;
       }
-    };
-
-    this.loading = false;
+    });
   }
 
   loadMarks(): void {
@@ -155,6 +170,14 @@ export class ProfileComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe({
+      next: () => {
+        window.location.href = environment.authUrl + '/login';
+      },
+      error: () => {
+        window.location.href = environment.authUrl + '/login';
+      }
+    });
   }
+
 }

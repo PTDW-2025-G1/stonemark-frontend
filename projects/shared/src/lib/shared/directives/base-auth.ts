@@ -57,8 +57,8 @@ export abstract class BaseAuthComponent {
 
         if (status === 200 && body?.accessToken) {
           this.notificationService.showSuccess(successMessage);
-          window.location.href = environment.baseUrl
-        }else if(status === 202){
+          window.location.href = environment.baseUrl;
+        } else if (status === 202) {
           const email = body?.email || '';
           this.router.navigate(['/verify-pending'], {
             queryParams: { email }

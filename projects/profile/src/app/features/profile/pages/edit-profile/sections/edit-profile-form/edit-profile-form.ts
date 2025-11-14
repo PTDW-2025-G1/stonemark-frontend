@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {RouterLink} from '@angular/router';
 
@@ -14,7 +14,7 @@ export interface ProfileFormData {
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './edit-profile-form.html'
 })
-export class EditProfileFormComponent implements OnInit {
+export class EditProfileFormComponent implements OnInit, OnChanges {
   @Input() currentProfile: ProfileFormData = {
     firstName: '',
     lastName: '',
@@ -35,11 +35,17 @@ export class EditProfileFormComponent implements OnInit {
     this.loadCurrentProfile();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentProfile'] && !changes['currentProfile'].firstChange) {
+      this.loadCurrentProfile();
+    }
+  }
+
   private initializeForm(): void {
     this.profileForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
-      telephone: ['', [Validators.required, Validators.pattern(/^[+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/)]]
+      telephone: ['', [Validators.required, Validators.pattern('^(\\+351|00351)?[ ]?9\\d{8}$')]]
     });
   }
 

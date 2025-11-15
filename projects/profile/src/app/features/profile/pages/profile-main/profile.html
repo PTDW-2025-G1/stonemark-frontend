@@ -1,0 +1,34 @@
+<app-profile-header
+  [user]="user"
+  (editProfile)="editProfile()"
+  (changePassword)="changePassword()"
+  (changeEmail)="changeEmail()"
+  (logout)="onLogout()"
+></app-profile-header>
+<app-profile-tabs
+  [activeTab]="activeTab"
+  (tabChange)="setTab($event)"
+></app-profile-tabs>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  @if (activeTab === 'marks') {
+    <app-profile-marks
+      [marks]="marks"
+      (addMark)="onAddMark()"
+      (editMark)="onEditMark($event)"
+      (removeMark)="onRemoveMark($event)"
+      (viewMark)="onViewMark($event)"
+    ></app-profile-marks>
+  }
+  @if (activeTab === 'suggestions') {
+    <app-profile-suggestions
+      [suggestions]="suggestions"
+      [suggestionFilter]="suggestionFilter"
+      [getFilteredSuggestions]="getFilteredSuggestions.bind(this)"
+      [getFilteredCount]="getFilteredCount.bind(this)"
+      (createSuggestion)="onCreateSuggestion()"
+      (editSuggestion)="onEditSuggestion($event)"
+      (viewSuggestion)="onViewSuggestion($event)"
+      (filterChange)="onSuggestionFilterChange($event)">
+    </app-profile-suggestions>
+  }
+  </div>

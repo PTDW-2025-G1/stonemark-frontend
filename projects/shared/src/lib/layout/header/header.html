@@ -1,0 +1,128 @@
+<header class="bg-surface-alt shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo -->
+      <div
+        (click)="onHome()"
+        class="flex items-center space-x-2 cursor-pointer select-none"
+        aria-label="StoneMark — Início"
+        title="StoneMark"
+      >
+        <span class="text-2xl font-bold text-primary tracking-tight">
+          StoneMark<span class="text-info">.</span>
+        </span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        @for (item of menuItems; track item.route) {
+          <a
+            [href]="item.route"
+            routerLinkActive="text-primary"
+            class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-sm"
+          >
+            {{ item.label }}
+          </a>
+        }
+
+        @if (authService.getAccessToken() && user){
+          <div class="relative">
+            <button
+              (click)="toggleDropdown()"
+              class="flex items-center gap-2 text-sm font-semibold text-text-muted hover:text-primary transition"
+            >
+              <span>{{ user.firstName }}</span>
+              <i class="bi" [ngClass]="isDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+            </button>
+
+            <!-- Dropdown -->
+            @if (isDropdownOpen) {
+              <div
+                class="absolute right-0 mt-2 w-40 bg-surface-alt border border-border rounded-lg shadow-lg py-2"
+              >
+                <button
+                  (click)="goToProfile()"
+                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
+                >
+                  Profile
+                </button>
+                <button
+                  (click)="onLogout()"
+                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-error"
+                >
+                  Logout
+                </button>
+              </div>
+            }
+          </div>
+        } @else {
+          <a (click)="onLogin()" class="inline-block">
+            <app-button variant="secondary">Login</app-button>
+          </a>
+        }
+      </nav>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          (click)="toggleMenu()"
+          class="inline-flex items-center justify-center p-2 rounded-lg text-text-muted hover:text-primary hover:bg-surface-muted transition-colors duration-200"
+          [attr.aria-expanded]="isMenuOpen"
+        >
+          <span class="sr-only">Toggle menu</span>
+
+          @if (!isMenuOpen) {
+            <i class="bi bi-list text-2xl"></i>
+          } @else {
+            <i class="bi bi-x-lg text-2xl"></i>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    class="md:hidden transition-all duration-300 ease-in-out overflow-hidden"
+    [class.max-h-96]="isMenuOpen"
+    [class.max-h-0]="!isMenuOpen"
+    [class.opacity-100]="isMenuOpen"
+    [class.opacity-0]="!isMenuOpen"
+  >
+    <div class="px-4 pt-2 pb-6 space-y-1 bg-surface rounded-b-2xl shadow-md">
+      @for (item of menuItems; track item.route) {
+        <a
+          [href]="item.route"
+          (click)="closeMenu()"
+          class="block px-4 py-3 rounded-lg text-text-muted hover:bg-surface-muted hover:text-primary transition-colors duration-200 font-medium"
+        >
+          {{ item.label }}
+        </a>
+      }
+
+      @if (authService.getAccessToken() && user) {
+        <div class="h-px bg-border my-2"></div>
+
+        <a
+          (click)="closeMenu(); goToProfile()"
+          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold cursor-pointer"
+        >
+          Profile
+        </a>
+      }
+
+      <div class="pt-2">
+        @if (authService.getAccessToken()){
+          <button (click)="onLogout()" class="inline-block">
+            <app-button variant="secondary">Logout</app-button>
+          </button>
+        } @else {
+          <a (click)="onLogin()" class="w-full inline-block cursor-pointer">
+            <app-button variant="secondary" [fullWidth]="true">Login</app-button>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</header>

@@ -23,12 +23,6 @@ export const routes: Routes = [
       import('projects/app/src/app/features/help/help.routes').then(m => m.HELP_ROUTES)
   },
   {
-    path: 'bookmarks',
-    loadChildren: () =>
-      import('projects/app/src/app/features/bookmarks/bookmarks.routes').then(m => m.BOOKMARKS_ROUTES),
-    canActivate: [authGuard]
-  },
-  {
     path: 'profile',
     loadChildren: () =>
       import('projects/profile/src/app/features/profile/profile.routes').then(m => m.PROFILE_ROUTES),

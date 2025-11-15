@@ -48,6 +48,12 @@
                   Profile
                 </button>
                 <button
+                  (click)="goToBookmarks()"
+                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
+                >
+                  Bookmarks
+                </button>
+                <button
                   (click)="onLogout()"
                   class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-error"
                 >
@@ -109,6 +115,12 @@
           class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold cursor-pointer"
         >
           Profile
+        </a>
+        <a
+          (click)="closeMenu(); goToBookmarks()"
+          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold cursor-pointer"
+        >
+          Bookmarks
         </a>
       }
 

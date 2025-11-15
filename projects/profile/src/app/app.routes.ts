@@ -8,4 +8,10 @@ export const routes: Routes = [
       import('projects/profile/src/app/features/profile/profile.routes').then(m => m.PROFILE_ROUTES),
       canActivate: [authGuard]
   },
+  {
+    path: 'bookmarks',
+    loadChildren: () =>
+      import('projects/profile/src/app/features/bookmarks/bookmarks.routes').then(m => m.BOOKMARKS_ROUTES),
+      canActivate: [authGuard]
+  }
 ];

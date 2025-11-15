@@ -4,11 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { MonumentService } from '@core/services/monument.service';
 import { MarkService } from '@core/services/mark.service';
 import { forkJoin } from 'rxjs';
-import {HeaderSectionComponent} from '@features/bookmarks/sections/header-section';
-import {TabsSectionComponent} from '@features/bookmarks/sections/tabs-section';
-import {EmptyStateSectionComponent} from '@features/bookmarks/sections/empty-state';
-import {GridSectionComponent} from '@features/bookmarks/sections/grid-section';
-import {PaginationSectionComponent} from '@features/bookmarks/sections/pagination-section';
+import {HeaderSectionComponent} from './sections/header-section';
+import {TabsSectionComponent} from './sections/tabs-section';
+import {EmptyStateSectionComponent} from './sections/empty-state';
+import {GridSectionComponent} from './sections/grid-section';
+import {PaginationSectionComponent} from './sections/pagination-section';
 
 type TabType = 'all' | 'monuments' | 'marks';
 
@@ -23,7 +23,7 @@ interface BookmarkItem {
 @Component({
   selector: 'app-bookmarks',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderSectionComponent, TabsSectionComponent, EmptyStateSectionComponent, GridSectionComponent, PaginationSectionComponent],
+  imports: [CommonModule, RouterModule, HeaderSectionComponent, TabsSectionComponent, EmptyStateSectionComponent, GridSectionComponent, PaginationSectionComponent, HeaderSectionComponent, TabsSectionComponent, EmptyStateSectionComponent, GridSectionComponent, PaginationSectionComponent],
   templateUrl: './bookmarks.html'
 })
 export class BookmarksComponent implements OnInit {

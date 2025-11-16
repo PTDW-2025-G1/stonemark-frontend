@@ -23,7 +23,7 @@ export class MarkService {
       },
       discoveredBy: 'João Silva',
       discoveredDate: 'March 15, 2024',
-      views: 1247,
+      occurences: 1247,
       bookmarks: 89,
       monumentId: 1
     },
@@ -42,7 +42,7 @@ export class MarkService {
       },
       discoveredBy: 'Maria Santos',
       discoveredDate: 'January 22, 2024',
-      views: 892,
+      occurences: 892,
       bookmarks: 67,
       monumentId: 2
     },
@@ -61,7 +61,7 @@ export class MarkService {
       },
       discoveredBy: 'Pedro Costa',
       discoveredDate: 'February 10, 2024',
-      views: 1534,
+      occurences: 1534,
       bookmarks: 142,
       monumentId: 3
     },
@@ -80,7 +80,7 @@ export class MarkService {
       },
       discoveredBy: 'Ana Rodrigues',
       discoveredDate: 'April 5, 2024',
-      views: 2103,
+      occurences: 2103,
       bookmarks: 198,
       monumentId: 4
     },
@@ -99,7 +99,7 @@ export class MarkService {
       },
       discoveredBy: 'Carlos Almeida',
       discoveredDate: 'May 18, 2024',
-      views: 765,
+      occurences: 765,
       bookmarks: 54,
       monumentId: 5
     },
@@ -118,7 +118,7 @@ export class MarkService {
       },
       discoveredBy: 'Teresa Fernandes',
       discoveredDate: 'June 30, 2024',
-      views: 1089,
+      occurences: 1089,
       bookmarks: 95,
       monumentId: 6
     }

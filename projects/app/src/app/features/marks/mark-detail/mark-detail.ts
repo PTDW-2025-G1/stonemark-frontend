@@ -35,10 +35,6 @@ export class MarkDetailComponent implements OnInit {
       next: (mark) => {
         if (mark) {
           this.mark = mark;
-        } else {
-          // Mark não encontrado, redirecionar
-          console.error('Mark not found');
-          this.router.navigate(['/profile']);
         }
         this.loading = false;
       },
@@ -104,6 +100,12 @@ export class MarkDetailComponent implements OnInit {
     this.isBookmarked = !this.isBookmarked;
     if (this.mark) {
       this.mark.bookmarks += this.isBookmarked ? 1 : -1;
+    }
+  }
+
+  viewOccurrences(): void {
+    if (this.mark?.id) {
+      this.router.navigate(['/marks', this.mark.id, 'occurrences']);
     }
   }
 

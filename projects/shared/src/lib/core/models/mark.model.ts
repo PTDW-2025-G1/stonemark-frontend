@@ -16,7 +16,7 @@ export interface Mark {
   };
   discoveredBy: string;
   discoveredDate: string;
-  views: number;
+  occurences: number;
   bookmarks: number;
   monumentId?: number;
 }

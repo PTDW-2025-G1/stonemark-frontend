@@ -5,6 +5,6 @@ export const PRIVACY_POLICY_ROUTES: Routes = [
     path: '',
     loadComponent: () =>
       import('./privacy-policy').then(m => m.PrivacyPolicyComponent),
-    title: 'Política de Privacidade'
+    title: 'Privacy and Security Policy'
   }
 ];

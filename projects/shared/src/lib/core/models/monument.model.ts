@@ -11,4 +11,7 @@ export interface Monument {
   material?: 'stone' | 'bronze' | 'iron' | 'wood';
   start_date?: number;
   architect?: string;
+  marksCount?: number;
+  bookmarksCount?: number;
+  suggestionsCount?: number;
 }

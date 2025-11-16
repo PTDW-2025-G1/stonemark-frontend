@@ -21,7 +21,9 @@ export class MonumentService {
       architect: 'Desconhecido',
       description: 'O Castelo de Guimarães é considerado o berço de Portugal e um dos mais emblemáticos monumentos do país.',
       lat: 41.448249,
-      lon: -8.290090
+      lon: -8.290090,
+      marksCount: 32,
+      suggestionsCount: 1
     },
     {
       id: 2,
@@ -34,7 +36,9 @@ export class MonumentService {
       architect: 'Afonso Domingues',
       description: 'O Mosteiro de Alcobaça é Patrimônio Mundial da UNESCO e um dos maiores exemplos da arquitetura gótica em Portugal.',
       lat: 39.54835,
-      lon: -8.97963
+      lon: -8.97963,
+      marksCount: 32,
+      suggestionsCount: 1
     },
     {
       id: 3,
@@ -47,7 +51,9 @@ export class MonumentService {
       architect: 'Francisco de Arruda',
       description: 'A Torre de Belém é um ícone de Lisboa e símbolo dos Descobrimentos Portugueses.',
       lat: 41.448249,
-      lon: -8.290090
+      lon: -8.290090,
+      marksCount: 32,
+      suggestionsCount: 1
     },
     {
       id: 4,
@@ -60,7 +66,9 @@ export class MonumentService {
       architect: 'Diogo de Boitaca',
       description: 'O Mosteiro dos Jerónimos é uma obra-prima do estilo manuelino e Patrimônio Mundial da UNESCO.',
       lat: 41.448249,
-      lon: -8.290090
+      lon: -8.290090,
+      marksCount: 32,
+      suggestionsCount: 1
     },
     {
       id: 5,
@@ -73,7 +81,9 @@ export class MonumentService {
       architect: 'Afonso Domingues',
       description: 'O Mosteiro da Batalha celebra a vitória portuguesa na Batalha de Aljubarrota e é um dos maiores monumentos góticos do país.',
       lat: 41.448249,
-      lon: -8.290090
+      lon: -8.290090,
+      marksCount: 32,
+      suggestionsCount: 1
     },
     {
       id: 6,
@@ -86,7 +96,9 @@ export class MonumentService {
       architect: 'Diogo de Arruda',
       description: 'O Convento de Cristo foi sede da Ordem dos Templários e é Patrimônio Mundial da UNESCO.',
       lat: 41.448249,
-      lon: -8.290090
+      lon: -8.290090,
+      marksCount: 32,
+      suggestionsCount: 1
     }
   ];
 

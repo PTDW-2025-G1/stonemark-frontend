@@ -23,16 +23,16 @@ export const routes: Routes = [
       import('projects/app/src/app/features/help/help.routes').then(m => m.HELP_ROUTES)
   },
   {
-    path: 'profile',
-    loadChildren: () =>
-      import('projects/profile/src/app/features/profile/profile.routes').then(m => m.PROFILE_ROUTES),
-    canActivate: [authGuard]
-  },
-  {
     path: 'privacy-policy',
     loadChildren: () =>
       import('projects/app/src/app/features/privacy-policy/privacy-policy.routes')
         .then(m => m.PRIVACY_POLICY_ROUTES)
+  },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('projects/profile/src/app/features/profile/profile.routes').then(m => m.PROFILE_ROUTES),
+    canActivate: [authGuard]
   },
   {
     path: '',
@@ -40,7 +40,7 @@ export const routes: Routes = [
       import('projects/app/src/app/features/search/search.routes').then(m => m.SEARCH_ROUTES)
   },
   {
-    path: 'Fmonuments',
+    path: 'monuments',
     loadChildren: () =>
       import('projects/app/src/app/features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
   }

@@ -29,7 +29,7 @@ export class Footer {
     { label: 'Help Center', route: `${this.baseUrl}/help`, external: false },
     { label: 'Contact', route: `${this.baseUrl}/contact`, external: false },
     { label: 'Terms of Service', route: `${this.baseUrl}/terms`, external: false },
-    { label: 'Privacy Policy', route: `${this.baseUrl}/privacy`, external: false }
+    { label: 'Privacy Policy', route: `${this.baseUrl}/privacy-policy`, external: false }
   ];
 
   socialLinks = [

@@ -68,7 +68,7 @@ export class MapSectionComponent implements AfterViewInit {
         const feature = new Feature({
           geometry: new Point(fromLonLat([monument.lon ?? 0, monument.lat ?? 0])),
           name: monument.name,
-          image: monument.image,
+          image: monument.cover,
           wikidata: monument.wikidata
         });
 

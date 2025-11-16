@@ -19,7 +19,7 @@ import {Monument} from '@core/models/monument.model';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (monument of monuments; track monument.id) {
             <app-entity-card
-              [image]="monument.image ?? 'assets/placeholder.jpg'"
+              [cover]="monument.cover ?? 'assets/placeholder.jpg'"
               [title]="monument.name"
               [location]="monument.location || 'Portugal'"
             />

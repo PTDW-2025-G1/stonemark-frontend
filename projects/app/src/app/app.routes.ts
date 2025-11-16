@@ -25,8 +25,7 @@ export const routes: Routes = [
   {
     path: 'privacy-policy',
     loadChildren: () =>
-      import('projects/app/src/app/features/privacy-policy/privacy-policy.routes')
-        .then(m => m.PRIVACY_POLICY_ROUTES)
+      import('projects/app/src/app/features/privacy-policy/privacy-policy.routes').then(m => m.PRIVACY_POLICY_ROUTES)
   },
   {
     path: 'profile',
@@ -43,5 +42,10 @@ export const routes: Routes = [
     path: 'monuments',
     loadChildren: () =>
       import('projects/app/src/app/features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
+  },
+  {
+    path: 'marks',
+    loadChildren: () =>
+      import('projects/app/src/app/features/marks/mark.routes').then(m => m.MARK_ROUTES)
   }
 ];

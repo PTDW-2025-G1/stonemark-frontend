@@ -60,7 +60,7 @@ export class BookmarksComponent implements OnInit {
         type: 'monument',
         title: m.name,
         location: m.location,
-        image: m.image
+        image: m.cover
       }));
 
       this.marks = marks.map(mark => ({
@@ -68,7 +68,7 @@ export class BookmarksComponent implements OnInit {
         type: 'mark',
         title: mark.title,
         location: mark.location,
-        image: mark.image
+        image: mark.cover
       }));
 
       this.updateFilteredItems();

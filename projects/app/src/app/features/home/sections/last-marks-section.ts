@@ -22,7 +22,7 @@ import {Mark} from '@core/models/mark.model';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (mark of marks; track mark.id) {
             <app-entity-card
-              [image]="mark.image"
+              [cover]="mark.cover"
               [title]="mark.title"
               [location]="mark.location"
             />

@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <img
-        [src]="image"
+        [src]="cover"
         [alt]="title"
         class="w-full h-56 object-cover"
       />
@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
   styles: []
 })
 export class EntityCardComponent {
-  @Input() image!: string;
+  @Input() cover!: string;
   @Input() title!: string;
   @Input() location!: string;
 }

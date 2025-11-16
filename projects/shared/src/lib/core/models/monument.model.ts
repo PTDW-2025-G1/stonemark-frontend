@@ -4,7 +4,7 @@ export interface Monument {
   lat?: number;
   lon?: number;
   wikidata?: string;
-  image?: string;
+  cover?: string;
   location?: string;
   description?: string;
   artist_name?: string;

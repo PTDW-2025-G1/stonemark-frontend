@@ -29,12 +29,18 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'privacy-policy',
+    loadChildren: () =>
+      import('projects/app/src/app/features/privacy-policy/privacy-policy.routes')
+        .then(m => m.PRIVACY_POLICY_ROUTES)
+  },
+  {
     path: '',
     loadChildren: () =>
       import('projects/app/src/app/features/search/search.routes').then(m => m.SEARCH_ROUTES)
   },
   {
-    path: 'monuments',
+    path: 'Fmonuments',
     loadChildren: () =>
       import('projects/app/src/app/features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
   }

@@ -13,7 +13,7 @@ export class MonumentService {
     {
       id: 1,
       name: 'Castelo de Guimarães',
-      image: 'https://t3.ftcdn.net/jpg/03/93/35/48/360_F_393354815_Ju7YcCJ6QHbhBahy3FeQpcObzkl03faD.jpg',
+      cover: 'https://t3.ftcdn.net/jpg/03/93/35/48/360_F_393354815_Ju7YcCJ6QHbhBahy3FeQpcObzkl03faD.jpg',
       location: 'Guimarães, Portugal',
       artist_name: 'Desconhecido',
       material: 'stone',
@@ -26,7 +26,7 @@ export class MonumentService {
     {
       id: 2,
       name: 'Mosteiro de Alcobaça',
-      image: 'https://www.viveromundo.org/wp-content/uploads/2019/07/DSC_0386-1-e1584724820977.jpg',
+      cover: 'https://www.viveromundo.org/wp-content/uploads/2019/07/DSC_0386-1-e1584724820977.jpg',
       location: 'Alcobaça, Portugal',
       artist_name: 'Bernardo de Claraval',
       material: 'stone',
@@ -39,7 +39,7 @@ export class MonumentService {
     {
       id: 3,
       name: 'Torre de Belém',
-      image: 'https://static-resources-elementor.mirai.com/wp-content/uploads/sites/1079/post_04_featured.jpg',
+      cover: 'https://static-resources-elementor.mirai.com/wp-content/uploads/sites/1079/post_04_featured.jpg',
       location: 'Belém, Lisboa',
       artist_name: 'Francisco de Arruda',
       material: 'stone',
@@ -52,7 +52,7 @@ export class MonumentService {
     {
       id: 4,
       name: 'Mosteiro dos Jerónimos',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Mosteiro_dos_Jeronimos_-_Left_Wing.jpg',
+      cover: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Mosteiro_dos_Jeronimos_-_Left_Wing.jpg',
       location: 'Lisboa, Portugal',
       artist_name: 'Diogo de Boitaca',
       material: 'stone',
@@ -65,7 +65,7 @@ export class MonumentService {
     {
       id: 5,
       name: 'Mosteiro da Batalha',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Mosteiro_da_Batalha_78a.jpg',
+      cover: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Mosteiro_da_Batalha_78a.jpg',
       location: 'Batalha, Portugal',
       artist_name: 'Afonso Domingues',
       material: 'stone',
@@ -78,7 +78,7 @@ export class MonumentService {
     {
       id: 6,
       name: 'Convento de Cristo',
-      image: 'https://www.patrimoniomundialdocentro.pt/imagens/patrimonio/convento_de_cristo_de_tomar_5b05f68f396e6.jpg',
+      cover: 'https://www.patrimoniomundialdocentro.pt/imagens/patrimonio/convento_de_cristo_de_tomar_5b05f68f396e6.jpg',
       location: 'Tomar, Portugal',
       artist_name: 'Diogo de Arruda',
       material: 'stone',

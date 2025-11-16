@@ -23,8 +23,8 @@ export class SearchResultsComponent {
     return 'name' in item;
   }
 
-  getItemImage(item: SearchItem): string {
-    return item.image ?? '';
+  getItemCover(item: SearchItem): string {
+    return item.cover ?? '';
   }
 
   getItemName(item: SearchItem): string {

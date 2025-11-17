@@ -28,6 +28,13 @@ export const routes: Routes = [
       import('projects/app/src/app/features/privacy-policy/privacy-policy.routes').then(m => m.PRIVACY_POLICY_ROUTES)
   },
   {
+    path: 'terms',
+    loadChildren: () =>
+      import('projects/app/src/app/features/terms-of-service/terms-of-service.routes').then(
+        m => m.TERMS_OF_SERVICE_ROUTES
+      )
+  },
+  {
     path: 'profile',
     loadChildren: () =>
       import('projects/profile/src/app/features/profile/profile.routes').then(m => m.PROFILE_ROUTES),

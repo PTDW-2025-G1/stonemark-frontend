@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <section class="space-y-4 bg-surface rounded-2xl border border-border p-8">
+    <section class="space-y-4 bg-surface-alt border border-border rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <h2 class="text-2xl font-semibold text-text">
         6. Data security and contacts
       </h2>

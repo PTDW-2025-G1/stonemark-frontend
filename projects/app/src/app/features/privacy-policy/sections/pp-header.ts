@@ -6,32 +6,32 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <header class="space-y-4">
-      <p class="text-sm font-semibold tracking-wide text-primary uppercase">
-        Privacy Policy
+    <header class="flex flex-col gap-2 mb-8">
+      <p class="text-xs font-semibold tracking-widest uppercase text-primary">
+        Stonemark Legal
       </p>
-      <h1 class="text-4xl sm:text-5xl font-semibold text-text">
-        We protect your personal data
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-text leading-tight">
+        Privacy Policy
       </h1>
-      <p class="text-lg text-text-muted">
-        This Privacy Policy explains what data we collect, for what purposes, on what legal basis (GDPR), and for how long we retain it, as well as your rights as a data subject.
+      <p class="text-base text-text-muted">
+        Last updated: November 17, 2025
       </p>
     </header>
 
     <div class="grid gap-6 md:grid-cols-3">
-      <div class="bg-surface-alt rounded-2xl border border-border p-6 space-y-2">
+      <div class="bg-surface-alt border border-border rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
         <h2 class="text-lg font-semibold text-text">Data Collected</h2>
         <p class="text-sm text-text-muted">
           Account data, platform interactions, and submitted content (e.g., photos and respective metadata).
         </p>
       </div>
-      <div class="bg-surface-alt rounded-2xl border border-border p-6 space-y-2">
+      <div class="bg-surface-alt border border-border rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
         <h2 class="text-lg font-semibold text-text">Purposes</h2>
         <p class="text-sm text-text-muted">
           Account management, service provision, application improvement, and compliance with legal obligations.
         </p>
       </div>
-      <div class="bg-surface-alt rounded-2xl border border-border p-6 space-y-2">
+      <div class="bg-surface-alt border border-border rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
         <h2 class="text-lg font-semibold text-text">GDPR & Rights</h2>
         <p class="text-sm text-text-muted">
           Processing based on Article 6 of the GDPR. Ensures access, rectification, erasure, and other legal guarantees for data subjects.

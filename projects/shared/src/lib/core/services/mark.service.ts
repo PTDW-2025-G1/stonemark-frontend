@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Mark } from '@core/models/mark.model';
+import { MarkOccurrence } from '@core/models/mark.occurence.model'
 import { MarkCategory } from '@core/enums/mark.category';
 import { MarkShape } from '@core/enums/mark.shape';
 
@@ -23,7 +24,7 @@ export class MarkService {
       },
       discoveredBy: 'João Silva',
       discoveredDate: 'March 15, 2024',
-      occurences: 1247,
+      occurences: 5,
       bookmarks: 89,
       monumentId: 1
     },
@@ -42,7 +43,7 @@ export class MarkService {
       },
       discoveredBy: 'Maria Santos',
       discoveredDate: 'January 22, 2024',
-      occurences: 892,
+      occurences: 3,
       bookmarks: 67,
       monumentId: 2
     },
@@ -61,7 +62,7 @@ export class MarkService {
       },
       discoveredBy: 'Pedro Costa',
       discoveredDate: 'February 10, 2024',
-      occurences: 1534,
+      occurences: 4,
       bookmarks: 142,
       monumentId: 3
     },
@@ -80,7 +81,7 @@ export class MarkService {
       },
       discoveredBy: 'Ana Rodrigues',
       discoveredDate: 'April 5, 2024',
-      occurences: 2103,
+      occurences: 2,
       bookmarks: 198,
       monumentId: 4
     },
@@ -99,7 +100,7 @@ export class MarkService {
       },
       discoveredBy: 'Carlos Almeida',
       discoveredDate: 'May 18, 2024',
-      occurences: 765,
+      occurences: 6,
       bookmarks: 54,
       monumentId: 5
     },
@@ -118,18 +119,138 @@ export class MarkService {
       },
       discoveredBy: 'Teresa Fernandes',
       discoveredDate: 'June 30, 2024',
-      occurences: 1089,
+      occurences: 3,
       bookmarks: 95,
       monumentId: 6
     }
   ];
 
-  getLastMarks(){
+  private occurrencesData: MarkOccurrence[] = [
+    {
+      id: 101,
+      markId: 1,
+      cover: 'https://upload.wikimedia.org/wikipedia/commons/d/da/Steinhoggermerke_211_Nidaros.jpg',
+      title: 'Northern Wall - Main Entrance',
+      location: 'Castelo de Guimarães, Portugal',
+      monumentId: 1,
+      monumentName: 'Castelo de Guimarães',
+      discoveredBy: 'João Silva',
+      discoveredDate: 'March 15, 2024',
+      description: 'Found on the northern wall near the main entrance, at approximately 2.5 meters height.',
+      latitude: 41.448249,
+      longitude: -8.290090
+    },
+    {
+      id: 102,
+      markId: 1,
+      cover: 'https://per-storemyr.net/wp-content/uploads/2015/05/harrell-storemyr_fig-10_op.jpg',
+      title: 'Tower Section - East Side',
+      location: 'Castelo de Guimarães, Portugal',
+      monumentId: 1,
+      monumentName: 'Castelo de Guimarães',
+      discoveredBy: 'Maria Santos',
+      discoveredDate: 'March 20, 2024',
+      description: 'Located on the eastern tower section, this occurrence shows similar characteristics to the main mark.',
+      latitude: 41.448350,
+      longitude: -8.290200
+    },
+    {
+      id: 103,
+      markId: 1,
+      cover: 'https://www.champlainstone.com/wp-content/uploads/2019/01/Drill_Marks.jpg',
+      title: 'Inner Courtyard Wall',
+      location: 'Castelo de Guimarães, Portugal',
+      monumentId: 1,
+      monumentName: 'Castelo de Guimarães',
+      discoveredBy: 'Pedro Costa',
+      discoveredDate: 'April 2, 2024',
+      description: 'Found in the inner courtyard, suggesting the same mason worked on multiple sections.',
+      latitude: 41.448150,
+      longitude: -8.289980
+    },
+    {
+      id: 104,
+      markId: 1,
+      cover: 'https://live.staticflickr.com/5494/12092010223_fded9157f7_b.jpg',
+      title: 'Chapel Wall - South Wing',
+      location: 'Mosteiro dos Jerónimos, Portugal',
+      monumentId: 4,
+      monumentName: 'Mosteiro dos Jerónimos',
+      discoveredBy: 'Ana Rodrigues',
+      discoveredDate: 'April 15, 2024',
+      description: 'Similar mark found in Mosteiro dos Jerónimos, indicating possible mason migration between projects.',
+      latitude: 38.697778,
+      longitude: -9.206111
+    },
+    {
+      id: 105,
+      markId: 1,
+      cover: 'https://www.portugalresident.com/wp-content/uploads/2025/10/Silves-stone-marks-1540.jpg',
+      title: 'Cloister Column Base',
+      location: 'Mosteiro da Batalha, Portugal',
+      monumentId: 5,
+      monumentName: 'Mosteiro da Batalha',
+      discoveredBy: 'Carlos Almeida',
+      discoveredDate: 'May 3, 2024',
+      description: 'Another occurrence found at Mosteiro da Batalha, further confirming the mason\'s extensive work.',
+      latitude: 39.660556,
+      longitude: -8.825556
+    },
+    {
+      id: 201,
+      markId: 2,
+      cover: 'https://www.portugalresident.com/wp-content/uploads/2025/10/Silves-stone-marks-1416.jpg',
+      title: 'Main Cloister - North Gallery',
+      location: 'Mosteiro de Alcobaça, Portugal',
+      monumentId: 2,
+      monumentName: 'Mosteiro de Alcobaça',
+      discoveredBy: 'Maria Santos',
+      discoveredDate: 'January 22, 2024',
+      description: 'Primary occurrence in the main cloister, showcasing exceptional preservation.',
+      latitude: 39.548889,
+      longitude: -8.980000
+    },
+    {
+      id: 202,
+      markId: 2,
+      cover: 'https://upload.wikimedia.org/wikipedia/commons/d/da/Steinhoggermerke_211_Nidaros.jpg',
+      title: 'Refectory Wall',
+      location: 'Mosteiro de Alcobaça, Portugal',
+      monumentId: 2,
+      monumentName: 'Mosteiro de Alcobaça',
+      discoveredBy: 'João Silva',
+      discoveredDate: 'February 5, 2024',
+      description: 'Secondary occurrence found in the monastery refectory.',
+      latitude: 39.548750,
+      longitude: -8.980150
+    },
+    {
+      id: 203,
+      markId: 2,
+      cover: 'https://per-storemyr.net/wp-content/uploads/2015/05/harrell-storemyr_fig-10_op.jpg',
+      title: 'Chapter House Entrance',
+      location: 'Mosteiro de Alcobaça, Portugal',
+      monumentId: 2,
+      monumentName: 'Mosteiro de Alcobaça',
+      discoveredBy: 'Teresa Fernandes',
+      discoveredDate: 'February 18, 2024',
+      description: 'Located at the entrance of the chapter house, indicating ceremonial significance.',
+      latitude: 39.548950,
+      longitude: -8.979850
+    }
+  ];
+
+  getLastMarks(): Observable<Mark[]> {
     return of(this.marksData.slice(0, 6));
   }
 
   getMarkById(id: number): Observable<Mark | undefined> {
     const mark = this.marksData.find(m => m.id === id);
     return of(mark);
+  }
+
+  getOccurrencesByMarkId(markId: number): Observable<MarkOccurrence[]> {
+    const occurrences = this.occurrencesData.filter(occ => occ.markId === markId);
+    return of(occurrences);
   }
 }

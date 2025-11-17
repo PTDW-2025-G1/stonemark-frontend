@@ -6,8 +6,5 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './terms-of-service.html',
-  styleUrl: './terms-of-service.scss',
 })
-export class TermsOfService {
-
-}
+export class TermsOfServiceComponent {}

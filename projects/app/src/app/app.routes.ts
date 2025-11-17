@@ -35,12 +35,6 @@ export const routes: Routes = [
       )
   },
   {
-    path: 'profile',
-    loadChildren: () =>
-      import('projects/profile/src/app/features/profile/profile.routes').then(m => m.PROFILE_ROUTES),
-    canActivate: [authGuard]
-  },
-  {
     path: '',
     loadChildren: () =>
       import('projects/app/src/app/features/search/search.routes').then(m => m.SEARCH_ROUTES)

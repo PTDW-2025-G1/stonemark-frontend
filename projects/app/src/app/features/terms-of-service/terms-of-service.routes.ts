@@ -4,7 +4,7 @@ export const TERMS_OF_SERVICE_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./terms-of-service').then(m => m.TermsOfService),
+      import('./terms-of-service').then(m => m.TermsOfServiceComponent),
     title: 'Terms of Service'
   }
 ];

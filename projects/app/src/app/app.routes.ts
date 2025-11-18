@@ -45,6 +45,11 @@ export const routes: Routes = [
       import('projects/app/src/app/features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
   },
   {
+    path: 'suggestions',
+    loadChildren: () =>
+      import('projects/app/src/app/features/suggest-correction/suggest-correction.routes').then(m => m.SUGGEST_CORRECTION_ROUTES)
+  },
+  {
     path: 'marks',
     loadChildren: () =>
       import('projects/app/src/app/features/marks/mark.routes').then(m => m.MARK_ROUTES)

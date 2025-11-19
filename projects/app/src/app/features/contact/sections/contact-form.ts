@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ContactService } from '@core/services/contact.service'
+import {ProfileService} from '@core/services/profile.service';
+import {AuthService} from '@core/services/auth.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -152,6 +155,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
             </span>
           </button>
 
+          @if (submitError) {
+            <div class="flex items-center gap-2 px-4 py-3 bg-error/10 border border-error/30 rounded-xl text-error mt-3">
+              <i class="bi bi-x-circle-fill"></i>
+              <span class="text-sm font-medium">Something went wrong. Please try again later.</span>
+            </div>
+          }
+
           @if (submitSuccess) {
             <div class="flex items-center gap-2 px-4 py-3 bg-success/10 border border-success/30 rounded-xl text-success">
               <i class="bi bi-check-circle-fill"></i>
@@ -164,12 +174,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
     </div>
   `
 })
-export class ContactFormComponent {
+export class ContactFormComponent implements OnInit{
   contactForm: FormGroup;
   isSubmitting = false;
   submitSuccess = false;
+  submitError = false;
+  user: any = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private contactService: ContactService,
+    private profileService: ProfileService,
+    private authService: AuthService
+  ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -178,19 +195,52 @@ export class ContactFormComponent {
     });
   }
 
+  ngOnInit(): void {
+    if (this.authService.getAccessToken()) {
+      this.profileService.getCurrentUser().subscribe({
+        next: user => {
+          this.user = user;
+          this.contactForm.patchValue({
+            name: `${user.firstName} ${user.lastName}`,
+            email: user.email
+          });
+        }
+      });
+    }
+  }
+
   onSubmit() {
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
       return;
     }
+
     this.isSubmitting = true;
     this.submitSuccess = false;
+    this.submitError = false;
 
-    // Simulação de envio (substitua por chamada real de API)
-    setTimeout(() => {
-      this.isSubmitting = false;
-      this.submitSuccess = true;
-      this.contactForm.reset();
-    }, 1500);
+    this.contactService.sendMessage(this.contactForm.value).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.submitSuccess = true;
+
+        if (this.user) {
+          this.contactForm.reset({
+            name: `${this.user.firstName} ${this.user.lastName}`,
+            email: this.user.email,
+            subject: ''
+          });
+        } else {
+          this.contactForm.reset({
+            subject: ''
+          });
+        }
+
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.submitError = true;
+      }
+    });
   }
 }

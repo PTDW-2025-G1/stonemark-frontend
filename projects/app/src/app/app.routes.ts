@@ -30,9 +30,7 @@ export const routes: Routes = [
   {
     path: 'terms',
     loadChildren: () =>
-      import('projects/app/src/app/features/terms-of-service/terms-of-service.routes').then(
-        m => m.TERMS_OF_SERVICE_ROUTES
-      )
+      import('projects/app/src/app/features/terms-of-service/terms-of-service.routes').then(m => m.TERMS_OF_SERVICE_ROUTES)
   },
   {
     path: '',

@@ -20,7 +20,6 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    window.scrollTo(0, 0);
   }
 
   private initializeForm(): void {

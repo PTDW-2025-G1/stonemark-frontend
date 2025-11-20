@@ -34,7 +34,6 @@
         @for (link of partnershipsLinks; track link) {
           <li>
             <a
-              [routerLink]="!link.external ? link.route : null"
               [href]="link.external ? link.route : null"
               target="{{ link.external ? '_blank' : null }}"
               rel="{{ link.external ? 'noopener noreferrer' : null }}"
@@ -83,9 +82,9 @@
         © {{ currentYear }} StoneMark. All rights reserved.
       </p>
       <div class="flex space-x-6 text-sm">
-        <a routerLink="/privacy" class="text-text-muted hover:text-info transition">Privacy Policy</a>
-        <a routerLink="/terms" class="text-text-muted hover:text-info transition">Terms of Service</a>
-        <a routerLink="/cookies" class="text-text-muted hover:text-info transition">Cookie Policy</a>
+        <a routerLink="/privacy-policy" class="text-text-muted hover:text-info transition">Privacy Policy</a>
+        <a routerLink="/terms-service" class="text-text-muted hover:text-info transition">Terms of Service</a>
+        <a routerLink="/cookies-policy" class="text-text-muted hover:text-info transition">Cookie Policy</a>
       </div>
     </div>
   </div>

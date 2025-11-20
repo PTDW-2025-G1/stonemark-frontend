@@ -2,15 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
 import { MonumentService } from '@core/services/monument.service';
+import {SuggestTitleComponent} from '@features/suggest-correction/sections/suggest-title';
+import {SuggestProgressBarComponent} from '@features/suggest-correction/sections/suggest-progress-bar';
+import {SuggestStep1Component} from '@features/suggest-correction/sections/suggest-step1';
+import {SuggestStep2Component} from '@features/suggest-correction/sections/suggest-step2';
+import {SuggestStep3Component} from '@features/suggest-correction/sections/suggest-step3';
 
 type Section = 'information' | 'history' | 'map';
 
 @Component({
   selector: 'app-suggest-correction',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SuggestTitleComponent, SuggestProgressBarComponent, SuggestStep1Component, SuggestStep2Component, SuggestStep3Component],
   templateUrl: './suggest-correction.html',
   styleUrls: []
 })
@@ -18,7 +23,8 @@ export class SuggestCorrectionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private monumentService: MonumentService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private titleService: Title
   ) {}
 
   monumentId?: number | null;
@@ -91,19 +97,11 @@ export class SuggestCorrectionComponent implements OnInit {
           comment: ''
         };
 
-        this.updateMapPreview(); 
+        this.titleService.setTitle(`${this.originalData.name} - Suggest a Correction`);
+
+        this.updateMapPreview();
       });
     });
-  }
-
-  toggle(section: Section) {
-    const idx = this.sections.indexOf(section);
-    if (idx === -1) this.sections.push(section);
-    else this.sections.splice(idx, 1);
-  }
-
-  isSelected(section: Section) {
-    return this.sections.includes(section);
   }
 
   cancel() {
@@ -238,4 +236,6 @@ export class SuggestCorrectionComponent implements OnInit {
   showMapFields() {
     return this.sections.includes('map');
   }
+
+  protected readonly name = name;
 }

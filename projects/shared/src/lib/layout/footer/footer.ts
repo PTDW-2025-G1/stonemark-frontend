@@ -16,20 +16,21 @@ export class Footer {
 
   partnershipsLinks = [
     { label: 'UNESCO', route: 'https://www.unesco.org/en', external: true },
-    { label: 'APPRUPP', route: 'https://aprupp.org/', external: true },
+    { label: 'APPRUPP', route: 'https://www.facebook.com/reabilitacaourbana/', external: true },
   ];
 
   exploreLinks = [
     { label: 'Monuments', route: `${this.baseUrl}/monuments`, external: false },
     { label: 'Marks', route: `${this.baseUrl}/marks`, external: false },
-    { label: 'Features', route: `${this.baseUrl}/about`, external: false }
+    { label: 'About', route: `${this.baseUrl}/about`, external: false }
   ];
 
   supportLinks = [
     { label: 'Help Center', route: `${this.baseUrl}/help`, external: false },
     { label: 'Contact', route: `${this.baseUrl}/contact`, external: false },
-    { label: 'Terms of Service', route: `${this.baseUrl}/terms`, external: false },
-    { label: 'Privacy Policy', route: `${this.baseUrl}/privacy-policy`, external: false }
+    { label: 'Terms of Service', route: `${this.baseUrl}/terms-service`, external: false },
+    { label: 'Privacy Policy', route: `${this.baseUrl}/privacy-policy`, external: false },
+    { label: 'Cookie Policy', route: `${this.baseUrl}/cookies-policy`, external: false }
   ];
 
   socialLinks = [

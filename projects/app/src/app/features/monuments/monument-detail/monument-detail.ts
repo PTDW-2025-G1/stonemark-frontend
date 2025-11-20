@@ -5,7 +5,9 @@ import {Observable, tap} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument.service';
 import { Monument } from '@core/models/monument.model';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-monument-detail',
@@ -22,7 +24,9 @@ export class MonumentDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private monumentService: MonumentService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private titleService: Title,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +38,7 @@ export class MonumentDetailComponent implements OnInit {
       tap(monument => {
         if (monument && monument.lat != null && monument.lon != null) {
           this.setMapUrl(monument.lat, monument.lon);
+          this.titleService.setTitle(`${monument.name} - StoneMark`);
         } else {
           this.mapUrl = null;
         }
@@ -70,4 +75,23 @@ export class MonumentDetailComponent implements OnInit {
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
   }
 
+  copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      this.snackBar.open('Link copied to clipboard', 'Dismiss', {
+        duration: 2000,
+        panelClass: ['bg-success', 'text-white', 'font-medium'],
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      });
+    });
+  }
+
+  shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+  }
+
+  shareOnInstagram() {
+    window.open('https://www.instagram.com/', '_blank');
+  }
 }

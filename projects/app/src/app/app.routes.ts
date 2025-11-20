@@ -28,9 +28,14 @@ export const routes: Routes = [
       import('projects/app/src/app/features/privacy-policy/privacy-policy.routes').then(m => m.PRIVACY_POLICY_ROUTES)
   },
   {
-    path: 'terms',
+    path: 'terms-service',
     loadChildren: () =>
       import('projects/app/src/app/features/terms-of-service/terms-of-service.routes').then(m => m.TERMS_OF_SERVICE_ROUTES)
+  },
+  {
+    path: 'cookies-policy',
+    loadChildren: () =>
+      import('projects/app/src/app/features/cookies-policy/cookies-policy.routes').then(m => m.COOKIES_POLICY_ROUTES)
   },
   {
     path: '',

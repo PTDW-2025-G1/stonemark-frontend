@@ -22,6 +22,8 @@ import {Monument} from '@core/models/monument.model';
               [cover]="monument.cover ?? 'assets/placeholder.jpg'"
               [title]="monument.name"
               [location]="monument.location || 'Portugal'"
+              [id]="monument.id"
+              [type]="'monuments'"
             />
           }
         </div>

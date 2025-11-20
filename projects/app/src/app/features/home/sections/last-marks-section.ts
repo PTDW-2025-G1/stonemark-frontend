@@ -25,6 +25,8 @@ import {Mark} from '@core/models/mark.model';
               [cover]="mark.cover"
               [title]="mark.title"
               [location]="mark.location"
+              [id]="mark.id"
+              [type]="'marks'"
             />
           }
         </div>

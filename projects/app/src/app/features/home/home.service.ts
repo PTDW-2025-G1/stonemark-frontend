@@ -15,7 +15,7 @@ export interface NewsItem {
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
-  private rssUrl = 'https://rss.app/feeds/v1.1/lmT8KdlFb1sSsgPS.json';
+  private rssUrl = 'https://rss.app/feeds/v1.1/tLIwGkM7qOVmH1DX.json';
 
   constructor(private http: HttpClient) {}
 

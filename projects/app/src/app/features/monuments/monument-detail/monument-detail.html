@@ -110,15 +110,14 @@
                 <i class="bi bi-share text-primary"></i>
                 Share this Monument
               </h3>
-
               <div class="flex gap-2">
-                <button class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
+                <button (click)="shareOnFacebook()" class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
                   <i class="bi bi-facebook text-xl"></i>
                 </button>
-                <button class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
-                  <i class="bi bi-twitter text-xl"></i>
+                <button (click)="shareOnInstagram()" class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
+                  <i class="bi bi-instagram text-xl"></i>
                 </button>
-                <button class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
+                <button (click)="copyLink()" class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
                   <i class="bi bi-link-45deg text-xl"></i>
                 </button>
               </div>

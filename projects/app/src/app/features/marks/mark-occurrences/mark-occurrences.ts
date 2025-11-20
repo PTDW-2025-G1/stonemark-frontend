@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import { MarkService } from '@core/services/mark.service';
 import { Mark } from '@core/models/mark.model';
@@ -12,6 +12,7 @@ import {MarkHeaderComponent} from '@features/marks/mark-occurrences/sections/mar
 import {OccurrencesGridComponent} from '@features/marks/mark-occurrences/sections/occurrences-grid';
 import {EmptyStateComponent} from '@features/marks/mark-occurrences/sections/empty-state';
 import {InfoBoxComponent} from '@features/marks/mark-occurrences/sections/info-box';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mark-occurrences',
@@ -28,6 +29,7 @@ export class MarkOccurrencesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
     private markService: MarkService
   ) {}
 
@@ -37,6 +39,11 @@ export class MarkOccurrencesComponent implements OnInit {
         const id = Number(params.get('id'));
         this.loadOccurrences(id);
         return this.markService.getMarkById(id);
+      }),
+      tap(mark => {
+        if (mark) {
+          this.titleService.setTitle(`${mark.title} - Mark Occurrences`);
+        }
       })
     );
     this.breadcrumbItems$ = this.mark$.pipe(

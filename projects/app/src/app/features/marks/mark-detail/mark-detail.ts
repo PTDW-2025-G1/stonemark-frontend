@@ -5,6 +5,7 @@ import { MarkService } from '@core/services/mark.service';
 import { MarkCategory } from '@core/enums/mark.category';
 import { MarkShape } from '@core/enums/mark.shape';
 import {Mark} from '@core/models/mark.model';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mark-detail',
@@ -20,6 +21,7 @@ export class MarkDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private titleService : Title,
     private markService: MarkService
   ) {}
 
@@ -35,6 +37,7 @@ export class MarkDetailComponent implements OnInit {
       next: (mark) => {
         if (mark) {
           this.mark = mark;
+          this.titleService.setTitle(`${mark.title} - StoneMark`);
         }
         this.loading = false;
       },

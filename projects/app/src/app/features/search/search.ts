@@ -10,6 +10,7 @@ import {SearchHeaderComponent} from '@features/search/sections/search-header/sea
 import {SearchFiltersComponent} from '@features/search/sections/search-filters/search-filters';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {SearchPaginationComponent} from '@features/search/sections/search-pagination/search-pagination';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search',
@@ -30,7 +31,8 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private monumentService: MonumentService,
     private markService: MarkService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,8 @@ export class SearchComponent implements OnInit {
         this.type = type;
         this.title = this.getTitle(type);
         this.filters = this.getFiltersForType(type);
+
+        this.titleService.setTitle(`${this.title} - StoneMark`);
 
         this.cdr.detectChanges();
 

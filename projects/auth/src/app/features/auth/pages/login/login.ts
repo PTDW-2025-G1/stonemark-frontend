@@ -20,7 +20,6 @@ import {ProfileService} from '@core/services/profile.service';
         (toggleMode)="onToggleMode()"
         (googleAuth)="onGoogleAuth()"
         (forgotPassword)="onForgotPassword()"
-        [errorMsg]="errorMsg"
       />
     </section>
   `

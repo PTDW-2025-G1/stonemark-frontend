@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { PasswordUtils } from '@shared/utils/password.utils';
+import {NotificationService} from '@core/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordService {
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
+  constructor(private fb: FormBuilder, private notificationService: NotificationService) {}
 
   createForm(mode: 'change' | 'reset'): FormGroup {
     const controls: any = {
@@ -53,20 +53,10 @@ export class PasswordService {
   }
 
   showSuccessToast(message: string): void {
-    this.snackBar.open(message, 'OK', {
-      duration: 2500,
-      panelClass: ['bg-success', 'text-white', 'font-medium'],
-      horizontalPosition: 'right',
-      verticalPosition: 'bottom'
-    });
+    this.notificationService.showSuccess(message);
   }
 
   showErrorToast(message: string): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 3000,
-      panelClass: ['bg-error', 'text-white', 'font-medium'],
-      horizontalPosition: 'right',
-      verticalPosition: 'bottom'
-    });
+    this.notificationService.showError(message);
   }
 }

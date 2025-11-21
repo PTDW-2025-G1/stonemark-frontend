@@ -82,12 +82,6 @@ export class AuthService {
     return this.googleAuthSubject.asObservable();
   }
 
-  // GitHub Auth
-  githubAuth(): Observable<any> {
-    console.log('Github authentication initiated');
-    return of({ message: 'Github auth successful' }).pipe();
-  }
-
   // Core Auth
   login(data: AuthFormData): Observable<HttpResponse<any>> {
     return this.http.post(`${this.baseUrl}/authenticate`, data, { observe: 'response' })

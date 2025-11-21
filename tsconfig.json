@@ -32,15 +32,41 @@
   },
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.spec.json" },
-    { "path": "./projects/app/tsconfig.app.json" },
-    { "path": "./projects/app/tsconfig.spec.json" },
-    { "path": "./projects/auth/tsconfig.app.json" },
-    { "path": "./projects/auth/tsconfig.spec.json" },
-    { "path": "./projects/profile/tsconfig.app.json" },
-    { "path": "./projects/profile/tsconfig.spec.json" },
-    { "path": "./projects/shared/tsconfig.lib.json" },
-    { "path": "./projects/shared/tsconfig.spec.json" }
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/app/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/app/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/auth/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/auth/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/profile/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/profile/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/staff/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/staff/tsconfig.spec.json"
+    }
   ]
 }

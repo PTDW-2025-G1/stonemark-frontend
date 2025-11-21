@@ -30,7 +30,6 @@ export interface AuthFormData {
       @if (showSocialAuth && socialAuthPosition === 'top') {
         <app-social-auth-buttons
           (googleClick)="onGoogleAuth()"
-          (githubClick)="onGithubAuth()"
         />
 
         <div class="relative my-8">
@@ -40,6 +39,13 @@ export interface AuthFormData {
           <div class="relative flex justify-center text-sm">
             <span class="px-4 bg-surface text-text-muted">Or</span>
           </div>
+        </div>
+      }
+
+      <!-- Error Message -->
+      @if (errorMsg && errorMsg.length > 0) {
+        <div class="text-error text-sm mb-4">
+          {{ errorMsg }}
         </div>
       }
 
@@ -135,7 +141,6 @@ export interface AuthFormData {
 
         <app-social-auth-buttons
           (googleClick)="onGoogleAuth()"
-          (githubClick)="onGithubAuth()"
         />
       }
     </div>
@@ -145,11 +150,11 @@ export class AuthFormComponent implements OnInit, OnChanges {
   @Input() mode: 'login' | 'register' = 'register';
   @Input() loading = false;
   @Input() showSocialAuth = true;
+  @Input() errorMsg: string | null = null;
 
   @Output() submit = new EventEmitter<AuthFormData>();
   @Output() toggleMode = new EventEmitter<void>();
   @Output() googleAuth = new EventEmitter<void>();
-  @Output() githubAuth = new EventEmitter<void>();
   @Output() forgotPassword = new EventEmitter<string | void>();
 
   form: FormGroup;
@@ -247,10 +252,6 @@ export class AuthFormComponent implements OnInit, OnChanges {
 
   onGoogleAuth(): void {
     this.googleAuth.emit();
-  }
-
-  onGithubAuth(): void {
-    this.githubAuth.emit();
   }
 
   onForgotPassword(event?: Event): void {

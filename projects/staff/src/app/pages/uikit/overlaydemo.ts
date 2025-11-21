@@ -10,7 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { TableModule } from 'primeng/table';
-import { Product, ProductService } from '@/services/product.service';
+import { Product, ProductService } from '../../services/product.service';
 
 @Component({
     selector: 'app-overlay-demo',

@@ -363,7 +363,7 @@
             },
             "development": {
               "buildTarget": "staff:build:development",
-              "port": 4300
+              "port": 4220
             }
           },
           "defaultConfiguration": "development"

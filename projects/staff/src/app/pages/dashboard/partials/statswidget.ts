@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatCardComponent } from '@/components/dashboard/stat-card.component';
+import { StatCardComponent } from '../../../components/dashboard/stat-card.component';
 
 @Component({
     standalone: true,

@@ -5,8 +5,8 @@ import { CarouselModule } from 'primeng/carousel';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
 import { TagModule } from 'primeng/tag';
-import { PhotoService } from '@/services/photo.service';
-import { Product, ProductService } from '@/services/product.service';
+import { PhotoService } from '../../services/photo.service';
+import { Product, ProductService } from '../../services/product.service';
 
 @Component({
     selector: 'app-media-demo',

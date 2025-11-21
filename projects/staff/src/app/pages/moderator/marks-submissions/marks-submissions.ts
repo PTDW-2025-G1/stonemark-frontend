@@ -4,12 +4,12 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { MarksSubmission, MarksSubmissionService } from '../../../../../../shared/src/lib/core/services/marks-submission.service';
-import { AppToolbarComponent } from '@/components/toolbar/toolbar.component';
-import { AppDialogComponent } from '@/components/dialog/dialog.component';
-import { AppTableComponent } from '@/components/table/table.component';
-import { StatusFilterComponent } from '@/components/status-filter/status-filter.component';
-import { BaseFilterTableComponent } from '@/shared/base-filter-table.component';
+import { MarksSubmission, MarksSubmissionService } from '@core/services/marks-submission.service';
+import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
+import { AppDialogComponent } from '../../../components/dialog/dialog.component';
+import { AppTableComponent } from '../../../components/table/table.component';
+import { StatusFilterComponent } from '../../../components/status-filter/status-filter.component';
+import { BaseFilterTableComponent } from '../../../shared/base-filter-table.component';
 
 @Component({
     selector: 'app-moderator-marks-submissions',

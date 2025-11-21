@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { CommonModule } from '@angular/common';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
-import { LayoutService } from '@/layout/service/layout.service';
-import { ThemeService } from '@/layout/service/theme.service';
+import { LayoutService } from '../../layout/service/layout.service';
+import { ThemeService } from '../../layout/service/theme.service';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
@@ -93,7 +93,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
 
     constructor(
         public layoutService: LayoutService,
-        private themeService: ThemeService // ✅ injetar o serviço
+        private themeService: ThemeService
     ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))

@@ -5,6 +5,7 @@ import { AuthService } from '@core/services/auth.service';
 import { NotificationService } from '@core/services/notification.service';
 import { AuthFormComponent } from '../../components/auth-form/auth-form';
 import { BaseAuthComponent } from '@shared/directives/base-auth';
+import {ProfileService} from '@core/services/profile.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,7 @@ export class RegisterComponent extends BaseAuthComponent {
   override successMessage = 'Registration successful!';
   override navigateTo = '/login';
 
-  constructor(router: Router, authService: AuthService, notificationService: NotificationService) {
-    super(router, authService, notificationService);
+  constructor(router: Router, authService: AuthService, profileService: ProfileService, notificationService: NotificationService) {
+    super(router, authService, profileService, notificationService);
   }
 }

@@ -7,6 +7,7 @@ import { AuthService } from '@core/services/auth.service';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import {HttpResponse} from '@angular/common/http';
 import { environment } from '@env/environment';
+import {ProfileService} from '@core/services/profile.service';
 
 @Directive()
 export abstract class BaseAuthComponent {
@@ -15,6 +16,7 @@ export abstract class BaseAuthComponent {
   protected constructor(
     protected router: Router,
     protected authService: AuthService,
+    protected profileService: ProfileService,
     protected notificationService: NotificationService
   ) {}
 
@@ -48,27 +50,54 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(this.authService.githubAuth(), 'GitHub authentication successful!');
   }
 
-  private _handleAuthRequest(auth$: Observable<HttpResponse<any>>, successMessage: string): void {
+  private _handleAuthRequest(
+    auth$: Observable<HttpResponse<any>>,
+    successMessage: string
+    ): void {
     this.loading = true;
-    auth$.pipe(finalize(() => (this.loading = false))).subscribe({
-      next: (response) => {
-        const status = response.status;
-        const body = response.body;
+    auth$
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (response) => {
+          const status = response.status;
+          const body = response.body;
 
-        if (status === 200 && body?.accessToken) {
-          this.notificationService.showSuccess(successMessage);
+          if (status === 200 && body?.accessToken) {
+            this.notificationService.showSuccess(successMessage);
+            this.authService.saveTokens(body.accessToken, body.refreshToken);
+            this._postLoginRedirect();
+          } else if (status === 202) {
+            const email = body?.email || '';
+            this.router.navigate(['/verify-pending'], {
+              queryParams: { email }
+            });
+          }
+        },
+        error: (err) => {
+          const errorMessage = err.error?.message || 'Authentication failed. Please try again.';
+          this.notificationService.showError(errorMessage, err);
+        },
+      });
+    }
+
+  private _postLoginRedirect(): void {
+    this.profileService.getCurrentUser().subscribe({
+      next: (user) => {
+        const role = user.role;
+
+        if (role === 'ADMIN' || role === 'MODERATOR') {
+          window.location.href = environment.staffUrl;
+        } else {
           window.location.href = environment.baseUrl;
-        } else if (status === 202) {
-          const email = body?.email || '';
-          this.router.navigate(['/verify-pending'], {
-            queryParams: { email }
-          });
         }
       },
       error: (err) => {
-        const errorMessage = err.error?.message || 'Authentication failed. Please try again.';
-        this.notificationService.showError(errorMessage, err);
-      },
+        console.error('Failed to load user after login:', err);
+        this.notificationService.showError('Failed to load user info. Try again.', err);
+        this.authService.logout();
+      }
     });
   }
+
+
 }

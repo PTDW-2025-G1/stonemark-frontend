@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { Tag } from 'primeng/tag';
-import { getSeverity } from '@/utils/severity.util';
+import { getSeverity } from '../../utils/severity.util';
 import {PrimeTemplate} from 'primeng/api';
 
 export type StatusFilterValue = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';

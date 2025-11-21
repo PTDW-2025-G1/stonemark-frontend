@@ -4,10 +4,10 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
-import { LayoutService } from '@/layout/service/layout.service';
-import { ThemeService } from '@/layout/service/theme.service';
+import { LayoutService } from '../../layout/service/layout.service';
+import { ThemeService } from '../../layout/service/theme.service';
 import { debounceTime, Subscription } from 'rxjs';
-import { getSeverity } from '@/utils/severity.util';
+import { getSeverity } from '../../utils/severity.util';
 
 @Component({
     selector: 'app-table',

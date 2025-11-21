@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { StatsWidget } from '@/pages/dashboard/partials/statswidget';
-import { BestMonumentsWidget } from '@/pages/dashboard/partials/bestmonumentswidget';
-import { MarksSubmittedWidget } from '@/pages/dashboard/partials/markssubmittedwidget';
-import { NotificationsWidget } from '@/pages/dashboard/partials/notificationswidget';
+import { StatsWidget } from './partials/statswidget';
+import { BestMonumentsWidget } from './partials/bestmonumentswidget';
+import { MarksSubmittedWidget } from './partials/markssubmittedwidget';
+import { NotificationsWidget } from './partials/notificationswidget';
 
 @Component({
     selector: 'app-dashboard',

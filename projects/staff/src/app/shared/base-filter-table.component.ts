@@ -1,5 +1,5 @@
 import { signal } from '@angular/core';
-import type { StatusFilterValue } from '@/components/status-filter/status-filter.component';
+import type { StatusFilterValue } from '../components/status-filter/status-filter.component';
 
 /**
  * Classe base para componentes que mostram listas filtráveis por estado (ALL, PENDING, APPROVED, REJECTED)

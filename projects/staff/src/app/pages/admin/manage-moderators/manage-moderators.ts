@@ -2,9 +2,9 @@ import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { User, UserService } from '../../../../../../shared/src/lib/core/services/user.service';
-import { AppToolbarComponent } from '@/components/toolbar/toolbar.component';
-import { AppTableComponent } from '@/components/table/table.component';
+import { User, UserService } from '@core/services/user.service';
+import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
+import { AppTableComponent } from '../../../components/table/table.component';
 import { ButtonModule } from 'primeng/button';
 
 @Component({

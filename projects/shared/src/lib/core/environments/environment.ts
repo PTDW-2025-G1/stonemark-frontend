@@ -5,5 +5,5 @@ export const environment = {
   baseUrl: 'http://localhost:4200',
   authUrl: 'http://localhost:4201',
   profileUrl: 'http://localhost:4202',
-  staffUrl: 'http://localhost:4300'
+  staffUrl: 'http://localhost:4220'
 }

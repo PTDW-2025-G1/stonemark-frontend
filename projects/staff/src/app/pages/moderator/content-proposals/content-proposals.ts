@@ -4,12 +4,12 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { ContentProposal, ContentProposalService } from '../../../../../../shared/src/lib/core/services/content-proposal.service';
-import { AppToolbarComponent } from '@/components/toolbar/toolbar.component';
-import { AppDialogComponent } from '@/components/dialog/dialog.component';
-import { AppTableComponent } from '@/components/table/table.component';
-import { StatusFilterComponent, StatusFilterValue } from '@/components/status-filter/status-filter.component';
-import { BaseFilterTableComponent } from '@/shared/base-filter-table.component';
+import { ContentProposal, ContentProposalService } from '@core/services/content-proposal.service';
+import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
+import { AppDialogComponent } from '../../../components/dialog/dialog.component';
+import { AppTableComponent } from '../../../components/table/table.component';
+import { StatusFilterComponent, StatusFilterValue } from '../../../components/status-filter/status-filter.component';
+import { BaseFilterTableComponent } from '../../../shared/base-filter-table.component';
 
 @Component({
     selector: 'app-content-proposals',

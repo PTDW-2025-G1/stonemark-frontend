@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { getSeverity } from '@/utils/severity.util';
+import { getSeverity } from '../../utils/severity.util';
 
 @Component({
     selector: 'app-dialog',

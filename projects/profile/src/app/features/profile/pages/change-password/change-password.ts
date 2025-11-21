@@ -55,7 +55,7 @@ export class ChangePasswordComponent implements OnInit {
     this.profileService.changePassword(currentPassword, newPassword).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.passwordService.showSuccessToast('Password changed successfully! 🎉');
+        this.passwordService.showSuccessToast('Password changed successfully!');
         setTimeout(() => this.router.navigate(['/profile']), 2500);
       },
       error: err => {

@@ -17,7 +17,7 @@ export abstract class BaseAuthComponent {
     protected router: Router,
     protected authService: AuthService,
     protected profileService: ProfileService,
-    protected notificationService: NotificationService
+    protected notificationService: NotificationService,
   ) {}
 
   abstract mode: 'login' | 'register';
@@ -46,10 +46,6 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(this.authService.googleAuth(), 'Google authentication successful!');
   }
 
-  onGithubAuth(): void {
-    this._handleAuthRequest(this.authService.githubAuth(), 'GitHub authentication successful!');
-  }
-
   private _handleAuthRequest(
     auth$: Observable<HttpResponse<any>>,
     successMessage: string
@@ -67,14 +63,11 @@ export abstract class BaseAuthComponent {
             this.authService.saveTokens(body.accessToken, body.refreshToken);
             this._postLoginRedirect();
           } else if (status === 202) {
-            const email = body?.email || '';
-            this.router.navigate(['/verify-pending'], {
-              queryParams: { email }
-            });
+            this.router.navigate(['/verify-pending']);
           }
         },
         error: (err) => {
-          const errorMessage = err.error?.message || 'Authentication failed. Please try again.';
+          const errorMessage = err.error?.message || 'Credentials are invalid. Please, try again.';
           this.notificationService.showError(errorMessage, err);
         },
       });

@@ -19,7 +19,6 @@ import {ProfileService} from '@core/services/profile.service';
         (submit)="onSubmit($event)"
         (toggleMode)="onToggleMode()"
         (googleAuth)="onGoogleAuth()"
-        (githubAuth)="onGithubAuth()"
       />
     </section>
   `

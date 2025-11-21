@@ -5,13 +5,11 @@ import { Notfound } from './pages/notfound/notfound';
 import { ModeratorMarksSubmissionsComponent } from './pages/moderator/marks-submissions/marks-submissions';
 import { ContentProposals } from './pages/moderator/content-proposals/content-proposals';
 import { ManageModerators } from './pages/admin/manage-moderators/manage-moderators';
-import { authGuard } from '@core/guards/auth.guard'
 
 export const appRoutes: Routes = [
     {
         path: '',
         component: AppLayout,
-        canActivate: [authGuard],
         children: [
             { path: '', component: Dashboard },
             { path: 'moderator/marks-submissions', component: ModeratorMarksSubmissionsComponent },

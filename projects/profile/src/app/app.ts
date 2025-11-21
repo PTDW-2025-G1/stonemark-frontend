@@ -2,11 +2,10 @@ import { Component, signal } from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Header} from 'projects/shared/src/lib/layout/header/header';
 import {Footer} from 'projects/shared/src/lib/layout/footer/footer';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, MatSnackBarModule],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

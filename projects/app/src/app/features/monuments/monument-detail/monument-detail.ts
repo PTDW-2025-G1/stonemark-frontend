@@ -6,8 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument.service';
 import { Monument } from '@core/models/monument.model';
 import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
-import {MatSnackBar} from '@angular/material/snack-bar';
-
+import { NotificationService } from '@core/services/notification.service';
 
 @Component({
   selector: 'app-monument-detail',
@@ -26,7 +25,7 @@ export class MonumentDetailComponent implements OnInit {
     private monumentService: MonumentService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
-    private snackBar: MatSnackBar
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -77,12 +76,7 @@ export class MonumentDetailComponent implements OnInit {
 
   copyLink() {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      this.snackBar.open('Link copied to clipboard', 'Dismiss', {
-        duration: 2000,
-        panelClass: ['bg-success', 'text-white', 'font-medium'],
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom'
-      });
+      this.notificationService.showSuccess('Link copied to clipboard!');
     });
   }
 

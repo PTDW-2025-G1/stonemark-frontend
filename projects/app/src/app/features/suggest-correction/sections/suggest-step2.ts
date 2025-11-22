@@ -30,6 +30,17 @@ type Section = 'information' | 'history' | 'map';
         </div>
 
         <div>
+          <label class="block text-sm text-text-muted mb-1">Protection Title</label>
+          <input
+            type="text"
+            [(ngModel)]="editedData.protectionTitle"
+            (ngModelChange)="emitChange()"
+            class="w-full rounded-lg p-3 border border-border bg-white
+            focus:outline-none focus:border-text"
+          />
+        </div>
+
+        <div>
           <label class="block text-sm text-text-muted mb-1">Description</label>
           <textarea
             rows="4"
@@ -39,54 +50,16 @@ type Section = 'information' | 'history' | 'map';
             focus:outline-none focus:border-text"
           ></textarea>
         </div>
-      }
 
-      <!-- HISTORY FIELDS -->
-      @if (sections.includes('history')) {
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-text-muted mb-1">Construction Period</label>
-            <input
-              type="number"
-              [(ngModel)]="editedData.start_date"
-              (ngModelChange)="emitChange()"
-              class="w-full rounded-lg p-3 border border-border bg-white
-              focus:outline-none focus:border-text"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm text-text-muted mb-1">Architect</label>
-            <input
-              type="text"
-              [(ngModel)]="editedData.architect"
-              (ngModelChange)="emitChange()"
-              class="w-full rounded-lg p-3 border border-border bg-white
-              focus:outline-none focus:border-text"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm text-text-muted mb-1">Artist</label>
-            <input
-              type="text"
-              [(ngModel)]="editedData.artist_name"
-              (ngModelChange)="emitChange()"
-              class="w-full rounded-lg p-3 border border-border bg-white
-              focus:outline-none focus:border-text"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm text-text-muted mb-1">Material</label>
-            <input
-              type="text"
-              [(ngModel)]="editedData.material"
-              (ngModelChange)="emitChange()"
-              class="w-full rounded-lg p-3 border border-border bg-white
-              focus:outline-none focus:border-text"
-            />
-          </div>
+        <div>
+          <label class="block text-sm text-text-muted mb-1">Website</label>
+          <input
+            type="text"
+            [(ngModel)]="editedData.website"
+            (ngModelChange)="emitChange()"
+            class="w-full rounded-lg p-3 border border-border bg-white
+            focus:outline-none focus:border-text"
+          />
         </div>
       }
 

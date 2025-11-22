@@ -39,10 +39,8 @@ export class SuggestCorrectionComponent implements OnInit {
   originalData = {
     name: '',
     description: '',
-    start_date: null as number | null,
-    architect: '',
-    artist_name: '',
-    material: '',
+    protectionTitle: '',
+    website: '',
     lat: null as number | null,
     lon: null as number | null,
     comment: ''
@@ -51,10 +49,8 @@ export class SuggestCorrectionComponent implements OnInit {
   editedData = {
     name: '',
     description: '',
-    start_date: null as number | null,
-    architect: '',
-    artist_name: '',
-    material: '',
+    protectionTitle: '',
+    website: '',
     lat: null as number | null,
     lon: null as number | null,
     comment: ''
@@ -76,10 +72,8 @@ export class SuggestCorrectionComponent implements OnInit {
         this.originalData = {
           name: monument.name || '',
           description: monument.description || '',
-          start_date: monument.start_date ?? null,
-          architect: monument.architect || '',
-          artist_name: monument.artist_name || '',
-          material: monument.material || '',
+          protectionTitle: monument.protectionTitle || '',
+          website: monument.website || '',
           lat: monument.lat ?? null,
           lon: monument.lon ?? null,
           comment: ''
@@ -88,10 +82,8 @@ export class SuggestCorrectionComponent implements OnInit {
         this.editedData = {
           name: this.originalData.name,
           description: this.originalData.description,
-          start_date: this.originalData.start_date,
-          architect: this.originalData.architect,
-          artist_name: this.originalData.artist_name,
-          material: this.originalData.material,
+          protectionTitle: this.originalData.protectionTitle,
+          website: this.originalData.website,
           lat: this.originalData.lat,
           lon: this.originalData.lon,
           comment: ''
@@ -112,13 +104,6 @@ export class SuggestCorrectionComponent implements OnInit {
     if (this.sections.includes('information')) {
       if (!this.editedData.name.trim()) return false;
       if (!this.editedData.description.trim()) return false;
-    }
-
-    if (this.sections.includes('history')) {
-      if (this.editedData.start_date === null) return false;
-      if (!this.editedData.architect.trim()) return false;
-      if (!this.editedData.artist_name.trim()) return false;
-      if (!this.editedData.material.trim()) return false;
     }
 
     if (this.sections.includes('map')) {
@@ -149,13 +134,6 @@ export class SuggestCorrectionComponent implements OnInit {
   }
 
   changed(field: string) {
-    if (field === 'start_date') {
-      const orig = this.originalData.start_date;
-      const edit = this.editedData.start_date;
-      if (orig == null && edit == null) return false;
-      return Number(orig) !== Number(edit);
-    }
-
     const origVal = (this.originalData as any)[field] ?? '';
     const editVal = (this.editedData as any)[field] ?? '';
 

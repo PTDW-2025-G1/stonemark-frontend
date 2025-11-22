@@ -1,286 +1,189 @@
-<nav class="bg-surface border-b border-border py-4" aria-label="Breadcrumb">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <ol class="flex items-center space-x-2 text-sm">
-      <li>
-        <a
-          routerLink="/search/monuments"
-          class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors group"
-        >
-          <i class="bi bi-building text-lg group-hover:scale-110 transition-transform"></i>
-          <span class="font-medium">Monuments</span>
-        </a>
-      </li>
-      <li>
-        <i class="bi bi-chevron-right text-text-muted text-xs"></i>
-      </li>
-      @if (monument$ | async; as monument) {
-        <li class="flex items-center gap-2">
-          <i class="bi bi-pin-map-fill text-primary text-lg"></i>
-          <span class="font-semibold text-text">{{ monument.name }}</span>
-        </li>
-      }
-    </ol>
-  </div>
-</nav>
-
 <div class="min-h-screen bg-surface">
   @if (monument$ | async; as monument) {
-    <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
-        <!-- Left Column - Image & Map -->
-        <div class="space-y-6">
-          <!-- Main Image -->
-          <div class="relative group rounded-2xl overflow-hidden bg-surface-muted border-2 border-border shadow-xl">
-            <img
-              [src]="monument.cover"
-              [alt]="monument.name"
-              class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            <!-- Image Overlay Actions -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-              <div class="absolute top-4 right-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <div class="lg:col-span-7 order-1 relative group rounded-2xl overflow-hidden bg-surface-muted border-2 border-border shadow-xl">
+          <img
+            [src]="monument.cover"
+            [alt]="monument.name"
+            class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute top-4 right-4">
+              <button
+                (click)="toggleBookmark()"
+                [class.text-success]="isBookmarked"
+                [class.text-text-muted]="!isBookmarked"
+                class="w-12 h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg text-2xl">
+                <i [class.bi-bookmark-check-fill]="isBookmarked" [class.bi-bookmark]="!isBookmarked"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-4 left-4 right-4 hidden lg:flex gap-2">
+              <button class="flex-1 px-4 py-2 bg-white/95 backdrop-blur-sm text-primary rounded-lg font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2">
+                <i class="bi bi-arrows-fullscreen"></i>
+                <span>View Full Size</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 lg:row-span-2 order-2 space-y-6 lg:sticky lg:top-8 h-fit">
+
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold flex items-center gap-1.5 border border-primary/20">
+                <i class="bi bi-building"></i>
+                Monument
+              </span>
+              @if (monument.protectionTitle) {
+                <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold flex items-center gap-1.5 border border-amber-200">
+                  <i class="bi bi-shield-fill-check"></i>
+                  {{ monument.protectionTitle }}
+                </span>
+              }
+              @if (monument.website) {
+                <a [href]="monument.website" target="_blank" class="px-3 py-1 bg-surface-alt text-text-muted hover:text-primary rounded-full text-xs font-medium flex items-center gap-1.5 border border-border transition-colors decoration-0">
+                  <i class="bi bi-link-45deg"></i>
+                  Website
+                </a>
+              }
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-3 leading-tight">
+              {{ monument.name }}
+            </h1>
+            <div class="flex items-start gap-2 text-text-muted mb-6">
+              <i class="bi bi-geo-alt-fill text-primary mt-1"></i>
+              <span class="text-lg leading-relaxed">{{ monument.location }}</span>
+            </div>
+
+            <div class="prose prose-sm text-text-muted leading-relaxed mb-6">
+              {{ monument.description }}
+            </div>
+          </div>
+
+          <div class="bg-surface-alt rounded-2xl border border-border p-5 shadow-sm">
+            <h3 class="text-sm uppercase tracking-wider text-text-muted font-bold mb-4 flex items-center gap-2">
+              <i class="bi bi-lightning-charge-fill text-primary"></i>
+              Actions
+            </h3>
+            <div class="grid grid-cols-1 gap-3">
+              <button
+                (click)="captureMark()"
+                class="w-full px-4 py-3.5 bg-primary text-primary-foreground rounded-xl font-bold shadow-lg hover:shadow-xl hover:bg-primary/90 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                <i class="bi bi-camera-fill text-lg"></i>
+                Capture Stone Mark
+              </button>
+
+              <div class="grid grid-cols-2 gap-3">
                 <button
-                  (click)="toggleBookmark()"
-                  [class.text-success]="isBookmarked"
-                  [class.text-text-muted]="!isBookmarked"
-                  class="w-12 h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg text-2xl"
-                  [attr.aria-label]="'Bookmark ' + monument.name">
-                  <i [class.bi-bookmark-check-fill]="isBookmarked" [class.bi-bookmark]="!isBookmarked"></i>
+                  (click)="viewMarks()"
+                  class="px-4 py-3 bg-white border border-border text-text rounded-xl font-semibold hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+                  <i class="bi bi-collection-fill"></i>
+                  View Marks
+                  <span class="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full">{{ monument.marksCount || 0 }}</span>
                 </button>
-              </div>
-              <div class="absolute bottom-4 left-4 right-4 hidden lg:flex gap-2">
-                <button class="flex-1 px-4 py-2 bg-white/95 backdrop-blur-sm text-primary rounded-lg font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2">
-                  <i class="bi bi-arrows-fullscreen"></i>
-                  <span>View Full Size</span>
+
+                <button
+                  (click)="suggestCorrection()"
+                  class="px-4 py-3 bg-white border border-border text-text rounded-xl font-semibold hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+                  <i class="bi bi-pencil-square"></i>
+                  Edit Info
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Interactive Map -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-surface-alt rounded-2xl border border-border p-5">
+              <h3 class="text-sm font-bold text-text mb-3 flex items-center gap-2">
+                <i class="bi bi-bar-chart-fill text-primary"></i>
+                Statistics
+              </h3>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-text-muted">Total Marks</span>
+                  <span class="font-bold text-text">{{ monument.marksCount || 0 }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-text-muted">Pending</span>
+                  <span class="font-bold text-text">{{ monument.suggestionsCount || 0 }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-surface-alt rounded-2xl border border-border p-5">
+              <h3 class="text-sm font-bold text-text mb-3 flex items-center gap-2">
+                <i class="bi bi-info-circle-fill text-primary"></i>
+                Visiting
+              </h3>
+              <div class="space-y-3 text-sm">
+                <div class="flex items-center gap-2 text-text-muted">
+                  <i class="bi bi-clock"></i>
+                  <span>Check website</span>
+                </div>
+                <div class="flex items-center gap-2 text-text-muted">
+                  <i class="bi bi-ticket-perforated"></i>
+                  <span>Paid entry</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (monument.lastModified) {
+            <div class="pt-4 border-t border-border mt-2">
+              <div class="flex items-center justify-between text-xs text-text-muted">
+                <span class="flex items-center gap-1">
+                  <i class="bi bi-shield-check"></i>
+                  Verified Info
+                </span>
+                <div class="flex items-center gap-1.5">
+                  <span>by <span class="font-semibold text-text">{{ monument.lastModified }}</span></span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="lg:col-span-7 order-3 space-y-6">
+
           <div class="bg-surface-alt rounded-2xl border border-border p-6">
             <h3 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
               <i class="bi bi-geo-alt-fill text-primary"></i>
               Location Map
             </h3>
-            <div class="relative w-full h-64 bg-surface-muted rounded-xl overflow-hidden border border-border">
+            <div class="relative w-full h-64 sm:h-80 bg-surface-muted rounded-xl overflow-hidden border border-border">
               @if (mapUrl) {
-                <div class="relative aspect-[16/9] w-full bg-surface-muted rounded-2xl overflow-hidden border border-border mb-4">
-                  <iframe width="100%" height="100%" style="border:0; min-height:350px;" [src]="mapUrl" allowfullscreen></iframe>
-                  <button class="absolute top-4 right-4 bg-primary text-primary-foreground rounded-xl px-6 py-3 font-semibold hover:bg-primary/80 transition shadow-lg" [attr.aria-label]="'View Directions for ' + monument.name" (click)="openDirections(monument.lat!, monument.lon!)">View Directions</button>
-                </div>
+                <iframe width="100%" height="100%" style="border:0;" [src]="mapUrl" allowfullscreen></iframe>
+                <button class="absolute top-4 right-4 bg-primary text-primary-foreground rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-primary/80 transition shadow-lg flex items-center gap-2" (click)="openDirections(monument.lat!, monument.lon!)">
+                  <i class="bi bi-cursor-fill"></i>
+                  Directions
+                </button>
               }
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="bg-surface-alt rounded-2xl border border-border p-6">
+          <div class="bg-surface rounded-2xl border border-border p-6">
             <h3 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
-              <i class="bi bi-lightning-fill text-primary"></i>
-              Quick Actions
+              <i class="bi bi-share text-primary"></i>
+              Share this Monument
             </h3>
-
-            <div class="space-y-3">
-              <button
-                (click)="captureMark()"
-                class="w-full px-4 py-3 bg-gradient-to-r from-primary/80 to-primary/80 text-white rounded-xl font-semibold hover:shadow-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
-                <i class="bi bi-camera-fill"></i>
-                Capture Mark
+            <div class="flex gap-3">
+              <button (click)="shareOnFacebook()" class="flex-1 px-4 py-3 bg-surface-alt border border-border rounded-xl hover:border-blue-600 hover:text-blue-600 transition-all flex items-center justify-center gap-2 group">
+                <i class="bi bi-facebook text-xl group-hover:scale-110 transition-transform"></i>
               </button>
-
-              <button
-                (click)="viewMarks()"
-                class="w-full px-4 py-3 bg-gradient-to-r from-primary/80 to-primary/80 text-white rounded-xl font-semibold hover:shadow-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
-                <i class="bi bi-collection-fill"></i>
-                View Marks ({{ monument.marksCount || 0 }})
+              <button (click)="shareOnInstagram()" class="flex-1 px-4 py-3 bg-surface-alt border border-border rounded-xl hover:border-pink-600 hover:text-pink-600 transition-all flex items-center justify-center gap-2 group">
+                <i class="bi bi-instagram text-xl group-hover:scale-110 transition-transform"></i>
               </button>
-
-              <button
-                (click)="suggestCorrection()"
-                class="w-full px-4 py-3 bg-gradient-to-r from-primary/80 to-primary/80 text-white rounded-xl font-semibold hover:shadow-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
-                <i class="bi bi-pencil-square"></i>
-                Suggest a Correction
+              <button (click)="copyLink()" class="flex-1 px-4 py-3 bg-surface-alt border border-border rounded-xl hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 group">
+                <i class="bi bi-link-45deg text-xl group-hover:scale-110 transition-transform"></i>
               </button>
-            </div>
-            <!-- Share Section -->
-            <div class="bg-surface rounded-2xl border border-border p-6 mt-5">
-              <h3 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
-                <i class="bi bi-share text-primary"></i>
-                Share this Monument
-              </h3>
-              <div class="flex gap-2">
-                <button (click)="shareOnFacebook()" class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
-                  <i class="bi bi-facebook text-xl"></i>
-                </button>
-                <button (click)="shareOnInstagram()" class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
-                  <i class="bi bi-instagram text-xl"></i>
-                </button>
-                <button (click)="copyLink()" class="flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary transition-all flex items-center justify-center gap-2">
-                  <i class="bi bi-link-45deg text-xl"></i>
-                </button>
-              </div>
             </div>
           </div>
         </div>
 
-        <!-- Right Column - Details -->
-        <div class="space-y-6">
-          <!-- Title & Location -->
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-bold flex items-center gap-2 border border-primary/20">
-                <i class="bi bi-building"></i>
-                Monument
-              </span>
-            </div>
-            <h1 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-3">
-              {{ monument.name }}
-            </h1>
-            <div class="flex items-center gap-2 text-text-muted">
-              <i class="bi bi-geo-alt-fill text-primary"></i>
-              <span class="text-lg">{{ monument.location }}</span>
-            </div>
-          </div>
-
-          <!-- Description -->
-          <div class="bg-surface-alt rounded-2xl border border-border p-6">
-            <h2 class="text-lg font-bold text-text mb-3 flex items-center gap-2">
-              <i class="bi bi-file-text text-primary"></i>
-              About
-            </h2>
-            <p class="text-text-muted leading-relaxed">
-              {{ monument.description }}
-            </p>
-          </div>
-
-          <!-- Historical Information -->
-          <div class="bg-surface-alt rounded-2xl border border-border p-6">
-            <h2 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
-              <i class="bi bi-clock-history text-primary"></i>
-              Historical Information
-            </h2>
-
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-                  <i class="bi bi-calendar-event text-primary"></i>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-text-muted mb-1">Construction Period</p>
-                  <p class="font-bold text-text">{{ monument.start_date }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-                  <i class="bi bi-person-workspace text-primary"></i>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-text-muted mb-1">Architect</p>
-                  <p class="font-bold text-text">{{ monument.architect }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-                  <i class="bi bi-palette text-primary"></i>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-text-muted mb-1">Artist</p>
-                  <p class="font-bold text-text">{{ monument.artist_name }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-                  <i class="bi bi-bricks text-text"></i>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-text-muted mb-1">Material</p>
-                  <p class="font-bold text-text capitalize">{{ monument.material  }}</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Stats -->
-          <div class="bg-surface-alt rounded-2xl border border-border p-6">
-            <h2 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
-              <i class="bi bi-bar-chart-line text-primary"></i>
-              Stats
-            </h2>
-
-            <div class="space-y-3">
-              <div class="flex items-center justify-between py-3 border-b border-border">
-                <div class="flex items-center gap-3">
-                  <i class="bi bi-star text-primary text-xl"></i>
-                  <span class="text-sm text-text-muted">Stone Marks</span>
-                </div>
-                <span class="font-semibold text-text">{{ monument.marksCount || 0 }} documented</span>
-              </div>
-
-              <div class="flex items-center justify-between py-3">
-                <div class="flex items-center gap-3">
-                  <i class="bi bi-eye text-primary text-xl"></i>
-                  <span class="text-sm text-text-muted">Suggestions</span>
-                </div>
-                <span class="font-semibold text-text">{{ monument.suggestionsCount || 0 }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Visit Information -->
-          <div class="bg-surface-alt rounded-2xl border border-border p-6">
-            <h2 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
-              <i class="bi bi-info-circle text-primary"></i>
-              Visit Information
-            </h2>
-
-            <div class="space-y-3">
-              <div class="flex items-start gap-3">
-                <i class="bi bi-clock text-primary text-xl flex-shrink-0"></i>
-                <div class="flex-1">
-                  <p class="font-semibold text-text mb-1">Opening Hours</p>
-                  <p class="text-sm text-text-muted">Check official website for current hours</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <i class="bi bi-ticket-perforated text-primary text-xl flex-shrink-0"></i>
-                <div class="flex-1">
-                  <p class="font-semibold text-text mb-1">Admission</p>
-                  <p class="text-sm text-text-muted">Contact for pricing information</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <i class="bi bi-universal-access text-primary text-xl flex-shrink-0"></i>
-                <div class="flex-1">
-                  <p class="font-semibold text-text mb-1">Accessibility</p>
-                  <p class="text-sm text-text-muted">Partial accessibility available</p>
-                </div>
-              </div>
-            </div>
-
-            <button class="w-full mt-4 px-4 py-3 bg-white text-primary border border-primary/20 rounded-xl font-semibold hover:shadow-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
-              <i class="bi bi-globe"></i>
-              Visit Official Website
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  } @else {
-    <!-- Loading State -->
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="text-center">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4 animate-pulse">
-          <i class="bi bi-hourglass-split text-primary text-2xl"></i>
-        </div>
-        <p class="text-text-muted">Loading monument details...</p>
       </div>
     </div>
   }

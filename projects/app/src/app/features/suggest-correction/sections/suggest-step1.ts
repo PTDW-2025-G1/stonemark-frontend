@@ -16,7 +16,7 @@ type Section = 'information' | 'history' | 'map';
       Choose which sections need correction.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
       <!-- Information -->
       <button
@@ -35,25 +35,6 @@ type Section = 'information' | 'history' | 'map';
           <i class="bi bi-info-circle-fill text-2xl text-text"></i>
         </div>
         <div class="text-sm font-medium text-text">Information</div>
-      </button>
-
-      <!-- History -->
-      <button
-        type="button"
-        (click)="toggle('history')"
-        [attr.aria-pressed]="isSelected('history')"
-        class="w-full rounded-xl p-6 flex flex-col items-center justify-center transition-all focus:outline-none"
-        [ngStyle]="{
-          'border': '1.5px solid',
-          'border-color': isSelected('history') ? 'var(--color-success)' : 'var(--color-border)'
-        }"
-        [class.shadow-md]="isSelected('history')"
-        [class.-translate-y-0.5]="isSelected('history')"
-      >
-        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 bg-violet-50">
-          <i class="bi bi-clock-history text-2xl text-text"></i>
-        </div>
-        <div class="text-sm font-medium text-text">History</div>
       </button>
 
       <!-- Map -->

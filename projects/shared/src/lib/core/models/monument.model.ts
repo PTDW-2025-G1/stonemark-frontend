@@ -1,17 +1,16 @@
 export interface Monument {
   id: number;
   name: string;
+  protectionTitle: string;
   lat?: number;
   lon?: number;
   wikidata?: string;
+  website?: string;
   cover?: string;
   location?: string;
   description?: string;
-  artist_name?: string;
-  material?: 'stone' | 'bronze' | 'iron' | 'wood';
-  start_date?: number;
-  architect?: string;
   marksCount?: number;
-  bookmarksCount?: number;
   suggestionsCount?: number;
+  lastModified?: string;
+  lastModifiedAt?: string;
 }

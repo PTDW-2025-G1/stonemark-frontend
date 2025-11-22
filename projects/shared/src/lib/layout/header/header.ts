@@ -21,8 +21,8 @@ export class Header implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
 
   menuItems = [
-    { label: 'Monuments', route: `${environment.baseUrl}/monuments` },
-    { label: 'Marks', route: `${environment.baseUrl}/marks` },
+    { label: 'Monuments', route: `${environment.baseUrl}/search/monuments` },
+    { label: 'Marks', route: `${environment.baseUrl}/search/marks` },
     { label: 'About', route: `${environment.baseUrl}/about` },
     { label: 'Contact', route: `${environment.baseUrl}/contact` },
   ];

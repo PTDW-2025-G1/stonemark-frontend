@@ -5,27 +5,32 @@
       <!-- Logo -->
       <div
         (click)="onHome()"
-        class="flex items-center space-x-2 cursor-pointer select-none"
+        class="flex items-center cursor-pointer select-none"
         aria-label="StoneMark — Início"
         title="StoneMark"
       >
-        <span class="text-2xl font-bold text-primary tracking-tight">
-          StoneMark<span class="text-info">.</span>
-        </span>
+        <img
+          src="assets/stonemark-big-logo.png"
+          alt="StoneMark Logo"
+          class="h-12 w-auto sm:h-16"
+        />
       </div>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-8">
+      <nav class="hidden md:flex flex-1 items-center justify-center space-x-8">
         @for (item of menuItems; track item.route) {
           <a
             [href]="item.route"
             routerLinkActive="text-primary"
-            class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-sm"
+            class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-m"
           >
             {{ item.label }}
           </a>
         }
+      </nav>
 
+      <!-- User Menu (separado do nav) -->
+      <div class="hidden md:flex items-center">
         @if (authService.getAccessToken() && user){
           <div class="relative">
             <button
@@ -67,7 +72,7 @@
             <app-button variant="secondary">Login</app-button>
           </a>
         }
-      </nav>
+      </div>
 
       <!-- Mobile menu button -->
       <div class="md:hidden">

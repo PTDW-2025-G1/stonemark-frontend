@@ -27,6 +27,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/app/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -87,6 +92,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/app/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -121,6 +131,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/auth/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -175,6 +190,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/auth/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -208,6 +228,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/profile/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -262,6 +287,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/profile/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -324,7 +354,12 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/staff/public"
+                "input": "projects/app/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -384,6 +419,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/staff/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [

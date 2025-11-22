@@ -49,7 +49,7 @@ import { CommonModule } from '@angular/common';
 
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16 sm:mb-20 animate-fade-in-delay-3">
-            <a routerLink="/monuments"
+            <a routerLink="/search/monuments"
                class="group relative px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold text-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105">
               <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-info/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <span class="relative flex items-center justify-center gap-2">
@@ -73,7 +73,7 @@ import { CommonModule } from '@angular/common';
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
 
           <!-- Monuments Card -->
-          <a routerLink="/monuments"
+          <a routerLink="/search/monuments"
              class="group relative bg-gradient-to-br from-surface-alt to-surface rounded-3xl p-8 sm:p-10 border-2 border-border hover:border-primary hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 animate-fade-in-delay-4">
             <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-info/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="relative space-y-6">
@@ -111,7 +111,7 @@ import { CommonModule } from '@angular/common';
           </a>
 
           <!-- Marks Card -->
-          <a routerLink="/marks"
+          <a routerLink="/search/marks"
              class="group relative bg-gradient-to-br from-surface-alt to-surface rounded-3xl p-8 sm:p-10 border-2 border-border hover:border-primary hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 animate-fade-in-delay-6 sm:col-span-2 lg:col-span-1">
             <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-info/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div class="relative space-y-6">

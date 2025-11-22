@@ -25,7 +25,7 @@ interface EmptyStateAction {
             Start exploring and save your favorite monuments and marks to access them easily later.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a routerLink="/monuments" class="px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all font-medium">
+            <a routerLink="/search/monuments" class="px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all font-medium">
               Explore Monuments
             </a>
             <a routerLink="/marks" class="px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl hover:border-primary transition-all font-medium">
@@ -40,7 +40,7 @@ export class EmptyStateSectionComponent {
   @Input() title = 'No bookmarks yet';
   @Input() subtitle = 'Start exploring and save your favorite monuments and marks to access them easily later.';
   @Input() actions: EmptyStateAction[] = [
-    { label: 'Explore Monuments', routerLink: '/monuments', variant: 'primary' },
-    { label: 'Browse Marks', routerLink: '/marks', variant: 'secondary' }
+    { label: 'Explore Monuments', routerLink: '/search/monuments', variant: 'primary' },
+    { label: 'Browse Marks', routerLink: '/search/marks', variant: 'secondary' }
   ];
 }

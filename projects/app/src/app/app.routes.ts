@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {NotFoundComponent} from '@shared/ui/not-found/not-found.component'
 
 export const routes: Routes = [
   {
@@ -37,7 +38,7 @@ export const routes: Routes = [
       import('projects/app/src/app/features/cookies-policy/cookies-policy.routes').then(m => m.COOKIES_POLICY_ROUTES)
   },
   {
-    path: '',
+    path: 'search',
     loadChildren: () =>
       import('projects/app/src/app/features/search/search.routes').then(m => m.SEARCH_ROUTES)
   },
@@ -55,5 +56,9 @@ export const routes: Routes = [
     path: 'marks',
     loadChildren: () =>
       import('projects/app/src/app/features/marks/mark.routes').then(m => m.MARK_ROUTES)
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
   }
 ];

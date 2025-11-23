@@ -5,6 +5,7 @@ import { ContactService } from '@core/services/contact.service'
 import {ProfileService} from '@core/services/profile.service';
 import {AuthService} from '@core/services/auth.service';
 import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
+import {ContactRequestDto} from '@api/model/contact-request-dto';
 
 @Component({
   selector: 'app-contact-form',
@@ -172,6 +173,15 @@ export class ContactFormComponent implements OnInit{
   submitError = false;
   user: any = null;
 
+  subjectOptions = [
+    { id: 'general', name: 'General Inquiry' },
+    { id: 'support', name: 'Technical Support' },
+    { id: 'collaboration', name: 'Partnership/Collaboration' },
+    { id: 'bug', name: 'Report a Bug' },
+    { id: 'feature', name: 'Feature Request' },
+    { id: 'other', name: 'Other' }
+  ];
+
   constructor(
     private fb: FormBuilder,
     private contactService: ContactService,
@@ -200,15 +210,6 @@ export class ContactFormComponent implements OnInit{
     }
   }
 
-  subjectOptions = [
-    { id: 'general', name: 'General Inquiry' },
-    { id: 'support', name: 'Technical Support' },
-    { id: 'collaboration', name: 'Partnership/Collaboration' },
-    { id: 'bug', name: 'Report a Bug' },
-    { id: 'feature', name: 'Feature Request' },
-    { id: 'other', name: 'Other' }
-  ];
-
   onSubmit() {
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
@@ -219,23 +220,17 @@ export class ContactFormComponent implements OnInit{
     this.submitSuccess = false;
     this.submitError = false;
 
-    this.contactService.sendMessage(this.contactForm.value).subscribe({
+    const requestPayload: ContactRequestDto = {
+      name: this.contactForm.getRawValue().name ?? '',
+      email: this.contactForm.getRawValue().email ?? '',
+      subject: this.contactForm.getRawValue().subject ?? '',
+      message: this.contactForm.getRawValue().message ?? ''
+    };
+
+    this.contactService.sendMessage(requestPayload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.submitSuccess = true;
-
-        if (this.user) {
-          this.contactForm.reset({
-            name: `${this.user.firstName} ${this.user.lastName}`,
-            email: this.user.email,
-            subject: ''
-          });
-        } else {
-          this.contactForm.reset({
-            subject: ''
-          });
-        }
-
       },
       error: () => {
         this.isSubmitting = false;

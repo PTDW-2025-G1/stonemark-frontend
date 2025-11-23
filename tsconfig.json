@@ -20,6 +20,7 @@
       "@shared/*": ["projects/shared/src/lib/shared/*"],
       "@features/*": ["projects/app/src/app/features/*"],
       "@services/*": ["projects/app/src/app/services/*"],
+      "@api/*": ["projects/shared/src/lib/api/*"],
       "shared": ["./dist/shared"]
     }
   },

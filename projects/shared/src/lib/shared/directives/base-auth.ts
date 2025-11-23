@@ -2,7 +2,6 @@ import { Directive } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { NotificationService } from '@core/services/notification.service';
 import { AuthService } from '@core/services/auth.service';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import {HttpResponse} from '@angular/common/http';
@@ -12,16 +11,15 @@ import {ProfileService} from '@core/services/profile.service';
 @Directive()
 export abstract class BaseAuthComponent {
   loading = false;
+  errorMsg: string | null = null;
 
   protected constructor(
     protected router: Router,
     protected authService: AuthService,
     protected profileService: ProfileService,
-    protected notificationService: NotificationService,
   ) {}
 
   abstract mode: 'login' | 'register';
-  abstract successMessage: string;
   abstract navigateTo: string;
 
   onSubmit(data: AuthFormData): void {
@@ -29,7 +27,7 @@ export abstract class BaseAuthComponent {
       ? this.authService.login(data)
       : this.authService.register(data);
 
-    this._handleAuthRequest(auth$, this.successMessage);
+    this._handleAuthRequest(auth$);
   }
 
   onForgotPassword(): void {
@@ -37,18 +35,15 @@ export abstract class BaseAuthComponent {
   }
 
   onToggleMode(): void {
-    this.router.navigate([this.navigateTo]).catch(error => {
-      this.notificationService.showError('Navigation failed.', error);
-    });
+    this.router.navigate([this.navigateTo]).catch(error => {});
   }
 
   onGoogleAuth(): void {
-    this._handleAuthRequest(this.authService.googleAuth(), 'Google authentication successful!');
+    this._handleAuthRequest(this.authService.googleAuth());
   }
 
   private _handleAuthRequest(
     auth$: Observable<HttpResponse<any>>,
-    successMessage: string
     ): void {
     this.loading = true;
     auth$
@@ -59,7 +54,6 @@ export abstract class BaseAuthComponent {
           const body = response.body;
 
           if (status === 200 && body?.accessToken) {
-            this.notificationService.showSuccess(successMessage);
             this.authService.saveTokens(body.accessToken, body.refreshToken);
             this._postLoginRedirect();
           } else if (status === 202) {
@@ -67,8 +61,16 @@ export abstract class BaseAuthComponent {
           }
         },
         error: (err) => {
-          const errorMessage = err.error?.message || 'Credentials are invalid. Please, try again.';
-          this.notificationService.showError(errorMessage, err);
+          this.loading = false;
+          const msg = err?.error || err?.message || '';
+          if (err.status === 401) {
+            this.errorMsg = 'Invalid email or password.';
+          } else if (msg) {
+            this.errorMsg = msg;
+          } else {
+            this.errorMsg = 'Unexpected error.';
+          }
+          console.error(err);
         },
       });
     }
@@ -85,8 +87,6 @@ export abstract class BaseAuthComponent {
         }
       },
       error: (err) => {
-        console.error('Failed to load user after login:', err);
-        this.notificationService.showError('Failed to load user info. Try again.', err);
         this.authService.logout();
       }
     });

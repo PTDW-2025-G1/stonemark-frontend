@@ -5,7 +5,6 @@ import {RouterLink} from '@angular/router';
 export interface ProfileFormData {
   firstName: string;
   lastName: string;
-  telephone: string;
 }
 
 @Component({
@@ -18,7 +17,6 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
   @Input() currentProfile: ProfileFormData = {
     firstName: '',
     lastName: '',
-    telephone: ''
   };
   @Input() currentEmail: string = '';
   @Input() isSubmitting: boolean = false;
@@ -45,7 +43,6 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
     this.profileForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
-      telephone: ['', [Validators.required, Validators.pattern('^(\\+351|00351)?[ ]?9\\d{8}$')]]
     });
   }
 
@@ -72,7 +69,6 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
   hasChanges(): boolean {
     const formValue = this.profileForm.value;
     return formValue.firstName !== this.currentProfile.firstName ||
-      formValue.lastName !== this.currentProfile.lastName ||
-      formValue.telephone !== this.currentProfile.telephone;
+      formValue.lastName !== this.currentProfile.lastName;
   }
 }

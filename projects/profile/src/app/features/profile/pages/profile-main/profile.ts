@@ -165,6 +165,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/profile/change-password']);
   }
 
+  changeTelephone(): void {
+    this.router.navigate(['/profile/change-telephone']);
+  }
+
   changeEmail(): void {
     this.router.navigate(['/profile/change-email']);
   }

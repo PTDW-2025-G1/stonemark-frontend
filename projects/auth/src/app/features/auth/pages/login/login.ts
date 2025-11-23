@@ -16,6 +16,7 @@ import {ProfileService} from '@core/services/profile.service';
       <app-auth-form
         mode="login"
         [loading]="loading"
+        [errorMsg]="errorMsg"
         (submit)="onSubmit($event)"
         (toggleMode)="onToggleMode()"
         (googleAuth)="onGoogleAuth()"
@@ -33,10 +34,9 @@ import {ProfileService} from '@core/services/profile.service';
 })
 export class LoginComponent extends BaseAuthComponent {
   override mode: 'login' = 'login';
-  override successMessage = 'Login successful!';
   override navigateTo = '/register';
 
-  constructor(router: Router, authService: AuthService, profileService: ProfileService, notificationService: NotificationService) {
-    super(router, authService, profileService, notificationService);
+  constructor(router: Router, authService: AuthService, profileService: ProfileService) {
+    super(router, authService, profileService);
   }
 }

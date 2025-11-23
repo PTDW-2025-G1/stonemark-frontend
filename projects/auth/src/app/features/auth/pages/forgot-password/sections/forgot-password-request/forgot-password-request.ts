@@ -13,4 +13,5 @@ export class ForgotPasswordRequestComponent {
   @Input() form!: FormGroup;
   @Input() loading = false;
   @Output() submit = new EventEmitter<void>();
+  @Input() emailError: string | null = null;
 }

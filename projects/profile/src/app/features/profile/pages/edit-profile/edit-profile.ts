@@ -16,7 +16,6 @@ export class EditProfileComponent implements OnInit {
   currentProfile = {
     firstName: '',
     lastName: '',
-    telephone: '',
     email: ''
   };
   profileUpdated: boolean = false;
@@ -35,7 +34,6 @@ export class EditProfileComponent implements OnInit {
         this.currentProfile = {
           firstName: user.firstName,
           lastName: user.lastName,
-          telephone: user.telephone,
           email: user.email
         }
       },
@@ -51,8 +49,7 @@ export class EditProfileComponent implements OnInit {
 
     this.profileService.updateProfile({
       firstName: profileData.firstName,
-      lastName: profileData.lastName,
-      telephone: profileData.telephone
+      lastName: profileData.lastName
     }).subscribe({
       next: () => {
         this.isSubmitting = false;

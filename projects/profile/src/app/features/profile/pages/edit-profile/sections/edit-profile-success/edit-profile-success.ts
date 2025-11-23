@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 export interface UpdatedProfileData {
   firstName: string;
   lastName: string;
-  telephone: string;
 }
 
 @Component({
@@ -16,8 +15,7 @@ export interface UpdatedProfileData {
 export class EditProfileSuccessComponent {
   @Input() updatedProfile: UpdatedProfileData = {
     firstName: '',
-    lastName: '',
-    telephone: ''
+    lastName: ''
   };
   @Output() editAgain = new EventEmitter<void>();
   @Output() backToProfile = new EventEmitter<void>();

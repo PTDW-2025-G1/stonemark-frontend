@@ -5,6 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import {ForgotPasswordRequestComponent} from './sections/forgot-password-request/forgot-password-request';
 import {ForgotPasswordConfirmComponent} from './sections/forgot-password-confirm/forgot-password-confirm';
+import {NotificationService} from '@core/services/notification.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -20,7 +21,9 @@ export class ForgotPasswordComponent {
   codeForm: FormGroup;
 
   confirming = false;
+  emailError: string | null = null;
   codeError: string | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +42,7 @@ export class ForgotPasswordComponent {
   onSubmit() {
     if (this.form.invalid) return;
     this.loading = true;
+    this.emailError = null;
     const email = this.form.value.email as string;
 
     this.auth.requestPasswordReset(email).subscribe({
@@ -48,8 +52,16 @@ export class ForgotPasswordComponent {
         this.codeForm.reset();
         this.codeError = null;
       },
-      error: () => {
+      error: (err) => {
         this.loading = false;
+        const msg = err?.error;
+        if (typeof msg === 'string' && msg.toLowerCase().includes('user not found')) {
+          this.emailError = 'Email not found. Please try again.';
+        } else if (msg) {
+          this.emailError = msg;
+        } else {
+          this.emailError = 'Unexpected error.';
+        }
       }
     });
   }

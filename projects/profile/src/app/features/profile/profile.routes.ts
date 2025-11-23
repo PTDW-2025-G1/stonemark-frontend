@@ -20,6 +20,12 @@ export const PROFILE_ROUTES: Routes = [
     title: 'Change Email'
   },
   {
+    path: 'change-telephone',
+    loadComponent: () =>
+      import('./pages/change-telephone/change-telephone').then(m => m.ChangeTelephoneComponent),
+    title: 'Change Telephone'
+  },
+  {
     path: 'change-password',
     loadComponent: () =>
       import('./pages/change-password/change-password').then(m => m.ChangePasswordComponent),

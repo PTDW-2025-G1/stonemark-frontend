@@ -20,10 +20,6 @@
       <p class="text-sm text-text">{{ currentProfile.firstName }} {{ currentProfile.lastName }}</p>
     </div>
     <div class="flex items-center gap-2">
-      <i class="bi bi-telephone text-primary text-sm"></i>
-      <p class="text-sm text-text">{{ currentProfile.telephone }}</p>
-    </div>
-    <div class="flex items-center gap-2">
       <i class="bi bi-envelope text-primary text-sm"></i>
       <p class="text-sm text-text-muted">{{ currentEmail }}</p>
     </div>
@@ -91,37 +87,6 @@
           }
           @if (profileForm.get('lastName')?.errors?.['minlength']) {
             Last name must be at least 2 characters
-          }
-        </p>
-      }
-    </div>
-
-    <!-- Telephone -->
-    <div class="mb-6">
-      <label for="telephone" class="block text-sm font-semibold text-text mb-2">
-        Telephone <span class="text-error">*</span>
-      </label>
-      <div class="relative">
-        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <i class="bi bi-telephone text-text-muted"></i>
-        </div>
-        <input
-          type="tel"
-          id="telephone"
-          formControlName="telephone"
-          placeholder="+351 912345678"
-          class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
-          [class.border-error]="profileForm.get('telephone')?.invalid && profileForm.get('telephone')?.touched"
-        />
-      </div>
-      @if (profileForm.get('telephone')?.invalid && profileForm.get('telephone')?.touched) {
-        <p class="mt-2 text-sm text-error flex items-center gap-1">
-          <i class="bi bi-exclamation-circle"></i>
-          @if (profileForm.get('telephone')?.errors?.['required']) {
-            Telephone is required
-          }
-          @if (profileForm.get('telephone')?.errors?.['pattern']) {
-            Please enter a valid telephone number
           }
         </p>
       }

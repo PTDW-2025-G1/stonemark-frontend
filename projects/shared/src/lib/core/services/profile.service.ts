@@ -25,7 +25,7 @@ export class ProfileService {
     return this.http.get<UserDto>(`${this.baseUrl}/profile`);
   }
 
-  updateProfile(profile: { firstName: string; lastName: string; telephone: string }): Observable<any> {
+  updateProfile(profile: { firstName: string; lastName: string }): Observable<any> {
     return this.http.put(`${this.baseUrl}/profile`, profile);
   }
 
@@ -39,6 +39,12 @@ export class ProfileService {
     return this.http.post(`${this.baseUrl}/change-password`, {
       oldPassword,
       newPassword
+    });
+  }
+
+  changeTelephone(newPhone: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/request-phone-change`, {
+      newPhone
     });
   }
 

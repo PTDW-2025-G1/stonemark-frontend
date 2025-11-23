@@ -17,16 +17,16 @@ export interface UserDto {
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  private baseUrl = `${environment.apiUrl}/user/account`;
+  private baseUrl = `${environment.apiUrl}/account`;
 
   constructor(private http: HttpClient) {}
 
   getCurrentUser(): Observable<UserDto> {
-    return this.http.get<UserDto>(`${this.baseUrl}/me`);
+    return this.http.get<UserDto>(`${this.baseUrl}/profile`);
   }
 
   updateProfile(profile: { firstName: string; lastName: string; telephone: string }): Observable<any> {
-    return this.http.put(`${this.baseUrl}/account`, profile);
+    return this.http.put(`${this.baseUrl}/profile`, profile);
   }
 
   changeEmail(newEmail: string): Observable<any>{

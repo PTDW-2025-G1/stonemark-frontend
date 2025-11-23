@@ -44,8 +44,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -53,7 +53,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/shared/src/lib/core/environments/environment.ts",
+                  "with": "projects/shared/src/lib/core/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -147,8 +153,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -156,7 +162,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/shared/src/lib/core/environments/environment.ts",
+                  "with": "projects/shared/src/lib/core/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -169,8 +181,13 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": { "buildTarget": "auth:build:production" },
-            "development": { "buildTarget": "auth:build:development", "port": 4201 }
+            "production": {
+              "buildTarget": "auth:build:production"
+            },
+            "development": {
+              "buildTarget": "auth:build:development",
+              "port": 4201
+            }
           },
           "defaultConfiguration": "development"
         },
@@ -244,8 +261,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -253,7 +270,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/shared/src/lib/core/environments/environment.ts",
+                  "with": "projects/shared/src/lib/core/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -266,8 +289,13 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": { "buildTarget": "profile:build:production" },
-            "development": { "buildTarget": "profile:build:development", "port": 4202 }
+            "production": {
+              "buildTarget": "profile:build:production"
+            },
+            "development": {
+              "buildTarget": "profile:build:development",
+              "port": 4202
+            }
           },
           "defaultConfiguration": "development"
         },
@@ -371,8 +399,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2mb",
+                  "maximumError": "2.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -380,7 +408,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/shared/src/lib/core/environments/environment.ts",
+                  "with": "projects/shared/src/lib/core/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,

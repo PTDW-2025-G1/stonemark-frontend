@@ -4,13 +4,25 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:all": "concurrently \"npm:start:app\" \"npm:start:auth\" \"npm:start:profile\"",
+    "start:all": "concurrently \"npm:start:app\" \"npm:start:auth\" \"npm:start:profile\" \"npm:start:staff\"",
     "start:app": "ng serve app",
     "start:auth": "ng serve auth",
     "start:profile": "ng serve profile",
+    "start:staff": "ng serve staff",
     "build": "ng build",
+    "build:all": "npm run build:app && npm run build:auth && npm run build:profile && npm run build:staff",
+    "build:app": "node ./node_modules/@angular/cli/bin/ng.js build app",
+    "build:auth": "node ./node_modules/@angular/cli/bin/ng.js build auth",
+    "build:profile": "node ./node_modules/@angular/cli/bin/ng.js build profile",
+    "build:staff": "node ./node_modules/@angular/cli/bin/ng.js build staff",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start:prod": "npm run build:all && serve -s dist/app/browser",
+    "start:prod:all": "npm run build:all && concurrently \"npm:serve:app\" \"npm:serve:auth\" \"npm:serve:profile\" \"npm:serve:staff\"",
+    "serve:app": "serve -s dist/app/browser -l 4200",
+    "serve:auth": "serve -s dist/auth/browser -l 4201",
+    "serve:profile": "serve -s dist/profile/browser -l 4202",
+    "serve:staff": "serve -s dist/staff/browser -l 4220"
   },
   "prettier": {
     "printWidth": 100,

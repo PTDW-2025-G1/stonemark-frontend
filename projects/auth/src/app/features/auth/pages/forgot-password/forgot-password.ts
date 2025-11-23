@@ -5,7 +5,8 @@ import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import {ForgotPasswordRequestComponent} from './sections/forgot-password-request/forgot-password-request';
 import {ForgotPasswordConfirmComponent} from './sections/forgot-password-confirm/forgot-password-confirm';
-import {NotificationService} from '@core/services/notification.service';
+import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';
+import StatusEnum = ConfirmationResponseDto.StatusEnum;
 
 @Component({
   selector: 'app-forgot-password',
@@ -66,7 +67,7 @@ export class ForgotPasswordComponent {
     });
   }
 
-  onConfirmCode() {
+  onConfirmCode(): void {
     if (this.codeForm.invalid) return;
     this.confirming = true;
     this.codeError = null;
@@ -74,12 +75,11 @@ export class ForgotPasswordComponent {
     const code = (this.codeForm.value.code as string).trim().toUpperCase();
 
     this.auth.confirmCode(code).subscribe({
-      next: (res: { status: string; message?: string; token?: string }) => {
-        const status = res?.status ?? 'ERROR';
-
-        if (status === 'PASSWORD_RESET_REQUIRED' && res?.token) {
+      next: (res: ConfirmationResponseDto) => {
+        const status = res?.status ?? StatusEnum.Error;
+        if (status === StatusEnum.PasswordResetRequired && res?.token) {
           this.router.navigate(['/reset-password'], { queryParams: { token: res.token } });
-        } else if (status === 'SUCCESS') {
+        } else if (status === StatusEnum.Success) {
           this.router.navigate(['/verify'], { queryParams: { status: 'success' } });
         } else {
           this.codeError = res?.message || 'Invalid or expired code.';

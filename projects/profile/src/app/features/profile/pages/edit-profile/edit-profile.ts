@@ -4,7 +4,8 @@ import {ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import {EditProfileFormComponent, ProfileFormData} from './sections/edit-profile-form/edit-profile-form';
 import {EditProfileSuccessComponent} from './sections/edit-profile-success/edit-profile-success';
-import {ProfileService, UserDto} from '@core/services/profile.service';
+import {ProfileService} from '@core/services/profile.service';
+import {UserDto} from '@api/model/user-dto';
 
 @Component({
   selector: 'app-edit-profile',
@@ -32,9 +33,9 @@ export class EditProfileComponent implements OnInit {
     this.profileService.getCurrentUser().subscribe({
       next: (user: UserDto) => {
         this.currentProfile = {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          email: user.email || ''
         }
       },
       error: err => {

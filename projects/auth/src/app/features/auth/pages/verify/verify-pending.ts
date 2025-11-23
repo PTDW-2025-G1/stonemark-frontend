@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@core/services/auth.service';
+import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';
+import StatusEnum = ConfirmationResponseDto.StatusEnum;
 
 @Component({
   standalone: true,
@@ -258,19 +260,23 @@ export class VerifyPendingComponent implements OnInit {
     const code = this.verifyForm.value.code.toUpperCase();
 
     this.authService.confirmCode(code).subscribe({
-      next: (res) => {
+      next: (res: ConfirmationResponseDto) => {
         this.loading = false;
 
-        if (res.status === 'SUCCESS') {
+        if (res.status === StatusEnum.Success) {
           this.verified = true;
 
-          // Auto-redirect to login after 3 seconds
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 3000);
+        }
+
+        else if (res.status === StatusEnum.Error || res.status === StatusEnum.PasswordResetRequired) {
+          this.errorMessage = res.message || 'Invalid or expired verification code';
         } else {
           this.errorMessage = res.message || 'Invalid or expired verification code';
         }
+
       },
       error: (err) => {
         this.loading = false;

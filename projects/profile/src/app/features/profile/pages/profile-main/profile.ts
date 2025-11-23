@@ -8,7 +8,8 @@ import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
 import {ProfileSuggestionsComponent} from './sections/profile-suggestions/profile-suggestions';
 import { Suggestion } from '@core/models/suggestions.model';
-import {ProfileService, UserDto} from '@core/services/profile.service';
+import {ProfileService} from '@core/services/profile.service';
+import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth.service';
 
@@ -43,18 +44,20 @@ export class ProfileComponent implements OnInit {
   loadUserProfile(): void {
     this.profileService.getCurrentUser().subscribe({
       next: (data: UserDto) => {
+
+        const memberSinceString = data.createdAt
+          ? data.createdAt.split('T')[0]
+          : null;
+
         this.user = {
           name: `${data.firstName} ${data.lastName}`,
           email: data.email,
           avatar: 'https://i.pravatar.cc/300?img=12',
-          memberSince: new Date(data.createdAt).toLocaleString('default', {
-            month: 'long',
-            year: 'numeric'
-          }),
+          memberSince: memberSinceString,
           stats: {
-            totalMarks: 0, // Atualizar com dados reais quando disponíveis
-            pendings: 0,   // Atualizar com dados reais quando disponíveis
-            rejected: 0    // Atualizar com dados reais quando disponíveis
+            totalMarks: 0,
+            pendings: 0,
+            rejected: 0
           }
         };
         this.loading = false;

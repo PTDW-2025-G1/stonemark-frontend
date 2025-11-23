@@ -3,6 +3,8 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { CommonModule } from '@angular/common';
+import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';
+import StatusEnum = ConfirmationResponseDto.StatusEnum;
 
 @Component({
   selector: 'app-confirm',
@@ -41,6 +43,7 @@ export class ConfirmComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
       const token = params.get('token');
+
       if (!token) {
         this.title = 'Invalid link';
         this.message = 'No token was provided.';
@@ -48,26 +51,27 @@ export class ConfirmComponent implements OnInit {
         return;
       }
 
-      this.http.get(`${environment.apiUrl}/auth/confirm?token=${token}`).subscribe({
-        next: (res: any) => {
+      this.http.get<ConfirmationResponseDto>(`${environment.apiUrl}/auth/confirm?token=${token}`).subscribe({
+        next: (res: ConfirmationResponseDto) => {
           console.log('Response:', res);
-
           this.loading = false;
           switch (res.status) {
-            case 'SUCCESS':
+            case StatusEnum.Success:
               this.title = 'Account Verified!';
               this.message = 'Your account is now active. You can log in.';
               this.redirectUrl = '/login';
               break;
 
-            case 'PASSWORD_RESET_REQUIRED':
+            case StatusEnum.PasswordResetRequired:
               this.title = 'Password Reset Required';
               this.message = 'Please set a new password to continue.';
-              setTimeout(() => {
-                this.router.navigate(['/reset-password'], {
-                  queryParams: { token: res.token }
-                });
-              }, 1000);
+              if (res.token) {
+                setTimeout(() => {
+                  this.router.navigate(['/reset-password'], {
+                    queryParams: { token: res.token }
+                  });
+                }, 1000);
+              }
               break;
 
             default:
@@ -77,12 +81,9 @@ export class ConfirmComponent implements OnInit {
               break;
           }
         },
-        error: (err) => {
-          this.loading = false;
-          this.title = 'Verification Failed';
-          this.message = err.error?.message || 'Something went wrong.';
-        }
+        error: (err) => {}
       });
     });
   }
+
 }

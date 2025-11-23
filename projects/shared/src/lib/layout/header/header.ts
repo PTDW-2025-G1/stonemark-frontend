@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {ButtonComponent} from '@shared/ui/button/button';
 import { AuthService } from '@core/services/auth.service';
-import { ProfileService, UserDto } from '@core/services/profile.service';
+import { ProfileService } from '@core/services/profile.service';
+import { UserDto } from '@api/model/user-dto';
 import { Subscription } from 'rxjs';
 import {environment} from '@env/environment';
 

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ProfileService } from '@core/services/profile.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
-import { PasswordService } from '@shared/services/password.service';
+import { PasswordService } from '@shared/helpers/password.service';
 
 @Component({
   selector: 'app-change-password',

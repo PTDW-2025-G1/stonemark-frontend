@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ContactService } from '@core/services/contact.service'
 import {ProfileService} from '@core/services/profile.service';
 import {AuthService} from '@core/services/auth.service';
+import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SharedSelectComponent],
   template: `
     <div class="bg-gradient-to-br from-surface-alt to-surface rounded-3xl border border-border p-6 sm:p-8 lg:p-10 shadow-xl">
       <div class="mb-8">
@@ -83,26 +84,16 @@ import {AuthService} from '@core/services/auth.service';
             Subject <span class="text-error">*</span>
           </label>
           <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <i class="bi bi-tag text-text-muted"></i>
-            </div>
-            <select
-              id="subject"
-              formControlName="subject"
-              class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 appearance-none cursor-pointer"
+            <app-shared-select
+              [options]="subjectOptions"
+              [selected]="contactForm.get('subject')?.value"
+              label="Select a subject..."
+              optionLabelKey="name"
+              optionValueKey="id"
+              [searchable]="false"
+              (selectionChange)="contactForm.get('subject')?.setValue($event)"
               [class.border-error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
-            >
-              <option value="">Select a subject...</option>
-              <option value="general">General Inquiry</option>
-              <option value="support">Technical Support</option>
-              <option value="collaboration">Partnership/Collaboration</option>
-              <option value="bug">Report a Bug</option>
-              <option value="feature">Feature Request</option>
-              <option value="other">Other</option>
-            </select>
-            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-              <i class="bi bi-chevron-down text-text-muted"></i>
-            </div>
+            ></app-shared-select>
           </div>
           @if (contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched) {
             <p class="mt-2 text-sm text-error flex items-center gap-1">
@@ -208,6 +199,15 @@ export class ContactFormComponent implements OnInit{
       });
     }
   }
+
+  subjectOptions = [
+    { id: 'general', name: 'General Inquiry' },
+    { id: 'support', name: 'Technical Support' },
+    { id: 'collaboration', name: 'Partnership/Collaboration' },
+    { id: 'bug', name: 'Report a Bug' },
+    { id: 'feature', name: 'Feature Request' },
+    { id: 'other', name: 'Other' }
+  ];
 
   onSubmit() {
     if (this.contactForm.invalid) {

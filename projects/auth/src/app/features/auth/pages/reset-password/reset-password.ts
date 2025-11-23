@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { AuthService } from '@core/services/auth.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
-import { PasswordService } from '@shared/services/password.service';
+import { PasswordService } from '@shared/helpers/password.service';
 
 @Component({
   selector: 'app-reset-password',

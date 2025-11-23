@@ -5,7 +5,7 @@ import {environment} from '@env/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
-  private baseUrl = `${environment.apiUrl}/public/contact-requests`;
+  private baseUrl = `${environment.apiUrl}/contact-requests`;
 
   constructor(private http: HttpClient) {}
 

@@ -7,22 +7,19 @@ import { Mark } from '@core/models/mark.model';
 import { Observable, of, switchMap } from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {SearchHeaderComponent} from '@features/search/sections/search-header/search-header';
-import {SearchFiltersComponent} from '@features/search/sections/search-filters/search-filters';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {SearchPaginationComponent} from '@features/search/sections/search-pagination/search-pagination';
 import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, SearchHeaderComponent, SearchFiltersComponent, SearchResultsComponent, SearchPaginationComponent],
+  imports: [CommonModule, SearchHeaderComponent, SearchResultsComponent, SearchPaginationComponent],
   templateUrl: './search.html'
 })
 export class SearchComponent implements OnInit {
   type: 'monuments' | 'marks' = 'monuments';
   title = '';
   items$: Observable<(Monument | Mark)[]> = of([]);
-
-  filters: any = {};
 
   currentPage = 1;
   totalPages = 1;
@@ -41,7 +38,6 @@ export class SearchComponent implements OnInit {
         const type = params.get('type') as 'monuments' | 'marks' || 'monuments';
         this.type = type;
         this.title = this.getTitle(type);
-        this.filters = this.getFiltersForType(type);
 
         this.titleService.setTitle(`${this.title} - StoneMark`);
 
@@ -60,23 +56,6 @@ export class SearchComponent implements OnInit {
       case 'monuments': return 'Historic Monuments';
       default: return 'Search Results';
     }
-  }
-
-  private getFiltersForType(type: 'monuments' | 'marks') {
-    if (type === 'marks') {
-      return {
-        monument: true,
-      };
-    }
-
-    return {
-      location: true,
-      period: true,
-      artist: true,
-      material: true,
-      architect: true,
-      startDate: true,
-    };
   }
 
   onPageChange(page: number) {

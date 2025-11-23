@@ -38,7 +38,7 @@ import { Component } from '@angular/core';
           </div>
           <div>
             <p class="text-sm font-semibold text-text-muted mb-1">Address</p>
-            <p class="text-sm text-text">Porto, Portugal</p>
+            <p class="text-sm text-text">Águeda, Aveiro - Portugal</p>
           </div>
         </div>
       </div>

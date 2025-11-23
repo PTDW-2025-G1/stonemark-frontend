@@ -1,10 +1,9 @@
 export interface Monument {
   id: number;
   name: string;
-  protectionTitle: string;
+  protection_title: string;
   lat?: number;
   lon?: number;
-  wikidata?: string;
   website?: string;
   cover?: string;
   location?: string;

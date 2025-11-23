@@ -1,3 +1,28 @@
+
+<nav class="bg-surface border-b border-border py-4" aria-label="Breadcrumb">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ol class="flex items-center space-x-2 text-sm">
+      <li>
+        <a
+          routerLink="/search/monuments"
+          class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors group"
+        >
+          <i class="bi bi-building text-lg group-hover:scale-110 transition-transform"></i>
+          <span class="font-medium">Monuments</span>
+        </a>
+      </li>
+      <li>
+        <i class="bi bi-chevron-right text-text-muted text-xs"></i>
+      </li>
+      @if (monument$ | async; as monument) {
+        <li class="flex items-center gap-2">
+          <i class="bi bi-pin-map-fill text-primary text-lg"></i>
+          <span class="font-semibold text-text">{{ monument.name }}</span>
+        </li>
+      }
+    </ol>
+  </div>
+</nav>
 <div class="min-h-screen bg-surface">
   @if (monument$ | async; as monument) {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
@@ -37,10 +62,10 @@
                 <i class="bi bi-building"></i>
                 Monument
               </span>
-              @if (monument.protectionTitle) {
+              @if (monument.protection_title) {
                 <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold flex items-center gap-1.5 border border-amber-200">
                   <i class="bi bi-shield-fill-check"></i>
-                  {{ monument.protectionTitle }}
+                  {{ monument.protection_title }}
                 </span>
               }
               @if (monument.website) {

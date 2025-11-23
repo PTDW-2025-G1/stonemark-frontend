@@ -7,144 +7,137 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterLink, CommonModule],
   template: `
-    <section class="relative min-h-screen bg-surface overflow-hidden">
+    <section class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-surface pt-20 pb-32">
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28">
-        <div class="text-center mb-12 sm:mb-16 lg:mb-20">
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute inset-0 opacity-[0.03]"
+             style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 40px 40px;">
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+      </div>
 
-          <!-- Badge -->
-          <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm rounded-full border border-primary/20 mb-6 sm:mb-8 animate-fade-in">
-            <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-            <span class="text-sm font-medium text-text">Preserving Heritage Through Technology</span>
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        <div class="text-center max-w-4xl mx-auto mb-16 sm:mb-24">
+
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border border-border shadow-sm mb-8 animate-fade-in">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span class="text-xs font-semibold text-text-muted uppercase tracking-wider">Digital Archive</span>
           </div>
 
-          <!-- Main Headline -->
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold text-text leading-tight mb-6 sm:mb-8 animate-slide-up">
-            Discover the Stories
-            <span class="block mt-2 bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent animate-gradient">
-              Behind Every Stone
+          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-medium text-text leading-[1.05] tracking-tight mb-6 animate-slide-up">
+            Uncover the history
+            <span class="block text-text-muted italic font-light relative">
+              etched in stone.
+              <svg class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 sm:w-32 h-3 text-primary/30" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="2" fill="none" />
+              </svg>
             </span>
           </h1>
 
-          <!-- Subtitle -->
-          <p class="text-lg sm:text-xl lg:text-xl text-text-muted max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 animate-fade-in-delay">
-            Document and explore stonemason marks across centuries. Join a global community preserving architectural heritage, one symbol at a time.
+          <p class="text-lg sm:text-xl text-text-muted/90 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-delay mb-10">
+            Join a global community documenting stonemason marks.
+            From medieval monasteries to hidden chapels, help us preserve the signatures of the past.
           </p>
 
-          <!-- Stats Row -->
-          <div class="flex justify-center gap-8 sm:gap-12 lg:gap-16 mb-10 sm:mb-12 animate-fade-in-delay-2">
-            <div class="text-center">
-              <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text mb-1">2.5K+</div>
-              <div class="text-sm sm:text-base text-text-muted">Monuments</div>
-            </div>
-            <div class="text-center">
-              <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text mb-1">12K+</div>
-              <div class="text-sm sm:text-base text-text-muted">Marks</div>
-            </div>
-            <div class="text-center">
-              <div class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text mb-1">850+</div>
-              <div class="text-sm sm:text-base text-text-muted">Contributors</div>
-            </div>
-          </div>
-
-          <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16 sm:mb-20 animate-fade-in-delay-3">
+          <div class="animate-fade-in-delay-2">
             <a routerLink="/search/monuments"
-               class="group relative px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold text-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105">
-              <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-info/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span class="relative flex items-center justify-center gap-2">
-                Explore Now
-                <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-              </span>
-            </a>
-
-            <a routerLink="/help"
-               class="group px-8 py-4 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold text-lg hover:border-primary hover:bg-surface transition-all duration-300">
-              <span class="flex items-center justify-center gap-2">
-                Learn More
-                <i class="bi bi-info-circle"></i>
-              </span>
+               class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-text text-surface rounded-full font-medium text-lg hover:bg-primary hover:scale-105 transition-all duration-300 shadow-xl shadow-gray-200/50 hover:shadow-primary/20 group">
+              Start Exploring
+              <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </a>
           </div>
-
         </div>
 
-        <!-- Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto animate-fade-in-delay-3">
 
-          <!-- Monuments Card -->
-          <a routerLink="/search/monuments"
-             class="group relative bg-gradient-to-br from-surface-alt to-surface rounded-3xl p-8 sm:p-10 border-2 border-border hover:border-primary hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 animate-fade-in-delay-4">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-info/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div class="relative space-y-6">
-              <div class="w-20 h-20 bg-gradient-to-br from-primary to-info rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <i class="bi bi-building text-white text-3xl"></i>
+          <a routerLink="/search/monuments" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
+
+            <div class="absolute inset-0">
+              <img src="https://www.ecotoursportugal.com/content/uploads/maingallery/crops/5872_default_1619184145.jpg"
+                   alt="Monument"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                <i class="bi bi-building"></i>
               </div>
-              <div class="text-center">
-                <h3 class="text-2xl font-serif font-bold text-text mb-2 group-hover:text-primary transition-colors">Monuments</h3>
-                <p class="text-sm text-text-muted mb-4">Explore historic buildings and architectural wonders</p>
-                <div class="flex items-center justify-center gap-2 text-sm text-primary font-medium">
-                  <span>2,547 Sites</span>
-                  <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                </div>
-              </div>
+              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">Monuments</h3>
+              <p class="text-sm text-gray-200 mb-4 font-light">Map of historic sites</p>
+              <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-semibold text-white group-hover:bg-white group-hover:text-primary transition-colors duration-300">
+                2,547 Sites
+              </span>
             </div>
           </a>
 
-          <!-- Capture Card -->
-          <a routerLink="/capture"
-             class="group relative bg-gradient-to-br from-surface-alt to-surface rounded-3xl p-8 sm:p-10 border-2 border-border hover:border-info hover:shadow-2xl hover:shadow-info/10 transition-all duration-500 hover:-translate-y-2 animate-fade-in-delay-5">
-            <div class="absolute inset-0 bg-gradient-to-br from-info/5 to-primary/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div class="relative space-y-6">
-              <div class="w-20 h-20 bg-gradient-to-br from-info to-primary rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <i class="bi bi-camera text-white text-3xl"></i>
+          <a routerLink="/search/marks" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
+
+            <div class="absolute inset-0">
+              <img src="https://www.portugalresident.com/wp-content/uploads/2025/10/Silves-stone-marks-1416.jpg"
+                   alt="Stone Marks"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                <i class="bi bi-grid-3x3"></i>
               </div>
-              <div class="text-center">
-                <h3 class="text-2xl font-serif font-bold text-text mb-2 group-hover:text-info transition-colors">Capture Mark</h3>
-                <p class="text-sm text-text-muted mb-4">Document and submit new stonemason marks</p>
-                <div class="flex items-center justify-center gap-2 text-sm text-info font-medium">
-                  <span>Start Contributing</span>
-                  <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                </div>
-              </div>
+              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">Stone Marks</h3>
+              <p class="text-sm text-gray-200 mb-4 font-light">Symbol catalog</p>
+              <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-semibold text-white group-hover:bg-white group-hover:text-primary transition-colors duration-300">
+                12,483 Marks
+              </span>
             </div>
           </a>
 
-          <!-- Marks Card -->
-          <a routerLink="/search/marks"
-             class="group relative bg-gradient-to-br from-surface-alt to-surface rounded-3xl p-8 sm:p-10 border-2 border-border hover:border-primary hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 animate-fade-in-delay-6 sm:col-span-2 lg:col-span-1">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-info/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div class="relative space-y-6">
-              <div class="w-20 h-20 bg-gradient-to-br from-primary to-info rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <i class="bi bi-grid-3x3 text-white text-3xl"></i>
+          <a routerLink="/capture" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
+
+            <div class="absolute inset-0">
+              <img src="https://i.ibb.co/rRTdYbPs/image.jpg"
+                   alt="Contribute"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center">
+              <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                <i class="bi bi-camera"></i>
               </div>
-              <div class="text-center">
-                <h3 class="text-2xl font-serif font-bold text-text mb-2 group-hover:text-primary transition-colors">Marks</h3>
-                <p class="text-sm text-text-muted mb-4">Browse and discover stonemason symbols</p>
-                <div class="flex items-center justify-center gap-2 text-sm text-primary font-medium">
-                  <span>12,483 Marks</span>
-                  <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                </div>
-              </div>
+              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">Contribute</h3>
+              <p class="text-sm text-gray-200 mb-4 font-light">Add new discoveries</p>
+              <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-semibold text-white group-hover:bg-white group-hover:text-primary transition-colors duration-300">
+                Join 850+ Curators
+              </span>
             </div>
           </a>
 
         </div>
-
       </div>
 
-      <!-- Scroll Indicator -->
       <button
         (click)="scrollToContent()"
-        class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden lg:block cursor-pointer hover:text-primary transition-colors group">
-        <div class="flex flex-col items-center gap-2 text-text-muted group-hover:text-primary">
-          <span class="text-xs font-medium">Scroll to explore</span>
-          <i class="bi bi-chevron-down text-xl"></i>
-        </div>
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-muted/60 hover:text-primary transition-colors group cursor-pointer animate-bounce">
+        <span class="text-[10px] uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity">Scroll</span>
+        <i class="bi bi-arrow-down text-xl"></i>
       </button>
 
     </section>
   `,
+  styles: [`
+    .animate-pulse-slow {
+      animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+    }
+  `]
 })
 export class HeroSectionComponent {
   scrollToContent(): void {

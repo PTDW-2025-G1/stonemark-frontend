@@ -1,11 +1,24 @@
 <!-- Search Page Container -->
 <div class="min-h-screen">
-  <app-search-header [type]="type" [title]="title"></app-search-header>
+  <app-search-header
+    [type]="type"
+    [title]="title"
+    [locations]="[
+    'Aveiro',
+    'Coimbra',
+    'Lisboa',
+    'Porto',
+    ]"
+    [monumentsList]="[
+    { id: 1, name: 'Castelo de Guimarães' },
+    { id: 2, name: 'Mosteiro de Alcobaça' },
+    { id: 3, name: 'Torre de Belém' }
+    ]"
+  >
+  </app-search-header>
   <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
-      <!-- Filters Sidebar -->
-      <app-search-filters [filters]="filters"></app-search-filters>
       <!-- Results Grid + Pagination -->
       <div class="flex flex-col items-center w-full">
         <app-search-results [items$]="items$" [type]="type"></app-search-results>

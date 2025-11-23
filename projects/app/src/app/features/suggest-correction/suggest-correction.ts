@@ -39,7 +39,7 @@ export class SuggestCorrectionComponent implements OnInit {
   originalData = {
     name: '',
     description: '',
-    protectionTitle: '',
+    protection_title: '',
     website: '',
     lat: null as number | null,
     lon: null as number | null,
@@ -49,7 +49,7 @@ export class SuggestCorrectionComponent implements OnInit {
   editedData = {
     name: '',
     description: '',
-    protectionTitle: '',
+    protection_title: '',
     website: '',
     lat: null as number | null,
     lon: null as number | null,
@@ -72,7 +72,7 @@ export class SuggestCorrectionComponent implements OnInit {
         this.originalData = {
           name: monument.name || '',
           description: monument.description || '',
-          protectionTitle: monument.protectionTitle || '',
+          protection_title: monument.protection_title || '',
           website: monument.website || '',
           lat: monument.lat ?? null,
           lon: monument.lon ?? null,
@@ -82,7 +82,7 @@ export class SuggestCorrectionComponent implements OnInit {
         this.editedData = {
           name: this.originalData.name,
           description: this.originalData.description,
-          protectionTitle: this.originalData.protectionTitle,
+          protection_title: this.originalData.protection_title,
           website: this.originalData.website,
           lat: this.originalData.lat,
           lon: this.originalData.lon,
@@ -201,18 +201,6 @@ export class SuggestCorrectionComponent implements OnInit {
 
   progressPercent() {
     return ((this.currentStep - 1) / 2) * 100;
-  }
-
-  showInformationFields() {
-    return this.sections.includes('information');
-  }
-
-  showHistoryFields() {
-    return this.sections.includes('history');
-  }
-
-  showMapFields() {
-    return this.sections.includes('map');
   }
 
   protected readonly name = name;

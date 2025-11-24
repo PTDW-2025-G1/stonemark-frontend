@@ -26,6 +26,7 @@ export class AppMenu {
                     { label: 'Marks Submissions', icon: 'pi pi-fw pi-tag', routerLink: ['/moderator/marks-submissions'] },
                     { label: 'Content Proposals', icon: 'pi pi-fw pi-file-edit', routerLink: ['/moderator/content-proposals'] },
                     { label: 'Manage Moderators', icon: 'pi pi-fw pi-users', routerLink: ['/admin/manage-moderators'] },
+                    { label: 'Contact Requests', icon: 'pi pi-envelope', routerLink: ['/moderator/contact-requests'] },
                 ]},
             {
                 label: 'UI Components',

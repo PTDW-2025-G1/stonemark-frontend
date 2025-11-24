@@ -5,6 +5,7 @@ import { Notfound } from './pages/notfound/notfound';
 import { ModeratorMarksSubmissionsComponent } from './pages/moderator/marks-submissions/marks-submissions';
 import { ContentProposals } from './pages/moderator/content-proposals/content-proposals';
 import { ManageModerators } from './pages/admin/manage-moderators/manage-moderators';
+import { ContactRequests } from './pages/moderator/contact-requests/contact-requests';
 
 export const appRoutes: Routes = [
     {
@@ -15,6 +16,7 @@ export const appRoutes: Routes = [
             { path: 'moderator/marks-submissions', component: ModeratorMarksSubmissionsComponent },
             { path: 'moderator/content-proposals', component: ContentProposals },
             { path: 'admin/manage-moderators', component: ManageModerators },
+            { path: 'moderator/contact-requests', component: ContactRequests },
             { path: 'uikit', loadChildren: () => import('../app/pages/uikit/uikit.routes') },
             { path: 'pages', loadChildren: () => import('../app/pages/pages.routes') }
         ],

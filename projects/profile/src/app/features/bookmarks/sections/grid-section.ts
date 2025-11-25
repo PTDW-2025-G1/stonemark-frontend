@@ -34,7 +34,7 @@ interface BookmarkItem {
           <!-- Image -->
           <div class="relative aspect-[4/3] overflow-hidden">
             <img
-              [src]="item.image"
+              [src]="item.image || 'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg'"
               [alt]="item.title"
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />

@@ -33,7 +33,7 @@ type Section = 'information' | 'history' | 'map';
           <label class="block text-sm text-text-muted mb-1">Protection Title</label>
           <input
             type="text"
-            [(ngModel)]="editedData.protection_title"
+            [(ngModel)]="editedData.protectionTitle"
             (ngModelChange)="emitChange()"
             class="w-full rounded-lg p-3 border border-border bg-white
             focus:outline-none focus:border-text"

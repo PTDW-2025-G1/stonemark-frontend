@@ -13,6 +13,7 @@ export interface MarkDto {
     id?: number;
     title?: string;
     description?: string;
-    coverId?: number;
+    photoId?: number;
+    vectorId?: number;
 }
 

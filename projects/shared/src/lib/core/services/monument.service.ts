@@ -1,159 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { Monument } from '@core/models/monument.model';
+import { Observable } from 'rxjs';
+import { PageMonumentDto } from '@api/model/page-monument-dto';
+import { environment } from '@env/environment';
+import {MonumentResponseDto} from '@api/model/monument-response-dto';
 
 @Injectable({ providedIn: 'root' })
 export class MonumentService {
-  private readonly overpassUrl = 'https://overpass-api.de/api/interpreter';
 
-  private readonly MONUMENTS: Monument[] = [
-    {
-      id: 1,
-      name: 'Castelo de Guimarães',
-      protection_title: "Monumento Nacional",
-      cover: 'https://t3.ftcdn.net/jpg/03/93/35/48/360_F_393354815_Ju7YcCJ6QHbhBahy3FeQpcObzkl03faD.jpg',
-      location: 'Guimarães, Portugal',
-      description: 'O Castelo de Guimarães é considerado o berço de Portugal e um dos mais emblemáticos monumentos do país.',
-      lat: 41.448249,
-      lon: -8.290090,
-      marksCount: 32,
-      suggestionsCount: 1,
-      website: "https://www.museusemonumentos.pt/pt/museus-e-monumentos/castelo-de-guimaraes",
-      lastModified: "Gustavo Gião",
-      lastModifiedAt: "22/11/2025"
-    },
-    {
-      id: 2,
-      name: 'Mosteiro de Alcobaça',
-      protection_title: "Monumento Nacional",
-      cover: 'https://www.viveromundo.org/wp-content/uploads/2019/07/DSC_0386-1-e1584724820977.jpg',
-      location: 'Alcobaça, Portugal',
-      description: 'O Mosteiro de Alcobaça é Patrimônio Mundial da UNESCO e um dos maiores exemplos da arquitetura gótica em Portugal.',
-      lat: 39.54835,
-      lon: -8.97963,
-      marksCount: 32,
-      suggestionsCount: 1,
-      website: "https://www.museusemonumentos.pt/pt/museus-e-monumentos/castelo-de-guimaraes",
-      lastModified: "Gustavo Gião",
-      lastModifiedAt: "22/11/2025"
-    },
-    {
-      id: 3,
-      name: 'Torre de Belém',
-      protection_title: "Monumento Nacional",
-      cover: 'https://static-resources-elementor.mirai.com/wp-content/uploads/sites/1079/post_04_featured.jpg',
-      location: 'Belém, Lisboa',
-      description: 'A Torre de Belém é um ícone de Lisboa e símbolo dos Descobrimentos Portugueses.',
-      lat: 41.448249,
-      lon: -8.290090,
-      marksCount: 32,
-      suggestionsCount: 1,
-      website: "https://www.museusemonumentos.pt/pt/museus-e-monumentos/castelo-de-guimaraes",
-      lastModified: "Gustavo Gião",
-      lastModifiedAt: "22/11/2025"
-    },
-    {
-      id: 4,
-      name: 'Mosteiro dos Jerónimos',
-      protection_title: "Monumento Nacional",
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Mosteiro_dos_Jeronimos_-_Left_Wing.jpg',
-      location: 'Lisboa, Portugal',
-      description: 'O Mosteiro dos Jerónimos é uma obra-prima do estilo manuelino e Patrimônio Mundial da UNESCO.',
-      lat: 41.448249,
-      lon: -8.290090,
-      marksCount: 32,
-      suggestionsCount: 1,
-      website: "https://www.museusemonumentos.pt/pt/museus-e-monumentos/castelo-de-guimaraes",
-      lastModified: "Gustavo Gião",
-      lastModifiedAt: "22/11/2025"
-    },
-    {
-      id: 5,
-      name: 'Mosteiro da Batalha',
-      protection_title: "Monumento Nacional",
-      cover: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Mosteiro_da_Batalha_78a.jpg',
-      location: 'Batalha, Portugal',
-      description: 'O Mosteiro da Batalha celebra a vitória portuguesa na Batalha de Aljubarrota e é um dos maiores monumentos góticos do país.',
-      lat: 41.448249,
-      lon: -8.290090,
-      marksCount: 32,
-      suggestionsCount: 1,
-      website: "https://www.museusemonumentos.pt/pt/museus-e-monumentos/castelo-de-guimaraes",
-      lastModified: "Gustavo Gião",
-      lastModifiedAt: "22/11/2025"
-    },
-    {
-      id: 6,
-      name: 'Convento de Cristo',
-      protection_title: "Monumento Nacional",
-      cover: 'https://www.patrimoniomundialdocentro.pt/imagens/patrimonio/convento_de_cristo_de_tomar_5b05f68f396e6.jpg',
-      location: 'Tomar, Portugal',
-      description: 'O Convento de Cristo foi sede da Ordem dos Templários e é Patrimônio Mundial da UNESCO.',
-      lat: 41.448249,
-      lon: -8.290090,
-      marksCount: 32,
-      suggestionsCount: 1,
-      website: "https://www.museusemonumentos.pt/pt/museus-e-monumentos/castelo-de-guimaraes",
-      lastModified: "Gustavo Gião",
-      lastModifiedAt: "22/11/2025"
-    }
-  ];
-
+  private baseUrl = `${environment.apiUrl}/monuments`;
 
   constructor(private http: HttpClient) {}
 
-
-  /**
-   * Consulta Overpass API (dados dinâmicos de monumentos reais)
-   */
-  getMonumentsPortugal(): Observable<Monument[]> {
-    const query = `
-      [out:json][timeout:60];
-      area["name"="Portugal"]->.searchArea;
-
-      (
-        node["historic"~"^(monument|memorial|castle)$"](area.searchArea);
-        way["historic"~"^(monument|memorial|castle)$"](area.searchArea);
-        relation["historic"~"^(monument|memorial|castle)$"](area.searchArea);
-      );
-
-      out center;
-    `;
-
-    const url = `${this.overpassUrl}?data=${encodeURIComponent(query)}`;
-
-    return this.http.get<any>(url).pipe(
-      map(response =>
-        response.elements
-          .filter((el: any) => el.lat || el.center)
-          .map((el: any) => ({
-            id: el.id,
-            name: el.tags?.name || 'Unnamed Monument',
-            protection_title: el.tags.protection_title || '',
-            description: el.tags?.description || '',
-            website: el.tags?.website || '',
-            lat: el.lat || el.center?.lat,
-            lon: el.lon || el.center?.lon,
-            image: el.tags?.image
-          }))
-      )
+  getMonuments(): Observable<MonumentResponseDto[]> {
+    return this.http.get<PageMonumentDto>(this.baseUrl).pipe(
+      map(page => page.content || [])
     );
   }
 
-  /**
-   * Devolve a lista de monumentos populares
-   */
-  getPopularMonuments(): Observable<Monument[]> {
-    return of(this.MONUMENTS);
+  getLatestMonuments(): Observable<MonumentResponseDto[]> {
+    return this.http.get<MonumentResponseDto[]>(`${this.baseUrl}/latest`);
   }
 
-  /**
-   * Obtém um monumento específico por ID
-   */
-  getMonumentById(id: number): Observable<Monument | undefined> {
-    const monument = this.MONUMENTS.find(m => m.id === id);
-    return of(monument);
+  getMonumentById(id: number): Observable<MonumentResponseDto> {
+    return this.http.get<MonumentResponseDto>(`${this.baseUrl}/${id}`);
   }
 }

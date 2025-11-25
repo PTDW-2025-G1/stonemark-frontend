@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
-import {Monument} from '@core/models/monument.model';
+import {MonumentResponseDto} from '@api/model/monument-response-dto';
 
 
 @Component({
@@ -19,10 +19,10 @@ import {Monument} from '@core/models/monument.model';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (monument of monuments; track monument.id) {
             <app-entity-card
-              [cover]="monument.cover ?? 'assets/placeholder.jpg'"
-              [title]="monument.name"
-              [location]="monument.location || 'Portugal'"
-              [id]="monument.id"
+              [cover]="'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg'"
+              [title]="monument.name || 'Unknown Monument'"
+              [subtitle]="monument.city || 'Portugal'"
+              [id]="monument.id || 0"
               [type]="'monuments'"
             />
           }
@@ -32,5 +32,5 @@ import {Monument} from '@core/models/monument.model';
   `
 })
 export class PopularSectionComponent {
-  @Input() monuments: Monument[] = [];
+  @Input() monuments: MonumentResponseDto[] = [];
 }

@@ -16,8 +16,7 @@ interface BookmarkItem {
   id: string | number;
   type: 'monument' | 'mark';
   title: string;
-  location?: string;
-  image?: string;
+  subtitle?: string;
 }
 
 @Component({
@@ -50,24 +49,22 @@ export class BookmarksComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Carregar dados de ambos os serviços em paralelo
     forkJoin({
-      monuments: this.monumentService.getPopularMonuments(),
+      monuments: this.monumentService.getMonuments(),
       marks: this.markService.getLastMarks()
     }).subscribe(({ monuments, marks }) => {
       this.monuments = monuments.map(m => ({
-        id: m.id,
+        id: m.id ?? 0,
         type: 'monument',
-        title: m.name,
-        location: m.location,
-        image: m.cover
+        title: m.name ?? 'Unknown Monument',
+        location: m.city,
       }));
 
       this.marks = marks.map(mark => ({
         id: mark.id,
         type: 'mark',
         title: mark.title,
-        location: mark.location,
+        subtitle: mark.monument.name,
         image: mark.cover
       }));
 

@@ -4,9 +4,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {Observable, tap} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument.service';
-import { Monument } from '@core/models/monument.model';
 import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
 import { NotificationService } from '@core/services/notification.service';
+import {MonumentResponseDto} from '@api/model/monument-response-dto';
 
 @Component({
   selector: 'app-monument-detail',
@@ -15,7 +15,7 @@ import { NotificationService } from '@core/services/notification.service';
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
-  monument$!: Observable<Monument | undefined>;
+  monument$!: Observable<MonumentResponseDto | undefined>;
   mapUrl: SafeResourceUrl | null = null;
   isBookmarked = false;
 
@@ -35,8 +35,9 @@ export class MonumentDetailComponent implements OnInit {
         return this.monumentService.getMonumentById(id);
       }),
       tap(monument => {
-        if (monument && monument.lat != null && monument.lon != null) {
-          this.setMapUrl(monument.lat, monument.lon);
+        console.log('Monumento:', monument);
+        if (monument && monument.latitude != null && monument.longitude != null) {
+          this.setMapUrl(monument.latitude, monument.longitude);
           this.titleService.setTitle(`${monument.name} - StoneMark`);
         } else {
           this.mapUrl = null;
@@ -65,13 +66,13 @@ export class MonumentDetailComponent implements OnInit {
     this.router.navigate(['/suggestions/new'], { queryParams: { monumentId } });
   }
 
-  setMapUrl(lat: number, lon: number) {
-    const url = `https://www.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+  setMapUrl(latitude: number, longitude: number) {
+    const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
     this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  openDirections(lat: number, lon: number) {
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
+  openDirections(latitude: number, longitude: number) {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`, '_blank');
   }
 
   copyLink() {

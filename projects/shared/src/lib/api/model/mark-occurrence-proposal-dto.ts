@@ -11,14 +11,14 @@ import { MediaFileDto } from './media-file-dto';
 import { ProposedMarkDto } from './proposed-mark-dto';
 import { MarkDto } from './mark-dto';
 import { ProposedMonumentDto } from './proposed-monument-dto';
-import { MonumentDto } from './monument-dto';
+import { MonumentResponseDto } from './monument-response-dto';
 
 
 export interface MarkOccurrenceProposalDto { 
     id?: number;
     status?: MarkOccurrenceProposalDto.StatusEnum;
     originalMediaFile?: MediaFileDto;
-    existingMonument?: MonumentDto;
+    existingMonument?: MonumentResponseDto;
     proposedMonument?: ProposedMonumentDto;
     existingMark?: MarkDto;
     proposedMark?: ProposedMarkDto;

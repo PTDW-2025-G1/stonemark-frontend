@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import {Monument} from '@core/models/monument.model';
 import {Mark} from '@core/models/mark.model';
+import {MonumentResponseDto} from '@api/model/monument-response-dto';
 
-type SearchItem = Monument | Mark;
+type SearchItem = MonumentResponseDto | Mark;
 
 @Component({
   selector: 'app-search-results',
@@ -19,20 +19,27 @@ export class SearchResultsComponent {
 
   constructor(private router: Router) {}
 
-  isMonument(item: SearchItem): item is Monument {
+  isMonument(item: SearchItem): item is MonumentResponseDto {
     return 'name' in item;
   }
 
+  isMark(item: SearchItem): item is Mark {
+    return 'title' in item;
+  }
+
+
   getItemCover(item: SearchItem): string {
-    return item.cover ?? '';
+    return this.isMark(item)
+      ? (item.cover ?? "https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg")
+      : "https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg";
   }
 
   getItemName(item: SearchItem): string {
-    return this.isMonument(item) ? item.name : item.title;
+    return this.isMonument(item) ? item.name ?? '' : item.title ?? '';
   }
 
   getItemLocation(item: SearchItem): string {
-    return item.location ?? '';
+    return this.isMonument(item) ? (item.city ?? 'Portugal') : 'Portugal';
   }
 
   onItemClick(item: SearchItem): void {

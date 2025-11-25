@@ -24,7 +24,7 @@ import {Mark} from '@core/models/mark.model';
             <app-entity-card
               [cover]="mark.cover"
               [title]="mark.title"
-              [location]="mark.location"
+              [subtitle]="mark.monument.name"
               [id]="mark.id"
               [type]="'marks'"
             />

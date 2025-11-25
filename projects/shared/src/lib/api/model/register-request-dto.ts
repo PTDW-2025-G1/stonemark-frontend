@@ -15,17 +15,6 @@ export interface RegisterRequestDto {
     email?: string;
     telephone?: string;
     password?: string;
-    role?: RegisterRequestDto.RoleEnum;
+    role?: string;
 }
-export namespace RegisterRequestDto {
-    export const RoleEnum = {
-        User: 'USER',
-        Contributor: 'CONTRIBUTOR',
-        Reviewer: 'REVIEWER',
-        Moderator: 'MODERATOR',
-        Admin: 'ADMIN'
-    } as const;
-    export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
-}
-
 

@@ -9,11 +9,9 @@
  */
 
 
-export interface MonumentDto { 
-    id?: number;
-    name?: string;
-    description?: string;
-    latitude?: number;
-    longitude?: number;
+export interface WriteAccessAllowed { 
+    from_request?: boolean;
+    web_app_name?: string;
+    from_attachment_menu?: boolean;
 }
 

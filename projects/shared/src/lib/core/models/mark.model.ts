@@ -4,7 +4,6 @@ import {MarkShape} from '@core/enums/mark.shape';
 export interface Mark {
   id: number;
   title: string;
-  location: string;
   cover: string;
   description: string;
   category: MarkCategory;

@@ -31,7 +31,7 @@
 
         <div class="lg:col-span-7 order-1 relative group rounded-2xl overflow-hidden bg-surface-muted border-2 border-border shadow-xl">
           <img
-            [src]="monument.cover"
+            [src]="'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg'"
             [alt]="monument.name"
             class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
           />
@@ -62,10 +62,10 @@
                 <i class="bi bi-building"></i>
                 Monument
               </span>
-              @if (monument.protection_title) {
+              @if (monument.protectionTitle) {
                 <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold flex items-center gap-1.5 border border-amber-200">
                   <i class="bi bi-shield-fill-check"></i>
-                  {{ monument.protection_title }}
+                  {{ monument.protectionTitle }}
                 </span>
               }
               @if (monument.website) {
@@ -81,9 +81,10 @@
             </h1>
             <div class="flex items-start gap-2 text-text-muted mb-6">
               <i class="bi bi-geo-alt-fill text-primary mt-1"></i>
-              <span class="text-lg leading-relaxed">{{ monument.location }}</span>
+              <span class="text-lg leading-relaxed">
+                {{ monument.city ? monument.city + ', Portugal' : 'Portugal' }}
+              </span>
             </div>
-
             <div class="prose prose-sm text-text-muted leading-relaxed mb-6">
               {{ monument.description }}
             </div>
@@ -108,7 +109,7 @@
                   class="px-4 py-3 bg-white border border-border text-text rounded-xl font-semibold hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
                   <i class="bi bi-collection-fill"></i>
                   View Marks
-                  <span class="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full">{{ monument.marksCount || 0 }}</span>
+                  <span class="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full">{{ 25 }}</span>
                 </button>
 
                 <button
@@ -130,11 +131,11 @@
               <div class="space-y-3">
                 <div class="flex justify-between items-center text-sm">
                   <span class="text-text-muted">Total Marks</span>
-                  <span class="font-bold text-text">{{ monument.marksCount || 0 }}</span>
+                  <span class="font-bold text-text">{{ 10 }}</span>
                 </div>
                 <div class="flex justify-between items-center text-sm">
                   <span class="text-text-muted">Pending</span>
-                  <span class="font-bold text-text">{{ monument.suggestionsCount || 0 }}</span>
+                  <span class="font-bold text-text">{{ 10 }}</span>
                 </div>
               </div>
             </div>
@@ -157,7 +158,7 @@
             </div>
           </div>
 
-          @if (monument.lastModified) {
+          @if (monument.lastModifiedAt) {
             <div class="pt-4 border-t border-border mt-2">
               <div class="flex items-center justify-between text-xs text-text-muted">
                 <span class="flex items-center gap-1">
@@ -165,7 +166,7 @@
                   Verified Info
                 </span>
                 <div class="flex items-center gap-1.5">
-                  <span>by <span class="font-semibold text-text">{{ monument.lastModified }}</span></span>
+                  <span>by <span class="font-semibold text-text">{{ monument.lastModifiedBy }}</span></span>
                 </div>
               </div>
             </div>
@@ -182,7 +183,13 @@
             <div class="relative w-full h-64 sm:h-80 bg-surface-muted rounded-xl overflow-hidden border border-border">
               @if (mapUrl) {
                 <iframe width="100%" height="100%" style="border:0;" [src]="mapUrl" allowfullscreen></iframe>
-                <button class="absolute top-4 right-4 bg-primary text-primary-foreground rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-primary/80 transition shadow-lg flex items-center gap-2" (click)="openDirections(monument.lat!, monument.lon!)">
+                @if (monument.address) {
+                  <div class="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 sm:px-3 sm:py-2 shadow-sm text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border border-border">
+                    <i class="bi bi-geo-alt-fill text-primary"></i>
+                    <span class="font-medium text-text">{{ monument.address }}</span>
+                  </div>
+                }
+                <button class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-primary text-primary-foreground rounded-xl px-3 py-1.5 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold hover:bg-primary/80 transition shadow-lg flex items-center gap-1 sm:gap-2" (click)="openDirections(monument.latitude!, monument.longitude!)">
                   <i class="bi bi-cursor-fill"></i>
                   Directions
                 </button>

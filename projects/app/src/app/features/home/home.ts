@@ -7,8 +7,8 @@ import { MapSectionComponent } from '@features/home/sections/map-section';
 import { LastNewsComponent } from '@features/home/sections/last-news-section';
 import {MonumentService} from '@core/services/monument.service';
 import {MarkService} from '@core/services/mark.service';
-import {Monument} from '@core/models/monument.model';
 import {Mark} from '@core/models/mark.model';
+import {MonumentResponseDto} from '@api/model/monument-response-dto';
 
 
 @Component({
@@ -19,13 +19,13 @@ import {Mark} from '@core/models/mark.model';
 })
 export class HomeComponent implements OnInit{
 
-    popularMonuments: Monument[] = [];
+    popularMonuments: MonumentResponseDto[] = [];
     lastMarks: Mark[] = [];
 
     constructor(private monumentService: MonumentService, private markService : MarkService) {}
 
     ngOnInit(): void {
-        this.monumentService.getPopularMonuments().subscribe(monuments => {
+        this.monumentService.getLatestMonuments().subscribe(monuments => {
             this.popularMonuments = monuments;
         });
         this.markService.getLastMarks().subscribe(marks => {

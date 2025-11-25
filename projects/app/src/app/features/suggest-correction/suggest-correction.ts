@@ -39,20 +39,20 @@ export class SuggestCorrectionComponent implements OnInit {
   originalData = {
     name: '',
     description: '',
-    protection_title: '',
+    protectionTitle: '',
     website: '',
-    lat: null as number | null,
-    lon: null as number | null,
+    latitude: null as number | null,
+    longitude: null as number | null,
     comment: ''
   };
 
   editedData = {
     name: '',
     description: '',
-    protection_title: '',
+    protectionTitle: '',
     website: '',
-    lat: null as number | null,
-    lon: null as number | null,
+    latitude: null as number | null,
+    longitude: null as number | null,
     comment: ''
   };
 
@@ -72,20 +72,20 @@ export class SuggestCorrectionComponent implements OnInit {
         this.originalData = {
           name: monument.name || '',
           description: monument.description || '',
-          protection_title: monument.protection_title || '',
+          protectionTitle: monument.protectionTitle || '',
           website: monument.website || '',
-          lat: monument.lat ?? null,
-          lon: monument.lon ?? null,
+          latitude: monument.latitude ?? null,
+          longitude: monument.longitude ?? null,
           comment: ''
         };
 
         this.editedData = {
           name: this.originalData.name,
           description: this.originalData.description,
-          protection_title: this.originalData.protection_title,
+          protectionTitle: this.originalData.protectionTitle,
           website: this.originalData.website,
-          lat: this.originalData.lat,
-          lon: this.originalData.lon,
+          latitude: this.originalData.latitude,
+          longitude: this.originalData.longitude,
           comment: ''
         };
 
@@ -107,8 +107,8 @@ export class SuggestCorrectionComponent implements OnInit {
     }
 
     if (this.sections.includes('map')) {
-      if (!this.editedData.lat && this.editedData.lat !== 0) return false;
-      if (!this.editedData.lon && this.editedData.lon !== 0) return false;
+      if (!this.editedData.latitude && this.editedData.latitude !== 0) return false;
+      if (!this.editedData.longitude && this.editedData.longitude !== 0) return false;
     }
 
     return true;
@@ -141,7 +141,7 @@ export class SuggestCorrectionComponent implements OnInit {
   }
 
   updateMapPreview() {
-    if (this.editedData.lat == null || this.editedData.lon == null) {
+    if (this.editedData.latitude == null || this.editedData.longitude == null) {
       this.mapUrl = null;
       return;
     }
@@ -149,35 +149,35 @@ export class SuggestCorrectionComponent implements OnInit {
     this.mapLoading = true;
     this.mapLoadError = false;
 
-    const lat = this.editedData.lat;
-    const lon = this.editedData.lon;
+    const latitude = this.editedData.latitude;
+    const longitude = this.editedData.longitude;
 
-    const url = `https://maps.google.com/maps?q=${lat},${lon}&z=16&output=embed&hl=pt-PT`;
+    const url = `https://maps.google.com/maps?q=${latitude},${longitude}&z=16&output=embed&hl=pt-PT`;
     this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   openExternalMap() {
-    const lat = this.editedData.lat;
-    const lon = this.editedData.lon;
-    if (lat == null || lon == null) return;
+    const latitude = this.editedData.latitude;
+    const longitude = this.editedData.longitude;
+    if (latitude == null || longitude == null) return;
 
-    window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
+    window.open(`https://www.google.com/maps?q=${latitude},${longitude}`, "_blank");
   }
 
   openDirections() {
-    const lat = this.editedData.lat;
-    const lon = this.editedData.lon;
-    if (lat == null || lon == null) return;
+    const latitude = this.editedData.latitude;
+    const longitude = this.editedData.longitude;
+    if (latitude == null || longitude == null) return;
 
     window.open(
-      `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`,
+      `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
       "_blank"
     );
   }
 
   openGoogleMaps() {
-    const lat = this.editedData.lat ?? this.originalData.lat ?? 0;
-    const lon = this.editedData.lon ?? this.originalData.lon ?? 0;
+    const lat = this.editedData.latitude ?? this.originalData.latitude ?? 0;
+    const lon = this.editedData.longitude ?? this.originalData.longitude ?? 0;
 
     window.open(`https://www.google.com/maps/@${lat},${lon},18z`, '_blank');
   }

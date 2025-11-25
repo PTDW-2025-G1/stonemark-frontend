@@ -118,14 +118,16 @@ export class MapSectionComponent implements AfterViewInit {
     this.map.addOverlay(this.overlay);
 
     // 4. Carregar Dados
-    this.monumentService.getMonumentsPortugal().subscribe(monuments => {
+    this.monumentService.getMonuments().subscribe(monuments => {
       monuments.forEach(monument => {
         const feature = new Feature({
-          geometry: new Point(fromLonLat([monument.lon ?? 0, monument.lat ?? 0])),
+          geometry: new Point(fromLonLat([
+            monument.longitude ?? 0,
+            monument.latitude ?? 0
+          ])),
           name: monument.name,
-          protection_title: monument.protection_title,
+          protectionTitle: monument.protectionTitle,
           website: monument.website,
-          location: monument.location // Assumindo que tens este campo
         });
 
         // Ícone Personalizado (Pin)
@@ -184,7 +186,7 @@ export class MapSectionComponent implements AfterViewInit {
 
   private generatePopupContent(props: any): string {
     const name = props.name || 'Unknown Monument';
-    const protection = props.protection_title;
+    const protection = props.protectionTitle;
     const website = props.website;
 
     const badgeHtml = protection
@@ -214,7 +216,7 @@ export class MapSectionComponent implements AfterViewInit {
           <h3 class="font-serif text-lg font-bold text-text leading-tight mb-1">${name}</h3>
           <p class="text-xs text-text-muted flex items-center gap-1">
             <i class="bi bi-geo-alt-fill text-primary/70"></i>
-            ${props.location || 'Portugal'}
+            ${props.city ? props.city : 'Portugal'}
           </p>
         </div>
 

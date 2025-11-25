@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MonumentService } from '@core/services/monument.service';
 import { MarkService } from '@core/services/mark.service';
-import { Monument } from '@core/models/monument.model';
 import { Mark } from '@core/models/mark.model';
 import { Observable, of, switchMap } from 'rxjs';
 import {CommonModule} from '@angular/common';
@@ -10,6 +9,7 @@ import {SearchHeaderComponent} from '@features/search/sections/search-header/sea
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {SearchPaginationComponent} from '@features/search/sections/search-pagination/search-pagination';
 import {Title} from '@angular/platform-browser';
+import {MonumentResponseDto} from '@api/model/monument-response-dto';
 
 @Component({
   selector: 'app-search',
@@ -19,7 +19,7 @@ import {Title} from '@angular/platform-browser';
 export class SearchComponent implements OnInit {
   type: 'monuments' | 'marks' = 'monuments';
   title = '';
-  items$: Observable<(Monument | Mark)[]> = of([]);
+  items$: Observable<(MonumentResponseDto | Mark)[]> = of([]);
 
   currentPage = 1;
   totalPages = 1;
@@ -45,7 +45,7 @@ export class SearchComponent implements OnInit {
 
         return type === 'marks'
           ? this.markService.getLastMarks()
-          : this.monumentService.getPopularMonuments();
+          : this.monumentService.getMonuments();
       })
     );
   }

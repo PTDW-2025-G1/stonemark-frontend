@@ -19,7 +19,7 @@ import {Router} from '@angular/router';
           {{ title }}
         </h3>
         <p class="text-sm text-gray-600">
-          {{ location }}
+          {{ subtitle }}
         </p>
       </div>
     </div>
@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 export class EntityCardComponent {
   @Input() cover!: string;
   @Input() title!: string;
-  @Input() location!: string;
+  @Input() subtitle!: string;
   @Input() id!: number;
   @Input() type: 'marks' | 'monuments' = 'marks'
 

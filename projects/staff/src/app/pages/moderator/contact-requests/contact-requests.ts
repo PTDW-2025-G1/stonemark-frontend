@@ -11,7 +11,9 @@ import { AppDialogComponent } from '../../../components/dialog/dialog.component'
 import { StatusFilterContactComponent, ContactStatusFilterValue }
   from '../../../components/contact-status/status-filter-contact.component';
 
-import { ContactRequest, ContactService } from '../../../services/contact.service';
+import { ContactService } from '@core/services/contact.service';
+import { ContactRequest } from '@api/model/contact-request';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-contact-requests',
@@ -23,7 +25,8 @@ import { ContactRequest, ContactService } from '../../../services/contact.servic
     AppToolbarComponent,
     AppTableComponent,
     AppDialogComponent,
-    StatusFilterContactComponent
+    StatusFilterContactComponent,
+    Tooltip
   ],
   providers: [MessageService, ContactService],
   template: `
@@ -51,16 +54,36 @@ import { ContactRequest, ContactService } from '../../../services/contact.servic
           icon="pi pi-eye"
           class="mr-2"
           (click)="view(item)"
+          [pTooltip]="'View Details'"
         ></p-button>
 
         <p-button
-          *ngIf="item.status === 'PENDING'"
-          icon="pi pi-check"
+          *ngIf="item.status !== 'IN_REVIEW'"
+          icon="pi pi-book"
           severity="info"
-          label="Mark as Read"
-          (click)="markAsRead(item)"
+          class="mr-2"
+          (click)="updateStatus(item, 'IN_REVIEW')"
+          [pTooltip]="'Mark as In Review'"
+        ></p-button>
+
+        <p-button
+          *ngIf="item.status !== 'RESOLVED'"
+          icon="pi pi-check"
+          severity="success"
+          class="mr-2"
+          (click)="updateStatus(item, 'RESOLVED')"
+          [pTooltip]="'Mark as Resolved'"
+        ></p-button>
+
+        <p-button
+          *ngIf="item.status !== 'ARCHIVED'"
+          icon="pi pi-inbox"
+          severity="secondary"
+          (click)="updateStatus(item, 'ARCHIVED')"
+          [pTooltip]="'Archive'"
         ></p-button>
       </ng-template>
+
     </app-table>
 
     <app-dialog
@@ -94,6 +117,7 @@ export class ContactRequests implements OnInit {
 
   cols = [
     { field: 'name', header: 'Name' },
+    { field: 'name', header: 'Name' },
     { field: 'email', header: 'Email' },
     { field: 'subject', header: 'Subject' },
     { field: 'status', header: 'Status', type: 'status' },
@@ -105,9 +129,24 @@ export class ContactRequests implements OnInit {
     private messageService: MessageService
   ) {}
 
-  async ngOnInit() {
-    this.requests = await this.contactService.getAll();
-    this.applyFilter();
+  ngOnInit() {
+    this.contactService.getAll().subscribe({
+      next: (data) => {
+        this.requests = data.map(item => ({
+          ...item,
+          createdAt: item.createdAt ? new Date(item.createdAt).toLocaleString('pt-PT') : ''
+        }));
+        this.applyFilter();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load contact requests.'
+        });
+        console.error('Error loading contact requests:', err);
+      }
+    });
   }
 
   filterByStatus(status: ContactStatusFilterValue) {
@@ -130,16 +169,42 @@ export class ContactRequests implements OnInit {
     this.dialogVisible = true;
   }
 
-  markAsRead(item: ContactRequest) {
-    item.status = 'READ';
+  updateStatus(item: ContactRequest, newStatus: ContactRequest.StatusEnum) {
+    if (!item.id) return;
 
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Updated',
-      detail: `The request from ${item.name} has been marked as read.`
+    this.contactService.updateStatus(item.id, newStatus).subscribe({
+      next: (updated) => {
+        const index = this.requests.findIndex(r => r.id === item.id);
+        if (index !== -1) {
+          this.requests[index] = {
+            ...updated,
+            createdAt: updated.createdAt ? new Date(updated.createdAt).toLocaleString('pt-PT') : ''
+          };
+          this.applyFilter();
+        }
+
+        const statusLabels: Record<ContactRequest.StatusEnum, string> = {
+          [ContactRequest.StatusEnum.Pending]: 'Pending',
+          [ContactRequest.StatusEnum.InReview]: 'In Review',
+          [ContactRequest.StatusEnum.Resolved]: 'Resolved',
+          [ContactRequest.StatusEnum.Archived]: 'Archived'
+        };
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          detail: `Request marked as ${statusLabels[newStatus]}.`
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to update request status.'
+        });
+        console.error('Error updating status:', err);
+      }
     });
-
-    this.applyFilter();
   }
 
   exportCsv() {

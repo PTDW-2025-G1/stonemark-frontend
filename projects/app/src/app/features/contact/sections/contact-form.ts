@@ -174,12 +174,12 @@ export class ContactFormComponent implements OnInit{
   user: any = null;
 
   subjectOptions = [
-    { id: 'general', name: 'General Inquiry' },
-    { id: 'support', name: 'Technical Support' },
-    { id: 'collaboration', name: 'Partnership/Collaboration' },
-    { id: 'bug', name: 'Report a Bug' },
-    { id: 'feature', name: 'Feature Request' },
-    { id: 'other', name: 'Other' }
+    { id: 'General', name: 'General Inquiry' },
+    { id: 'Support', name: 'Technical Support' },
+    { id: 'Collaboration', name: 'Partnership/Collaboration' },
+    { id: 'Bug', name: 'Report a Bug' },
+    { id: 'Feature', name: 'Feature Request' },
+    { id: 'Other', name: 'Other' }
   ];
 
   constructor(
@@ -227,7 +227,7 @@ export class ContactFormComponent implements OnInit{
       message: this.contactForm.getRawValue().message ?? ''
     };
 
-    this.contactService.sendMessage(requestPayload).subscribe({
+    this.contactService.create(requestPayload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.submitSuccess = true;

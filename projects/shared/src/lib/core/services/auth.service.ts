@@ -67,9 +67,10 @@ export class AuthService {
       tap((apiResponse: HttpResponse<any>) => {
         const accessToken = apiResponse.body?.accessToken;
         const refreshToken = apiResponse.body?.refreshToken;
+        const role = apiResponse.body?.role;
 
         if (accessToken && refreshToken) {
-          this.saveTokens(accessToken, refreshToken);
+          this.saveTokens(accessToken, refreshToken, role);
           this.authStateSubject.next(true);
         }
         this.googleAuthSubject.next(apiResponse);
@@ -98,7 +99,7 @@ export class AuthService {
       .pipe(
         tap((response: HttpResponse<AuthenticationResponseDto>) => {
           if (response.body?.accessToken) {
-            this.saveTokens(response.body.accessToken!, response.body.refreshToken!);
+            this.saveTokens(response.body.accessToken!, response.body.refreshToken!, response.body.role);
             this.authStateSubject.next(true);
           }
         }),
@@ -113,9 +114,10 @@ export class AuthService {
       tap((response: HttpResponse<AuthenticationResponseDto>) => {
         const accessToken = response.body?.accessToken;
         const refreshToken = response.body?.refreshToken;
+        const role = response.body?.role;
 
         if(response.status === 200 && accessToken && refreshToken){
-          this.saveTokens(accessToken, refreshToken);
+          this.saveTokens(accessToken, refreshToken, role);
           this.authStateSubject.next(true);
         }
       }),
@@ -176,9 +178,12 @@ export class AuthService {
   }
 
   // Token Management
-  saveTokens(accessToken: string, refreshToken: string): void {
+  saveTokens(accessToken: string, refreshToken: string, role?: string): void {
     this.cookieService.set('accessToken', accessToken, 1);
     this.cookieService.set('refreshToken', refreshToken, 7);
+    if (role) {
+      this.cookieService.set('role', role, 7);
+    }
   }
 
   getAccessToken(): string | null {
@@ -187,6 +192,10 @@ export class AuthService {
 
   getRefreshToken(): string | null {
     return this.cookieService.get('refreshToken');
+  }
+
+  getRole(): string | null {
+    return this.cookieService.get('role');
   }
 
   refreshToken(token: string): Observable<AuthenticationResponseDto> {
@@ -212,6 +221,7 @@ export class AuthService {
   removeTokens(): void {
     this.cookieService.delete('accessToken');
     this.cookieService.delete('refreshToken');
+    this.cookieService.delete('role');
   }
 
   // Helpers

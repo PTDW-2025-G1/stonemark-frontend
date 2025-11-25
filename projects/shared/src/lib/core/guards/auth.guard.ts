@@ -22,11 +22,17 @@ export const loginGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
 
   const token = auth.getAccessToken();
+  const role = auth.getRole();
 
   if (token) {
-    window.location.href = `${environment.baseUrl}`;
+    if (role === 'ADMIN' || role === 'MODERATOR') {
+      window.location.href = environment.staffUrl;
+    } else {
+      window.location.href = environment.baseUrl;
+    }
     return false;
   }
 
   return true;
 };
+

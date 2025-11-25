@@ -6,10 +6,12 @@ import { ModeratorMarksSubmissionsComponent } from './pages/moderator/marks-subm
 import { ContentProposals } from './pages/moderator/content-proposals/content-proposals';
 import { ManageModerators } from './pages/admin/manage-moderators/manage-moderators';
 import { ContactRequests } from './pages/moderator/contact-requests/contact-requests';
+import {roleGuard} from '@core/guards/role.guard';
 
 export const appRoutes: Routes = [
     {
         path: '',
+        canActivate: [roleGuard],
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },

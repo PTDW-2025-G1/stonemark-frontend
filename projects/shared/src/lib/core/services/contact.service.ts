@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
+import { environment } from '@core/environments/environment';
 import { ContactRequestDto } from '@api/model/contact-request-dto';
+import { ContactRequest } from '@api/model/contact-request';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
@@ -10,7 +11,28 @@ export class ContactService {
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(payload: ContactRequestDto): Observable<void> {
-    return this.http.post<void>(this.baseUrl, payload);
+  getAll(): Observable<ContactRequest[]> {
+    return this.http.get<ContactRequest[]>(this.baseUrl);
+  }
+
+  getById(id: number): Observable<ContactRequest> {
+    return this.http.get<ContactRequest>(`${this.baseUrl}/${id}`);
+  }
+
+  create(payload: ContactRequestDto): Observable<ContactRequest> {
+    return this.http.post<ContactRequest>(this.baseUrl, payload);
+  }
+
+  updateStatus(id: number, status: ContactRequest.StatusEnum): Observable<ContactRequest> {
+    const params = new HttpParams().set('status', status);
+    return this.http.patch<ContactRequest>(
+      `${this.baseUrl}/${id}/status`,
+      null,
+      { params }
+    );
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

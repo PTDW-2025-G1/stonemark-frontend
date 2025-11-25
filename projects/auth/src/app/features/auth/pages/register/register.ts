@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { NotificationService } from '@core/services/notification.service';
 import { AuthFormComponent } from '../../components/auth-form/auth-form';
 import { BaseAuthComponent } from '@shared/directives/base-auth';
-import {ProfileService} from '@core/services/profile.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +26,7 @@ export class RegisterComponent extends BaseAuthComponent {
   override mode: 'register' = 'register';
   override navigateTo = '/login';
 
-  constructor(router: Router, authService: AuthService, profileService: ProfileService) {
-    super(router, authService, profileService);
+  constructor(router: Router, authService: AuthService) {
+    super(router, authService);
   }
 }

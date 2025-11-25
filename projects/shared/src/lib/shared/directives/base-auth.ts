@@ -6,7 +6,7 @@ import { AuthService } from '@core/services/auth.service';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import {HttpResponse} from '@angular/common/http';
 import { environment } from '@env/environment';
-import {ProfileService} from '@core/services/profile.service';
+import {AuthenticationResponseDto} from '@api/model/authentication-response-dto';
 
 @Directive()
 export abstract class BaseAuthComponent {
@@ -15,8 +15,7 @@ export abstract class BaseAuthComponent {
 
   protected constructor(
     protected router: Router,
-    protected authService: AuthService,
-    protected profileService: ProfileService,
+    protected authService: AuthService
   ) {}
 
   abstract mode: 'login' | 'register';
@@ -43,9 +42,10 @@ export abstract class BaseAuthComponent {
   }
 
   private _handleAuthRequest(
-    auth$: Observable<HttpResponse<any>>,
-    ): void {
+    auth$: Observable<HttpResponse<AuthenticationResponseDto>>,
+  ): void {
     this.loading = true;
+
     auth$
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
@@ -54,8 +54,10 @@ export abstract class BaseAuthComponent {
           const body = response.body;
 
           if (status === 200 && body?.accessToken) {
-            this.authService.saveTokens(body.accessToken, body.refreshToken);
-            this._postLoginRedirect();
+            const { accessToken, refreshToken, role } = body;
+
+            this.authService.saveTokens(accessToken, refreshToken!, role);
+            this._postLoginRedirect(role);
           } else if (status === 202) {
             this.router.navigate(['/verify-pending']);
           }
@@ -73,24 +75,30 @@ export abstract class BaseAuthComponent {
           console.error(err);
         },
       });
+  }
+
+  private _postLoginRedirect(role?: string | null): void {
+    console.log('Role from auth response:', role);
+
+    const redirect = localStorage.getItem('redirectAfterLogin');
+
+    if (redirect && redirect.startsWith('http://localhost:')) {
+      console.log('Redirecting back to original URL:', redirect);
+      localStorage.removeItem('redirectAfterLogin');
+      window.location.href = redirect;
+      return;
     }
 
-  private _postLoginRedirect(): void {
-    this.profileService.getCurrentUser().subscribe({
-      next: (user) => {
-        const role = user.role;
+    if (role === 'ADMIN' || role === 'MODERATOR') {
+      console.log('Redirecting to staff:', environment.staffUrl);
+      window.location.href = environment.staffUrl;
+      return;
+    }
 
-        if (role === 'ADMIN' || role === 'MODERATOR') {
-          window.location.href = environment.staffUrl;
-        } else {
-          window.location.href = environment.baseUrl;
-        }
-      },
-      error: (err) => {
-        this.authService.logout();
-      }
-    });
+    console.log('Redirecting to base app:', environment.baseUrl);
+    window.location.href = environment.baseUrl;
   }
+
 
 
 }

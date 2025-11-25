@@ -42,7 +42,7 @@ import { getSeverity } from '../../utils/severity.util';
                             {{ col.header }}
                             <p-sortIcon [field]="col.field"></p-sortIcon>
                         </th>
-                        <th *ngIf="actions" style="text-align: right;">Ações</th>
+                        <th *ngIf="actions" style="text-align: right;">Actions</th>
                     </tr>
                 </ng-template>
 

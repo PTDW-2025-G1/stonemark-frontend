@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { PageMonumentDto } from '@api/model/page-monument-dto';
 import { environment } from '@env/environment';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
+import {MonumentRequestDto} from '@api/model/monument-request-dto';
 
 @Injectable({ providedIn: 'root' })
 export class MonumentService {
@@ -12,6 +13,18 @@ export class MonumentService {
   private baseUrl = `${environment.apiUrl}/monuments`;
 
   constructor(private http: HttpClient) {}
+
+  createMonument(monument: MonumentRequestDto): Observable<MonumentResponseDto> {
+    return this.http.post<MonumentResponseDto>(this.baseUrl, monument);
+  }
+
+  updateMonument(id: number, monument: MonumentRequestDto): Observable<MonumentResponseDto> {
+    return this.http.put<MonumentResponseDto>(`${this.baseUrl}/${id}`, monument);
+  }
+
+  deleteMonument(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 
   getMonuments(): Observable<MonumentResponseDto[]> {
     return this.http.get<PageMonumentDto>(`${this.baseUrl}?size=10000`).pipe(

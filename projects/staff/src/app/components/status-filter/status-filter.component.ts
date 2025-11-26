@@ -16,10 +16,10 @@ export type StatusFilterValue = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
         <div class="status-filter">
             <p-select [(ngModel)]="selected" [options]="options" optionLabel="label" optionValue="value" placeholder="Filtrar por estado" (onChange)="emitChange()" class="status-select">
                 <ng-template let-option pTemplate="item">
-                    <p-tag [value]="option.label" [severity]="getSeverity(option.value)" styleClass="mr-2"></p-tag>
+                    <p-tag [value]="option.label" [severity]="getSeverity(option.value)"></p-tag>
                 </ng-template>
                 <ng-template let-value pTemplate="selectedItem">
-                    <p-tag [value]="getLabel(value)" [severity]="getSeverity(value)" styleClass="mr-2"></p-tag>
+                    <p-tag [value]="getLabel(value)" [severity]="getSeverity(value)"></p-tag>
                 </ng-template>
             </p-select>
         </div>
@@ -34,10 +34,10 @@ export class StatusFilterComponent {
     @Output() statusChange = new EventEmitter<StatusFilterValue>();
 
     options = [
-        { label: 'Todas', value: 'ALL' },
-        { label: 'Pendentes', value: 'PENDING' },
-        { label: 'Aprovadas', value: 'APPROVED' },
-        { label: 'Rejeitadas', value: 'REJECTED' }
+        { label: 'All', value: 'ALL' },
+        { label: 'Pending', value: 'PENDING' },
+        { label: 'Approved', value: 'APPROVED' },
+        { label: 'Rejected', value: 'REJECTED' }
     ];
 
     emitChange() {
@@ -45,7 +45,7 @@ export class StatusFilterComponent {
     }
 
     getLabel(value: StatusFilterValue): string {
-        return this.options.find(o => o.value === value)?.label || 'Todas';
+        return this.options.find(o => o.value === value)?.label || 'All';
     }
 
     protected readonly getSeverity = getSeverity;

@@ -2,12 +2,9 @@ import { Routes } from '@angular/router';
 import { AppLayout } from './layout/component/app.layout';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Notfound } from './pages/notfound/notfound';
-import { ModeratorMarksSubmissionsComponent } from './pages/moderator/marks-submissions/marks-submissions';
-import { ContentProposals } from './pages/moderator/content-proposals/content-proposals';
-import { ManageModerators } from './pages/admin/manage-moderators/manage-moderators';
-import { ContactRequests } from './pages/moderator/contact-requests/contact-requests';
 import {roleGuard} from '@core/guards/role.guard';
 import {adminRoutes} from './pages/admin/admin.routes';
+import {moderatorRoutes} from './pages/moderator/moderator.routes';
 
 export const appRoutes: Routes = [
     {
@@ -16,10 +13,7 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
-            { path: 'moderator/marks-submissions', component: ModeratorMarksSubmissionsComponent },
-            { path: 'moderator/content-proposals', component: ContentProposals },
-            { path: 'moderator/contact-requests', component: ContactRequests },
-            { path: 'admin/manage-moderators', component: ManageModerators },
+            { path: 'moderator', children: moderatorRoutes },
             { path: 'admin', children: adminRoutes },
             { path: 'uikit', loadChildren: () => import('../app/pages/uikit/uikit.routes') },
             { path: 'pages', loadChildren: () => import('../app/pages/pages.routes') }

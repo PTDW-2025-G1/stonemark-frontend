@@ -15,24 +15,29 @@ export class SearchHeaderComponent {
   @Input() locations: string[] = [];
   @Input() monumentsList: { id: number; name: string }[] = [];
 
-  @Output() searchChange = new EventEmitter<string>();
+  @Output() search = new EventEmitter<string>();
   @Output() filterChange = new EventEmitter<string>();
 
   selectedValue: string | number = '';
 
   get selectOptions(): { id: string | number; name: string }[] {
     return this.type === 'monuments'
-      ? this.locations.map((loc, idx) => ({ id: idx, name: loc }))
+      ? this.locations.map(loc => ({ id: loc, name: loc })) // Use o nome da cidade como id
       : this.monumentsList;
   }
 
   onSearchInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.searchChange.emit(input.value);
+    this.search.emit(input.value);
   }
 
   selectOption(value: string | number): void {
     this.selectedValue = value;
-    this.filterChange.emit(value.toString());
+
+    if (this.type === 'monuments') {
+      this.filterChange.emit(value.toString());
+    } else {
+      this.filterChange.emit(value.toString());
+    }
   }
 }

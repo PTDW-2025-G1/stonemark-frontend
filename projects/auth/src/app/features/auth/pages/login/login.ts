@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { AuthFormComponent } from '../../components/auth-form/auth-form';
 import { BaseAuthComponent } from '@shared/directives/base-auth';
-import {ProfileService} from '@core/services/profile.service';
 
 @Component({
   selector: 'app-login',

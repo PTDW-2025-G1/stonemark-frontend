@@ -14,7 +14,7 @@ type SearchItem = MonumentResponseDto | Mark;
   templateUrl: './search-results.html'
 })
 export class SearchResultsComponent {
-  @Input() items$!: Observable<SearchItem[]>;
+  @Input() $items!: Observable<SearchItem[]>;
   @Input() type: 'monuments' | 'marks' = 'monuments';
 
   constructor(private router: Router) {}

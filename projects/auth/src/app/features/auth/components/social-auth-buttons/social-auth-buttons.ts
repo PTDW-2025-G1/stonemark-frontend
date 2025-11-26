@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="grid grid-cols-2 gap-4 sm:grid-cols-1">
+    <div class="grid gap-4 sm:grid-cols-1">
       <!-- Google -->
       <button
         type="button"

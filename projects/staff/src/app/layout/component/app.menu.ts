@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -17,7 +17,7 @@ import { AppMenuitem } from './app.menuitem';
     </ul>
   `
 })
-export class AppMenu {
+export class AppMenu implements OnInit {
   model: MenuItem[] = [];
 
   ngOnInit(): void {
@@ -30,7 +30,16 @@ export class AppMenu {
           { label: 'Content Proposals', icon: 'pi pi-fw pi-file-edit', routerLink: ['/moderator/content-proposals'] },
           { label: 'Contact Requests', icon: 'pi pi-envelope', routerLink: ['/moderator/contact-requests'] },
           { label: 'Manage Moderators', icon: 'pi pi-fw pi-users', routerLink: ['/admin/moderators'] },
-          { label: 'Manage Monuments', icon: 'pi pi-fw pi-map', routerLink: ['/admin/monuments'] }
+          { label: 'Manage Monuments', icon: 'pi pi-fw pi-map', routerLink: ['/admin/monuments'] },
+          {
+            label: 'Profile',
+            icon: 'pi pi-fw pi-user',
+            items: [
+              { label: 'Logout', icon: 'pi pi-fw pi-sign-out', routerLink: ['/logout'] }
+            ]
+          },
+          { label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/pages/notfound'] },
+          { label: 'Empty', icon: 'pi pi-fw pi-circle-off', routerLink: ['/pages/empty'] }
         ]
       },
       {
@@ -51,25 +60,6 @@ export class AppMenu {
           { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
           { label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['/uikit/timeline'] },
           { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
-        ]
-      },
-      {
-        label: 'Pages',
-        icon: 'pi pi-fw pi-briefcase',
-        routerLink: ['/pages'],
-        items: [
-          {
-            label: 'Auth',
-            icon: 'pi pi-fw pi-user',
-            items: [
-              { label: 'Login', icon: 'pi pi-fw pi-sign-in', routerLink: ['/auth/login'] },
-              { label: 'Error', icon: 'pi pi-fw pi-times-circle', routerLink: ['/auth/error'] },
-              { label: 'Access Denied', icon: 'pi pi-fw pi-lock', routerLink: ['/auth/access'] },
-              { label: 'Logout', icon: 'pi pi-fw pi-sign-out', routerLink: ['/auth/logout'] }
-            ]
-          },
-          { label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/pages/notfound'] },
-          { label: 'Empty', icon: 'pi pi-fw pi-circle-off', routerLink: ['/pages/empty'] }
         ]
       },
       {

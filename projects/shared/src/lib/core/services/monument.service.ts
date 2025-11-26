@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PageMonumentDto } from '@api/model/page-monument-dto';
@@ -30,6 +30,34 @@ export class MonumentService {
     return this.http.get<PageMonumentDto>(`${this.baseUrl}?size=10000`).pipe(
       map(page => page.content || [])
     );
+  }
+
+  getPageMonuments(page: number = 0, size: number = 9): Observable<PageMonumentDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PageMonumentDto>(this.baseUrl, { params });
+  }
+
+  searchMonuments(query: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentDto> {
+    const params = new HttpParams()
+      .set('query', query)
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+
+    return this.http.get<PageMonumentDto>(`${this.baseUrl}/search`, { params });
+  }
+
+  filterByCity(city: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentDto> {
+    const params = new HttpParams()
+      .set('city', city)
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+
+    return this.http.get<PageMonumentDto>(`${this.baseUrl}/filter`, { params });
   }
 
   getLatestMonuments(): Observable<MonumentResponseDto[]> {

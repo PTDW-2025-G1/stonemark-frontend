@@ -66,13 +66,12 @@ export abstract class BaseAuthComponent {
           this.loading = false;
           const msg = err?.error || err?.message || '';
           if (err.status === 401) {
-            this.errorMsg = 'Invalid email or password.';
+            this.errorMsg = '';
           } else if (msg) {
             this.errorMsg = msg;
           } else {
             this.errorMsg = 'Unexpected error.';
           }
-          console.error(err);
         },
       });
   }

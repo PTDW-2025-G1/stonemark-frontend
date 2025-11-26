@@ -7,6 +7,7 @@ import { ContentProposals } from './pages/moderator/content-proposals/content-pr
 import { ManageModerators } from './pages/admin/manage-moderators/manage-moderators';
 import { ContactRequests } from './pages/moderator/contact-requests/contact-requests';
 import {roleGuard} from '@core/guards/role.guard';
+import {ManageMonuments} from './pages/admin/manage-monuments/manage-monuments';
 
 export const appRoutes: Routes = [
     {
@@ -17,8 +18,9 @@ export const appRoutes: Routes = [
             { path: '', component: Dashboard },
             { path: 'moderator/marks-submissions', component: ModeratorMarksSubmissionsComponent },
             { path: 'moderator/content-proposals', component: ContentProposals },
-            { path: 'admin/manage-moderators', component: ManageModerators },
             { path: 'moderator/contact-requests', component: ContactRequests },
+            { path: 'admin/manage-moderators', component: ManageModerators },
+            { path: 'admin/manage-monuments', component: ManageMonuments },
             { path: 'uikit', loadChildren: () => import('../app/pages/uikit/uikit.routes') },
             { path: 'pages', loadChildren: () => import('../app/pages/pages.routes') }
         ],

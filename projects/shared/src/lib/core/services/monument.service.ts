@@ -14,7 +14,7 @@ export class MonumentService {
   constructor(private http: HttpClient) {}
 
   getMonuments(): Observable<MonumentResponseDto[]> {
-    return this.http.get<PageMonumentDto>(this.baseUrl).pipe(
+    return this.http.get<PageMonumentDto>(`${this.baseUrl}?size=10000`).pipe(
       map(page => page.content || [])
     );
   }
@@ -26,4 +26,17 @@ export class MonumentService {
   getMonumentById(id: number): Observable<MonumentResponseDto> {
     return this.http.get<MonumentResponseDto>(`${this.baseUrl}/${id}`);
   }
+
+  importMonumentsFromOverpass(geoJson: string): Observable<MonumentResponseDto[]> {
+    return this.http.post<MonumentResponseDto[]>(
+      `${environment.apiUrl}/import/monuments/overpass`,
+      geoJson,
+      {
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      }
+    );
+  }
+
 }

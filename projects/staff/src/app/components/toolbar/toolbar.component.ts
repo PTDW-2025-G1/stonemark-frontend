@@ -19,13 +19,21 @@ import { debounceTime, Subscription } from 'rxjs';
                 </div>
             </ng-template>
             <ng-template #end>
-                <p-button
-                    *ngIf="showExport"
-                    [label]="exportLabel"
-                    [icon]="exportIcon"
-                    styleClass="export-button"
-                    (onClick)="export.emit()"
-                />
+              <p-button
+                *ngIf="showImport"
+                [label]="importLabel"
+                [icon]="importIcon"
+                styleClass="import-button"
+                class="mr-2"
+                (onClick)="import.emit()"
+              />
+              <p-button
+                *ngIf="showExport"
+                [label]="exportLabel"
+                [icon]="exportIcon"
+                styleClass="export-button"
+                (onClick)="export.emit()"
+              />
             </ng-template>
         </p-toolbar>
     `,
@@ -78,6 +86,26 @@ import { debounceTime, Subscription } from 'rxjs';
         :host ::ng-deep .export-button:active {
             transform: translateY(0);
         }
+
+        :host ::ng-deep .import-button {
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          color: #ffffff;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+        }
+
+        :host ::ng-deep .import-button:hover {
+          background: rgba(255, 255, 255, 0.3);
+          border-color: rgba(255, 255, 255, 0.5);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        :host ::ng-deep .import-button:active {
+          transform: translateY(0);
+        }
     `]
 })
 export class AppToolbarComponent implements OnInit, OnDestroy {
@@ -86,6 +114,10 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     @Input() showExport: boolean = true;
     @Input() exportLabel: string = 'Exportar';
     @Input() exportIcon: string = 'pi pi-upload';
+    @Output() import = new EventEmitter<void>();
+    @Input() showImport: boolean = false;
+    @Input() importLabel: string = 'Importar';
+    @Input() importIcon: string = 'pi pi-download';
     @Output() export = new EventEmitter<void>();
 
     toolbarStyle: any = {};

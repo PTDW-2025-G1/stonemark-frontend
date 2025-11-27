@@ -28,16 +28,17 @@
         />
       </div>
 
-      <app-shared-select
-        [options]="selectOptions"
-        [selected]="selectedValue"
-        [label]="type === 'marks' ? 'All Monuments' : 'All Locations'"
-        [searchable]="true"
-        optionLabelKey="name"
-        optionValueKey="id"
-        (selectionChange)="selectOption($event)">
-      </app-shared-select>
-
+      <div class="w-full sm:w-64">
+        <app-shared-select
+          [options]="selectOptions"
+          [selected]="selectedValue"
+          [label]="type === 'marks' ? 'All Monuments' : 'All Locations'"
+          [searchable]="true"
+          optionLabelKey="name"
+          optionValueKey="id"
+          (selectionChange)="selectOption($event)">
+        </app-shared-select>
+      </div>
     </div>
-    </div>
+  </div>
 </section>

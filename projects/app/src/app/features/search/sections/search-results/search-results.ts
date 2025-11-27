@@ -27,6 +27,16 @@ export class SearchResultsComponent {
     return 'title' in item;
   }
 
+  toggleBookmark(event: Event, item: SearchItem): void {
+    event.stopPropagation();
+    // To:do implement bookmark logic
+  }
+
+  isBookmarked(item: SearchItem): boolean {
+    // To:do implement bookmark logic
+    return false;
+  }
+
 
   getItemCover(item: SearchItem): string {
     return this.isMark(item)
@@ -39,8 +49,15 @@ export class SearchResultsComponent {
   }
 
   getItemLocation(item: SearchItem): string {
-    return this.isMonument(item) ? (item.city ?? 'Portugal') : 'Portugal';
+    if (this.isMonument(item)) {
+      return item.city ? `${item.city}, Portugal` : 'Portugal';
+    }
+
+    return this.isMark(item) && item.monument?.name
+      ? item.monument.name
+      : 'Portugal';
   }
+
 
   onItemClick(item: SearchItem): void {
     const route = this.type === 'monuments' ? '/monuments' : '/marks';

@@ -21,7 +21,7 @@ import {MonumentResponseDto} from '@api/model/monument-response-dto';
             <app-entity-card
               [cover]="'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg'"
               [title]="monument.name || 'Unknown Monument'"
-              [subtitle]="monument.city || 'Portugal'"
+              [subtitle]="monument.city + ', Portugal'"
               [id]="monument.id || 0"
               [type]="'monuments'"
             />

@@ -11,7 +11,7 @@ import { AppDialogComponent } from '../../../components/dialog/dialog.component'
 import { StatusFilterContactComponent, ContactStatusFilterValue }
   from '../../../components/contact-status/status-filter-contact.component';
 
-import { ContactService } from '@core/services/contact.service';
+import { ContactService } from '@core/services/contact/contact.service';
 import { ContactRequest } from '@api/model/contact-request';
 import {Tooltip} from 'primeng/tooltip';
 

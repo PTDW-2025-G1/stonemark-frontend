@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ContactService } from '@core/services/contact.service'
+import { ContactService } from '@core/services/contact/contact.service'
 import {ProfileService} from '@core/services/profile.service';
 import {AuthService} from '@core/services/auth.service';
 import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';

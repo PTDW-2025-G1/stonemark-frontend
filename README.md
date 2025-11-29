@@ -74,13 +74,76 @@ ng generate component component-name
 
 You can also use other schematics like `directive`, `pipe`, `service`, `class`, `guard`, `interface`, `enum`, and `module`.
 
-### Running Unit Tests
+## Testing
 
-To execute unit tests via [Karma](https://karma-runner.github.io), run:
+This project includes two testing layers:
 
+### Unit Tests (Vitest)
+
+Unit tests ensure isolated business logic works correctly (services, pipes, forms, helpers, component DOM).
+
+Run once:
 ```bash
-npm test
+npm run test
 ```
+
+Run in watch mode:
+```bash
+npm run test:watch
+```
+
+Open the Vitest UI (recommended for debugging):
+```bash
+npm run test:ui
+```
+
+Location of Unit Tests
+
+Tests live next to their components/services:
+```pgsql
+component-name.spec.ts
+service-name.spec.ts
+```
+
+What Is Tested?
+
+- Services (e.g., contact.service with mocked API responses)
+- Component logic (e.g., form validation)
+- DOM rendering and template behavior (Angular TestBed)
+- Pipes and helpers
+
+### E2E Tests (Cypress)
+
+End-to-end tests simulate real user behavior in the browser and validate the full flow of the application.
+
+Running Cypress
+
+- Open interactive mode (GUI):
+```bash
+npx cypress open
+```
+
+Run in headless mode:
+```bash
+npx cypress run
+```
+
+Location of E2E Tests
+
+All tests are under:
+```pgsql
+cypress/e2e
+```
+
+What Is Tested?
+
+- Page rendering and structure
+- Form validation and inline errors
+- Subject select component behavior
+- API request mocking (intercept)
+- Success and error submission flows
+- Prefill behavior for authenticated users
+- Responsive design (mobile/tablet/desktop viewports)
 
 ### Further Help
 

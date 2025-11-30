@@ -4,7 +4,7 @@ import {ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import {EditProfileFormComponent, ProfileFormData} from './sections/edit-profile-form/edit-profile-form';
 import {EditProfileSuccessComponent} from './sections/edit-profile-success/edit-profile-success';
-import {ProfileService} from '@core/services/profile.service';
+import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
 
 @Component({

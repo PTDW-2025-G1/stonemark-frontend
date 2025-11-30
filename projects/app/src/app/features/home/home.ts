@@ -5,7 +5,7 @@ import { PopularSectionComponent } from '@features/home/sections/popular-section
 import { LastMarkSectionComponent } from '@features/home/sections/last-marks-section';
 import { MapSectionComponent } from '@features/home/sections/map-section';
 import { LastNewsComponent } from '@features/home/sections/last-news-section';
-import {MonumentService} from '@core/services/monument.service';
+import {MonumentService} from '@core/services/monument/monument.service';
 import {MarkService} from '@core/services/mark.service';
 import {Mark} from '@core/models/mark.model';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';

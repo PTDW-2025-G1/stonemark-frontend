@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {Observable, tap} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
 import { NotificationService } from '@core/services/notification.service';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';

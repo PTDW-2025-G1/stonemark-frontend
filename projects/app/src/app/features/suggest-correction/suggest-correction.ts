@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 import {SuggestTitleComponent} from '@features/suggest-correction/sections/suggest-title';
 import {SuggestProgressBarComponent} from '@features/suggest-correction/sections/suggest-progress-bar';
 import {SuggestStep1Component} from '@features/suggest-correction/sections/suggest-step1';

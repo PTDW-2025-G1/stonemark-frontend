@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { finalize, take } from 'rxjs/operators';
-import { ProfileService } from 'projects/shared/src/lib/core/services/profile.service';
+import { ProfileService } from '@core/services/profile/profile.service';
 import { ChangeTelephoneFormComponent } from './sections/change-telephone-form/change-telephone-form';
 import { ChangeTelephoneSuccessComponent } from './sections/change-telephone-success/change-telephone-success';
 

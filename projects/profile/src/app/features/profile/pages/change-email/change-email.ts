@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { finalize, take } from 'rxjs/operators';
-import { ProfileService } from 'projects/shared/src/lib/core/services/profile.service';
+import { ProfileService } from '@core/services/profile/profile.service';
 import { ChangeEmailFormComponent } from './sections/change-email-form/change-email-form';
 import { ChangeEmailSuccessComponent } from './sections/change-email-success/change-email-success';
 

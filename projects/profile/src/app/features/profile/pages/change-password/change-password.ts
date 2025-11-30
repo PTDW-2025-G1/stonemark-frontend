@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ProfileService } from '@core/services/profile.service';
+import { ProfileService } from '@core/services/profile/profile.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
 import { PasswordService } from '@shared/helpers/password.service';
 

@@ -11,13 +11,12 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 
 @Component({
   selector: 'app-map-section',
   standalone: true,
   imports: [CommonModule],
-  // ViewEncapsulation.None é necessário para que os estilos CSS funcionem no HTML injetado dinamicamente no Popup
   encapsulation: ViewEncapsulation.None,
   template: `
     <section class="py-16 bg-surface-alt/30">
@@ -43,7 +42,6 @@ import { MonumentService } from '@core/services/monument.service';
     </section>
   `,
   styles: [`
-    /* Estilos específicos para o Popup injetado via JS */
     .ol-popup {
       position: absolute;
       background-color: var(--bg-surface, #ffffff);
@@ -64,10 +62,9 @@ import { MonumentService } from '@core/services/monument.service';
     .ol-popup.visible {
       opacity: 1;
       visibility: visible;
-      bottom: 20px; /* Pequena animação de subida */
+      bottom: 20px;
     }
 
-    /* A Seta (Triângulo) em baixo do popup */
     .ol-popup::after {
       content: "";
       position: absolute;
@@ -90,7 +87,6 @@ export class MapSectionComponent implements AfterViewInit {
   constructor(private monumentService: MonumentService) {}
 
   ngAfterViewInit(): void {
-    // 1. Inicializar Mapa
     this.map = new Map({
       target: 'map',
       layers: [new TileLayer({ source: new OSM() })],
@@ -100,12 +96,10 @@ export class MapSectionComponent implements AfterViewInit {
       })
     });
 
-    // 2. Configurar Camada de Vetores
     const vectorSource = new VectorSource();
     const vectorLayer = new VectorLayer({ source: vectorSource });
     this.map.addLayer(vectorLayer);
 
-    // 3. Configurar Overlay (Popup)
     this.overlay = new Overlay({
       element: this.popupRef.nativeElement,
       autoPan: {
@@ -117,7 +111,6 @@ export class MapSectionComponent implements AfterViewInit {
     });
     this.map.addOverlay(this.overlay);
 
-    // 4. Carregar Dados
     this.monumentService.getMonuments().subscribe(monuments => {
       monuments.forEach(monument => {
         const feature = new Feature({
@@ -130,13 +123,12 @@ export class MapSectionComponent implements AfterViewInit {
           website: monument.website,
         });
 
-        // Ícone Personalizado (Pin)
         feature.setStyle(
           new Style({
             image: new Icon({
               anchor: [0.5, 1],
               src: 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/geo-alt-fill.svg',
-              color: '#d97706', // Uma cor âmbar/primary para destacar
+              color: '#d97706',
               scale: 1.8
             })
           })
@@ -146,7 +138,6 @@ export class MapSectionComponent implements AfterViewInit {
       });
     });
 
-    // 5. Evento de Click
     this.map.on('singleclick', event => {
       const feature = this.map.forEachFeatureAtPixel(event.pixel, f => f) as Feature | undefined;
       const popupEl = this.popupRef.nativeElement;
@@ -155,14 +146,11 @@ export class MapSectionComponent implements AfterViewInit {
         const coordinates = (feature.getGeometry() as Point).getCoordinates();
         const props = feature.getProperties();
 
-        // Gerar HTML Bonito e Seguro
         popupEl.innerHTML = this.generatePopupContent(props);
 
-        // Adicionar classes para animação e estilo
         popupEl.className = 'ol-popup visible';
         this.overlay.setPosition(coordinates);
 
-        // Adicionar listener ao botão de fechar (após injetar o HTML)
         const closeBtn = popupEl.querySelector('.popup-close');
         if (closeBtn) {
           closeBtn.addEventListener('click', () => {

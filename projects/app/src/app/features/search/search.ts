@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkService } from '@core/services/mark.service';
 import { Mark } from '@core/models/mark.model';
 import { CommonModule } from '@angular/common';

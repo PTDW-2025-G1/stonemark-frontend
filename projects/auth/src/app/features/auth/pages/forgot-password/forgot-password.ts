@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import {ForgotPasswordRequestComponent} from './sections/forgot-password-request/forgot-password-request';
 import {ForgotPasswordConfirmComponent} from './sections/forgot-password-confirm/forgot-password-confirm';
 import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';

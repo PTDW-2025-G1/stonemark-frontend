@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
 
 @Component({

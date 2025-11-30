@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkService } from '@core/services/mark.service';
 import { forkJoin } from 'rxjs';
 import {HeaderSectionComponent} from './sections/header-section';

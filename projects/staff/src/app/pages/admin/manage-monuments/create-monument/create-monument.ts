@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { FormMonument } from '../form-monument/form-monument';
 import { AppToolbarComponent} from '../../../../components/toolbar/toolbar.component';

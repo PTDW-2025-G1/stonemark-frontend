@@ -2,7 +2,7 @@ import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MonumentService } from '@core/services/monument.service';
+import { MonumentService } from '@core/services/monument/monument.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';

@@ -2,7 +2,7 @@ import { Directive } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
 import {HttpResponse} from '@angular/common/http';
 import { environment } from '@env/environment';

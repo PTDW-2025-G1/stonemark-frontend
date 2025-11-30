@@ -24,7 +24,6 @@ describe('ContactService (unit, without Angular TestBed)', () => {
       delete: vi.fn(),
     };
 
-    // Injectamos o mock "à mão", sem DI do Angular
     service = new ContactService(httpMock as any);
   });
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
 import { PasswordService } from '@shared/helpers/password.service';
 

@@ -8,10 +8,10 @@ import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
 import {ProfileSuggestionsComponent} from './sections/profile-suggestions/profile-suggestions';
 import { Suggestion } from '@core/models/suggestions.model';
-import {ProfileService} from '@core/services/profile.service';
+import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
-import {AuthService} from '@core/services/auth.service';
+import {AuthService} from '@core/services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',

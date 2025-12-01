@@ -1,0 +1,235 @@
+/* ============================================
+   DARK MODE
+   ============================================ */
+.dark-mode {
+  color-scheme: dark;
+}
+
+.dark-mode,
+.dark-mode * {
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-alt: #1a1a1a;
+  --color-surface-muted: #2a2a2a;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a0a0a0;
+  --color-border: #333333;
+  --color-success: #4ade80;
+  --color-info: #60a5fa;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+}
+
+.dark-mode body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* ============================================
+   HIGH CONTRAST
+   ============================================ */
+.high-contrast {
+  --color-primary: #000000;
+  --color-primary-foreground: #ffffff;
+  --color-text: #000000;
+  --color-text-muted: #1a1a1a;
+  --color-border: #000000;
+  --color-surface: #ffffff;
+  --color-surface-alt: #ffffff;
+}
+
+.high-contrast * {
+  border-width: 2px !important;
+  border-color: #000000 !important;
+}
+
+.high-contrast.dark-mode {
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  --color-text: #ffffff;
+  --color-text-muted: #e5e5e5;
+  --color-border: #ffffff;
+  --color-surface: #000000;
+  --color-surface-alt: #000000;
+}
+
+.high-contrast.dark-mode * {
+  border-color: #ffffff !important;
+}
+
+/* ============================================
+   LARGE TEXT
+   ============================================ */
+.large-text {
+  font-size: 125% !important;
+}
+
+.large-text * {
+  line-height: 1.8 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.large-text h1 { font-size: 3.5rem !important; }
+.large-text h2 { font-size: 2.75rem !important; }
+.large-text h3 { font-size: 2.25rem !important; }
+.large-text h4 { font-size: 1.875rem !important; }
+.large-text h5 { font-size: 1.5rem !important; }
+.large-text p, .large-text span, .large-text div { font-size: 1.25rem !important; }
+.large-text button { font-size: 1.125rem !important; }
+
+/* ============================================
+   DYSLEXIA-FRIENDLY FONT
+   ============================================ */
+.dyslexia-font * {
+  font-family: "OpenDyslexic", "Comic Sans MS", "Arial", sans-serif !important;
+  letter-spacing: 0.1em !important;
+  word-spacing: 0.2em !important;
+  font-weight: 500 !important;
+}
+
+/* ============================================
+   ENHANCED KEYBOARD FOCUS
+   ============================================ */
+.enhanced-focus *:focus,
+.enhanced-focus *:focus-visible {
+  outline: 4px solid #0066ff !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 8px rgba(0, 102, 255, 0.2) !important;
+  border-radius: 4px !important;
+}
+
+.enhanced-focus.dark-mode *:focus,
+.enhanced-focus.dark-mode *:focus-visible {
+  outline-color: #66b3ff !important;
+  box-shadow: 0 0 0 8px rgba(102, 179, 255, 0.3) !important;
+}
+
+/* ============================================
+   SKIP LINKS
+   ============================================ */
+.show-skip-links .skip-link {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 1rem 2rem;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-weight: bold;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.3s ease;
+  text-decoration: none;
+}
+
+.show-skip-links .skip-link:focus {
+  top: 0;
+}
+
+/* ============================================
+   REDUCE MOTION
+   ============================================ */
+.reduce-motion,
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ============================================
+   NO AUTOPLAY
+   ============================================ */
+.no-autoplay video,
+.no-autoplay audio {
+  pointer-events: auto !important;
+}
+
+.no-autoplay [autoplay] {
+  animation-play-state: paused !important;
+}
+
+/* ============================================
+   SHOW IMAGE DESCRIPTIONS
+   ============================================ */
+.show-descriptions img[alt]:not([alt=""]) {
+  position: relative;
+}
+
+.show-descriptions img[alt]:not([alt=""])::after {
+  content: attr(alt);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* ============================================
+   SIMPLIFIED LAYOUT
+   ============================================ */
+.simplified-layout .decoration,
+.simplified-layout .non-essential,
+.simplified-layout [aria-hidden="true"] {
+  display: none !important;
+}
+
+.simplified-layout * {
+  background-image: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+.simplified-layout {
+  background: var(--color-surface) !important;
+}
+
+/* ============================================
+   READING GUIDE
+   ============================================ */
+.reading-guide {
+  cursor: crosshair;
+}
+
+.reading-guide *:hover {
+  background: rgba(255, 255, 0, 0.15) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.3) !important;
+}
+
+.reading-guide p:hover,
+.reading-guide li:hover {
+  outline: 2px solid #ffeb3b !important;
+  outline-offset: 2px !important;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

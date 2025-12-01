@@ -4,30 +4,45 @@
   --font-serif: "Playfair Display", serif;
 
   /* === BREAKPOINTS === */
-  --breakpoint-sm: 40rem;   /* 640px */
-  --breakpoint-md: 48rem;   /* 768px */
-  --breakpoint-lg: 64rem;   /* 1024px */
-  --breakpoint-xl: 80rem;   /* 1280px */
-  --breakpoint-2xl: 96rem;  /* 1536px */
+  --breakpoint-sm: 40rem;
+  /* 640px */
+  --breakpoint-md: 48rem;
+  /* 768px */
+  --breakpoint-lg: 64rem;
+  /* 1024px */
+  --breakpoint-xl: 80rem;
+  /* 1280px */
+  --breakpoint-2xl: 96rem;
+  /* 1536px */
 
   /* === CORES BASE === */
-  --color-primary: #000000;        /* Preto */
+  --color-primary: #000000;
+  /* Preto */
   --color-primary-foreground: #ffffff;
 
-  --color-surface: #ffffff;        /* Fundo base */
-  --color-surface-alt: #f6f6f6;    /* Fundo secundário */
+  --color-surface: #ffffff;
+  /* Fundo base */
+  --color-surface-alt: #f6f6f6;
+  /* Fundo secundário */
   --color-surface-muted: #f0f0f0;
 
-  --color-text: #000000;           /* Texto principal */
-  --color-text-muted: #1f1f1f;     /* Texto em fundos claros */
+  --color-text: #000000;
+  /* Texto principal */
+  --color-text-muted: #1f1f1f;
+  /* Texto em fundos claros */
   --color-border: #e5e5e5;
 
   /* === CORES SEMÂNTICAS === */
-  --color-success: #00ad0e;   /* Verde */
-  --color-info: #0004dc;      /* Azul */
-  --color-warning: #d6d600;   /* Amarelo */
-  --color-error: #c70002;     /* Vermelho */
-  --color-accent: #7e009d;    /* Roxo (para destaques) */
+  --color-success: #00ad0e;
+  /* Verde */
+  --color-info: #0004dc;
+  /* Azul */
+  --color-warning: #d6d600;
+  /* Amarelo */
+  --color-error: #c70002;
+  /* Vermelho */
+  --color-accent: #7e009d;
+  /* Roxo (para destaques) */
 
   /* === ESPAÇAMENTO BASE === */
   --spacing-xs: 0.25rem;

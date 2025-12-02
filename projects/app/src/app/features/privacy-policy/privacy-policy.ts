@@ -7,11 +7,14 @@ import {PpRetentionComponent} from '@features/privacy-policy/sections/pp-retenti
 import {PpSharingComponent} from '@features/privacy-policy/sections/pp-sharing';
 import {PpRightsComponent} from '@features/privacy-policy/sections/pp-rights';
 import {PpSecurityContactsComponent} from '@features/privacy-policy/sections/pp-security-contacts';
+import privacyPolicyTemplate from './privacy-policy.html?raw';
+
 
 @Component({
   selector: 'app-privacy-policy',
   standalone: true,
   imports: [CommonModule, PpHeaderComponent, PpDataComponent, PpPurposesComponent, PpRetentionComponent, PpSharingComponent, PpRightsComponent, PpSecurityContactsComponent],
-  templateUrl: './privacy-policy.html'
+  template: privacyPolicyTemplate
+
 })
 export class PrivacyPolicyComponent {}

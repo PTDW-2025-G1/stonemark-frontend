@@ -71,9 +71,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "stonemark.pt"
+            ]
+          },
           "configurations": {
             "production": {
-              "buildTarget": "app:build:production"
+              "buildTarget": "app:build:production",
+              "port": 4200
             },
             "development": {
               "buildTarget": "app:build:development",
@@ -180,9 +186,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "auth.stonemark.pt"
+            ]
+          },
           "configurations": {
             "production": {
-              "buildTarget": "auth:build:production"
+              "buildTarget": "auth:build:production",
+              "port": 4201
             },
             "development": {
               "buildTarget": "auth:build:development",
@@ -288,9 +300,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "account.stonemark.pt"
+            ]
+          },
           "configurations": {
             "production": {
-              "buildTarget": "profile:build:production"
+              "buildTarget": "profile:build:production",
+              "port": 4202
             },
             "development": {
               "buildTarget": "profile:build:development",
@@ -426,9 +444,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "stuff.stonemark.pt"
+            ]
+          },
           "configurations": {
             "production": {
-              "buildTarget": "staff:build:production"
+              "buildTarget": "staff:build:production",
+              "port": 4220
             },
             "development": {
               "buildTarget": "staff:build:development",

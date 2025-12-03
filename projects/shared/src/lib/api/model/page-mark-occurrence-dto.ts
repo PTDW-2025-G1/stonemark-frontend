@@ -15,6 +15,7 @@ import { SortObject } from './sort-object';
 export interface PageMarkOccurrenceDto { 
     totalPages?: number;
     totalElements?: number;
+    pageable?: PageableObject;
     size?: number;
     content?: Array<MarkOccurrenceDto>;
     number?: number;
@@ -22,7 +23,6 @@ export interface PageMarkOccurrenceDto {
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
-    pageable?: PageableObject;
     empty?: boolean;
 }
 

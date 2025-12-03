@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {ManageMonuments} from './manage-monuments/manage-monuments';
 import {CreateMonument} from './manage-monuments/create-monument/create-monument';
 import {EditMonument} from './manage-monuments/edit-monument/edit-monument';
-import {ManageModerators} from './manage-moderators/manage-moderators';
+import {ManageUsers} from './manage-users/manage-users';
 
 export const adminRoutes: Routes = [
   {
@@ -23,11 +23,11 @@ export const adminRoutes: Routes = [
     ]
   },
   {
-    path: 'moderators',
+    path: 'users',
     children: [
       {
         path: '',
-        component: ManageModerators
+        component: ManageUsers
       }
     ]
   }

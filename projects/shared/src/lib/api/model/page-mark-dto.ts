@@ -15,6 +15,7 @@ import { MarkDto } from './mark-dto';
 export interface PageMarkDto { 
     totalPages?: number;
     totalElements?: number;
+    pageable?: PageableObject;
     size?: number;
     content?: Array<MarkDto>;
     number?: number;
@@ -22,7 +23,6 @@ export interface PageMarkDto {
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
-    pageable?: PageableObject;
     empty?: boolean;
 }
 

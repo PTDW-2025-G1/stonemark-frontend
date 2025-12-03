@@ -10,8 +10,8 @@
 
 
 export interface SortObject { 
-    empty?: boolean;
     sorted?: boolean;
+    empty?: boolean;
     unsorted?: boolean;
 }
 

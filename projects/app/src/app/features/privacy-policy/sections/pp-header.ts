@@ -1,22 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {LegalHeroHeaderComponent} from '@shared/ui/legal-hero-header/legal-hero-header';
 
 @Component({
   selector: 'app-pp-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LegalHeroHeaderComponent],
   template: `
-    <header class="flex flex-col gap-2 mb-8">
-      <p class="text-xs font-semibold tracking-widest uppercase text-primary">
-        Stonemark Legal
-      </p>
-      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-text leading-tight">
-        Privacy Policy
-      </h1>
-      <p class="text-base text-text-muted">
-        Last updated: November 17, 2025
-      </p>
-    </header>
+    <app-legal-hero-header
+      title="Privacy Policy"
+      lastUpdated="November 19, 2025"
+    />
 
     <div class="grid gap-6 md:grid-cols-3">
       <div class="bg-surface-alt border border-border rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">

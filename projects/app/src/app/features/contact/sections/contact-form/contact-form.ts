@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from '@core/services/contact/contact.service'
 import {ProfileService} from '@core/services/profile/profile.service';
+import {AuthService} from '@core/services/auth/auth.service';
 import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
 import {ContactRequestDto} from '@api/model/contact-request-dto';
-import { KeycloakService } from 'projects/app/src/app/services/keycloak/keycloak.service'; // Adjust path as needed
-import { UserProfile } from 'projects/app/src/app/services/keycloak/user-profile'; // Adjust path as needed
 
 @Component({
   selector: 'app-contact-form',
@@ -172,7 +171,7 @@ export class ContactFormComponent implements OnInit{
   isSubmitting = false;
   submitSuccess = false;
   submitError = false;
-  user: UserProfile | null = null; // Changed type to UserProfile
+  user: any = null;
 
   subjectOptions = [
     { id: 'General', name: 'General Inquiry' },
@@ -187,7 +186,7 @@ export class ContactFormComponent implements OnInit{
     private fb: FormBuilder,
     private contactService: ContactService,
     private profileService: ProfileService,
-    private keycloakService: KeycloakService
+    private authService: AuthService
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -198,20 +197,16 @@ export class ContactFormComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if (this.keycloakService.keycloak.authenticated && this.keycloakService.profile) {
-      this.user = this.keycloakService.profile;
-      this.contactForm.patchValue({
-        name: `${this.user.firstName || ''} ${this.user.lastName || ''}`.trim(),
-        email: this.user.email
+    if (this.authService.getAccessToken()) {
+      this.profileService.getCurrentUser().subscribe({
+        next: user => {
+          this.user = user;
+          this.contactForm.patchValue({
+            name: `${user.firstName} ${user.lastName}`,
+            email: user.email
+          });
+        }
       });
-      // If you still need to fetch additional data from profileService, do it here
-      // For example:
-      // this.profileService.getCurrentUser().subscribe({
-      //   next: (userDto) => {
-      //     // Merge or use userDto data
-      //   },
-      //   error: (err) => console.error('Error fetching additional profile data', err)
-      // });
     }
   }
 

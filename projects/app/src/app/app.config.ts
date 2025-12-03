@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, HttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { HttpTokenInterceptor } from '@services/interceptor/http-token.interceptor';
-import { KeycloakService } from '@services/keycloak/keycloak.service';
+import { HttpTokenInterceptor } from 'projects/shared/src/lib/core/interceptors/http-token.interceptor';
+import { KeycloakService } from 'projects/shared/src/lib/core/keycloak/keycloak.service';
 
 export function kcFactory(kcService: KeycloakService) {
   return () => kcService.init();

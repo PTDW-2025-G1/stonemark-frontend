@@ -31,7 +31,7 @@
 
       <!-- User Menu (separado do nav) -->
       <div class="hidden md:flex items-center">
-        @if (keycloakService.keycloak.authenticated && user){
+        @if (keycloakService.keycloak.token && user){
           <div class="relative">
             <button
               (click)="toggleDropdown()"
@@ -112,7 +112,7 @@
         </a>
       }
 
-      @if (keycloakService.keycloak.authenticated && user) {
+      @if (keycloakService.keycloak.token && user) {
         <div class="h-px bg-border my-2"></div>
 
         <a
@@ -130,7 +130,7 @@
       }
 
       <div class="pt-2">
-        @if (keycloakService.keycloak.authenticated){
+        @if (keycloakService.keycloak.token){
           <button (click)="onLogout()" class="inline-block">
             <app-button variant="secondary">Logout</app-button>
           </button>

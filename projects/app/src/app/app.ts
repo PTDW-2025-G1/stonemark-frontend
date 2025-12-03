@@ -4,7 +4,7 @@ import { Header } from 'projects/shared/src/lib/layout/header/header';
 import { Footer } from 'projects/shared/src/lib/layout/footer/footer';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScrollToTopComponent } from '@shared/ui/scroll-top/scroll-top';
-import {CookieService} from '@core/services/cookie.service';
+import {CookieService} from 'projects/shared/src/lib/core/services/cookie.service'; // Corrected import path
 
 @Component({
   selector: 'app-root',

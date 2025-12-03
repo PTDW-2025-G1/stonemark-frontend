@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterModule} from '@angular/router';
+import {RouterModule, Router} from '@angular/router'; // Import Router
 import {ButtonComponent} from '@shared/ui/button/button';
 import { ProfileService } from '@core/services/profile/profile.service';
 import {environment} from '@env/environment';
-import { KeycloakService } from 'projects/app/src/app/services/keycloak/keycloak.service'; // Adjust path as needed
-import { UserProfile } from 'projects/app/src/app/services/keycloak/user-profile'; // Adjust path as needed
+import { KeycloakService } from '@core/keycloak/keycloak.service';
+import { UserProfile } from '@core/keycloak/user-profile';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +26,11 @@ export class Header implements OnInit, OnDestroy {
     { label: 'Contact', route: `${environment.baseUrl}/contact` },
   ];
 
-  constructor(public keycloakService: KeycloakService, private profileService: ProfileService) {}
+  constructor(
+    public keycloakService: KeycloakService,
+    private profileService: ProfileService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     if (this.keycloakService.keycloak.authenticated) {
@@ -62,7 +66,7 @@ export class Header implements OnInit, OnDestroy {
 
   goToProfile(): void {
     this.isDropdownOpen = false;
-    this.keycloakService.keycloak.accountManagement().then(r => {});
+    window.location.href = `${environment.profileUrl}/profile`;
   }
 
   goToBookmarks(): void {

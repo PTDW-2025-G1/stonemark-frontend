@@ -1,21 +1,25 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
-import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@core/environments/environment';
+import { KeycloakService } from '../keycloak/keycloak.service'; // Import the shared KeycloakService
 
 export const roleGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
+  const keycloakService = inject(KeycloakService);
 
-  const token = auth.getAccessToken();
-  const role = auth.getRole();
+  const token = keycloakService.keycloak.token;
+  // Access roles from keycloak.realmAccess or keycloak.resourceAccess
+  // For simplicity, assuming realmAccess for now. Adjust if your Keycloak setup uses resourceAccess.
+  const roles = keycloakService.keycloak.realmAccess?.roles || [];
 
   if (!token) {
-    window.location.href = `${environment.authUrl}/login`;
+    // If no token, redirect to login via Keycloak
+    keycloakService.login(); // Use KeycloakService to initiate login
     return false;
   }
 
-  if (role !== 'ADMIN' && role !== 'MODERATOR') {
-    window.location.href = environment.baseUrl;
+  // Check if the user has 'ADMIN' or 'MODERATOR' role
+  if (!roles.includes('ADMIN') && !roles.includes('MODERATOR')) {
+    window.location.href = environment.baseUrl; // Redirect to base URL if not authorized
     return false;
   }
 

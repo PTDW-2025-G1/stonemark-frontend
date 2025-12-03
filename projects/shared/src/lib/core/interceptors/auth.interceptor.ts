@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { CookieService } from '../services/cookie.service';
+import { KeycloakService } from '@core/keycloak/keycloak.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private keycloakService: KeycloakService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!req.url.startsWith(environment.apiUrl)) {
       return next.handle(req);
     }
 
-    const token = this.cookieService.get('accessToken');
+    const token = this.keycloakService.keycloak.token;
 
     if (token) {
       req = req.clone({

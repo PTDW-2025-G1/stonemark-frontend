@@ -5,7 +5,7 @@ import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScroll
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
-import {AuthInterceptor} from '@core/interceptors/auth.interceptor';
+import {AuthInterceptor} from 'projects/shared/src/lib/core/interceptors/auth.interceptor'; // Corrected import path
 
 export const appConfig: ApplicationConfig = {
   providers: [

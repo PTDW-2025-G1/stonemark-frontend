@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from '@shared/ui/not-found/not-found.component';
-import { LoginComponent } from 'projects/auth/src/app/features/auth/pages/login/login'; // Import the updated LoginComponent
+import { authGuard } from 'projects/shared/src/lib/core/guards/auth.guard'; // Corrected import path for authGuard
+import { LoginComponent } from 'projects/auth/src/app/features/auth/pages/login/login';
 import { RegisterComponent } from 'projects/auth/src/app/features/auth/pages/register/register';
-import {AuthGuard} from './guards/auth.guard'; // Import the updated RegisterComponent
+import { ProfileComponent } from 'projects/profile/src/app/features/profile/pages/profile-main/profile';
 
 export const routes: Routes = [
   {
@@ -12,11 +13,16 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent // Route for your Keycloak-driven login
+    component: LoginComponent
   },
   {
     path: 'register',
-    component: RegisterComponent // Route for your Keycloak-driven registration
+    component: RegisterComponent
+  },
+  {
+    path: 'profile', // Your custom profile view page
+    component: ProfileComponent,
+    canActivate: [authGuard] // Protect this route with the AuthGuard
   },
   {
     path: 'about',
@@ -61,18 +67,20 @@ export const routes: Routes = [
   {
     path: 'monuments',
     loadChildren: () =>
-      import('projects/app/src/app/features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES)
+      import('projects/app/src/app/features/monuments/monument.routes').then(m => m.MONUMENT_ROUTES),
+    canActivate: [authGuard] // Protect this route
   },
   {
     path: 'suggestions',
     loadChildren: () =>
       import('projects/app/src/app/features/suggest-correction/suggest-correction.routes').then(m => m.SUGGEST_CORRECTION_ROUTES),
-    canActivate: [AuthGuard]
+    canActivate: [authGuard] // Protect this route
   },
   {
     path: 'marks',
     loadChildren: () =>
-      import('projects/app/src/app/features/marks/mark.routes').then(m => m.MARK_ROUTES)
+      import('projects/app/src/app/features/marks/mark.routes').then(m => m.MARK_ROUTES),
+    canActivate: [authGuard] // Protect this route
   },
   {
     path: '**',

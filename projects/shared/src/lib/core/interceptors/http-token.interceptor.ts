@@ -6,7 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
-import { KeycloakService } from '../keycloak/keycloak.service';
+import { KeycloakService } from '@core/keycloak/keycloak.service';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable()

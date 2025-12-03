@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from '@core/services/contact/contact.service'
-import {ProfileService} from '@core/services/profile/profile.service';
-import {AuthService} from '@core/services/auth/auth.service';
-import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
+import {KeycloakService} from '@core/keycloak/keycloak.service'; // Import KeycloakService
 import {ContactRequestDto} from '@api/model/contact-request-dto';
+import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
 
 @Component({
   selector: 'app-contact-form',
@@ -171,7 +170,6 @@ export class ContactFormComponent implements OnInit{
   isSubmitting = false;
   submitSuccess = false;
   submitError = false;
-  user: any = null;
 
   subjectOptions = [
     { id: 'General', name: 'General Inquiry' },
@@ -185,8 +183,7 @@ export class ContactFormComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     private contactService: ContactService,
-    private profileService: ProfileService,
-    private authService: AuthService
+    private keycloakService: KeycloakService
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -196,17 +193,22 @@ export class ContactFormComponent implements OnInit{
     });
   }
 
-  ngOnInit(): void {
-    if (this.authService.getAccessToken()) {
-      this.profileService.getCurrentUser().subscribe({
-        next: user => {
-          this.user = user;
-          this.contactForm.patchValue({
-            name: `${user.firstName} ${user.lastName}`,
-            email: user.email
-          });
-        }
-      });
+  async ngOnInit(): Promise<void> {
+    if (this.keycloakService.keycloak.authenticated) {
+      const userProfile = this.keycloakService.profile;
+      console.log('Keycloak User Profile:', userProfile);
+
+      if (userProfile) {
+        this.contactForm.patchValue({
+          name: `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim(),
+          email: userProfile.email || ''
+        });
+        console.log('Form patched with Keycloak user data.');
+      } else {
+        console.warn('Keycloak user profile not available.');
+      }
+    } else {
+      console.log('User not authenticated with Keycloak, skipping profile data pre-fill.');
     }
   }
 

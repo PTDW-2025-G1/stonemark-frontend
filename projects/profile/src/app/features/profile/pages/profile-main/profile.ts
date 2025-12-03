@@ -10,8 +10,7 @@ import {ProfileSuggestionsComponent} from './sections/profile-suggestions/profil
 import { Suggestion } from '@core/models/suggestions.model';
 import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
-import {environment} from '@env/environment';
-import {AuthService} from '@core/services/auth/auth.service';
+import { KeycloakService } from '@core/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +32,7 @@ export class ProfileComponent implements OnInit {
   constructor(private router: Router,
               private profileService: ProfileService,
               private markService: MarkService,
-              private authService: AuthService) {}
+              private keycloakService: KeycloakService) {} // Inject KeycloakService
 
   ngOnInit(): void {
     this.loadUserProfile();
@@ -161,7 +160,7 @@ export class ProfileComponent implements OnInit {
   }
 
   editProfile(): void {
-    this.router.navigate(['/profile/edit']);
+    this.keycloakService.manageAccount();
   }
 
   changePassword(): void {
@@ -177,14 +176,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.authService.logout().subscribe({
-      next: () => {
-        window.location.href = environment.authUrl + '/login';
-      },
-      error: () => {
-        window.location.href = environment.authUrl + '/login';
-      }
-    });
+    this.keycloakService.logout();
   }
 
 }

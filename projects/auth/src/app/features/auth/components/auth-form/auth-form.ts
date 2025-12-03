@@ -4,12 +4,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InputFieldComponent } from '@shared/ui/input-field/input-field';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { SocialAuthButtonsComponent } from '../social-auth-buttons/social-auth-buttons';
+import { TELEPHONE_PATTERN } from '@shared/utils/telephone.utils';
 
 export interface AuthFormData {
   email: string;
   password: string;
   firstName?: string;
   lastName?: string;
+  telephone?: string;
 }
 
 @Component({
@@ -51,7 +53,7 @@ export interface AuthFormData {
 
       <!-- Form -->
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-left">
-        <!-- Name fields (signup only) -->
+        <!-- Signup fields (signup only) -->
         @if (mode === 'register') {
           <div class="grid grid-cols-2 gap-4 mb-4">
             <app-input-field
@@ -65,6 +67,13 @@ export interface AuthFormData {
               placeholder="eg. Francisco"
               formControlName="lastName"
               [error]="getError('lastName')"
+            />
+            <app-input-field
+              label="Telephone"
+              placeholder="+351912345678"
+              formControlName="telephone"
+              [error]="getError('telephone')"
+              class="col-span-2"
             />
           </div>
         }
@@ -205,6 +214,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
     return this.fb.group({
       firstName: [''],
       lastName: [''],
+      telephone: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
@@ -213,17 +223,21 @@ export class AuthFormComponent implements OnInit, OnChanges {
   private updateFormValidators(): void {
     const firstNameControl = this.form.get('firstName');
     const lastNameControl = this.form.get('lastName');
+    const telephoneControl = this.form.get('telephone');
 
     if (this.mode === 'register') {
       firstNameControl?.setValidators([Validators.required]);
       lastNameControl?.setValidators([Validators.required]);
+      telephoneControl?.setValidators([Validators.required, Validators.pattern(TELEPHONE_PATTERN)]);
     } else {
       firstNameControl?.clearValidators();
       lastNameControl?.clearValidators();
+      telephoneControl?.clearValidators();
     }
 
     firstNameControl?.updateValueAndValidity();
     lastNameControl?.updateValueAndValidity();
+    telephoneControl?.updateValueAndValidity();
   }
 
   getError(fieldName: string): string | null {
@@ -232,6 +246,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
 
     if (control.errors['required']) return 'This field is required';
     if (control.errors['email']) return 'Please enter a valid email';
+    if (control.errors['pattern']) return 'Your telephone number is invalid should be eg. +351912345678';
     if (control.errors['minlength'])
       return `Must be at least ${control.errors['minlength'].requiredLength} characters`;
     return null;

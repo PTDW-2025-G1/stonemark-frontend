@@ -12,18 +12,25 @@ export class ChangeTelephoneFormComponent implements OnInit {
   @Input() currentTelephone: string = '';
   @Input() isSubmitting: boolean = false;
   @Input() errorMessage: string = '';
+  @Input() awaitingCode: boolean = false;
   @Output() submitTelephone = new EventEmitter<string>();
+  @Output() submitCode = new EventEmitter<string>();
   @Output() cancel = new EventEmitter<void>();
 
   telephoneForm!: FormGroup;
+  codeForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.telephoneForm = this.fb.group({
-      newTelephone: ['', [Validators.required, Validators.pattern(/^[+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/)]],
+      newTelephone: ['', [Validators.required, Validators.pattern(/^\+351\d{9}$/)]],
       confirmTelephone: ['', [Validators.required]]
     }, { validators: this.telephoneMatchValidator });
+
+    this.codeForm = this.fb.group({
+      code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
+    });
   }
 
   telephoneMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -40,6 +47,14 @@ export class ChangeTelephoneFormComponent implements OnInit {
       Object.keys(this.telephoneForm.controls).forEach(key => {
         this.telephoneForm.get(key)?.markAsTouched();
       });
+    }
+  }
+
+  onSubmitCode(): void {
+    if (this.codeForm.valid) {
+      this.submitCode.emit(this.codeForm.get('code')?.value);
+    } else {
+      this.codeForm.get('code')?.markAsTouched();
     }
   }
 

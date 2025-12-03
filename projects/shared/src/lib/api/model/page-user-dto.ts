@@ -13,8 +13,8 @@ import { UserDto } from './user-dto';
 
 
 export interface PageUserDto { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     size?: number;
     content?: Array<UserDto>;
     number?: number;

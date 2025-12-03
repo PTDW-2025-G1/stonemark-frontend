@@ -9,12 +9,7 @@
  */
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    userMessage?: boolean;
-    groupMessage?: boolean;
-    superGroupMessage?: boolean;
+export interface InitiateRequest { 
+    photo: Blob;
 }
 

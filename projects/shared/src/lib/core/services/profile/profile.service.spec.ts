@@ -5,6 +5,8 @@ import { UserDto } from '@api/model/user-dto';
 import { ProfileUpdateRequestDto } from '@api/model/profile-update-request-dto';
 import { EmailChangeRequestDto } from '@api/model/email-change-request-dto';
 import { PasswordChangeRequestDto } from '@api/model/password-change-request-dto';
+import { TelephoneChangeRequestDto } from '@api/model/telephone-change-request-dto';
+import { TelephoneCodeVerificationDto } from '@api/model/telephone-code-verification-dto';
 import { environment } from '@env/environment';
 
 describe('ProfileService (unit, without Angular TestBed)', () => {
@@ -87,7 +89,7 @@ describe('ProfileService (unit, without Angular TestBed)', () => {
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/change-password`, expectedPayload);
   });
 
-  it('should request telephone change', async () => {
+  it('should request telephone change (legacy)', async () => {
     const newPhone = '+351923456789';
     const mockResponse = { message: 'Phone change requested' };
 
@@ -97,5 +99,32 @@ describe('ProfileService (unit, without Angular TestBed)', () => {
 
     expect(result).toEqual(mockResponse);
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-phone-change`, { newPhone });
+  });
+
+  it('should request telephone change', async () => {
+    const newTelephone = '+351923456789';
+    const payload: TelephoneChangeRequestDto = { newTelephone };
+    const mockResponse = { message: 'Telephone change requested' };
+
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
+
+    const result = await firstValueFrom(service.requestTelephoneChange(payload));
+
+    expect(result).toEqual(mockResponse);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-telephone-change`, payload);
+  });
+
+  it('should verify telephone change', async () => {
+    const newTelephone = '+351923456789';
+    const code = '123456';
+    const payload: TelephoneCodeVerificationDto = { newTelephone, code };
+    const mockResponse = { message: 'Telephone verified successfully' };
+
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
+
+    const result = await firstValueFrom(service.verifyTelephoneChange(payload));
+
+    expect(result).toEqual(mockResponse);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/verify-telephone-change`, payload);
   });
 });

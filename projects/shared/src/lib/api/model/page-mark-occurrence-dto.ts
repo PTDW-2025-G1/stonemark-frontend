@@ -13,8 +13,8 @@ import { SortObject } from './sort-object';
 
 
 export interface PageMarkOccurrenceDto { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     size?: number;
     content?: Array<MarkOccurrenceDto>;
     number?: number;

@@ -13,8 +13,8 @@ import { MonumentResponseDto } from './monument-response-dto';
 
 
 export interface PageMonumentResponseDto { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     size?: number;
     content?: Array<MonumentResponseDto>;
     number?: number;

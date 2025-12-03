@@ -28,6 +28,7 @@ export namespace MarkOccurrenceProposalDto {
         InProgress: 'IN_PROGRESS',
         AwaitingMonumentInfo: 'AWAITING_MONUMENT_INFO',
         AwaitingMarkInfo: 'AWAITING_MARK_INFO',
+        AwaitingMarkSelection: 'AWAITING_MARK_SELECTION',
         ReadyToSubmit: 'READY_TO_SUBMIT',
         Submitted: 'SUBMITTED',
         Approved: 'APPROVED',

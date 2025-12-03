@@ -1,7 +1,5 @@
-export interface UserProfile {
-  username?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
+import { KeycloakProfile } from 'keycloak-js';
+
+export interface UserProfile extends KeycloakProfile {
   token?: string;
 }

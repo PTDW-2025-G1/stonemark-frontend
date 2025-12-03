@@ -1,11 +1,22 @@
 import { Routes } from '@angular/router';
-import {NotFoundComponent} from '@shared/ui/not-found/not-found.component'
+import { NotFoundComponent } from '@shared/ui/not-found/not-found.component';
+import { LoginComponent } from 'projects/auth/src/app/features/auth/pages/login/login'; // Import the updated LoginComponent
+import { RegisterComponent } from 'projects/auth/src/app/features/auth/pages/register/register';
+import {AuthGuard} from './guards/auth.guard'; // Import the updated RegisterComponent
 
 export const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
       import('projects/app/src/app/features/home/home.routes').then(m => m.HOME_ROUTES)
+  },
+  {
+    path: 'login',
+    component: LoginComponent // Route for your Keycloak-driven login
+  },
+  {
+    path: 'register',
+    component: RegisterComponent // Route for your Keycloak-driven registration
   },
   {
     path: 'about',
@@ -55,7 +66,8 @@ export const routes: Routes = [
   {
     path: 'suggestions',
     loadChildren: () =>
-      import('projects/app/src/app/features/suggest-correction/suggest-correction.routes').then(m => m.SUGGEST_CORRECTION_ROUTES)
+      import('projects/app/src/app/features/suggest-correction/suggest-correction.routes').then(m => m.SUGGEST_CORRECTION_ROUTES),
+    canActivate: [AuthGuard]
   },
   {
     path: 'marks',

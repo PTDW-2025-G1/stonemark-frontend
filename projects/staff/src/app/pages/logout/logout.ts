@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { AuthService } from '@core/services/auth/auth.service';
-import { environment } from '@env/environment';
+import { Component, OnInit } from '@angular/core';
+import { KeycloakService } from 'projects/app/src/app/services/keycloak/keycloak.service'; // Adjust path as needed
 
 @Component({
   selector: 'app-logout',
   template: ''
 })
-export class LogoutComponent {
-  constructor(private authService: AuthService) {
-    this.authService.logout().subscribe(() => {
-      window.location.href = `${environment.authUrl}/login`;
-    });
+export class LogoutComponent implements OnInit {
+  constructor(private keycloakService: KeycloakService) {}
+
+  ngOnInit(): void {
+    this.keycloakService.logout(); // KeycloakService.logout() handles the redirect
   }
 }

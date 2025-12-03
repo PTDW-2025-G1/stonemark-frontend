@@ -2,11 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {ButtonComponent} from '@shared/ui/button/button';
-import { AuthService } from '@core/services/auth/auth.service';
 import { ProfileService } from '@core/services/profile/profile.service';
-import { UserDto } from '@api/model/user-dto';
-import { Subscription } from 'rxjs';
 import {environment} from '@env/environment';
+import { KeycloakService } from 'projects/app/src/app/services/keycloak/keycloak.service'; // Adjust path as needed
+import { UserProfile } from 'projects/app/src/app/services/keycloak/user-profile'; // Adjust path as needed
 
 @Component({
   selector: 'app-header',
@@ -18,8 +17,7 @@ import {environment} from '@env/environment';
 export class Header implements OnInit, OnDestroy {
   isMenuOpen = false;
   isDropdownOpen = false;
-  user: UserDto | null = null;
-  private authSubscription?: Subscription;
+  user: UserProfile | null = null;
 
   menuItems = [
     { label: 'Monuments', route: `${environment.baseUrl}/search/monuments` },
@@ -28,32 +26,15 @@ export class Header implements OnInit, OnDestroy {
     { label: 'Contact', route: `${environment.baseUrl}/contact` },
   ];
 
-  constructor(protected authService: AuthService, private profileService: ProfileService) {}
+  constructor(public keycloakService: KeycloakService, private profileService: ProfileService) {}
 
   ngOnInit(): void {
-    if (this.authService.getAccessToken()) {
-      this.loadUser();
+    if (this.keycloakService.keycloak.authenticated) {
+      this.user = this.keycloakService.profile || null;
     }
-
-    this.authSubscription = this.authService.authState$.subscribe(isAuthenticated => {
-      if (isAuthenticated) {
-        this.loadUser();
-      } else {
-        this.user = null;
-      }
-    });
   }
 
-  ngOnDestroy(): void {
-    this.authSubscription?.unsubscribe();
-  }
-
-  private loadUser(): void {
-    this.profileService.getCurrentUser().subscribe({
-      next: user => (this.user = user),
-      error: () => (this.user = null)
-    });
-  }
+  ngOnDestroy(): void { }
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
@@ -72,19 +53,16 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onLogin(): void {
-    window.location.href = `${environment.authUrl}/login`;
+    this.keycloakService.login().then(r => {});
   }
 
   onLogout(): void {
-    this.authService.logout().subscribe({
-      next: () => (window.location.href = `${environment.authUrl}/login`),
-      error: () => (window.location.href = `${environment.authUrl}/login`)
-    });
+    this.keycloakService.logout().then(r => {});
   }
 
   goToProfile(): void {
     this.isDropdownOpen = false;
-    window.location.href = `${environment.profileUrl}/profile`;
+    this.keycloakService.keycloak.accountManagement().then(r => {});
   }
 
   goToBookmarks(): void {

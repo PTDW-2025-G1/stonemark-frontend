@@ -3,7 +3,7 @@ import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Header} from 'projects/shared/src/lib/layout/header/header';
 import {Footer} from 'projects/shared/src/lib/layout/footer/footer';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {CookieService} from '@core/services/cookie.service';
+import {CookieService} from '@core/services/cookie/cookie.service';
 
 @Component({
   selector: 'app-root',

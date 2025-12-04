@@ -8,16 +8,7 @@ import { CommonModule } from '@angular/common';
   imports: [RouterLink, CommonModule],
   template: `
     <section class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-surface pt-20 pb-32">
-
-      <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute inset-0 opacity-[0.03]"
-             style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 40px 40px;">
-        </div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] animate-pulse-slow"></div>
-      </div>
-
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-
         <div class="text-center max-w-4xl mx-auto mb-16 sm:mb-24">
 
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border border-border shadow-sm mb-8 animate-fade-in">

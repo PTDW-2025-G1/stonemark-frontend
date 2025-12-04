@@ -12,7 +12,7 @@ import { RefreshTokenRequestDto } from '@api/model/refresh-token-request-dto';
 import { environment } from '@env/environment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-describe('AuthService (unit, without Angular TestBed)', () => {
+describe('AuthService', () => {
   let httpMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;

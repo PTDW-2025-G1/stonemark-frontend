@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { CookieService } from '@core/services/cookie.service'; // AJUSTA O PATH
+import { CookieService } from '@core/services/cookie/cookie.service'; // AJUSTA O PATH
 
 interface AccessibilitySetting {
   id: string;
@@ -34,17 +34,14 @@ export class AccessibilityComponent implements OnInit {
     { id: 'highContrast', category: 'Visual', title: 'High Contrast', description: 'Increases contrast between text and background', enabled: false, icon: 'bi-circle-half' },
     { id: 'largeText', category: 'Visual', title: 'Large Text', description: 'Increases font size across the site', enabled: false, icon: 'bi-type-h1' },
     { id: 'dyslexiaFont', category: 'Visual', title: 'Dyslexia-Friendly Font', description: 'Uses OpenDyslexic font for better readability', enabled: false, icon: 'bi-fonts' },
-
-    // Navigation Settings
-    { id: 'keyboardHighlight', category: 'Navigation', title: 'Enhanced Keyboard Focus', description: 'Shows a stronger highlight when navigating with keyboard', enabled: false, icon: 'bi-keyboard' },
-    { id: 'skipLinks', category: 'Navigation', title: 'Skip Navigation Links', description: 'Shows quick links to skip to main content', enabled: false, icon: 'bi-skip-forward' },
+    { id: 'monochrome',  category: 'Visual',  title: 'Monochrome Mode',  description: 'Removes colors and forces grayscale view for improved contrast perception',  enabled: false,  icon: 'bi-eyedropper' },
+    { id: 'textSpacing',  category: 'Visual',  title: 'Text Spacing',  description: 'Improves readability with increased spacing between lines of text',  enabled: false,  icon: 'bi-text-paragraph'},
 
     // Motion Settings
     { id: 'reduceMotion', category: 'Motion', title: 'Reduce Motion', description: 'Minimizes animations and transitions', enabled: false, icon: 'bi-pause-circle' },
     { id: 'noAutoplay', category: 'Motion', title: 'Disable Autoplay', description: 'Prevents videos and carousels from playing automatically', enabled: false, icon: 'bi-stop-circle' },
 
     // Content Settings
-    { id: 'showDescriptions', category: 'Content', title: 'Show Image Descriptions', description: 'Displays alternative text for images', enabled: false, icon: 'bi-image-alt' },
     { id: 'simplifiedLayout', category: 'Content', title: 'Simplified Layout', description: 'Removes non-essential elements for cleaner interface', enabled: false, icon: 'bi-layout-text-sidebar' },
     { id: 'readingGuide', category: 'Content', title: 'Reading Guide', description: 'Highlights the line you\'re reading', enabled: false, icon: 'bi-text-center' }
   ];
@@ -58,7 +55,7 @@ export class AccessibilityComponent implements OnInit {
   }
 
   get categorizedSettings() {
-    const categories = ['Visual', 'Navigation', 'Motion', 'Content'];
+    const categories = ['Visual', 'Motion', 'Content'];
     return categories.map(category => ({
       name: category,
       settings: this.settings.filter(s => s.category === category)

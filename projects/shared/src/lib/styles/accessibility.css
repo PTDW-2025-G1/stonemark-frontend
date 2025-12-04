@@ -89,45 +89,6 @@
 }
 
 /* ============================================
-   ENHANCED KEYBOARD FOCUS
-   ============================================ */
-.enhanced-focus *:focus,
-.enhanced-focus *:focus-visible {
-  outline: 4px solid #0066ff !important;
-  outline-offset: 4px !important;
-  box-shadow: 0 0 0 8px rgba(0, 102, 255, 0.2) !important;
-  border-radius: 4px !important;
-}
-
-.enhanced-focus.dark-mode *:focus,
-.enhanced-focus.dark-mode *:focus-visible {
-  outline-color: #66b3ff !important;
-  box-shadow: 0 0 0 8px rgba(102, 179, 255, 0.3) !important;
-}
-
-/* ============================================
-   SKIP LINKS
-   ============================================ */
-.show-skip-links .skip-link {
-  position: fixed;
-  top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  padding: 1rem 2rem;
-  background: var(--color-primary);
-  color: var(--color-primary-foreground);
-  font-weight: bold;
-  border-radius: 0 0 8px 8px;
-  transition: top 0.3s ease;
-  text-decoration: none;
-}
-
-.show-skip-links .skip-link:focus {
-  top: 0;
-}
-
-/* ============================================
    REDUCE MOTION
    ============================================ */
 .reduce-motion,
@@ -154,27 +115,6 @@
 
 .no-autoplay [autoplay] {
   animation-play-state: paused !important;
-}
-
-/* ============================================
-   SHOW IMAGE DESCRIPTIONS
-   ============================================ */
-.show-descriptions img[alt]:not([alt=""]) {
-  position: relative;
-}
-
-.show-descriptions img[alt]:not([alt=""])::after {
-  content: attr(alt);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  word-wrap: break-word;
 }
 
 /* ============================================
@@ -213,6 +153,27 @@
   outline: 2px solid #ffeb3b !important;
   outline-offset: 2px !important;
 }
+
+/* ============================================
+   MONOCHROME GUIDE
+   ============================================ */
+
+.monochrome,
+.monochrome * {
+  filter: grayscale(100%) !important;
+}
+
+/* ============================================
+   TEXT SPACING
+   ============================================ */
+
+.text-spacing,
+.text-spacing * {
+  line-height: 1.8 !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.15em !important;
+}
+
 
 /* ============================================
    UTILITY CLASSES

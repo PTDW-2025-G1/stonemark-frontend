@@ -5,7 +5,7 @@ import { ContactRequestDto } from '@api/model/contact-request-dto';
 import { ContactRequest } from '@api/model/contact-request';
 import { environment } from '@env/environment';
 
-describe('ContactService (unit, without Angular TestBed)', () => {
+describe('ContactService', () => {
   let httpMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;

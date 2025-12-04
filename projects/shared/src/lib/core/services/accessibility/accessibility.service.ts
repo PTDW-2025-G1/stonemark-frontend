@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { CookieService } from '@core/services/cookie.service';
+import { CookieService } from '@core/services/cookie/cookie.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccessibilityService {

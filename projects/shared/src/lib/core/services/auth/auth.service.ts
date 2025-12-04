@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import { CookieService } from '@core/services/cookie.service';
+import { CookieService } from '@core/services/cookie/cookie.service';
 import { AuthenticationRequestDto } from '@api/model/authentication-request-dto';
 import { AuthenticationResponseDto } from '@api/model/authentication-response-dto';
 import { RegisterRequestDto } from '@api/model/register-request-dto';

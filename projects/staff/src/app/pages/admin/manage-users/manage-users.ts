@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Dialog } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { UserManagementService } from '@core/services/user-management.service';
+import { UserManagementService } from '@core/services/user/user-management.service';
 import { UserDto } from '@api/model/user-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';

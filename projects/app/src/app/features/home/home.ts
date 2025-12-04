@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeroSectionComponent } from '@features/home/sections/hero-section';
-import { PopularSectionComponent } from '@features/home/sections/popular-section';
-import { LastMarkSectionComponent } from '@features/home/sections/last-marks-section';
-import { MapSectionComponent } from '@features/home/sections/map-section';
-import { LastNewsComponent } from '@features/home/sections/last-news-section';
+import { HeroSectionComponent } from '@features/home/sections/hero-section/hero-section';
+import { PopularSectionComponent } from '@features/home/sections/popular-section/popular-section';
+import { LastMarkSectionComponent } from '@features/home/sections/last-marks-section/last-marks-section';
+import { MapSectionComponent } from '@features/home/sections/map-section/map-section';
+import { LastNewsComponent } from '@features/home/sections/last-news-section/last-news-section';
 import {MonumentService} from '@core/services/monument/monument.service';
 import {MarkService} from '@core/services/mark.service';
 import {Mark} from '@core/models/mark.model';

@@ -9,7 +9,7 @@ import { TelephoneChangeRequestDto } from '@api/model/telephone-change-request-d
 import { TelephoneCodeVerificationDto } from '@api/model/telephone-code-verification-dto';
 import { environment } from '@env/environment';
 
-describe('ProfileService (unit, without Angular TestBed)', () => {
+describe('ProfileService', () => {
   let httpMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;

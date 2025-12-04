@@ -6,7 +6,7 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { PageMonumentDto } from '@api/model/page-monument-dto';
 import { environment } from '@env/environment';
 
-describe('MonumentService (unit, without Angular TestBed)', () => {
+describe('MonumentService', () => {
   let httpMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;

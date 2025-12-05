@@ -35,7 +35,7 @@ export class CookieService {
 
   delete(name: string): void {
     const domain = this.getDomain();
-    document.cookie = name + '=; Max-Age=-99999999; path=/; domain=' + domain;
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; Max-Age=-99999999; path=/; domain=' + domain;
   }
 
   private getDomain(): string {

@@ -226,7 +226,12 @@ export class AuthService {
           this.authStateSubject.next(true);
         }
       }),
-      catchError(this.handleError('Token refresh failed'))
+      catchError((error: HttpErrorResponse) => {
+        this.removeTokens();
+        this.authStateSubject.next(false);
+        this.redirectToLogin();
+        return throwError(() => error);
+      })
     );
   }
 

@@ -1,18 +1,3 @@
 <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  @if (telephoneChanged) {
-    <app-change-telephone-success
-      [newTelephone]="currentTelephone"
-      (backToProfile)="goBack()">
-    </app-change-telephone-success>
-  } @else {
-    <app-change-telephone-form
-      [currentTelephone]="currentTelephone"
-      [isSubmitting]="isSubmitting"
-      [errorMessage]="errorMessage"
-      [awaitingCode]="awaitingCode"
-      (submitTelephone)="onSubmitTelephone($event)"
-      (submitCode)="onVerifyCode($event)"
-      (cancel)="goBack()">
-    </app-change-telephone-form>
-  }
+  <app-change-telephone-form />
 </div>

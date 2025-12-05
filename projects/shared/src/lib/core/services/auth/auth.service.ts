@@ -131,6 +131,7 @@ export class AuthService {
     if (!token) {
       this.removeTokens();
       this.authStateSubject.next(false);
+      this.redirectToLogin();
       return of({ message: 'Logged out locally.' });
     }
 
@@ -140,19 +141,30 @@ export class AuthService {
       tap(() => {
         this.removeTokens();
         this.authStateSubject.next(false);
+        this.redirectToLogin();
       }),
       catchError((error: HttpErrorResponse) => {
         if ([401, 403].includes(error.status)) {
           this.removeTokens();
           this.authStateSubject.next(false);
+          this.redirectToLogin();
           return of({ message: 'Forced local logout.' });
         }
         this.removeTokens();
         this.authStateSubject.next(false);
+        this.redirectToLogin();
         return throwError(() => error);
       })
     );
   }
+
+  private redirectToLogin(): void {
+    const base = environment.authUrl || '';
+    const normalized = base.replace(/\/+$/, '');
+    const loginUrl = normalized.endsWith('/login') ? normalized : `${normalized}/login`;
+    window.location.replace(loginUrl);
+  }
+
 
   requestPasswordReset(email: string): Observable<void> {
     const payload: PasswordResetRequestDto = { email };

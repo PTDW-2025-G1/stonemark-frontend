@@ -7,12 +7,14 @@ import { EmailChangeRequestDto } from "@api/model/email-change-request-dto"
 import { PasswordChangeRequestDto } from "@api/model/password-change-request-dto"
 import { ProfileUpdateRequestDto } from "@api/model/profile-update-request-dto"
 import { TelephoneChangeRequestDto } from "@api/model/telephone-change-request-dto"
-import { TelephoneCodeVerificationDto } from "@api/model/telephone-code-verification-dto"
+import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';
+import {CodeConfirmationRequestDto} from '@api/model/code-confirmation-request-dto';
 
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   private baseUrl = `${environment.apiUrl}/account`;
+  private authUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
@@ -34,16 +36,12 @@ export class ProfileService {
     return this.http.post<void>(`${this.baseUrl}/change-password`, payload);
   }
 
-  changeTelephone(newPhone: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/request-phone-change`, {newPhone});
-  }
-
   requestTelephoneChange(request: TelephoneChangeRequestDto): Observable<any> {
     return this.http.post(`${this.baseUrl}/request-telephone-change`, request);
   }
 
-  verifyTelephoneChange(request: TelephoneCodeVerificationDto): Observable<any> {
-    return this.http.post(`${this.baseUrl}/verify-telephone-change`, request);
+  confirmCode(request: CodeConfirmationRequestDto): Observable<ConfirmationResponseDto> {
+    return this.http.post(`${this.authUrl}/confirm-code`, request);
   }
 
 }

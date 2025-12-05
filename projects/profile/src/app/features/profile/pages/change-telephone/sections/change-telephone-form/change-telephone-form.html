@@ -1,222 +1,330 @@
-@if (!awaitingCode) {
-<!-- Header -->
-<div class="text-center mb-8">
-  <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-    <i class="bi bi-telephone text-primary text-3xl"></i>
-  </div>
-  <h2 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-2">
-    Change Telephone Number
-  </h2>
-  <p class="text-text-muted">
-    Update your telephone number for account notifications
-  </p>
-</div>
-
-<!-- Current Telephone Display -->
-<div class="bg-surface-alt rounded-xl p-4 mb-6 border border-border">
-  <p class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Current Telephone</p>
-  <div class="flex items-center gap-3">
-    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-      <i class="bi bi-telephone text-primary text-lg"></i>
-    </div>
-    <div>
-      <p class="font-semibold text-text">{{ currentTelephone || 'No telephone registered' }}</p>
-      <p class="text-xs text-text-muted">Active</p>
-    </div>
-  </div>
-</div>
-
-<!-- Form Card -->
-<div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
-  <form [formGroup]="telephoneForm" (ngSubmit)="onSubmit()">
-
-    <!-- New Telephone -->
-    <div class="mb-6">
-      <label for="newTelephone" class="block text-sm font-semibold text-text mb-2">
-        New Telephone Number <span class="text-error">*</span>
-      </label>
-      <div class="relative">
-        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <i class="bi bi-telephone text-text-muted"></i>
-        </div>
-        <input
-          type="tel"
-          id="newTelephone"
-          formControlName="newTelephone"
-          placeholder="+351 912 345 678"
-          class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300"
-          [class.border-error]="telephoneForm.get('newTelephone')?.invalid && telephoneForm.get('newTelephone')?.touched"
-        />
+<!-- Step 1: Formulário de novo telefone -->
+@if (currentStep === 'telephone') {
+  <div>
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
+        <i class="bi bi-telephone text-primary text-3xl"></i>
       </div>
-      @if (telephoneForm.get('newTelephone')?.invalid && telephoneForm.get('newTelephone')?.touched) {
-        <p class="mt-2 text-sm text-error flex items-center gap-1">
-          <i class="bi bi-exclamation-circle"></i>
-          @if (telephoneForm.get('newTelephone')?.errors?.['required']) {
-            Telephone number is required
-          }
-          @if (telephoneForm.get('newTelephone')?.errors?.['pattern']) {
-            Please enter a valid telephone number
-          }
-        </p>
-      }
+      <h2 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-2">
+        Change Telephone Number
+      </h2>
+      <p class="text-text-muted">
+        Update your telephone number for account notifications
+      </p>
     </div>
 
-    <!-- Confirm Telephone -->
-    <div class="mb-6">
-      <label for="confirmTelephone" class="block text-sm font-semibold text-text mb-2">
-        Confirm New Telephone <span class="text-error">*</span>
-      </label>
-      <div class="relative">
-        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <i class="bi bi-shield-check text-text-muted"></i>
+    <!-- Current Telephone Display -->
+    <div class="bg-surface-alt rounded-xl p-4 mb-6 border border-border">
+      <p class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Current Telephone</p>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+          <i class="bi bi-telephone text-primary text-lg"></i>
         </div>
-        <input
-          type="tel"
-          id="confirmTelephone"
-          formControlName="confirmTelephone"
-          placeholder="Confirm your new telephone"
-          class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300"
-          [class.border-error]="telephoneForm.get('confirmTelephone')?.invalid && telephoneForm.get('confirmTelephone')?.touched"
-        />
-      </div>
-      @if (telephoneForm.get('confirmTelephone')?.invalid && telephoneForm.get('confirmTelephone')?.touched) {
-        <p class="mt-2 text-sm text-error flex items-center gap-1">
-          <i class="bi bi-exclamation-circle"></i>
-          @if (telephoneForm.get('confirmTelephone')?.errors?.['required']) {
-            Please confirm your telephone number
-          }
-          @if (telephoneForm.errors?.['telephoneMismatch']) {
-            Telephone numbers do not match
-          }
-        </p>
-      }
-    </div>
-
-    <!-- Warning Notice -->
-    <div class="mb-6 p-4 bg-warning/5 rounded-xl border border-warning/20">
-      <div class="flex items-start gap-3">
-        <i class="bi bi-exclamation-triangle text-warning text-xl"></i>
         <div>
-          <h4 class="font-semibold text-text text-sm mb-1">Important Notice</h4>
-          <p class="text-xs text-text-muted">
-            You may need to verify your new telephone number. A verification code might be sent via SMS.
-          </p>
+          <p class="font-semibold text-text">{{ currentTelephone || 'No telephone registered' }}</p>
+          <p class="text-xs text-text-muted">Active</p>
         </div>
       </div>
     </div>
 
-    <!-- Error Message -->
-    @if (errorMessage) {
-      <div class="mb-6 p-4 bg-error/10 border border-error/30 rounded-xl flex items-start gap-3">
-        <i class="bi bi-x-circle-fill text-error text-xl"></i>
-        <div>
-          <p class="text-sm font-semibold text-error mb-1">Failed to change telephone</p>
-          <p class="text-xs text-text-muted">{{ errorMessage }}</p>
-        </div>
-      </div>
-    }
-
-    <!-- Submit Button -->
-    <button
-      type="submit"
-      [disabled]="telephoneForm.invalid || isSubmitting"
-      class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none mb-3">
-      <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-info/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      <span class="relative flex items-center justify-center gap-2">
-        @if (isSubmitting) {
-          <i class="bi bi-hourglass-split animate-spin"></i>
-          Updating Telephone...
-        } @else {
-          <i class="bi bi-check-circle"></i>
-          Update Telephone
-        }
-      </span>
-    </button>
-
-    <!-- Cancel Button -->
-    <button
-      type="button"
-      (click)="onCancel()"
-      class="w-full px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all duration-300">
-      Cancel
-    </button>
-  </form>
-</div>
-
-<!-- Help Text -->
-<p class="text-center text-sm text-text-muted mt-6">
-  Having trouble?
-  <a routerLink="/contact" class="text-primary hover:underline font-semibold">Contact support</a>
-</p>
-} @else {
-  <div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
-    <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-info/10 rounded-2xl mb-4">
-        <i class="bi bi-shield-check text-info text-3xl"></i>
-      </div>
-      <h3 class="text-2xl font-serif font-bold text-text mb-2">Verify Your Number</h3>
-      <p class="text-text-muted text-sm">Enter the 6-digit code sent to your new telephone</p>
-    </div>
-
-    <form [formGroup]="codeForm" (ngSubmit)="onSubmitCode()">
-      <div class="mb-6">
-        <label for="code" class="block text-sm font-semibold text-text mb-2">
-          Verification Code <span class="text-error">*</span>
-        </label>
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <i class="bi bi-key text-text-muted"></i>
+    <!-- Form Card -->
+    <div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
+      <form [formGroup]="telephoneForm" (ngSubmit)="onSubmit()">
+        <!-- New Telephone -->
+        <div class="mb-6">
+          <label for="newTelephone" class="block text-sm font-semibold text-text mb-2">
+            New Telephone Number <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="bi bi-telephone text-text-muted"></i>
+            </div>
+            <input
+              type="tel"
+              id="newTelephone"
+              formControlName="newTelephone"
+              placeholder="+351 912 345 678"
+              class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300"
+              [class.border-error]="telephoneForm.get('newTelephone')?.invalid && telephoneForm.get('newTelephone')?.touched"
+            />
           </div>
-          <input
-            type="text"
-            id="code"
-            formControlName="code"
-            placeholder="123456"
-            maxlength="6"
-            class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300 text-center text-2xl tracking-widest"
-            [class.border-error]="codeForm.get('code')?.invalid && codeForm.get('code')?.touched"
-          />
+          @if (telephoneForm.get('newTelephone')?.invalid && telephoneForm.get('newTelephone')?.touched) {
+            <p class="mt-2 text-sm text-error flex items-center gap-1">
+              <i class="bi bi-exclamation-circle"></i>
+              @if (telephoneForm.get('newTelephone')?.errors?.['required']) {
+                Telephone number is required
+              }
+              @if (telephoneForm.get('newTelephone')?.errors?.['pattern']) {
+                Please enter a valid telephone number (+351XXXXXXXXX)
+              }
+            </p>
+          }
         </div>
-        @if (codeForm.get('code')?.invalid && codeForm.get('code')?.touched) {
-          <p class="mt-2 text-sm text-error flex items-center gap-1">
-            <i class="bi bi-exclamation-circle"></i>
-            Please enter a valid 6-digit code
-          </p>
-        }
-      </div>
 
-      @if (errorMessage) {
-        <div class="mb-6 p-4 bg-error/10 border border-error/30 rounded-xl flex items-start gap-3">
-          <i class="bi bi-x-circle-fill text-error text-xl"></i>
-          <div>
-            <p class="text-sm font-semibold text-error mb-1">Verification failed</p>
-            <p class="text-xs text-text-muted">{{ errorMessage }}</p>
+        <!-- Confirm Telephone -->
+        <div class="mb-6">
+          <label for="confirmTelephone" class="block text-sm font-semibold text-text mb-2">
+            Confirm New Telephone <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="bi bi-shield-check text-text-muted"></i>
+            </div>
+            <input
+              type="tel"
+              id="confirmTelephone"
+              formControlName="confirmTelephone"
+              placeholder="Confirm your new telephone"
+              class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300"
+              [class.border-error]="(telephoneForm.get('confirmTelephone')?.invalid && telephoneForm.get('confirmTelephone')?.touched) || (telephoneForm.errors?.['telephoneMismatch'] && telephoneForm.get('confirmTelephone')?.touched)"
+            />
+          </div>
+          @if (telephoneForm.get('confirmTelephone')?.touched) {
+            @if (telephoneForm.get('confirmTelephone')?.errors?.['required']) {
+              <p class="mt-2 text-sm text-error flex items-center gap-1">
+                <i class="bi bi-exclamation-circle"></i>
+                Please confirm your telephone number
+              </p>
+            }
+            @if (telephoneForm.errors?.['telephoneMismatch'] && !telephoneForm.get('confirmTelephone')?.errors?.['required']) {
+              <p class="mt-2 text-sm text-error flex items-center gap-1">
+                <i class="bi bi-exclamation-circle"></i>
+                Telephone numbers do not match
+              </p>
+            }
+          }
+        </div>
+
+        <!-- Warning Notice -->
+        <div class="mb-6 p-4 bg-warning/5 rounded-xl border border-warning/20">
+          <div class="flex items-start gap-3">
+            <i class="bi bi-exclamation-triangle text-warning text-xl"></i>
+            <div>
+              <h4 class="font-semibold text-text text-sm mb-1">Verification Process</h4>
+              <p class="text-xs text-text-muted">
+                You will receive a verification code on your <strong>current number</strong> first, then on your <strong>new number</strong> to confirm the change.
+              </p>
+            </div>
           </div>
         </div>
-      }
 
-      <button
-        type="submit"
-        [disabled]="codeForm.invalid || isSubmitting"
-        class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-3">
-        <span class="relative flex items-center justify-center gap-2">
-          @if (isSubmitting) {
-            <i class="bi bi-hourglass-split animate-spin"></i>
-            Verifying...
-          } @else {
-            <i class="bi bi-check-circle"></i>
-            Verify Code
-          }
-        </span>
-      </button>
+        <!-- Error Message -->
+        @if (errorMessage) {
+          <div class="mb-6 p-4 bg-error/10 border border-error/30 rounded-xl flex items-start gap-3">
+            <i class="bi bi-x-circle-fill text-error text-xl"></i>
+            <div>
+              <p class="text-sm font-semibold text-error mb-1">Failed to change telephone</p>
+              <p class="text-xs text-text-muted">{{ errorMessage }}</p>
+            </div>
+          </div>
+        }
 
-      <button
-        type="button"
-        (click)="onCancel()"
-        class="w-full px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all duration-300">
-        Cancel
-      </button>
-    </form>
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="telephoneForm.invalid || isSubmitting"
+          class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none mb-3">
+          <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-info/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <span class="relative flex items-center justify-center gap-2">
+            @if (isSubmitting) {
+              <i class="bi bi-hourglass-split animate-spin"></i>
+              Sending verification...
+            } @else {
+              <i class="bi bi-arrow-right-circle"></i>
+              Continue
+            }
+          </span>
+        </button>
+
+        <!-- Cancel Button -->
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="w-full px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all duration-300">
+          Cancel
+        </button>
+      </form>
+    </div>
+
+    <!-- Help Text -->
+    <p class="text-center text-sm text-text-muted mt-6">
+      Having trouble?
+      <a routerLink="/contact" class="text-primary hover:underline font-semibold">Contact support</a>
+    </p>
   </div>
 }
 
+<!-- Step 2: Verificar número atual -->
+@if (currentStep === 'verify-current') {
+  <div>
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-info/10 rounded-2xl mb-4">
+        <i class="bi bi-shield-check text-info text-3xl"></i>
+      </div>
+      <h3 class="text-2xl font-serif font-bold text-text mb-2">Verify Current Number</h3>
+      <p class="text-text-muted text-sm mb-1">
+        Enter the 6-character code sent to
+      </p>
+      <p class="text-text font-semibold">{{ currentTelephone }}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
+      <form [formGroup]="codeForm" (ngSubmit)="onSubmitCode()">
+        <div class="mb-6">
+          <label for="code-current" class="block text-sm font-semibold text-text mb-2">
+            Verification Code <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="bi bi-key text-text-muted"></i>
+            </div>
+            <input
+              type="text"
+              id="code-current"
+              formControlName="code"
+              placeholder="ABC123"
+              maxlength="6"
+              class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300 text-center text-2xl tracking-widest uppercase"
+              [class.border-error]="codeForm.get('code')?.invalid && codeForm.get('code')?.touched"
+            />
+          </div>
+          @if (codeForm.get('code')?.invalid && codeForm.get('code')?.touched) {
+            <p class="mt-2 text-sm text-error flex items-center gap-1">
+              <i class="bi bi-exclamation-circle"></i>
+              Please enter a valid 6-character code
+            </p>
+          }
+        </div>
+
+        @if (errorMessage) {
+          <div class="mb-6 p-4 bg-error/10 border border-error/30 rounded-xl flex items-start gap-3">
+            <i class="bi bi-x-circle-fill text-error text-xl"></i>
+            <div>
+              <p class="text-sm font-semibold text-error mb-1">Verification failed</p>
+              <p class="text-xs text-text-muted">{{ errorMessage }}</p>
+            </div>
+          </div>
+        }
+
+        <button
+          type="submit"
+          [disabled]="codeForm.invalid || isSubmitting"
+          class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-3">
+          <span class="relative flex items-center justify-center gap-2">
+            @if (isSubmitting) {
+              <i class="bi bi-hourglass-split animate-spin"></i>
+              Verifying...
+            } @else {
+              <i class="bi bi-check-circle"></i>
+              Verify Code
+            }
+          </span>
+        </button>
+
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="w-full px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all duration-300">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Step 3: Verificar número novo -->
+@if (currentStep === 'verify-new') {
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-success/10 rounded-2xl mb-4">
+        <i class="bi bi-shield-check text-success text-3xl"></i>
+      </div>
+      <h3 class="text-2xl font-serif font-bold text-text mb-2">Verify New Number</h3>
+      <p class="text-text-muted text-sm mb-1">
+        Enter the 6-character code sent to
+      </p>
+      <p class="text-text font-semibold">{{ newTelephone }}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
+      <form [formGroup]="codeForm" (ngSubmit)="onSubmitCode()">
+        <div class="mb-6">
+          <label for="code-new" class="block text-sm font-semibold text-text mb-2">
+            Verification Code <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="bi bi-key text-text-muted"></i>
+            </div>
+            <input
+              type="text"
+              id="code-new"
+              formControlName="code"
+              placeholder="ABC123"
+              maxlength="6"
+              class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-info/20 focus:border-info transition-all duration-300 text-center text-2xl tracking-widest uppercase"
+              [class.border-error]="codeForm.get('code')?.invalid && codeForm.get('code')?.touched"
+            />
+          </div>
+          @if (codeForm.get('code')?.invalid && codeForm.get('code')?.touched) {
+            <p class="mt-2 text-sm text-error flex items-center gap-1">
+              <i class="bi bi-exclamation-circle"></i>
+              Please enter a valid 6-character code
+            </p>
+          }
+        </div>
+
+        @if (errorMessage) {
+          <div class="mb-6 p-4 bg-error/10 border border-error/30 rounded-xl flex items-start gap-3">
+            <i class="bi bi-x-circle-fill text-error text-xl"></i>
+            <div>
+              <p class="text-sm font-semibold text-error mb-1">Verification failed</p>
+              <p class="text-xs text-text-muted">{{ errorMessage }}</p>
+            </div>
+          </div>
+        }
+
+        <button
+          type="submit"
+          [disabled]="codeForm.invalid || isSubmitting"
+          class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-3">
+          <span class="relative flex items-center justify-center gap-2">
+            @if (isSubmitting) {
+              <i class="bi bi-hourglass-split animate-spin"></i>
+              Confirming...
+            } @else {
+              <i class="bi bi-check-circle"></i>
+              Confirm Change
+            }
+          </span>
+        </button>
+
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="w-full px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all duration-300">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Step 4: Sucesso -->
+@if (currentStep === 'success') {
+  <div class="w-full max-w-md text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-success/10 rounded-full mb-6 animate-bounce">
+      <i class="bi bi-check-circle-fill text-success text-5xl"></i>
+    </div>
+    <h3 class="text-3xl font-serif font-bold text-text mb-3">Telephone Updated!</h3>
+    <p class="text-text-muted mb-6">
+      Your telephone number has been successfully changed to<br>
+      <strong class="text-text">{{ newTelephone }}</strong>
+    </p>
+    <div class="inline-flex items-center gap-2 text-sm text-text-muted">
+      <i class="bi bi-arrow-clockwise animate-spin"></i>
+      Redirecting to profile...
+    </div>
+  </div>
+}

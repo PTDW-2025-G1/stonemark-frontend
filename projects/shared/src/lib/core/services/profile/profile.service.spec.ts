@@ -6,7 +6,8 @@ import { ProfileUpdateRequestDto } from '@api/model/profile-update-request-dto';
 import { EmailChangeRequestDto } from '@api/model/email-change-request-dto';
 import { PasswordChangeRequestDto } from '@api/model/password-change-request-dto';
 import { TelephoneChangeRequestDto } from '@api/model/telephone-change-request-dto';
-import { TelephoneCodeVerificationDto } from '@api/model/telephone-code-verification-dto';
+import { CodeConfirmationRequestDto } from '@api/model/code-confirmation-request-dto';
+import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
 import { environment } from '@env/environment';
 
 describe('ProfileService', () => {
@@ -18,6 +19,7 @@ describe('ProfileService', () => {
 
   let service: ProfileService;
   const baseUrl = `${environment.apiUrl}/account`;
+  const authUrl = `${environment.apiUrl}/auth`;
 
   beforeEach(() => {
     httpMock = {
@@ -89,18 +91,6 @@ describe('ProfileService', () => {
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/change-password`, expectedPayload);
   });
 
-  it('should request telephone change (legacy)', async () => {
-    const newPhone = '+351923456789';
-    const mockResponse = { message: 'Phone change requested' };
-
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
-
-    const result = await firstValueFrom(service.changeTelephone(newPhone));
-
-    expect(result).toEqual(mockResponse);
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-phone-change`, { newPhone });
-  });
-
   it('should request telephone change', async () => {
     const newTelephone = '+351923456789';
     const payload: TelephoneChangeRequestDto = { newTelephone };
@@ -114,17 +104,71 @@ describe('ProfileService', () => {
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-telephone-change`, payload);
   });
 
-  it('should verify telephone change', async () => {
-    const newTelephone = '+351923456789';
-    const code = '123456';
-    const payload: TelephoneCodeVerificationDto = { newTelephone, code };
-    const mockResponse = { message: 'Telephone verified successfully' };
+  it('should confirm code successfully with SUCCESS status', async () => {
+    const code = 'ABC123';
+    const payload: CodeConfirmationRequestDto = { code };
+    const mockResponse: ConfirmationResponseDto = {
+      status: ConfirmationResponseDto.StatusEnum.Success,
+      message: 'Code verified successfully',
+      token: 'jwt-token-here'
+    };
 
     (httpMock.post as any).mockReturnValue(of(mockResponse));
 
-    const result = await firstValueFrom(service.verifyTelephoneChange(payload));
+    const result = await firstValueFrom(service.confirmCode(payload));
 
     expect(result).toEqual(mockResponse);
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/verify-telephone-change`, payload);
+    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.Success);
+    expect(httpMock.post).toHaveBeenCalledWith(`${authUrl}/confirm-code`, payload);
+  });
+
+  it('should confirm code with alphanumeric code', async () => {
+    const code = 'XYZ789';
+    const payload: CodeConfirmationRequestDto = { code };
+    const mockResponse: ConfirmationResponseDto = {
+      status: ConfirmationResponseDto.StatusEnum.Success,
+      message: 'Code verified successfully'
+    };
+
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
+
+    const result = await firstValueFrom(service.confirmCode(payload));
+
+    expect(result).toEqual(mockResponse);
+    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.Success);
+    expect(httpMock.post).toHaveBeenCalledWith(`${authUrl}/confirm-code`, payload);
+  });
+
+  it('should handle ERROR status in confirmCode', async () => {
+    const code = 'INVALID';
+    const payload: CodeConfirmationRequestDto = { code };
+    const mockResponse: ConfirmationResponseDto = {
+      status: ConfirmationResponseDto.StatusEnum.Error,
+      message: 'Invalid or expired code'
+    };
+
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
+
+    const result = await firstValueFrom(service.confirmCode(payload));
+
+    expect(result).toEqual(mockResponse);
+    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.Error);
+  });
+
+  it('should handle PASSWORD_RESET_REQUIRED status in confirmCode', async () => {
+    const code = 'RESET123';
+    const payload: CodeConfirmationRequestDto = { code };
+    const mockResponse: ConfirmationResponseDto = {
+      status: ConfirmationResponseDto.StatusEnum.PasswordResetRequired,
+      message: 'Password reset is required',
+      token: 'temp-token'
+    };
+
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
+
+    const result = await firstValueFrom(service.confirmCode(payload));
+
+    expect(result).toEqual(mockResponse);
+    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.PasswordResetRequired);
   });
 });

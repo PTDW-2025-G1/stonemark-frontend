@@ -5,14 +5,8 @@ import { InputFieldComponent } from '@shared/ui/input-field/input-field';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { SocialAuthButtonsComponent } from '../social-auth-buttons/social-auth-buttons';
 import { TELEPHONE_PATTERN } from '@shared/utils/telephone.utils';
-
-export interface AuthFormData {
-  email: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
-  telephone?: string;
-}
+import {AuthenticationRequestDto} from '@api/model/authentication-request-dto';
+import {RegisterRequestDto} from '@api/model/register-request-dto';
 
 @Component({
   selector: 'app-auth-form',
@@ -52,7 +46,7 @@ export interface AuthFormData {
       }
 
       <!-- Form -->
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-left">
+      <form [formGroup]="form" class="text-left" (ngSubmit)="onSubmit($event)">
         <!-- Signup fields (signup only) -->
         @if (mode === 'register') {
           <div class="grid grid-cols-2 gap-4 mb-4">
@@ -161,7 +155,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
   @Input() showSocialAuth = true;
   @Input() errorMsg: string | null = null;
 
-  @Output() submit = new EventEmitter<AuthFormData>();
+  @Output() submit = new EventEmitter<AuthenticationRequestDto | RegisterRequestDto>();
   @Output() toggleMode = new EventEmitter<void>();
   @Output() googleAuth = new EventEmitter<void>();
   @Output() forgotPassword = new EventEmitter<string | void>();
@@ -252,7 +246,10 @@ export class AuthFormComponent implements OnInit, OnChanges {
     return null;
   }
 
-  onSubmit(): void {
+  onSubmit(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     if (this.form.valid) {
       this.submit.emit(this.form.value);
     } else {

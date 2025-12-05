@@ -3,10 +3,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '@core/services/auth/auth.service';
-import { AuthFormData } from '../../../../../auth/src/app/features/auth/components/auth-form/auth-form';
-import {HttpResponse} from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
-import {AuthenticationResponseDto} from '@api/model/authentication-response-dto';
+import { AuthenticationResponseDto } from '@api/model/authentication-response-dto';
 
 @Directive()
 export abstract class BaseAuthComponent {
@@ -21,10 +20,22 @@ export abstract class BaseAuthComponent {
   abstract mode: 'login' | 'register';
   abstract navigateTo: string;
 
-  onSubmit(data: AuthFormData): void {
-    const auth$ = this.mode === 'login'
-      ? this.authService.login(data)
-      : this.authService.register(data);
+  onSubmit(data: any): void {
+    const payload =
+      this.mode === 'login'
+        ? { email: data.email, password: data.password }
+        : {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          telephone: data.telephone,
+          email: data.email,
+          password: data.password
+        };
+
+    const auth$ =
+      this.mode === 'login'
+        ? this.authService.login(payload)
+        : this.authService.register(payload);
 
     this._handleAuthRequest(auth$);
   }
@@ -34,7 +45,7 @@ export abstract class BaseAuthComponent {
   }
 
   onToggleMode(): void {
-    this.router.navigate([this.navigateTo]).catch(error => {});
+    this.router.navigate([this.navigateTo]).catch(() => {});
   }
 
   onGoogleAuth(): void {
@@ -42,9 +53,10 @@ export abstract class BaseAuthComponent {
   }
 
   private _handleAuthRequest(
-    auth$: Observable<HttpResponse<AuthenticationResponseDto>>,
+    auth$: Observable<HttpResponse<AuthenticationResponseDto>>
   ): void {
     this.loading = true;
+    this.errorMsg = null;
 
     auth$
       .pipe(finalize(() => (this.loading = false)))
@@ -57,20 +69,26 @@ export abstract class BaseAuthComponent {
             const { accessToken, refreshToken, role } = body;
 
             this.authService.saveTokens(accessToken, refreshToken!, role);
+            this.errorMsg = null;
             this._postLoginRedirect(role);
+
           } else if (status === 202) {
             this.router.navigate(['/verify-pending']);
           }
         },
         error: (err) => {
           this.loading = false;
-          const msg = err?.error || err?.message || '';
+
           if (err.status === 401) {
-            this.errorMsg = '';
-          } else if (msg) {
-            this.errorMsg = msg;
+            this.errorMsg = 'Invalid credentials. Please try again.';
+          } else if (err.status === 202) {
+            this.router.navigate(['/verify-pending']);
+          } else if (err?.error?.message) {
+            this.errorMsg = err.error.message;
+          } else if (err?.message) {
+            this.errorMsg = err.message;
           } else {
-            this.errorMsg = 'Unexpected error.';
+            this.errorMsg = 'Occorred an error. Please try again later.';
           }
         },
       });
@@ -97,7 +115,4 @@ export abstract class BaseAuthComponent {
     console.log('Redirecting to base app:', environment.baseUrl);
     window.location.href = environment.baseUrl;
   }
-
-
-
 }

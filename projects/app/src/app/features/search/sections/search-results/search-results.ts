@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {Mark} from '@core/models/mark.model';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
+import {MarkDto} from '@api/model/mark-dto';
 
-type SearchItem = MonumentResponseDto | Mark;
+type SearchItem = MonumentResponseDto | MarkDto;
 
 @Component({
   selector: 'app-search-results',
@@ -14,7 +15,7 @@ type SearchItem = MonumentResponseDto | Mark;
   templateUrl: './search-results.html'
 })
 export class SearchResultsComponent {
-  @Input() $items!: Observable<SearchItem[]>;
+  @Input() items: SearchItem[] = [];
   @Input() type: 'monuments' | 'marks' = 'monuments';
 
   constructor(private router: Router) {}

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { MarkService } from '@core/services/mark.service';
+import { MarkService } from '@core/services/mark/mark.service';
 import { MarkCategory } from '@core/enums/mark.category';
 import { MarkShape } from '@core/enums/mark.shape';
 import {Mark} from '@core/models/mark.model';
 import {Title} from '@angular/platform-browser';
+import {MarkDto} from '@api/model/mark-dto';
 
 @Component({
   selector: 'app-mark-detail',
@@ -14,7 +15,7 @@ import {Title} from '@angular/platform-browser';
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
-  mark: Mark | null = null;
+  mark: MarkDto | null = null;
   loading = true;
   isBookmarked = false;
 
@@ -33,7 +34,7 @@ export class MarkDetailComponent implements OnInit {
   }
 
   loadMarkDetail(id: number): void {
-    this.markService.getMarkById(id).subscribe({
+    this.markService.getMark(id).subscribe({
       next: (mark) => {
         if (mark) {
           this.mark = mark;
@@ -99,22 +100,18 @@ export class MarkDetailComponent implements OnInit {
     return icons[shape] || 'bi-square';
   }
 
-  toggleBookmark(): void {
-    this.isBookmarked = !this.isBookmarked;
-    if (this.mark) {
-      this.mark.bookmarks += this.isBookmarked ? 1 : -1;
-    }
-  }
-
   viewOccurrences(): void {
     if (this.mark?.id) {
       this.router.navigate(['/marks', this.mark.id, 'occurrences']);
     }
   }
 
-  viewMonument(): void {
-    if (this.mark && this.mark.monumentId) {
-      this.router.navigate(['/monuments', this.mark.monumentId]);
-    }
+  toggleBookmark(): void {
+    // to do
   }
+
+  // viewMonument(): void {
+  //  if (this.mark && this.mark.monumentId) {
+  //    this.router.navigate(['/monuments', this.mark.monumentId]);
+  //  }
 }

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
 import {Mark} from '@core/models/mark.model';
+import {MarkDto} from '@api/model/mark-dto';
 
 @Component({
   selector: 'app-last-marks-section',
@@ -22,10 +23,10 @@ import {Mark} from '@core/models/mark.model';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (mark of marks; track mark.id) {
             <app-entity-card
-              [cover]="mark.cover"
-              [title]="mark.title"
-              [subtitle]="mark.monument.name + ', Portugal'"
-              [id]="mark.id"
+              [cover]="'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'"
+              [title]="mark.title?? 'Mark Title'"
+              [subtitle]="'Portugal'"
+              [id]="mark.id ?? 0"
               [type]="'marks'"
             />
           }
@@ -35,5 +36,5 @@ import {Mark} from '@core/models/mark.model';
   `
 })
 export class LastMarkSectionComponent {
-  @Input() marks: Mark[] = [];
+  @Input() marks: MarkDto[] = [];
 }

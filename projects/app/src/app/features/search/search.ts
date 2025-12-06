@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MonumentService } from '@core/services/monument/monument.service';
-import { MarkService } from '@core/services/mark.service';
-import { Mark } from '@core/models/mark.model';
+import { MarkService } from '@core/services/mark/mark.service';
 import { CommonModule } from '@angular/common';
 import { SearchHeaderComponent } from '@features/search/sections/search-header/search-header';
 import { SearchResultsComponent } from '@features/search/sections/search-results/search-results';
@@ -13,14 +12,24 @@ import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, SearchHeaderComponent, SearchResultsComponent, SearchPaginationComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    SearchHeaderComponent,
+    SearchResultsComponent,
+    SearchPaginationComponent
+  ],
   templateUrl: './search.html'
 })
 export class SearchComponent implements OnInit {
+
   type: 'monuments' | 'marks' = 'monuments';
   title = '';
-  items$ = new BehaviorSubject<(MonumentResponseDto | Mark)[]>([]);
-  searchQuery: string = '';
+
+  /** Items enviados para o componente de resultados */
+  items$ = new BehaviorSubject<any[]>([]);
+
+  searchQuery = '';
 
   currentPage = 1;
   totalPages = 1;
@@ -38,7 +47,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const type = params.get('type') as 'monuments' | 'marks' || 'monuments';
+      const type = (params.get('type') as 'monuments' | 'marks') || 'monuments';
       this.type = type;
       this.title = this.getTitle(type);
       this.titleService.setTitle(`${this.title} - StoneMark`);
@@ -52,25 +61,26 @@ export class SearchComponent implements OnInit {
     const pageIndex = this.currentPage - 1;
 
     if (this.type === 'marks') {
-      this.markService.getLastMarks().subscribe(marks => {
+      // backend returns: PageMarkDto
+      this.markService.getPageMarks(pageIndex, this.pageSize).subscribe(page => {
+        const marks = page.content ?? [];
+
         this.items$.next(marks);
-        this.totalElements = marks.length;
-        this.totalPages = Math.ceil(marks.length / this.pageSize);
+        this.totalElements = page.totalElements ?? marks.length;
+        this.totalPages = page.totalPages ?? 1;
       });
     } else {
-      const source = this.searchQuery?.trim()
+      const source = this.searchQuery.trim()
         ? this.monumentService.searchMonuments(this.searchQuery, pageIndex, this.pageSize)
         : this.monumentService.getPageMonuments(pageIndex, this.pageSize);
 
       source.subscribe(page => {
-        this.items$.next(page.content || []);
-        this.totalElements = page.totalElements || 0;
-        this.totalPages = page.totalPages || 1;
+        this.items$.next(page.content ?? []);
+        this.totalElements = page.totalElements ?? 0;
+        this.totalPages = page.totalPages ?? 1;
       });
     }
   }
-
-
 
   private getTitle(type: string): string {
     switch (type) {
@@ -81,18 +91,19 @@ export class SearchComponent implements OnInit {
   }
 
   onFilterChange(city: string): void {
-    if (!city || city === '') {
+    if (!city?.trim()) {
       this.loadData();
       return;
     }
 
     this.currentPage = 1;
-    this.monumentService.filterByCity(city, this.currentPage - 1, this.pageSize)
+
+    this.monumentService.filterByCity(city, 0, this.pageSize)
       .subscribe({
         next: (response) => {
-          this.items$.next(response.content || []);
-          this.totalPages = response.totalPages || 0;
-          this.totalElements = response.totalElements || 0;
+          this.items$.next(response.content ?? []);
+          this.totalPages = response.totalPages ?? 0;
+          this.totalElements = response.totalElements ?? 0;
         },
         error: (error) => {
           console.error('Erro ao filtrar monumentos:', error);

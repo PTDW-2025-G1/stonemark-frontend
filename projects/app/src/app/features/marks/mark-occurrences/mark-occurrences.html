@@ -1,14 +1,27 @@
-<app-breadcrumb [items]="(breadcrumbItems$ | async)!"></app-breadcrumb>
+<app-breadcrumb [items]="(breadcrumbItems$ | async) ?? []"></app-breadcrumb>
+
 @if (loading) {
   <app-mark-occurrences-loading-state></app-mark-occurrences-loading-state>
 }
-@if (mark$ | async; as mark) {
+
+@if (markOccurrence$ | async; as markOccurrence) {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-    <app-mark-occurrences-header [mark]="mark" [occurrencesCount]="occurrences.length"></app-mark-occurrences-header>
-    <app-mark-occurrences-grid [occurrences]="occurrences" (viewOccurrence)="viewOccurrence($event)" (viewMonument)="viewMonument($event)"></app-mark-occurrences-grid>
-      @if (occurrences.length === 0 && !loading) {
-        <app-mark-occurrences-empty-state></app-mark-occurrences-empty-state>
-      }
+
+    <app-mark-occurrences-header
+      [markOccurrence]="markOccurrence"
+      [occurrencesCount]="occurrences.length">
+    </app-mark-occurrences-header>
+
+    <app-mark-occurrences-grid
+      [occurrences]="occurrences"
+      (viewOccurrence)="viewOccurrence($event)"
+      (viewMonument)="viewMonument($event)">
+    </app-mark-occurrences-grid>
+
+    @if (!loading && occurrences.length === 0) {
+      <app-mark-occurrences-empty-state></app-mark-occurrences-empty-state>
+    }
+
     <app-mark-occurrences-info-box></app-mark-occurrences-info-box>
   </div>
 }

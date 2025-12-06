@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Mark } from '@core/models/mark.model';
-import {MarkService} from '@core/services/mark.service';
+import {MarkService} from '@core/services/mark/mark.service';
 import {ProfileHeaderComponent} from './sections/profile-header/profile-header';
 import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';

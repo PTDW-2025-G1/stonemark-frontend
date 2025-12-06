@@ -6,9 +6,10 @@ import { LastMarkSectionComponent } from '@features/home/sections/last-marks-sec
 import { MapSectionComponent } from '@features/home/sections/map-section/map-section';
 import { LastNewsComponent } from '@features/home/sections/last-news-section/last-news-section';
 import {MonumentService} from '@core/services/monument/monument.service';
-import {MarkService} from '@core/services/mark.service';
+import {MarkService} from '@core/services/mark/mark.service';
 import {Mark} from '@core/models/mark.model';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
+import {MarkDto} from '@api/model/mark-dto';
 
 
 @Component({
@@ -20,7 +21,7 @@ import {MonumentResponseDto} from '@api/model/monument-response-dto';
 export class HomeComponent implements OnInit{
 
     popularMonuments: MonumentResponseDto[] = [];
-    lastMarks: Mark[] = [];
+    lastMarks: MarkDto[] = [];
 
     constructor(private monumentService: MonumentService, private markService : MarkService) {}
 
@@ -28,8 +29,8 @@ export class HomeComponent implements OnInit{
         this.monumentService.getLatestMonuments().subscribe(monuments => {
             this.popularMonuments = monuments;
         });
-        this.markService.getLastMarks().subscribe(marks => {
-            this.lastMarks = marks;
+        this.markService.getPageMarks().subscribe(page => {
+          this.lastMarks = page.content ?? [];
         });
     }
 

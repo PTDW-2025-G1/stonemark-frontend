@@ -9,9 +9,11 @@
  */
 
 
-export interface SortObject { 
-    empty?: boolean;
-    sorted?: boolean;
-    unsorted?: boolean;
+export interface MonumentDto { 
+    id?: number;
+    name?: string;
+    description?: string;
+    latitude?: number;
+    longitude?: number;
 }
 

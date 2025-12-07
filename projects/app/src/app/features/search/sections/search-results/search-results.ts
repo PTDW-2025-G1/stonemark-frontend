@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import {Mark} from '@core/models/mark.model';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {MarkDto} from '@api/model/mark-dto';
 
@@ -24,7 +22,7 @@ export class SearchResultsComponent {
     return 'name' in item;
   }
 
-  isMark(item: SearchItem): item is Mark {
+  isMark(item: SearchItem): item is MarkDto {
     return 'title' in item;
   }
 
@@ -53,10 +51,7 @@ export class SearchResultsComponent {
     if (this.isMonument(item)) {
       return item.city ? `${item.city}, Portugal` : 'Portugal';
     }
-
-    return this.isMark(item) && item.monument?.name
-      ? item.monument.name
-      : 'Portugal';
+    return 'Portugal';
   }
 
 

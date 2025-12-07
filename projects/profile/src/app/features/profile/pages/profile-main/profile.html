@@ -13,11 +13,11 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
   @if (activeTab === 'marks') {
     <app-profile-marks
-      [marks]="marks"
-      (addMark)="onAddMark()"
-      (editMark)="onEditMark($event)"
-      (removeMark)="onRemoveMark($event)"
-      (viewMark)="onViewMark($event)"
+      [occurrences]="occurrences"
+      (addOccurrence)="onAddMark()"
+      (editOccurrence)="onEditMark($event)"
+      (removeOccurrence)="onRemoveMark($event)"
+      (viewOccurrence)="onViewMark($event)"
     ></app-profile-marks>
   }
   @if (activeTab === 'suggestions') {

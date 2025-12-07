@@ -1,117 +1,99 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { MarkService } from '@core/services/mark/mark.service';
-import { MarkCategory } from '@core/enums/mark.category';
-import { MarkShape } from '@core/enums/mark.shape';
-import {Mark} from '@core/models/mark.model';
-import {Title} from '@angular/platform-browser';
-import {MarkDto} from '@api/model/mark-dto';
+import { Observable, tap, switchMap, map } from 'rxjs';
+import { Title } from '@angular/platform-browser';
+
+import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+
+import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
+import { LoadingStateComponent } from '@features/marks/mark-detail/sections/loading-state';
+import { MarkHeaderComponent } from '@features/marks/mark-detail/sections/mark-header';
+import { OccurrencesGridComponent } from '@features/marks/mark-detail/sections/occurrences-grid';
+import { EmptyStateComponent } from '@features/marks/mark-detail/sections/empty-state';
+import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
 
 @Component({
   selector: 'app-mark-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    BreadcrumbComponent,
+    LoadingStateComponent,
+    MarkHeaderComponent,
+    OccurrencesGridComponent,
+    EmptyStateComponent,
+    InfoBoxComponent
+  ],
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
-  mark: MarkDto | null = null;
+
+  markOccurrence$!: Observable<MarkOccurrenceDto>;
+
+  occurrences: MarkOccurrenceDto[] = [];
+
+  breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   loading = true;
-  isBookmarked = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private titleService : Title,
-    private markService: MarkService
+    private titleService: Title,
+    private markOccurrenceService: MarkOccurrenceService
   ) {}
 
   ngOnInit(): void {
-    const markId = this.route.snapshot.paramMap.get('id');
-    if (markId) {
-      this.loadMarkDetail(Number(markId));
-    }
+    this.markOccurrence$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = Number(params.get('id'));
+        this.loadOccurrences(id);
+        return this.markOccurrenceService.getById(id);
+      }),
+      tap(mainOccurrence => {
+        if (mainOccurrence?.mark?.title) {
+          this.titleService.setTitle(`${mainOccurrence.mark.title}`);
+        }
+      })
+    );
+
+    this.breadcrumbItems$ = this.markOccurrence$.pipe(
+      map(mainOccurrence => {
+        const items: BreadcrumbItem[] = [
+          { label: 'Marks', link: '/search/marks', icon: 'bi bi-grid-3x3-gap' }
+        ];
+        if (mainOccurrence) {
+          items.push(
+            { label: mainOccurrence.mark?.title || 'Mark', link: ['/marks', mainOccurrence.mark?.id], active: true }
+          );
+        }
+        return items;
+      })
+    );
   }
 
-  loadMarkDetail(id: number): void {
-    this.markService.getMark(id).subscribe({
-      next: (mark) => {
-        if (mark) {
-          this.mark = mark;
-          this.titleService.setTitle(`${mark.title} - StoneMark`);
-        }
+  private loadOccurrences(markId: number): void {
+    this.loading = true;
+
+    this.markOccurrenceService.getByMarkId(markId).subscribe({
+      next: list => {
+        this.occurrences = list ?? [];
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error loading mark:', err);
+      error: err => {
+        console.error('Error loading occurrences:', err);
         this.loading = false;
-        this.router.navigate(['/profile']);
       }
     });
   }
 
-  getCategoryLabel(category: MarkCategory): string {
-    const labels = {
-      [MarkCategory.RELIGIOUS]: 'Religious',
-      [MarkCategory.MASONIC]: 'Masonic',
-      [MarkCategory.TRADE]: 'Trade Mark',
-      [MarkCategory.HERALDIC]: 'Heraldic',
-      [MarkCategory.GEOMETRIC]: 'Geometric',
-      [MarkCategory.UNKNOWN]: 'Unknown'
-    };
-    return labels[category] || category;
+  viewOccurrence(occurrenceId: number): void {
+    this.router.navigate(['marks/occurrence', occurrenceId]);
   }
 
-  getCategoryIcon(category: MarkCategory): string {
-    const icons = {
-      [MarkCategory.RELIGIOUS]: 'bi-cross',
-      [MarkCategory.MASONIC]: 'bi-compass',
-      [MarkCategory.TRADE]: 'bi-hammer',
-      [MarkCategory.HERALDIC]: 'bi-shield',
-      [MarkCategory.GEOMETRIC]: 'bi-pentagon',
-      [MarkCategory.UNKNOWN]: 'bi-question-circle'
-    };
-    return icons[category] || 'bi-circle';
+  viewMonument(monumentId: number): void {
+    this.router.navigate(['/monuments', monumentId]);
   }
-
-  getShapeLabel(shape: MarkShape): string {
-    const labels = {
-      [MarkShape.CIRCLE]: 'Circle',
-      [MarkShape.CROSS]: 'Cross',
-      [MarkShape.STAR]: 'Star',
-      [MarkShape.TRIANGLE]: 'Triangle',
-      [MarkShape.LETTER]: 'Letter',
-      [MarkShape.SYMBOL]: 'Symbol',
-      [MarkShape.OTHER]: 'Other'
-    };
-    return labels[shape] || shape;
-  }
-
-  getShapeIcon(shape: MarkShape): string {
-    const icons = {
-      [MarkShape.CIRCLE]: 'bi-circle',
-      [MarkShape.CROSS]: 'bi-x-lg',
-      [MarkShape.STAR]: 'bi-star',
-      [MarkShape.TRIANGLE]: 'bi-triangle',
-      [MarkShape.LETTER]: 'bi-alphabet',
-      [MarkShape.SYMBOL]: 'bi-symbols',
-      [MarkShape.OTHER]: 'bi-dash-circle'
-    };
-    return icons[shape] || 'bi-square';
-  }
-
-  viewOccurrences(): void {
-    if (this.mark?.id) {
-      this.router.navigate(['/marks', this.mark.id, 'occurrences']);
-    }
-  }
-
-  toggleBookmark(): void {
-    // to do
-  }
-
-  // viewMonument(): void {
-  //  if (this.mark && this.mark.monumentId) {
-  //    this.router.navigate(['/monuments', this.mark.monumentId]);
-  //  }
 }

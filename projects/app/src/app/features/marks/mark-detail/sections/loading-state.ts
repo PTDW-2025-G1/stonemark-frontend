@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-mark-occurrences-loading-state',
+  selector: 'app-mark-detail-loading-state',
   template: `
     <div class="flex items-center justify-center min-h-screen">
       <div class="text-center">

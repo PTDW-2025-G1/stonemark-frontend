@@ -1,0 +1,295 @@
+<!-- Breadcrumb -->
+<nav class="bg-surface border-b border-border py-4" aria-label="Breadcrumb">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ol class="flex items-center space-x-2 text-sm">
+      <li>
+        <a
+          routerLink="/marks"
+          class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors group"
+        >
+          <i class="bi bi-grid-3x3-gap text-lg group-hover:scale-110 transition-transform"></i>
+          <span class="font-medium">Marks</span>
+        </a>
+      </li>
+
+      <li>
+        <i class="bi bi-chevron-right text-text-muted text-xs"></i>
+      </li>
+
+      @if (occurrence.mark) {
+        <li>
+          <a
+            [routerLink]="['/marks', occurrence.mark.id]"
+            class="text-text-muted hover:text-primary transition-colors"
+          >
+            {{ occurrence.mark.title }}
+          </a>
+        </li>
+
+        <li>
+          <i class="bi bi-chevron-right text-text-muted text-xs"></i>
+        </li>
+
+        <li class="flex items-center gap-2">
+          <i class="bi bi-pin-map-fill text-primary text-lg"></i>
+          <span class="font-semibold text-text">Occurrence #{{ occurrence.id }}</span>
+        </li>
+      }
+    </ol>
+  </div>
+</nav>
+
+<!-- Loading State -->
+@if (loading) {
+  <div class="flex items-center justify-center min-h-screen bg-surface">
+    <div class="text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4 animate-pulse">
+        <i class="bi bi-hourglass-split text-primary text-2xl"></i>
+      </div>
+      <p class="text-text-muted">Loading occurrence details...</p>
+    </div>
+  </div>
+}
+
+<!-- Content -->
+@if (!loading && occurrence) {
+  <div class="min-h-screen bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Main Content - Image & Details -->
+        <div class="lg:col-span-2 space-y-6">
+
+          <!-- Hero Image Card -->
+          <div class="relative group rounded-2xl overflow-hidden bg-surface-muted border-2 border-border shadow-xl">
+            <div class="aspect-[4/3] relative">
+              <img
+                [src]="placeholderImage"
+                [alt]="'Occurrence of ' + occurrence.mark?.title"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+
+              <!-- Overlay Actions -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+
+                <div class="absolute bottom-4 left-4 right-4">
+                  <button
+                    class="w-full px-4 py-3 bg-white/95 backdrop-blur-sm text-primary rounded-xl font-semibold
+                           hover:bg-white transition-colors flex items-center justify-center gap-2"
+                  >
+                    <i class="bi bi-arrows-fullscreen"></i>
+                    <span>View Full Size</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Badge Overlay -->
+              <div class="absolute top-4 left-4">
+                <div class="px-4 py-2 bg-primary/90 backdrop-blur-sm rounded-full text-primary-foreground
+                            text-sm font-bold flex items-center gap-2">
+                  <i class="bi bi-pin-angle-fill"></i>
+                  <span>Occurrence #{{ occurrence.id }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mark Information Card -->
+          <div class="bg-surface-alt rounded-2xl border-2 border-border p-6 shadow-sm">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                  <i class="bi bi-circle-square text-primary text-2xl"></i>
+                </div>
+                <div>
+                  <h2 class="text-2xl font-serif font-bold text-text">
+                    {{ occurrence.mark?.title }}
+                  </h2>
+                  <p class="text-sm text-text-muted">Stone Mason Mark</p>
+                </div>
+              </div>
+
+              <button
+                (click)="viewMark()"
+                class="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium
+                flex items-center gap-2 transition-all duration-300
+                hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <span class="hidden sm:inline">View Mark</span>
+                <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+              </button>
+
+            </div>
+
+            @if (occurrence.mark?.description) {
+              <p class="text-text-muted leading-relaxed">
+                {{ occurrence.mark?.description }}
+              </p>
+            }
+          </div>
+
+          <!-- Discovery Info Card -->
+          <div class="bg-surface-alt rounded-2xl border-2 border-border p-6 shadow-sm">
+            <h3 class="text-lg font-serif font-bold text-text mb-4 flex items-center gap-2">
+              <i class="bi bi-info-circle text-primary"></i>
+              Discovery Information
+            </h3>
+
+            <div class="space-y-4">
+              <!-- Discovered By -->
+              @if (occurrence.user) {
+                <div class="flex items-center gap-4 p-4 bg-surface rounded-xl border border-border">
+                  <div class="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center
+                              justify-center font-bold text-lg flex-shrink-0">
+                    {{ getUserInitials() }}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm text-text-muted">Discovered by</p>
+                    <p class="font-bold text-text">
+                      {{ occurrence.user.firstName }} {{ occurrence.user.lastName }}
+                    </p>
+                    @if (occurrence.user.email) {
+                      <p class="text-xs text-text-muted truncate">{{ occurrence.user.email }}</p>
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- Date -->
+              <div class="flex items-center gap-3 p-4 bg-surface rounded-xl border border-border">
+                <div class="w-10 h-10 bg-info/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="bi bi-calendar-event text-info text-lg"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-text-muted">Discovered on</p>
+                  <p class="font-bold text-text">{{ getFormattedDate(occurrence.createdAt) }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1 space-y-6">
+
+          <!-- Monument Card -->
+          <div class="bg-surface-alt rounded-2xl border-2 border-border p-6 shadow-sm top-8">
+            <h3 class="text-lg font-serif font-bold text-text mb-4 flex items-center gap-2">
+              <i class="bi bi-building text-primary"></i>
+              Monument Location
+            </h3>
+
+            @if (occurrence.monument) {
+              <div class="space-y-4">
+                <!-- Monument Info -->
+                <div class="p-4 bg-surface rounded-xl border border-border">
+                  <div class="flex items-start gap-3 mb-3">
+                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <i class="bi bi-pin-map-fill text-primary text-lg"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h4 class="font-bold text-text mb-1">{{ occurrence.monument.name }}</h4>
+                      @if (occurrence.monument.description) {
+                        <p class="text-sm text-text-muted line-clamp-2">
+                          {{ occurrence.monument.description }}
+                        </p>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Coordinates -->
+                  @if (occurrence.monument.latitude && occurrence.monument.longitude) {
+                    <div class="flex items-center gap-2 p-2 bg-surface-muted rounded-lg text-xs font-mono">
+                      <i class="bi bi-geo-alt text-text-muted"></i>
+                      <span class="text-text-muted">
+                        {{ occurrence.monument.latitude | number:'1.6-6' }},
+                        {{ occurrence.monument.longitude | number:'1.6-6' }}
+                      </span>
+                      <button
+                        (click)="copyLocation()"
+                        class="ml-auto text-primary hover:text-primary/80 transition-colors"
+                        title="Copy coordinates"
+                      >
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+
+                <!-- Actions -->
+                <div class="space-y-2">
+                  <button
+                    (click)="viewMonument()"
+                    class="w-full px-4 py-3 bg-primary text-primary-foreground rounded-xl font-bold
+                    flex items-center justify-center gap-2 transition-all duration-300
+                    hover:bg-primary/90 hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    <i class="bi bi-info-circle transition-transform duration-300 group-hover:translate-x-1"></i>
+                    <span>Monument Details</span>
+                  </button>
+
+                  <button
+                    (click)="openInMaps()"
+                    class="w-full px-4 py-3 bg-surface border-2 border-border text-text rounded-xl font-bold
+                           hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
+                  >
+                    <i class="bi bi-map"></i>
+                    <span>Open in Maps</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Share Card -->
+          <div class="bg-surface-alt rounded-2xl border-2 border-border p-6 shadow-sm">
+            <h3 class="text-lg font-serif font-bold text-text mb-4 flex items-center gap-2">
+              <i class="bi bi-share text-primary"></i>
+              Share
+            </h3>
+
+            <div class="grid grid-cols-3 gap-3">
+
+              <!-- Facebook -->
+              <button
+                (click)="shareFacebook()"
+                class="share-btn group border border-border rounded-xl p-4 flex flex-col items-center justify-center gap-2
+             hover:border-blue-600 hover:bg-blue-600/10 transition-all duration-300"
+              >
+                <i class="bi bi-facebook text-3xl group-hover:text-blue-600 transition-colors duration-300"></i>
+                <span class="text-xs font-medium group-hover:text-blue-600 transition-colors duration-300">Facebook</span>
+              </button>
+
+              <!-- Twitter/X -->
+              <button
+                (click)="shareTwitter()"
+                class="share-btn group border border-border rounded-xl p-4 flex flex-col items-center justify-center gap-2
+             hover:border-sky-500 hover:bg-sky-500/10 transition-all duration-300"
+              >
+                <i class="bi bi-twitter-x text-3xl group-hover:text-sky-500 transition-colors duration-300"></i>
+                <span class="text-xs font-medium group-hover:text-sky-500 transition-colors duration-300">Twitter</span>
+              </button>
+
+              <!-- Copy Link -->
+              <button
+                (click)="copyShareLink()"
+                class="share-btn group border border-border rounded-xl p-4 flex flex-col items-center justify-center gap-2
+             hover:border-primary hover:bg-primary/10 transition-all duration-300"
+              >
+                <i class="bi bi-link-45deg text-3xl group-hover:text-primary transition-colors duration-300"></i>
+                <span class="text-xs font-medium group-hover:text-primary transition-colors duration-300">Copy</span>
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+}

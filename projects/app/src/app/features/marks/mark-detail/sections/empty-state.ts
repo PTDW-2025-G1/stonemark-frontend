@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-mark-occurrences-empty-state',
+  selector: 'app-mark-detail-empty-state',
   template: `
     <div class="text-center py-16 bg-surface-alt rounded-2xl border-2 border-dashed border-border">
       <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">

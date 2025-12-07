@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 
 @Component({
-  selector: 'app-mark-occurrences-header',
+  selector: 'app-mark-detail-header',
   template: `
     <div class="mb-8">
       <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">

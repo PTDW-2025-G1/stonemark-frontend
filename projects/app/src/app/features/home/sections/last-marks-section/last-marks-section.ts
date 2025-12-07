@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
-import {Mark} from '@core/models/mark.model';
-import {MarkDto} from '@api/model/mark-dto';
+import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 
 @Component({
   selector: 'app-last-marks-section',
@@ -21,13 +20,13 @@ import {MarkDto} from '@api/model/mark-dto';
         </div>
 
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          @for (mark of marks; track mark.id) {
+          @for (occurrence of lastOccurrences; track occurrence.id) {
             <app-entity-card
               [cover]="'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'"
-              [title]="mark.title?? 'Mark Title'"
-              [subtitle]="'Portugal'"
-              [id]="mark.id ?? 0"
-              [type]="'marks'"
+              [title]="'Mark of ' + occurrence.mark?.title"
+              [subtitle]="occurrence.monument?.name || 'Unknown monument'"
+              [id]="occurrence.mark?.id ?? 0"
+              [type]="'marks/occurrence'"
             />
           }
         </div>
@@ -36,5 +35,5 @@ import {MarkDto} from '@api/model/mark-dto';
   `
 })
 export class LastMarkSectionComponent {
-  @Input() marks: MarkDto[] = [];
+  @Input() lastOccurrences: MarkOccurrenceDto[] = [];
 }

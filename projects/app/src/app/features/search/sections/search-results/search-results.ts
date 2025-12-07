@@ -41,7 +41,7 @@ export class SearchResultsComponent {
 
   getItemCover(item: SearchItem): string {
     return this.isMark(item)
-      ? (item.cover ?? "https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg")
+      ? "https://upload.wikimedia.org/wikipedia/commons/4/4d/Igreja_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_%28Ermida%29_sigla_0456_1.JPG"
       : "https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg";
   }
 

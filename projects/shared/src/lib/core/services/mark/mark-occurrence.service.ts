@@ -33,6 +33,10 @@ export class MarkOccurrenceService {
     return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/by-mark/${markId}`);
   }
 
+  getLatestOccurrences(): Observable<MarkOccurrenceDto[]> {
+    return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/latest`);
+  }
+
   /** Create new occurrence (MODERATOR only) */
   create(dto: MarkOccurrenceDto): Observable<MarkOccurrenceDto> {
     return this.http.post<MarkOccurrenceDto>(this.baseUrl, dto);

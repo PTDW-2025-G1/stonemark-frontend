@@ -1,9 +1,8 @@
-// projects/app/src/app/features/marks/mark-occurrences/occurrences-grid.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 
 @Component({
-  selector: 'app-mark-occurrences-grid',
+  selector: 'app-mark-detail-occurrences-grid',
   template: `
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       @for (occurrence of occurrences; track occurrence.id) {
@@ -15,7 +14,7 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
           <div class="relative h-48 overflow-hidden bg-surface-muted">
             <img
               [src]="'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'"
-              [alt]="occurrence.mark?.title"
+              [alt]="'Mark Occurrence of: ' + occurrence.mark?.title"
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -41,7 +40,7 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
           <!-- Conteúdo -->
           <div class="p-5">
             <h3 class="text-lg font-bold text-text mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-              {{ occurrence.mark?.title }}
+              {{ 'Mark Occurrence of ' + occurrence.mark?.title }}
             </h3>
 
             <div class="flex items-center gap-2 text-text-muted text-sm mb-3">

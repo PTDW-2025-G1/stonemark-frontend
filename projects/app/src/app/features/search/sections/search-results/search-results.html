@@ -1,6 +1,5 @@
-<!-- Results Grid -->
 <main class="flex-1">
-  @if ($items | async; as items) {
+  @if (items.length > 0) {
     <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       @for (item of items; track item.id) {
         <article
@@ -12,8 +11,10 @@
             (click)="toggleBookmark($event, item)"
             class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-200 flex items-center justify-center hover:scale-110 active:scale-95"
             [attr.aria-label]="isBookmarked(item) ? 'Remove bookmark' : 'Add bookmark'">
-            <i [class]="isBookmarked(item) ? 'bi bi-bookmark-fill text-primary' : 'bi bi-bookmark text-text-muted'"
-               class="text-lg"></i>
+            <i
+              [class]="isBookmarked(item) ? 'bi bi-bookmark-fill text-primary' : 'bi bi-bookmark text-text-muted'"
+              class="text-lg">
+            </i>
           </button>
 
           <!-- Image -->
@@ -37,18 +38,15 @@
               <p class="truncate">{{ getItemLocation(item) }}</p>
             </div>
           </div>
+
         </article>
-      } @empty {
-        <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
-          <i class="bi bi-search text-6xl text-text-muted mb-4"></i>
-          <h3 class="text-xl font-serif font-semibold text-text mb-2">No results found</h3>
-          <p class="text-text-muted">Try adjusting your search or filters</p>
-        </div>
       }
     </div>
   } @else {
-    <div class="flex items-center justify-center py-16">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+      <i class="bi bi-search text-6xl text-text-muted mb-4"></i>
+      <h3 class="text-xl font-serif font-semibold text-text mb-2">No results found</h3>
+      <p class="text-text-muted">Try adjusting your search or filters</p>
     </div>
   }
 </main>

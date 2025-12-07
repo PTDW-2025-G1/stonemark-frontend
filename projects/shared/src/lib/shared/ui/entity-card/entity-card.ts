@@ -31,7 +31,7 @@ export class EntityCardComponent {
   @Input() title!: string;
   @Input() subtitle!: string;
   @Input() id!: number;
-  @Input() type: 'marks' | 'monuments' = 'marks'
+  @Input() type: 'marks/occurrence' | 'monuments' = 'marks/occurrence'
 
 
   constructor(private router: Router) {}

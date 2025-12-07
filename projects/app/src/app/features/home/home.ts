@@ -6,9 +6,9 @@ import { LastMarkSectionComponent } from '@features/home/sections/last-marks-sec
 import { MapSectionComponent } from '@features/home/sections/map-section/map-section';
 import { LastNewsComponent } from '@features/home/sections/last-news-section/last-news-section';
 import {MonumentService} from '@core/services/monument/monument.service';
-import {MarkService} from '@core/services/mark.service';
-import {Mark} from '@core/models/mark.model';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
+import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
+import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 
 
 @Component({
@@ -20,16 +20,16 @@ import {MonumentResponseDto} from '@api/model/monument-response-dto';
 export class HomeComponent implements OnInit{
 
     popularMonuments: MonumentResponseDto[] = [];
-    lastMarks: Mark[] = [];
+    lastOccurrences: MarkOccurrenceDto[] = [];
 
-    constructor(private monumentService: MonumentService, private markService : MarkService) {}
+    constructor(private monumentService: MonumentService, private markOccurrenceService : MarkOccurrenceService) {}
 
     ngOnInit(): void {
         this.monumentService.getLatestMonuments().subscribe(monuments => {
             this.popularMonuments = monuments;
         });
-        this.markService.getLastMarks().subscribe(marks => {
-            this.lastMarks = marks;
+        this.markOccurrenceService.getLatestOccurrences().subscribe(occurrences => {
+          this.lastOccurrences =  occurrences;
         });
     }
 

@@ -15,7 +15,6 @@ import { MonumentResponseDto } from './monument-response-dto';
 export interface PageMonumentResponseDto { 
     totalPages?: number;
     totalElements?: number;
-    pageable?: PageableObject;
     size?: number;
     content?: Array<MonumentResponseDto>;
     number?: number;
@@ -23,6 +22,7 @@ export interface PageMonumentResponseDto {
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
+    pageable?: PageableObject;
     empty?: boolean;
 }
 

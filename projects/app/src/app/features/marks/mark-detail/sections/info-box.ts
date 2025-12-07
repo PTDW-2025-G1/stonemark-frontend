@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-mark-occurrences-info-box',
+  selector: 'app-mark-detail-info-box',
   template: `
     <div class="mt-8 bg-gradient-to-br from-info/5 to-primary/5 rounded-2xl border border-info/20 p-6">
       <div class="flex items-start gap-4">

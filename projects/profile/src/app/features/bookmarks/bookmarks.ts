@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MonumentService } from '@core/services/monument/monument.service';
-import { MarkService } from '@core/services/mark.service';
+import { MarkService } from '@core/services/mark/mark.service';
 import { forkJoin } from 'rxjs';
 import {HeaderSectionComponent} from './sections/header-section';
 import {TabsSectionComponent} from './sections/tabs-section';
@@ -51,7 +51,7 @@ export class BookmarksComponent implements OnInit {
   ngOnInit(): void {
     forkJoin({
       monuments: this.monumentService.getMonuments(),
-      marks: this.markService.getLastMarks()
+      marks: this.markService.getMarks()
     }).subscribe(({ monuments, marks }) => {
       this.monuments = monuments.map(m => ({
         id: m.id ?? 0,
@@ -61,11 +61,11 @@ export class BookmarksComponent implements OnInit {
       }));
 
       this.marks = marks.map(mark => ({
-        id: mark.id,
-        type: 'mark',
-        title: mark.title,
-        subtitle: mark.monument.name,
-        image: mark.cover
+        id: mark.id ?? 0,
+        type: 'mark' as const,
+        title: mark.title ?? 'Unknown Mark',
+        subtitle: 'Stone Mason Mark',
+        image: 'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'
       }));
 
       this.updateFilteredItems();

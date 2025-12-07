@@ -26,9 +26,14 @@ export interface MarkOccurrenceProposalDto {
 export namespace MarkOccurrenceProposalDto {
     export const StatusEnum = {
         InProgress: 'IN_PROGRESS',
+        AwaitingAuthentication: 'AWAITING_AUTHENTICATION',
         AwaitingMonumentInfo: 'AWAITING_MONUMENT_INFO',
+        AwaitingMonumentName: 'AWAITING_MONUMENT_NAME',
         AwaitingMarkInfo: 'AWAITING_MARK_INFO',
         AwaitingMarkSelection: 'AWAITING_MARK_SELECTION',
+        AwaitingMonumentSelection: 'AWAITING_MONUMENT_SELECTION',
+        AwaitingMonumentVerification: 'AWAITING_MONUMENT_VERIFICATION',
+        AwaitingNotes: 'AWAITING_NOTES',
         ReadyToSubmit: 'READY_TO_SUBMIT',
         Submitted: 'SUBMITTED',
         Approved: 'APPROVED',

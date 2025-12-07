@@ -17,7 +17,7 @@
     <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
       <!-- Results Grid + Pagination -->
       <div class="flex flex-col items-center w-full">
-        <app-search-results [$items]="items$" [type]="type"></app-search-results>
+        <app-search-results [items]="(items$ | async) ?? []" [type]="type"></app-search-results>
         <app-search-pagination
           [currentPage]="currentPage"
           [totalPages]="totalPages"

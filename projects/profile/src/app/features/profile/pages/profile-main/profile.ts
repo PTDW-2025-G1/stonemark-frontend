@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Mark } from '@core/models/mark.model';
-import {MarkService} from '@core/services/mark.service';
+import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 import {ProfileHeaderComponent} from './sections/profile-header/profile-header';
 import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
@@ -12,6 +11,8 @@ import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth/auth.service';
+import {MarkDto} from '@api/model/mark-dto';
+import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,7 @@ export class ProfileComponent implements OnInit {
   user: any = null;
   loading = true;
 
-  marks: Mark[] = [];
+  occurrences: MarkOccurrenceDto[] = [];
   suggestions: Suggestion[] = [];
 
   activeTab: 'marks' | 'suggestions' = 'marks';
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private router: Router,
               private profileService: ProfileService,
-              private markService: MarkService,
+              private markOccurrenceService: MarkOccurrenceService,
               private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -70,11 +71,8 @@ export class ProfileComponent implements OnInit {
   }
 
   loadMarks(): void {
-    this.markService.getLastMarks().subscribe(marks => {
-      this.marks = marks;
-      if (this.user && this.user.stats) {
-        this.user.stats.totalMarks = marks.length;
-      }
+    this.markOccurrenceService.getAll().subscribe(occurrences => {
+      this.occurrences = occurrences.content ?? [];
     });
   }
 
@@ -123,15 +121,15 @@ export class ProfileComponent implements OnInit {
     // lógica para adicionar um novo mark
   }
 
-  onEditMark(mark: Mark) {
+  onEditMark(occurrence: MarkOccurrenceDto) {
     // lógica para editar o mark recebido
   }
 
-  onRemoveMark(mark: Mark) {
+  onRemoveMark(occurrence: MarkOccurrenceDto) {
     // lógica para remover o mark recebido
   }
 
-  onViewMark(mark: Mark) {
+  onViewMark(occurrence: MarkOccurrenceDto) {
     // lógica para ver detalhes do mark recebido
   }
 

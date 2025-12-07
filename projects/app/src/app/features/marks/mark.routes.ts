@@ -4,13 +4,13 @@ export const MARK_ROUTES : Routes = [
   {
     path: ':id',
     loadComponent: () =>
-      import('./mark-detail/mark-detail').then(
+      import('@features/marks/mark-detail/mark-detail').then(
         m => m.MarkDetailComponent),
   },
   {
-    path: ':id/occurrences',
+    path: 'occurrence/:id',
     loadComponent: () =>
-      import('./mark-occurrences/mark-occurrences').then(
-        m => m.MarkOccurrencesComponent),
+      import('@features/marks/mark-occurrence-detail/mark-occurrence-detail').then(
+        m => m.MarkOccurrenceDetail),
   }
 ]

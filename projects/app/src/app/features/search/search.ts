@@ -61,7 +61,6 @@ export class SearchComponent implements OnInit {
     const pageIndex = this.currentPage - 1;
 
     if (this.type === 'marks') {
-      // backend returns: PageMarkDto
       this.markService.getPageMarks(pageIndex, this.pageSize).subscribe(page => {
         const marks = page.content ?? [];
 

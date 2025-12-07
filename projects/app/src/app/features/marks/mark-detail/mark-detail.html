@@ -9,7 +9,11 @@
 
     <app-mark-detail-header
       [markOccurrence]="markOccurrence"
-      [occurrencesCount]="occurrences.length">
+      [occurrencesCount]="occurrences.length"
+      [monumentsCount]="uniqueMonumentsCount"
+      [bookmarksCount]="bookmarksCount"
+      [isBookmarked]="isBookmarked"
+      (bookmarkToggled)="toggleBookmark()">
     </app-mark-detail-header>
 
     <app-mark-detail-occurrences-grid

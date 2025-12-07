@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { DateUtils } from '@shared/utils/date.utils';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
@@ -61,21 +62,21 @@ export class MarkOccurrenceDetail implements OnInit {
     }
   }
 
-  getFormattedDate(date: string | undefined): string {
-    if (!date) return 'Unknown date';
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  getFormattedDate(date: string | Date | undefined): string {
+    return DateUtils.formatDate(date);
   }
 
   getUserInitials(): string {
-    const user = this.occurrence?.user;
-    if (!user?.firstName && !user?.lastName) return 'U';
-    return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
+    const userName = this.occurrence?.createdBy;
+    if (!userName || typeof userName !== 'string') return 'U';
+
+    const nameParts = userName.trim().split(' ');
+    if (nameParts.length === 0) return 'U';
+
+    const firstInitial = nameParts[0]?.[0] || '';
+    const lastInitial = nameParts[nameParts.length - 1]?.[0] || '';
+
+    return `${firstInitial}${lastInitial}`.toUpperCase();
   }
 
   copyLocation(): void {

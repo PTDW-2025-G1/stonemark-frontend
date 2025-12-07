@@ -38,6 +38,10 @@ export class MarkDetailComponent implements OnInit {
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   loading = true;
 
+  uniqueMonumentsCount = 0;
+  bookmarksCount = 0;
+  isBookmarked = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -80,6 +84,7 @@ export class MarkDetailComponent implements OnInit {
     this.markOccurrenceService.getByMarkId(markId).subscribe({
       next: list => {
         this.occurrences = list ?? [];
+        this.uniqueMonumentsCount = new Set(list?.map(o => o.monument?.id).filter(Boolean)).size;
         this.loading = false;
       },
       error: err => {
@@ -87,6 +92,10 @@ export class MarkDetailComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  toggleBookmark(): void {
+    this.isBookmarked = !this.isBookmarked;
   }
 
   viewOccurrence(occurrenceId: number): void {

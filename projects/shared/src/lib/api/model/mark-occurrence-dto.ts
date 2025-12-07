@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserDto } from './user-dto';
 import { MarkDto } from './mark-dto';
 import { MonumentDto } from './monument-dto';
 
@@ -15,8 +14,8 @@ import { MonumentDto } from './monument-dto';
 export interface MarkOccurrenceDto { 
     id?: number;
     mark?: MarkDto;
-    user?: UserDto;
     monument?: MonumentDto;
     createdAt?: string;
+    createdBy?: string;
 }
 

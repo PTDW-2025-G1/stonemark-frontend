@@ -139,7 +139,7 @@
 
             <div class="space-y-4">
               <!-- Discovered By -->
-              @if (occurrence.user) {
+              @if (occurrence.createdBy) {
                 <div class="flex items-center gap-4 p-4 bg-surface rounded-xl border border-border">
                   <div class="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center
                               justify-center font-bold text-lg flex-shrink-0">
@@ -148,11 +148,8 @@
                   <div class="flex-1 min-w-0">
                     <p class="text-sm text-text-muted">Discovered by</p>
                     <p class="font-bold text-text">
-                      {{ occurrence.user.firstName }} {{ occurrence.user.lastName }}
+                      {{ occurrence.createdBy }}
                     </p>
-                    @if (occurrence.user.email) {
-                      <p class="text-xs text-text-muted truncate">{{ occurrence.user.email }}</p>
-                    }
                   </div>
                 </div>
               }

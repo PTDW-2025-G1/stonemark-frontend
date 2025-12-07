@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
+import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { DateUtils } from '@shared/utils/date.utils';
 
 @Component({
   selector: 'app-mark-detail-occurrences-grid',
@@ -53,11 +54,11 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
               <div class="flex items-center gap-2">
                 <i class="bi bi-person-circle text-primary"></i>
                 <span
-                  class="text-xs text-text-muted">{{ occurrence.user?.firstName }} {{ occurrence.user?.lastName }}</span>
+                  class="text-xs text-text-muted">{{ occurrence.createdBy }} </span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="bi bi-calendar-event text-primary"></i>
-                <span class="text-xs text-text-muted">{{ occurrence.createdAt }}</span>
+                <span class="text-xs text-text-muted">{{ formatDate(occurrence.createdAt) }}</span>
               </div>
             </div>
           </div>
@@ -71,4 +72,8 @@ export class OccurrencesGridComponent {
   @Input() occurrences: MarkOccurrenceDto[] = [];
   @Output() viewOccurrence = new EventEmitter<number>();
   @Output() viewMonument = new EventEmitter<number>();
+
+  formatDate(date: string | undefined): string {
+    return DateUtils.formatShortDate(date);
+  }
 }

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import {MarkDto} from '@api/model/mark-dto';
 
 @Component({
   selector: 'app-mark-detail-header',
@@ -11,7 +12,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
           <div class="w-full h-64 sm:h-72 lg:h-48 rounded-2xl overflow-hidden border-2 border-border shadow-lg">
             <img
               [src]="'https://upload.wikimedia.org/wikipedia/commons/4/4d/Igreja_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_%28Ermida%29_sigla_0456_1.JPG'"
-              [alt]="markOccurrence?.mark?.title"
+              [alt]="mark?.title"
               class="w-full h-full object-cover"
             />
           </div>
@@ -47,11 +48,11 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
           </div>
 
           <h1 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-3">
-            {{ markOccurrence?.mark?.title }}
+            {{ mark?.title }}
           </h1>
 
           <p class="text-text-muted mb-4 leading-relaxed">
-            {{ markOccurrence?.mark?.description }}
+            {{ mark?.description }}
           </p>
         </div>
       </div>
@@ -60,7 +61,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
   styles: []
 })
 export class MarkHeaderComponent {
-  @Input() markOccurrence?: MarkOccurrenceDto;
+  @Input() mark?: MarkDto;
   @Input() occurrencesCount = 0;
   @Input() monumentsCount = 0;
   @Input() bookmarksCount = 0;

@@ -4,11 +4,11 @@
   <app-mark-detail-loading-state></app-mark-detail-loading-state>
 }
 
-@if (markOccurrence$ | async; as markOccurrence) {
+@if (mark$ | async; as mark) {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
     <app-mark-detail-header
-      [markOccurrence]="markOccurrence"
+      [mark]="mark"
       [occurrencesCount]="occurrences.length"
       [monumentsCount]="uniqueMonumentsCount"
       [bookmarksCount]="bookmarksCount"
@@ -16,11 +16,11 @@
       (bookmarkToggled)="toggleBookmark()">
     </app-mark-detail-header>
 
-    <app-mark-detail-occurrences-grid
+    <app-occurrences-grid
       [occurrences]="occurrences"
       (viewOccurrence)="viewOccurrence($event)"
       (viewMonument)="viewMonument($event)">
-    </app-mark-detail-occurrences-grid>
+    </app-occurrences-grid>
 
     @if (!loading && occurrences.length === 0) {
       <app-mark-detail-empty-state></app-mark-detail-empty-state>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkService } from '@core/services/mark/mark.service';
@@ -7,18 +7,12 @@ import { SearchHeaderComponent } from '@features/search/sections/search-header/s
 import { SearchResultsComponent } from '@features/search/sections/search-results/search-results';
 import { SearchPaginationComponent } from '@features/search/sections/search-pagination/search-pagination';
 import { Title } from '@angular/platform-browser';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [
-    CommonModule,
-    SearchHeaderComponent,
-    SearchResultsComponent,
-    SearchPaginationComponent
-  ],
+  imports: [CommonModule, SearchHeaderComponent, SearchResultsComponent, SearchPaginationComponent],
   templateUrl: './search.html'
 })
 export class SearchComponent implements OnInit {
@@ -26,7 +20,6 @@ export class SearchComponent implements OnInit {
   type: 'monuments' | 'marks' = 'monuments';
   title = '';
 
-  /** Items enviados para o componente de resultados */
   items$ = new BehaviorSubject<any[]>([]);
 
   searchQuery = '';
@@ -40,7 +33,6 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private monumentService: MonumentService,
     private markService: MarkService,
-    private cdr: ChangeDetectorRef,
     private titleService: Title,
     private router: Router
   ) {}
@@ -61,11 +53,13 @@ export class SearchComponent implements OnInit {
     const pageIndex = this.currentPage - 1;
 
     if (this.type === 'marks') {
-      this.markService.getPageMarks(pageIndex, this.pageSize).subscribe(page => {
-        const marks = page.content ?? [];
+      const source = this.searchQuery.trim()
+        ? this.markService.searchMarks(this.searchQuery, pageIndex, this.pageSize)
+        : this.markService.getPageMarks(pageIndex, this.pageSize);
 
-        this.items$.next(marks);
-        this.totalElements = page.totalElements ?? marks.length;
+      source.subscribe(page => {
+        this.items$.next(page.content ?? []);
+        this.totalElements = page.totalElements ?? 0;
         this.totalPages = page.totalPages ?? 1;
       });
     } else {

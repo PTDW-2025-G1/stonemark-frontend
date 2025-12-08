@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { MarkDto } from '@api/model/mark-dto';
@@ -20,6 +20,15 @@ export class MarkService {
 
   getPageMarks(page: number = 0, size: number = 10): Observable<PageMarkDto> {
     return this.http.get<PageMarkDto>(`${this.baseUrl}?page=${page}&size=${size}`);
+  }
+
+  searchMarks(query: string, page: number = 0, size: number = 10, sort: string = 'title,asc'){
+    const params = new HttpParams()
+      .set('query', query)
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+    return this.http.get<PageMarkDto>(`${this.baseUrl}/search`, { params });
   }
 
   getMark(id: number): Observable<MarkDto> {

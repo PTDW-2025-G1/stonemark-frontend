@@ -2,20 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {Observable, tap} from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument/monument.service';
 import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
 import { NotificationService } from '@core/services/notification.service';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
+import {OccurrencesGridComponent} from '@shared/ui/occurrences-grid/occurrences-grid';
+import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
+import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, OccurrencesGridComponent],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
   monument$!: Observable<MonumentResponseDto | undefined>;
+  occurrences$!: Observable<MarkOccurrenceDto[]>;
   mapUrl: SafeResourceUrl | null = null;
   isBookmarked = false;
 
@@ -23,19 +27,22 @@ export class MonumentDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private monumentService: MonumentService,
+    private markOccurrenceService: MarkOccurrenceService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
+    const monumentId$ = this.route.paramMap.pipe(
+      map(params => Number(params.get('id'))),
+    );
     this.monument$ = this.route.paramMap.pipe(
       switchMap(params => {
         const id = Number(params.get('id'));
         return this.monumentService.getMonumentById(id);
       }),
       tap(monument => {
-        console.log('Monumento:', monument);
         if (monument && monument.latitude != null && monument.longitude != null) {
           this.setMapUrl(monument.latitude, monument.longitude);
           this.titleService.setTitle(`${monument.name} - StoneMark`);
@@ -43,6 +50,10 @@ export class MonumentDetailComponent implements OnInit {
           this.mapUrl = null;
         }
       })
+    );
+    this.occurrences$ = monumentId$.pipe(
+      switchMap(id => this.markOccurrenceService.getByMonumentId(id)),
+      map(result => Array.isArray(result) ? result : result.content ?? []),
     );
   }
 
@@ -61,9 +72,12 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   suggestCorrection(): void {
-    console.log('Suggest Correction');
     const monumentId = this.route.snapshot.paramMap.get('id');
     this.router.navigate(['/suggestions/new'], { queryParams: { monumentId } });
+  }
+
+  onViewOccurrence(occurrenceId: number): void {
+    this.router.navigate(['marks/occurrence', occurrenceId]);
   }
 
   setMapUrl(latitude: number, longitude: number) {

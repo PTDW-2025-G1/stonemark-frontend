@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {MarkDto} from '@api/model/mark-dto';
+import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 
 type SearchItem = MonumentResponseDto | MarkDto;
 
@@ -15,8 +16,31 @@ type SearchItem = MonumentResponseDto | MarkDto;
 export class SearchResultsComponent {
   @Input() items: SearchItem[] = [];
   @Input() type: 'monuments' | 'marks' = 'monuments';
+  occurrenceCount: Record<string | number, number> = {};
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private markOccurrenceService: MarkOccurrenceService) {}
+
+  ngOnChanges(): void {
+    if (this.type === 'marks' && this.items.length) {
+      this.items.forEach(mark => {
+        if (this.isMark(mark) && mark.id !== undefined) {
+          this.markOccurrenceService.countByMarkId(mark.id).subscribe(count => {
+            this.occurrenceCount[mark.id!] = count;
+          });
+        }
+      });
+    }
+    if (this.type === 'monuments' && this.items.length) {
+      this.items.forEach(monument => {
+        if (this.isMonument(monument) && monument.id !== undefined) {
+          this.markOccurrenceService.countByMonumentId(monument.id).subscribe(count => {
+            this.occurrenceCount[monument.id!] = count;
+          });
+        }
+      });
+    }
+  }
+
 
   isMonument(item: SearchItem): item is MonumentResponseDto {
     return 'name' in item;
@@ -47,11 +71,13 @@ export class SearchResultsComponent {
     return this.isMonument(item) ? item.name ?? '' : item.title ?? '';
   }
 
-  getItemLocation(item: SearchItem): string {
+  getItemSubtitle(item: SearchItem): string {
     if (this.isMonument(item)) {
       return item.city ? `${item.city}, Portugal` : 'Portugal';
     }
-    return 'Portugal';
+    const id = this.isMark(item) ? item.id : undefined;
+    const count = id !== undefined ? this.occurrenceCount[id] ?? 0 : 0;
+    return `Portugal · ${count} occurrence${count === 1 ? '' : 's'}`;
   }
 
 

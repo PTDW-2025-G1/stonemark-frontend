@@ -3,7 +3,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { DateUtils } from '@shared/utils/date.utils';
 
 @Component({
-  selector: 'app-mark-detail-occurrences-grid',
+  selector: 'app-occurrences-grid',
   template: `
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       @for (occurrence of occurrences; track occurrence.id) {

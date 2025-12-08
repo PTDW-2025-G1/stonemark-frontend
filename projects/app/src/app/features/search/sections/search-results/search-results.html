@@ -24,7 +24,16 @@
               [alt]="getItemName(item)"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <!-- Overlay -->
+            @if (isMonument(item)) {
+              <div class="absolute top-4 left-4">
+                <div class="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg
+                text-xs font-semibold flex items-center gap-1.5 text-text">
+                  <i class="bi bi-pin-angle-fill text-primary"></i>
+                  <span>{{ occurrenceCount[item.id!] || 0 }} Occurrences</span>
+                </div>
+              </div>
+            }
           </div>
 
           <!-- Content -->
@@ -35,7 +44,7 @@
 
             <div class="flex items-center gap-1.5 text-xs sm:text-sm text-text-muted">
               <i class="bi bi-geo-alt text-xs"></i>
-              <p class="truncate">{{ getItemLocation(item) }}</p>
+              <p class="truncate">{{ getItemSubtitle(item) }}</p>
             </div>
           </div>
 

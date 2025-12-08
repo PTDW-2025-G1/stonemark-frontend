@@ -10,9 +10,11 @@ import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.servi
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { LoadingStateComponent } from '@features/marks/mark-detail/sections/loading-state';
 import { MarkHeaderComponent } from '@features/marks/mark-detail/sections/mark-header';
-import { OccurrencesGridComponent } from '@features/marks/mark-detail/sections/occurrences-grid';
+import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrences-grid';
 import { EmptyStateComponent } from '@features/marks/mark-detail/sections/empty-state';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
+import {MarkDto} from '@api/model/mark-dto';
+import {MarkService} from '@core/services/mark/mark.service';
 
 @Component({
   selector: 'app-mark-detail',
@@ -31,7 +33,7 @@ import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box'
 })
 export class MarkDetailComponent implements OnInit {
 
-  markOccurrence$!: Observable<MarkOccurrenceDto>;
+  mark$!: Observable<MarkDto>;
 
   occurrences: MarkOccurrenceDto[] = [];
 
@@ -46,35 +48,29 @@ export class MarkDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private titleService: Title,
+    private markService: MarkService,
     private markOccurrenceService: MarkOccurrenceService
   ) {}
 
   ngOnInit(): void {
-    this.markOccurrence$ = this.route.paramMap.pipe(
+    this.mark$ = this.route.paramMap.pipe(
       switchMap(params => {
-        const id = Number(params.get('id'));
-        this.loadOccurrences(id);
-        return this.markOccurrenceService.getById(id);
+        const markId = Number(params.get('id'));
+        this.loadOccurrences(markId);
+        return this.markService.getMark(markId);
       }),
-      tap(mainOccurrence => {
-        if (mainOccurrence?.mark?.title) {
-          this.titleService.setTitle(`${mainOccurrence.mark.title}`);
+      tap(mark => {
+        if (mark?.title) {
+          this.titleService.setTitle(mark.title);
         }
       })
     );
 
-    this.breadcrumbItems$ = this.markOccurrence$.pipe(
-      map(mainOccurrence => {
-        const items: BreadcrumbItem[] = [
-          { label: 'Marks', link: '/search/marks', icon: 'bi bi-grid-3x3-gap' }
-        ];
-        if (mainOccurrence) {
-          items.push(
-            { label: mainOccurrence.mark?.title || 'Mark', link: ['/marks', mainOccurrence.mark?.id], active: true }
-          );
-        }
-        return items;
-      })
+    this.breadcrumbItems$ = this.mark$.pipe(
+      map(mark => [
+        { label: 'Marks', link: '/search/marks', icon: 'bi bi-grid-3x3-gap' },
+        { label: mark?.title ?? 'Mark', link: ['/marks', mark?.id], active: true }
+      ])
     );
   }
 
@@ -84,11 +80,15 @@ export class MarkDetailComponent implements OnInit {
     this.markOccurrenceService.getByMarkId(markId).subscribe({
       next: list => {
         this.occurrences = list ?? [];
-        this.uniqueMonumentsCount = new Set(list?.map(o => o.monument?.id).filter(Boolean)).size;
+        this.uniqueMonumentsCount = new Set(
+          list?.map(o => o.monument?.id).filter(Boolean)
+        ).size;
+
         this.loading = false;
       },
       error: err => {
         console.error('Error loading occurrences:', err);
+        this.occurrences = [];
         this.loading = false;
       }
     });

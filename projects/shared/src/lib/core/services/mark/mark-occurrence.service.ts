@@ -37,6 +37,21 @@ export class MarkOccurrenceService {
     return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/latest`);
   }
 
+  getByMonumentId(monumentId: number, page: number = 0, size: number = 20): Observable<PageMarkOccurrenceDto> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-monument/${monumentId}`, { params });
+  }
+
+  countByMarkId(markId: number | undefined): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count-by-mark/${markId}`);
+  }
+
+  countByMonumentId(monumentId: number | undefined): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count-by-monument/${monumentId}`);
+  }
+
   /** Create new occurrence (MODERATOR only) */
   create(dto: MarkOccurrenceDto): Observable<MarkOccurrenceDto> {
     return this.http.post<MarkOccurrenceDto>(this.baseUrl, dto);

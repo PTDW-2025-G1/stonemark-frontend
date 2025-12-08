@@ -13,8 +13,10 @@ import { MarkHeaderComponent } from '@features/marks/mark-detail/sections/mark-h
 import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrences-grid';
 import { EmptyStateComponent } from '@features/marks/mark-detail/sections/empty-state';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
-import {MarkDto} from '@api/model/mark-dto';
-import {MarkService} from '@core/services/mark/mark.service';
+import { MarkDto } from '@api/model/mark-dto';
+import { MarkService } from '@core/services/mark/mark.service';
+import { BookmarkService } from '@core/services/bookmark/bookmark.service';
+import { BookmarkDto } from '@api/model/bookmark-dto';
 
 @Component({
   selector: 'app-mark-detail',
@@ -32,31 +34,32 @@ import {MarkService} from '@core/services/mark/mark.service';
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
-
   mark$!: Observable<MarkDto>;
-
   occurrences: MarkOccurrenceDto[] = [];
-
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   loading = true;
-
   uniqueMonumentsCount = 0;
   bookmarksCount = 0;
   isBookmarked = false;
+
+  private currentMarkId?: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private titleService: Title,
     private markService: MarkService,
-    private markOccurrenceService: MarkOccurrenceService
+    private markOccurrenceService: MarkOccurrenceService,
+    private bookmarkService: BookmarkService
   ) {}
 
   ngOnInit(): void {
     this.mark$ = this.route.paramMap.pipe(
       switchMap(params => {
         const markId = Number(params.get('id'));
+        this.currentMarkId = markId;
         this.loadOccurrences(markId);
+        this.loadBookmarkState(markId);
         return this.markService.getMark(markId);
       }),
       tap(mark => {
@@ -74,6 +77,15 @@ export class MarkDetailComponent implements OnInit {
     );
   }
 
+  private loadBookmarkState(markId: number): void {
+    this.bookmarkService.isBookmarked(BookmarkDto.TypeEnum.Mark, markId).subscribe(isBookmarked => {
+      this.isBookmarked = isBookmarked;
+    });
+    this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
+      this.bookmarksCount = bookmarks.filter(b => b.type === BookmarkDto.TypeEnum.Mark && b.targetId === markId).length;
+    });
+  }
+
   private loadOccurrences(markId: number): void {
     this.loading = true;
 
@@ -83,7 +95,6 @@ export class MarkDetailComponent implements OnInit {
         this.uniqueMonumentsCount = new Set(
           list?.map(o => o.monument?.id).filter(Boolean)
         ).size;
-
         this.loading = false;
       },
       error: err => {
@@ -95,7 +106,26 @@ export class MarkDetailComponent implements OnInit {
   }
 
   toggleBookmark(): void {
-    this.isBookmarked = !this.isBookmarked;
+    if (this.currentMarkId == null) return;
+
+    if (this.isBookmarked) {
+      this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
+        const bookmark = bookmarks.find(b =>
+          b.type === BookmarkDto.TypeEnum.Mark && b.targetId === this.currentMarkId
+        );
+        if (bookmark?.id != null) {
+          this.bookmarkService.deleteBookmark(bookmark.id).subscribe(() => {
+            this.isBookmarked = false;
+            this.bookmarksCount = Math.max(0, this.bookmarksCount - 1);
+          });
+        }
+      });
+    } else {
+      this.bookmarkService.createBookmark(BookmarkDto.TypeEnum.Mark, this.currentMarkId).subscribe(() => {
+        this.isBookmarked = true;
+        this.bookmarksCount += 1;
+      });
+    }
   }
 
   viewOccurrence(occurrenceId: number): void {

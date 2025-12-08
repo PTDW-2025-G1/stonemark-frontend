@@ -4,6 +4,7 @@ import { of, throwError } from 'rxjs';
 import { convertToParamMap } from '@angular/router';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { firstValueFrom } from 'rxjs';
+import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -15,9 +16,11 @@ describe('MonumentDetailComponent', () => {
   let monumentService: any;
   let activatedRoute: any;
   let router: any;
+  let markOccurrenceService: any;
   let sanitizer: any;
   let titleService: any;
   let notificationService: any;
+  let bookmarkService: any;
 
   const mockMonument: MonumentResponseDto = {
     id: 1,
@@ -51,6 +54,10 @@ describe('MonumentDetailComponent', () => {
       navigate: vi.fn(),
     };
 
+    markOccurrenceService = {
+      getByMonumentId: vi.fn().mockReturnValue(of([])),
+    };
+
     sanitizer = {
       bypassSecurityTrustResourceUrl: vi.fn().mockReturnValue('safe-url'),
     };
@@ -63,15 +70,25 @@ describe('MonumentDetailComponent', () => {
       showSuccess: vi.fn(),
     };
 
+    bookmarkService = {
+      isBookmarked: vi.fn().mockReturnValue(of(false)),
+      getUserBookmarks: vi.fn().mockReturnValue(of([])),
+      createBookmark: vi.fn().mockReturnValue(of({ id: 1 })),
+      deleteBookmark: vi.fn().mockReturnValue(of({})),
+    };
+
     component = new MonumentDetailComponent(
       activatedRoute,
       router,
       monumentService,
+      markOccurrenceService,
       sanitizer,
       titleService,
-      notificationService
+      notificationService,
+      bookmarkService,
     );
   });
+
 
   it('should load monument on init', async () => {
     monumentService.getMonumentById.mockReturnValue(of(mockMonument));
@@ -115,15 +132,41 @@ describe('MonumentDetailComponent', () => {
     expect(component.mapUrl).toBeNull();
   });
 
-  it('should toggle bookmark', () => {
-    expect(component.isBookmarked).toBe(false);
+  it('should toggle bookmark from false to true', async () => {
+    component.isBookmarked = false;
+
+    bookmarkService.createBookmark.mockReturnValue(of({ id: 1 }));
 
     component.toggleBookmark();
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(bookmarkService.createBookmark).toHaveBeenCalledWith('MONUMENT', 1);
     expect(component.isBookmarked).toBe(true);
+    expect(component.bookmarksCount).toBe(1);
+  });
+
+  it('should toggle bookmark from true to false', async () => {
+    component.isBookmarked = true;
+    component.bookmarksCount = 1;
+
+    const mockBookmarks = [
+      { id: 1, type: 'MONUMENT', targetId: 1 }
+    ];
+
+    bookmarkService.getUserBookmarks.mockReturnValue(of(mockBookmarks));
+    bookmarkService.deleteBookmark.mockReturnValue(of({}));
 
     component.toggleBookmark();
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(bookmarkService.getUserBookmarks).toHaveBeenCalled();
+    expect(bookmarkService.deleteBookmark).toHaveBeenCalledWith(1);
     expect(component.isBookmarked).toBe(false);
+    expect(component.bookmarksCount).toBe(0);
   });
+
 
   it('should navigate to capture mark page', () => {
     component.captureMark();

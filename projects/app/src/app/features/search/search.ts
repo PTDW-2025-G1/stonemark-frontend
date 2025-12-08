@@ -4,15 +4,15 @@ import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkService } from '@core/services/mark/mark.service';
 import { CommonModule } from '@angular/common';
 import { SearchHeaderComponent } from '@features/search/sections/search-header/search-header';
-import { SearchResultsComponent } from '@features/search/sections/search-results/search-results';
 import { SearchPaginationComponent } from '@features/search/sections/search-pagination/search-pagination';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
+import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, SearchHeaderComponent, SearchResultsComponent, SearchPaginationComponent],
+  imports: [CommonModule, SearchHeaderComponent, SearchPaginationComponent, SearchResultsComponent],
   templateUrl: './search.html'
 })
 export class SearchComponent implements OnInit {
@@ -99,7 +99,6 @@ export class SearchComponent implements OnInit {
           this.totalElements = response.totalElements ?? 0;
         },
         error: (error) => {
-          console.error('Erro ao filtrar monumentos:', error);
           this.items$.next([]);
         }
       });

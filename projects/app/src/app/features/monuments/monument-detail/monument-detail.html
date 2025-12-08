@@ -41,7 +41,7 @@
             <div class="absolute top-4 right-4">
               <button
                 (click)="toggleBookmark()"
-                [class.text-success]="isBookmarked"
+                [class.text-primary]="isBookmarked"
                 [class.text-text-muted]="!isBookmarked"
                 class="w-10 h-10 sm:w-12 sm:h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg text-xl sm:text-2xl">
                 <i [class.bi-bookmark-check-fill]="isBookmarked" [class.bi-bookmark]="!isBookmarked"></i>
@@ -220,7 +220,7 @@
 
       </div>
 
-      <!-- Stone Mark Occurrences - Apenas se existirem -->
+      <!-- Stone Mark Occurrences -->
       @if (occurrences$ | async; as occurrences) {
         @if (occurrences.length > 0) {
           <div class="bg-gradient-to-br from-white to-surface-alt rounded-2xl sm:rounded-3xl border-2 border-border p-4 sm:p-6 lg:p-8 shadow-xl">

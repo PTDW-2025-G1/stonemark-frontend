@@ -10,6 +10,8 @@ import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {OccurrencesGridComponent} from '@shared/ui/occurrences-grid/occurrences-grid';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
+import {BookmarkService} from '@core/services/bookmark/bookmark.service';
+import {BookmarkDto} from '@api/model/bookmark-dto';
 
 @Component({
   selector: 'app-monument-detail',
@@ -22,6 +24,7 @@ export class MonumentDetailComponent implements OnInit {
   occurrences$!: Observable<MarkOccurrenceDto[]>;
   mapUrl: SafeResourceUrl | null = null;
   isBookmarked = false;
+  bookmarksCount = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +33,8 @@ export class MonumentDetailComponent implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private bookmarkService: BookmarkService
   ) {}
 
   ngOnInit(): void {
@@ -55,10 +59,41 @@ export class MonumentDetailComponent implements OnInit {
       switchMap(id => this.markOccurrenceService.getByMonumentId(id)),
       map(result => Array.isArray(result) ? result : result.content ?? []),
     );
+    monumentId$.subscribe(id => {
+      if (id != null) {
+        this.loadBookmarkState(id);
+      }
+    });
+  }
+
+  private loadBookmarkState(monumentId: number): void {
+    this.bookmarkService.isBookmarked(BookmarkDto.TypeEnum.Monument, monumentId).subscribe(isBookmarked => {
+      this.isBookmarked = isBookmarked;
+    });
+    this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
+      this.bookmarksCount = bookmarks.filter(b => b.type === BookmarkDto.TypeEnum.Monument && b.targetId === monumentId).length;
+    });
   }
 
   toggleBookmark(): void {
-    this.isBookmarked = !this.isBookmarked;
+    const monumentId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!monumentId) return;
+    if (this.isBookmarked) {
+      this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
+        const bookmark = bookmarks.find(b => b.type === BookmarkDto.TypeEnum.Monument && b.targetId === monumentId);
+        if (bookmark && bookmark.id != null) {
+          this.bookmarkService.deleteBookmark(bookmark.id).subscribe(() => {
+            this.isBookmarked = false;
+            this.bookmarksCount = Math.max(0, this.bookmarksCount - 1);
+          });
+        }
+      });
+    } else {
+      this.bookmarkService.createBookmark(BookmarkDto.TypeEnum.Monument, monumentId).subscribe(() => {
+        this.isBookmarked = true;
+        this.bookmarksCount += 1;
+      });
+    }
   }
 
   captureMark(): void {

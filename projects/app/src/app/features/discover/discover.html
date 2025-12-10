@@ -1,0 +1,130 @@
+<!-- Hero -->
+<section class="pt-32 pb-20 md:pt-30 md:pb-32 px-6 bg-surface text-text">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="order-2 lg:order-1 relative">
+      <div class="aspect-4/5 md:aspect-square bg-surface-muted overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-700">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Stone_work_at_Konark_Orissa_India.jpg/1200px-Stone_work_at_Konark_Orissa_India.jpg"
+          alt="Ancient stone carving detail"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute bottom-6 left-6 bg-surface p-4 shadow-xl border border-border">
+          <p class="font-serif italic text-lg">"The silent signatures of history."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <div class="inline-block border border-border px-3 py-1 text-xs uppercase tracking-widest font-bold mb-6 bg-surface-alt">
+        The Real Deal
+      </div>
+      <h1 class="text-5xl md:text-7xl font-serif font-medium leading-[1.1] mb-8">
+        Deciphering the <br/><span class="italic">Stone</span> Code.
+      </h1>
+      <p class="text-lg text-text-muted mb-8">
+        Masons' marks are the unsung autographs of the architects of our past.
+        StoneMark uses AI to document, group, and preserve these fading symbols for future generations.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a
+          href="/search/monuments"
+          role="button"
+          class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm"
+        >
+          Explore the Database
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features 1 -->
+<div class="border-t border-border">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
+    <div class="p-12 md:p-24 flex flex-col justify-center">
+      <span class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Customization</span>
+      <h3 class="text-3xl md:text-4xl font-serif mb-6">History in the Details</h3>
+      <p class="text-text-muted leading-relaxed mb-8">
+        Stonecutters were paid by the piece. To ensure they got their due, they carved a personal symbol into every block they finished. These marks are personal, geometrical, and infinitely varied.
+      </p>
+    </div>
+    <div class="border-l-0 md:border-l border-border bg-surface-muted relative min-h-[400px]">
+      <img
+        src="https://i.ibb.co/qFDKgrFr/Gemini-Generated-Image-wddjg2wddjg2wddj.png"
+        alt="Feature illustration"
+        class="w-full h-full object-cover absolute inset-0 mix-blend-multiply grayscale hover:grayscale-0 transition-all duration-500"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Features 2 (Reverse) -->
+<div class="border-t border-border">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
+    <div class="order-2 md:order-1 border-r border-border bg-surface-muted relative min-h-[400px]">
+      <img
+        src="https://i.ibb.co/7NNK1w5w/unnamed.jpg"
+        alt="Feature illustration"
+        class="w-full h-full object-cover absolute inset-0 mix-blend-multiply grayscale hover:grayscale-0 transition-all duration-500"
+      />
+    </div>
+    <div class="order-1 md:order-2 p-12 md:p-24 flex flex-col justify-center">
+      <span class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Preservation</span>
+      <h3 class="text-3xl md:text-4xl font-serif mb-6">Fighting Time</h3>
+      <p class="text-text-muted leading-relaxed mb-8">
+        Weather, pollution, and renovation are slowly erasing these marks. By creating a digital twin of every mark found, we ensure that even if the stone crumbles, the mason's signature remains.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Process Loop -->
+<section id="process" class="py-24 px-6 max-w-7xl mx-auto">
+  <div class="flex flex-col md:flex-row justify-between md:items-end mb-16">
+    <div>
+      <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">How it works</div>
+      <h2 class="text-4xl md:text-5xl font-serif">From Stone to Cloud</h2>
+    </div>
+    <div class="mt-6 md:mt-0 md:text-right">
+      <p class="text-text-muted italic">A seamless 4-step preservation journey.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+    @for (step of processSteps; track step.number) {
+      <div class="flex flex-col border-t border-primary pt-6 group cursor-pointer">
+        <div class="flex justify-between items-start mb-6">
+          <span class="text-sm font-bold font-serif">{{ step.number }}</span>
+          <span class="text-text-muted group-hover:text-primary transition-colors text-2xl">
+            @switch (step.icon) {
+              @case ('search') { <i class="bi bi-search"></i> }
+              @case ('camera') { <i class="bi bi-camera"></i> }
+              @case ('scan') { <i class="bi bi-bounding-box-circles"></i> }
+              @case ('database') { <i class="bi bi-database"></i> }
+            }
+          </span>
+        </div>
+        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">{{ step.title }}</h3>
+        <p class="text-text-muted leading-relaxed text-sm md:text-base pr-4">
+          {{ step.desc }}
+        </p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Gallery Loop -->
+<section id="gallery" class="py-24 px-6 max-w-7xl mx-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+    <h2 class="text-3xl font-serif">Examples of Mason's Marks</h2>
+    <a href="/search/marks" class="text-sm border-b border-primary pb-1 hover:opacity-70 mt-4 md:mt-0">View entire database</a>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    @for (src of galleryImages; track src) {
+      <div class="aspect-square bg-surface-muted overflow-hidden relative group">
+        <img [src]="src" alt="Stone mark" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-110" />
+      </div>
+    }
+  </div>
+</section>

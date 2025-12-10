@@ -1,4 +1,3 @@
-// src/app/shared/ui/hero-section/hero-section.ts
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -14,10 +13,13 @@ import { CommonModule } from '@angular/common';
             <i [class]="icon"></i>
             <span class="text-sm font-medium">{{ badge }}</span>
           </div>
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-6xl font-serif font-bold mb-6 sm:mb-8">
-            <ng-container *ngFor="let line of titleLines; let last = last">
-              <span>{{ line }}</span><br *ngIf="!last">
-            </ng-container>
+          <h1 class="text-5xl md:text-7xl font-serif font-medium leading-[1.1] mb-8">
+            @for (line of titleLines; track line; let last = $last) {
+              <span>{{ line }}</span>
+              @if (!last) {
+                <br>
+              }
+            }
           </h1>
           <p class="text-lg sm:text-xl text-primary leading-relaxed">
             {{ subtitle }}

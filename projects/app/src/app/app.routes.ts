@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import {NotFoundComponent} from '@shared/ui/not-found/not-found.component'
+import {DISCOVER_ROUTES} from '@features/discover/discover.routes';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,11 @@ export const routes: Routes = [
     path: 'help',
     loadChildren: () =>
       import('projects/app/src/app/features/help/help.routes').then(m => m.HELP_ROUTES)
+  },
+  {
+    path: 'discover',
+    loadChildren: () =>
+      import('@features/discover/discover.routes').then(m => m.DISCOVER_ROUTES)
   },
   {
     path: 'privacy-policy',

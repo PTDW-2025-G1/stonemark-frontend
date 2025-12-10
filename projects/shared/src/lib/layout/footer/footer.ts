@@ -22,6 +22,7 @@ export class Footer {
   exploreLinks = [
     { label: 'Monuments', route: `${this.baseUrl}/search/monuments`, external: false },
     { label: 'Marks', route: `${this.baseUrl}/search/marks`, external: false },
+    { label: 'Discover', route: `${this.baseUrl}/discover`, external: false },
     { label: 'About', route: `${this.baseUrl}/about`, external: false },
     { label: 'Accessibility', route: `${this.baseUrl}/accessibility`, external: false }
   ];

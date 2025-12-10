@@ -24,6 +24,7 @@ export class Header implements OnInit, OnDestroy {
   menuItems = [
     { label: 'Monuments', route: `${environment.baseUrl}/search/monuments` },
     { label: 'Marks', route: `${environment.baseUrl}/search/marks` },
+    { label: 'Discover', route: `${environment.baseUrl}/discover` },
     { label: 'About', route: `${environment.baseUrl}/about` },
     { label: 'Contact', route: `${environment.baseUrl}/contact` },
   ];

@@ -14,7 +14,6 @@ export class MarkOccurrenceService {
 
   constructor(private http: HttpClient) {}
 
-  /** Fetch paginated list of mark occurrences */
   getAll(page: number = 0, size: number = 20): Observable<PageMarkOccurrenceDto> {
     const params = new HttpParams()
       .set('page', page)
@@ -23,12 +22,10 @@ export class MarkOccurrenceService {
     return this.http.get<PageMarkOccurrenceDto>(this.baseUrl, { params });
   }
 
-  /** Get single occurrence by ID */
   getById(id: number): Observable<MarkOccurrenceDto> {
     return this.http.get<MarkOccurrenceDto>(`${this.baseUrl}/${id}`);
   }
 
-  /** Get all occurrences for a specific mark */
   getByMarkId(markId: number): Observable<MarkOccurrenceDto[]> {
     return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/by-mark/${markId}`);
   }
@@ -52,17 +49,14 @@ export class MarkOccurrenceService {
     return this.http.get<number>(`${this.baseUrl}/count-by-monument/${monumentId}`);
   }
 
-  /** Create new occurrence (MODERATOR only) */
   create(dto: MarkOccurrenceDto): Observable<MarkOccurrenceDto> {
     return this.http.post<MarkOccurrenceDto>(this.baseUrl, dto);
   }
 
-  /** Update occurrence (MODERATOR only) */
   update(id: number, dto: MarkOccurrenceDto): Observable<MarkOccurrenceDto> {
     return this.http.put<MarkOccurrenceDto>(`${this.baseUrl}/${id}`, dto);
   }
 
-  /** Delete occurrence */
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }

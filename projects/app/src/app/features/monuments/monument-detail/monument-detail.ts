@@ -12,6 +12,8 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 import {BookmarkService} from '@core/services/bookmark/bookmark.service';
 import {BookmarkDto} from '@api/model/bookmark-dto';
+import { AuthService } from '@core/services/auth/auth.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-monument-detail',
@@ -34,13 +36,15 @@ export class MonumentDetailComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private titleService: Title,
     private notificationService: NotificationService,
-    private bookmarkService: BookmarkService
+    private bookmarkService: BookmarkService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     const monumentId$ = this.route.paramMap.pipe(
       map(params => Number(params.get('id'))),
     );
+
     this.monument$ = this.route.paramMap.pipe(
       switchMap(params => {
         const id = Number(params.get('id'));
@@ -55,12 +59,14 @@ export class MonumentDetailComponent implements OnInit {
         }
       })
     );
+
     this.occurrences$ = monumentId$.pipe(
       switchMap(id => this.markOccurrenceService.getByMonumentId(id)),
       map(result => Array.isArray(result) ? result : result.content ?? []),
     );
+
     monumentId$.subscribe(id => {
-      if (id != null) {
+      if (id != null && this.authService.getAccessToken()) {
         this.loadBookmarkState(id);
       }
     });
@@ -76,8 +82,14 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   toggleBookmark(): void {
+    if (!this.authService.getAccessToken()) {
+      window.location.href = `${environment.authUrl}/login`;
+      return;
+    }
+
     const monumentId = Number(this.route.snapshot.paramMap.get('id'));
     if (!monumentId) return;
+
     if (this.isBookmarked) {
       this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
         const bookmark = bookmarks.find(b => b.type === BookmarkDto.TypeEnum.Monument && b.targetId === monumentId);

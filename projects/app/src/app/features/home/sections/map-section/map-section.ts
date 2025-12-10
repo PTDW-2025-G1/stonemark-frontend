@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
@@ -12,6 +13,7 @@ import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { MonumentService } from '@core/services/monument/monument.service';
+import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 
 @Component({
   selector: 'app-map-section',
@@ -83,15 +85,20 @@ export class MapSectionComponent implements AfterViewInit {
 
   private map!: Map;
   private overlay!: Overlay;
+  private occurrenceCounts = new Map();
 
-  constructor(private monumentService: MonumentService) {}
+  constructor(
+    private monumentService: MonumentService,
+    private markOccurrenceService: MarkOccurrenceService,
+    private router: Router
+  ) {}
 
   ngAfterViewInit(): void {
     this.map = new Map({
       target: 'map',
       layers: [new TileLayer({ source: new OSM() })],
       view: new View({
-        center: fromLonLat([-8.224454, 39.399872]), // Centro de Portugal
+        center: fromLonLat([-8.224454, 39.399872]),
         zoom: 7
       })
     });
@@ -113,14 +120,22 @@ export class MapSectionComponent implements AfterViewInit {
 
     this.monumentService.getMonuments().subscribe(monuments => {
       monuments.forEach(monument => {
+        if (monument.id != null) {
+          this.markOccurrenceService.countByMonumentId(monument.id).subscribe(count => {
+            this.occurrenceCounts.set(String(monument.id), count);
+          });
+        }
+
         const feature = new Feature({
           geometry: new Point(fromLonLat([
             monument.longitude ?? 0,
             monument.latitude ?? 0
           ])),
+          id: monument.id,
           name: monument.name,
           protectionTitle: monument.protectionTitle,
           website: monument.website,
+          city: monument.city
         });
 
         feature.setStyle(
@@ -145,8 +160,9 @@ export class MapSectionComponent implements AfterViewInit {
       if (feature) {
         const coordinates = (feature.getGeometry() as Point).getCoordinates();
         const props = feature.getProperties();
+        const occurrenceCount = this.occurrenceCounts.get(String(props['id'])) ?? 0;
 
-        popupEl.innerHTML = this.generatePopupContent(props);
+        popupEl.innerHTML = this.generatePopupContent(props, occurrenceCount);
 
         popupEl.className = 'ol-popup visible';
         this.overlay.setPosition(coordinates);
@@ -158,6 +174,13 @@ export class MapSectionComponent implements AfterViewInit {
           });
         }
 
+        const detailsBtn = popupEl.querySelector('.view-details-btn');
+        if (detailsBtn && props['id']) {
+          detailsBtn.addEventListener('click', () => {
+            this.router.navigate(['/monuments', props['id']]);
+          });
+        }
+
       } else {
         this.closePopup();
       }
@@ -166,16 +189,17 @@ export class MapSectionComponent implements AfterViewInit {
 
   private closePopup(): void {
     const popupEl = this.popupRef.nativeElement;
-    popupEl.className = 'ol-popup'; // Remove 'visible'
+    popupEl.className = 'ol-popup';
     setTimeout(() => {
       this.overlay.setPosition(undefined);
-    }, 200); // Espera a animação CSS terminar
+    }, 200);
   }
 
-  private generatePopupContent(props: any): string {
+  private generatePopupContent(props: any, occurrenceCount: number): string {
     const name = props.name || 'Unknown Monument';
     const protection = props.protectionTitle;
     const website = props.website;
+    const city = props.city || 'Portugal';
 
     const badgeHtml = protection
       ? `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-100 text-amber-700 text-xs font-semibold border border-amber-200 mb-3">
@@ -185,7 +209,7 @@ export class MapSectionComponent implements AfterViewInit {
 
     const websiteHtml = website
       ? `<a href="${website}" target="_blank" rel="noopener noreferrer"
-            class="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-surface-alt hover:bg-primary hover:text-white text-text-muted text-sm font-medium rounded-lg transition-all border border-border hover:border-primary group">
+            class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-surface-alt hover:bg-primary hover:text-white text-text-muted text-sm font-medium rounded-lg transition-all border border-border hover:border-primary group">
            <span>Visit Website</span>
            <i class="bi bi-box-arrow-up-right group-hover:translate-x-0.5 transition-transform"></i>
          </a>`
@@ -202,13 +226,23 @@ export class MapSectionComponent implements AfterViewInit {
         <div class="pr-6">
           ${badgeHtml}
           <h3 class="font-serif text-lg font-bold text-text leading-tight mb-1">${name}</h3>
-          <p class="text-xs text-text-muted flex items-center gap-1">
+          <p class="text-xs text-text-muted flex items-center gap-1 mb-2">
             <i class="bi bi-geo-alt-fill text-primary/70"></i>
-            ${props.city ? props.city : 'Portugal'}
+            ${city}
+          </p>
+          <p class="text-xs text-text-muted flex items-center gap-1">
+            <i class="bi bi-bookmark-fill text-primary/70"></i>
+            ${occurrenceCount} mark occurrence${occurrenceCount === 1 ? '' : 's'}
           </p>
         </div>
 
-        ${websiteHtml}
+        <div class="mt-4 flex flex-col gap-2">
+          <button class="view-details-btn w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-all group cursor-pointer">
+            <span>View Details</span>
+            <i class="bi bi-arrow-right group-hover:translate-x-0.5 transition-transform"></i>
+          </button>
+          ${websiteHtml}
+        </div>
       </div>
     `;
   }

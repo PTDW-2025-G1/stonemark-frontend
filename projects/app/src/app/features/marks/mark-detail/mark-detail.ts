@@ -17,20 +17,13 @@ import { MarkDto } from '@api/model/mark-dto';
 import { MarkService } from '@core/services/mark/mark.service';
 import { BookmarkService } from '@core/services/bookmark/bookmark.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
+import { AuthService } from '@core/services/auth/auth.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-mark-detail',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    BreadcrumbComponent,
-    LoadingStateComponent,
-    MarkHeaderComponent,
-    OccurrencesGridComponent,
-    EmptyStateComponent,
-    InfoBoxComponent
-  ],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent],
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
@@ -38,6 +31,7 @@ export class MarkDetailComponent implements OnInit {
   occurrences: MarkOccurrenceDto[] = [];
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   loading = true;
+  occurrencesCount = 0;
   uniqueMonumentsCount = 0;
   bookmarksCount = 0;
   isBookmarked = false;
@@ -50,7 +44,8 @@ export class MarkDetailComponent implements OnInit {
     private titleService: Title,
     private markService: MarkService,
     private markOccurrenceService: MarkOccurrenceService,
-    private bookmarkService: BookmarkService
+    private bookmarkService: BookmarkService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +54,15 @@ export class MarkDetailComponent implements OnInit {
         const markId = Number(params.get('id'));
         this.currentMarkId = markId;
         this.loadOccurrences(markId);
-        this.loadBookmarkState(markId);
+
+        this.markOccurrenceService.countByMarkId(markId).subscribe(count => {
+          this.occurrencesCount = count;
+        });
+
+        if (this.authService.getAccessToken()) {
+          this.loadBookmarkState(markId);
+        }
+
         return this.markService.getMark(markId);
       }),
       tap(mark => {
@@ -106,6 +109,11 @@ export class MarkDetailComponent implements OnInit {
   }
 
   toggleBookmark(): void {
+    if (!this.authService.getAccessToken()) {
+      window.location.href = `${environment.authUrl}/login`;
+      return;
+    }
+
     if (this.currentMarkId == null) return;
 
     if (this.isBookmarked) {

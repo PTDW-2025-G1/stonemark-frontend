@@ -5,8 +5,10 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { MarkDto } from '@api/model/mark-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { BookmarkService } from '@core/services/bookmark/bookmark.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { finalize } from 'rxjs/operators';
+import { environment } from '@env/environment';
 
 type SearchItem = MonumentResponseDto | MarkDto;
 
@@ -26,19 +28,25 @@ export class SearchResultsComponent {
   constructor(
     private router: Router,
     private markOccurrenceService: MarkOccurrenceService,
-    private bookmarkService: BookmarkService
+    private bookmarkService: BookmarkService,
+    private authService: AuthService
   ) {}
 
   ngOnChanges(): void {
     if (this.items.length) {
-      this.loadBookmarks();
+      if (this.isLoggedIn()) {
+        this.loadBookmarks();
+      }
       this.loadOccurrenceCounts();
     }
   }
 
+  private isLoggedIn(): boolean {
+    return this.authService.getAccessToken() !== null;
+  }
+
   private loadBookmarks(): void {
     this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
-
       this.bookmarkedItems.clear();
       this.bookmarkIds.clear();
 
@@ -56,7 +64,6 @@ export class SearchResultsComponent {
             }
           }
         });
-
     });
   }
 
@@ -90,6 +97,11 @@ export class SearchResultsComponent {
 
   toggleBookmark(event: Event, item: SearchItem): void {
     event.stopPropagation();
+
+    if (!this.isLoggedIn()) {
+      window.location.href = `${environment.authUrl}/login`;
+      return;
+    }
 
     const itemId = item.id;
     if (!itemId) return;

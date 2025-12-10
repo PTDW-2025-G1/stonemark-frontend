@@ -21,8 +21,10 @@
         @for (item of menuItems; track item.route) {
           <a
             [href]="item.route"
-            routerLinkActive="text-primary"
-            class="text-text-muted hover:text-primary transition-colors duration-200 font-medium text-m"
+            [class]="'pb-1 border-b-2 transition-all duration-200 font-medium text-m ' +
+                     (isActiveRoute(item.route)
+                       ? 'text-primary border-primary'
+                       : 'text-text-muted border-transparent hover:text-primary hover:border-primary')"
           >
             {{ item.label }}
           </a>
@@ -106,7 +108,10 @@
         <a
           [href]="item.route"
           (click)="closeMenu()"
-          class="block px-4 py-3 rounded-lg text-text-muted hover:bg-surface-muted hover:text-primary transition-colors duration-200 font-medium"
+          [class]="'block px-4 py-3 rounded-lg transition-all duration-200 font-medium border-l-4 ' +
+                   (isActiveRoute(item.route)
+                     ? 'text-primary border-primary bg-surface-muted'
+                     : 'text-text-muted border-transparent hover:bg-surface-muted hover:text-primary hover:border-primary')"
         >
           {{ item.label }}
         </a>
@@ -129,10 +134,10 @@
         </a>
       }
 
-      <div class="pt-2">
+      <div class="pt-4">
         @if (authService.getAccessToken()){
-          <button (click)="onLogout()" class="inline-block">
-            <app-button variant="secondary">Logout</app-button>
+          <button (click)="onLogout()" class="w-full">
+            <app-button variant="secondary" [fullWidth]="true">Logout</app-button>
           </button>
         } @else {
           <a (click)="onLogin()" class="w-full inline-block cursor-pointer">

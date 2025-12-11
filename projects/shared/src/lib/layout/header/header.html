@@ -52,18 +52,21 @@
                   (click)="goToProfile()"
                   class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
                 >
+                  <i class="bi bi-person-circle"></i>
                   Profile
                 </button>
                 <button
                   (click)="goToBookmarks()"
                   class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
                 >
+                  <i class="bi bi-bookmark"></i>
                   Bookmarks
                 </button>
                 <button
                   (click)="onLogout()"
-                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-error"
+                  class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-error transition"
                 >
+                  <i class="bi bi-box-arrow-right"></i>
                   Logout
                 </button>
               </div>
@@ -71,7 +74,10 @@
           </div>
         } @else {
           <a (click)="onLogin()" class="inline-block">
-            <app-button variant="secondary">Login</app-button>
+            <app-button variant="secondary">
+              <i class="bi bi-person"></i>
+              Sign In
+            </app-button>
           </a>
         }
       </div>
@@ -135,13 +141,19 @@
       }
 
       <div class="pt-4">
-        @if (authService.getAccessToken()){
+        @if (authService.getAccessToken() && user){
           <button (click)="onLogout()" class="w-full">
-            <app-button variant="secondary" [fullWidth]="true">Logout</app-button>
+            <app-button variant="secondary" [fullWidth]="true">
+              <i class="bi bi-box-arrow-right"></i>
+              Logout
+            </app-button>
           </button>
         } @else {
           <a (click)="onLogin()" class="w-full inline-block cursor-pointer">
-            <app-button variant="secondary" [fullWidth]="true">Login</app-button>
+            <app-button variant="secondary" [fullWidth]="true">
+              <i class="bi bi-person"></i>
+              Sign In
+            </app-button>
           </a>
         }
       </div>

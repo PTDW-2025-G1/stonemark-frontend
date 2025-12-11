@@ -166,8 +166,8 @@ export class AuthService {
   }
 
 
-  requestPasswordReset(email: string): Observable<void> {
-    const payload: PasswordResetRequestDto = { email };
+  requestPasswordReset(contactValue: string): Observable<void> {
+    const payload: PasswordResetRequestDto = { contactValue };
     return this.http.post<void>(`${this.baseUrl}/request-password-reset`, payload).pipe(
       tap(() => console.log('Password reset request sent')),
       catchError(this.handleError('Password reset request failed'))

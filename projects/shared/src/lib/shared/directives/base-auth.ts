@@ -23,12 +23,14 @@ export abstract class BaseAuthComponent {
   onSubmit(data: any): void {
     const payload =
       this.mode === 'login'
-        ? { email: data.email, password: data.password }
+        ? {
+          username: data.username,
+          password: data.password
+        }
         : {
           firstName: data.firstName,
           lastName: data.lastName,
-          telephone: data.telephone,
-          email: data.email,
+          username: data.username,
           password: data.password
         };
 

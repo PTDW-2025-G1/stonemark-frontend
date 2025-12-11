@@ -9,6 +9,9 @@
  */
 
 
+/**
+ * Updated profile information
+ */
 export interface ProfileUpdateRequestDto { 
     firstName: string;
     lastName: string;

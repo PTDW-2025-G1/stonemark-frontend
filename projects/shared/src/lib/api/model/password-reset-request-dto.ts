@@ -10,6 +10,6 @@
 
 
 export interface PasswordResetRequestDto { 
-    email?: string;
+    contactValue?: string;
 }
 

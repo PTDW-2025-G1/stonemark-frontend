@@ -18,7 +18,12 @@ export interface BookmarkDto {
 export namespace BookmarkDto {
     export const TypeEnum = {
         Monument: 'MONUMENT',
-        Mark: 'MARK'
+        Mark: 'MARK',
+        MarkOccurrence: 'MARK_OCCURRENCE',
+        Guild: 'GUILD',
+        Mason: 'MASON',
+        User: 'USER',
+        Proposal: 'PROPOSAL'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

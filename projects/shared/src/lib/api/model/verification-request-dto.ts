@@ -9,11 +9,7 @@
  */
 
 
-/**
- * Password change request details
- */
-export interface PasswordChangeRequestDto { 
-    oldPassword: string;
-    newPassword: string;
+export interface VerificationRequestDto { 
+    code?: string;
 }
 

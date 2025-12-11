@@ -36,7 +36,7 @@ import { CommonModule } from '@angular/common';
 
           <div class="animate-fade-in-delay-2">
             <a routerLink="/search/monuments"
-               class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-text text-surface rounded-full font-medium text-lg hover:bg-primary hover:scale-105 transition-all duration-300 shadow-xl shadow-gray-200/50 hover:shadow-primary/20 group">
+               class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm">
               Start Exploring
               <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </a>

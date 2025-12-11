@@ -12,9 +12,7 @@
 export interface RegisterRequestDto { 
     firstName?: string;
     lastName?: string;
-    email?: string;
-    telephone?: string;
+    username?: string;
     password?: string;
-    role?: string;
 }
 

@@ -13,5 +13,8 @@ export interface AuthenticationResponseDto {
     accessToken?: string;
     refreshToken?: string;
     role?: string;
+    tfaEnabled?: boolean;
+    tfaRequired?: boolean;
+    tfaCodeSent?: boolean;
 }
 

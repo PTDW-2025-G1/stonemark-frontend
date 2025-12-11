@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InputFieldComponent } from '@shared/ui/input-field/input-field';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { SocialAuthButtonsComponent } from '../social-auth-buttons/social-auth-buttons';
-import { TELEPHONE_PATTERN } from '@shared/utils/telephone.utils';
 import {AuthenticationRequestDto} from '@api/model/authentication-request-dto';
 import {RegisterRequestDto} from '@api/model/register-request-dto';
 
@@ -62,23 +61,15 @@ import {RegisterRequestDto} from '@api/model/register-request-dto';
               formControlName="lastName"
               [error]="getError('lastName')"
             />
-            <app-input-field
-              label="Telephone"
-              placeholder="+351912345678"
-              formControlName="telephone"
-              [error]="getError('telephone')"
-              class="col-span-2"
-            />
           </div>
         }
 
         <div class="mb-4">
           <app-input-field
-            label="Email"
-            type="email"
-            placeholder="eg. johnfrans@gmail.com"
-            formControlName="email"
-            [error]="getError('email')"
+            label="Username"
+            placeholder="eg. john"
+            formControlName="username"
+            [error]="getError('username')"
           />
         </div>
 
@@ -177,7 +168,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
   }
 
   get title(): string {
-    return this.mode === 'register' ? 'Sign Up Account' : 'Login';
+    return this.mode === 'register' ? 'Sign Up Account' : 'Sign In';
   }
 
   get subtitle(): string {
@@ -187,7 +178,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
   }
 
   get submitButtonText(): string {
-    return this.mode === 'register' ? 'Sign Up' : 'Login';
+    return this.mode === 'register' ? 'Sign Up' : 'Sign In';
   }
 
   get toggleText(): string {
@@ -197,7 +188,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
   }
 
   get toggleLinkText(): string {
-    return this.mode === 'register' ? 'Log in' : 'Register';
+    return this.mode === 'register' ? 'Sign In' : 'Register';
   }
 
   get socialAuthPosition(): 'top' | 'bottom' {
@@ -208,8 +199,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
     return this.fb.group({
       firstName: [''],
       lastName: [''],
-      telephone: [''],
-      email: ['', [Validators.required, Validators.email]],
+      username: [''],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -217,21 +207,23 @@ export class AuthFormComponent implements OnInit, OnChanges {
   private updateFormValidators(): void {
     const firstNameControl = this.form.get('firstName');
     const lastNameControl = this.form.get('lastName');
-    const telephoneControl = this.form.get('telephone');
+    const usernameControl = this.form.get('username');
+
+    usernameControl?.setValidators([Validators.required]);
 
     if (this.mode === 'register') {
       firstNameControl?.setValidators([Validators.required]);
       lastNameControl?.setValidators([Validators.required]);
-      telephoneControl?.setValidators([Validators.required, Validators.pattern(TELEPHONE_PATTERN)]);
+      usernameControl?.setValidators([Validators.required]);
     } else {
       firstNameControl?.clearValidators();
       lastNameControl?.clearValidators();
-      telephoneControl?.clearValidators();
+      usernameControl?.clearValidators();
     }
 
     firstNameControl?.updateValueAndValidity();
     lastNameControl?.updateValueAndValidity();
-    telephoneControl?.updateValueAndValidity();
+    usernameControl?.updateValueAndValidity();
   }
 
   getError(fieldName: string): string | null {
@@ -239,8 +231,6 @@ export class AuthFormComponent implements OnInit, OnChanges {
     if (!control || !control.touched || !control.errors) return null;
 
     if (control.errors['required']) return 'This field is required';
-    if (control.errors['email']) return 'Please enter a valid email';
-    if (control.errors['pattern']) return 'Your telephone number is invalid should be eg. +351912345678';
     if (control.errors['minlength'])
       return `Must be at least ${control.errors['minlength'].requiredLength} characters`;
     return null;
@@ -268,7 +258,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
 
   onForgotPassword(event?: Event): void {
     event?.preventDefault();
-    const email = this.form.get('email')?.value;
-    this.forgotPassword.emit(email || undefined);
+    const username = this.form.get('username')?.value;
+    this.forgotPassword.emit(username || undefined);
   }
 }

@@ -9,6 +9,9 @@
  */
 
 
+/**
+ * Password set request details
+ */
 export interface PasswordSetRequestDto { 
     newPassword: string;
 }

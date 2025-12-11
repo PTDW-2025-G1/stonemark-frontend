@@ -24,10 +24,10 @@
           {{ user.name }}
         </h1>
         <a
-          [href]="'mailto:' + user.email"
+          [href]="'mailto:' + user.username"
           class="text-sm text-white/90 hover:text-white transition-colors inline-flex items-center gap-2 mb-2">
           <i class="bi bi-envelope text-xs"></i>
-          {{ user.email }}
+          {{ user.username }}
         </a>
         <p class="text-xs text-white/80 flex items-center justify-center md:justify-start gap-2 mb-6">
           <i class="bi bi-calendar-check"></i>

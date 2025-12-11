@@ -10,7 +10,8 @@
 
 
 export interface AuthenticationRequestDto { 
-    email?: string;
+    username?: string;
     password?: string;
+    tfaCode?: string;
 }
 

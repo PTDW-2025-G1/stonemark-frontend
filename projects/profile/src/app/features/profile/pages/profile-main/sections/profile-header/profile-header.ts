@@ -10,8 +10,6 @@ export class ProfileHeaderComponent {
 
   @Output() editProfile = new EventEmitter<void>();
   @Output() changePassword = new EventEmitter<void>();
-  @Output() changeEmail = new EventEmitter<void>();
-  @Output() changeTelephone = new EventEmitter<void>();
   @Output() openSecurity = new EventEmitter<void>();
   @Output() openContacts = new EventEmitter<void>();
 

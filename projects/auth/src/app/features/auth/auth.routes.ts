@@ -17,24 +17,9 @@ export const AUTH_ROUTES: Routes = [
     title: 'Forgot Password'
   },
   {
-    path: 'verify',
-    loadComponent: () => import('./pages/verify/verify').then(m => m.VerifyComponent),
-    title: 'Account Verification'
-  },
-  {
-    path: 'verify-pending',
-    loadComponent: () => import('./pages/verify/verify-pending').then(m => m.VerifyPendingComponent),
-    title: 'Account Verification'
-  },
-  {
     path: 'reset-password',
     loadComponent: () => import('./pages/reset-password/reset-password').then(m => m.ResetPasswordComponent),
     title: 'Reset Password'
-  },
-  {
-    path: 'confirm',
-    loadComponent: () => import('./pages/confirm/confirm').then(m => m.ConfirmComponent),
-    title: ''
   },
   {
     path: '',

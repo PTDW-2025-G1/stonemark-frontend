@@ -13,6 +13,7 @@ import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
 import { CodeConfirmationRequestDto } from '@api/model/code-confirmation-request-dto';
 import { GoogleAuthenticationRequestDto } from '@api/model/google-authentication-request-dto';
 import { RefreshTokenRequestDto } from '@api/model/refresh-token-request-dto';
+import { MessageResponseDto } from '@api/model/message-response-dto';
 
 declare const google: any;
 
@@ -21,6 +22,7 @@ declare const google: any;
 })
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/auth`;
+  private passwordResetBaseUrl = `${this.baseUrl}/password-reset`;
   private googleAuthSubject = new Subject<any>();
   private authStateSubject = new Subject<boolean>();
 
@@ -147,17 +149,26 @@ export class AuthService {
   }
 
 
-  requestPasswordReset(contactValue: string): Observable<void> {
+  requestPasswordReset(contactValue: string): Observable<MessageResponseDto> {
     const payload: PasswordResetRequestDto = { contactValue };
-    return this.http.post<void>(`${this.baseUrl}/request-password-reset`, payload).pipe(
-      tap(() => console.log('Password reset request sent')),
+
+    return this.http.post<MessageResponseDto>(
+      `${this.passwordResetBaseUrl}/request`,
+      payload
+    ).pipe(
+      tap(() => console.log('Password reset initiated')),
       catchError(this.handleError('Password reset request failed'))
     );
   }
 
-  resetPassword(token: string, newPassword: string): Observable<void> {
-    const payload: ResetPasswordRequestDto = {token, newPassword};
-    return this.http.post<void>(`${this.baseUrl}/reset-password`, payload).pipe(
+
+  resetPassword(token: string, newPassword: string): Observable<MessageResponseDto> {
+    const payload: ResetPasswordRequestDto = { token, newPassword };
+
+    return this.http.post<MessageResponseDto>(
+      `${this.passwordResetBaseUrl}/reset`,
+      payload
+    ).pipe(
       tap(() => console.log('Password reset successful')),
       catchError(this.handleError('Password reset failed'))
     );

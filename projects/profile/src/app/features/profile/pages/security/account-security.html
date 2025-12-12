@@ -1,0 +1,302 @@
+<div class="min-h-screen bg-gradient-to-br from-surface via-surface-alt to-surface py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-4 mb-3">
+        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+          <i class="bi bi-shield-lock-fill text-primary text-3xl"></i>
+        </div>
+        <div>
+          <h1 class="text-4xl font-serif font-bold text-text">Account Security</h1>
+          <p class="text-text-muted">Manage two-factor authentication settings</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Alert -->
+    @if (message) {
+      <div
+        class="mb-6 p-4 rounded-2xl border-2 flex items-start gap-3 animate-in slide-in-from-top duration-300 bg-blue-50 border-blue-500">
+        <i class="bi bi-info-circle-fill text-2xl flex-shrink-0 text-blue-500"></i>
+        <p class="text-text font-medium flex-1">{{ message }}</p>
+        <button
+          (click)="message = null"
+          class="text-text-muted hover:text-text transition-colors">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    }
+
+    <!-- 2FA Status Card -->
+    <div class="bg-white rounded-3xl shadow-2xl border-2 border-border p-8 mb-6">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-16 h-16 rounded-2xl flex items-center justify-center"
+            [ngClass]="{
+              'bg-success/10': tfaEnabled,
+              'bg-error/10': !tfaEnabled
+            }">
+            <i
+              [ngClass]="{
+                'bi-shield-fill-check text-success': tfaEnabled,
+                'bi-shield-fill-exclamation text-error': !tfaEnabled
+              }"
+              class="text-3xl"></i>
+          </div>
+          <div>
+            <h2 class="text-2xl font-serif font-bold text-text">Two-Factor Authentication</h2>
+            <p class="text-text-muted">
+              Status:
+              <span
+                class="font-bold"
+                [ngClass]="{
+                  'text-success': tfaEnabled,
+                  'text-error': !tfaEnabled
+                }">
+                {{ tfaEnabled ? 'Enabled' : 'Disabled' }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        @if (tfaEnabled) {
+          <span class="px-4 py-2 bg-success/10 text-success rounded-full text-sm font-bold flex items-center gap-2">
+            <i class="bi bi-check-circle-fill"></i>
+            {{ currentMethod }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <!-- TOTP Setup -->
+    @if (!tfaEnabled) {
+      <div class="bg-white rounded-3xl shadow-2xl border-2 border-border mb-6 overflow-hidden">
+        <div class="p-6 border-b border-border bg-gradient-to-r from-primary/5 to-transparent">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+              <i class="bi bi-phone-fill text-primary text-2xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-serif font-bold text-text">Authenticator App (TOTP)</h3>
+              <p class="text-text-muted text-sm">Use Google Authenticator or similar apps</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-8 space-y-6">
+          @if (!qrCodeImageUrl) {
+            <button
+              (click)="setupTotp()"
+              [disabled]="loading"
+              class="w-full px-6 py-4 bg-primary text-primary-foreground rounded-2xl font-bold
+                     hover:bg-text hover:scale-105 active:scale-95 transition-all duration-300
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     flex items-center justify-center gap-2 text-lg">
+              <i class="bi bi-qr-code text-xl"></i>
+              <span>Generate QR Code</span>
+            </button>
+          } @else {
+            <div class="text-center space-y-4">
+              <div class="inline-flex items-center justify-center p-4 bg-surface-alt rounded-2xl">
+                <img [src]="qrCodeImageUrl" width="200" height="200" alt="QR Code" class="rounded-xl" />
+              </div>
+              <p class="text-text-muted text-sm">Scan this QR code with your authenticator app</p>
+              <input
+                type="text"
+                placeholder="Enter 6-digit code"
+                [(ngModel)]="code"
+                maxlength="6"
+                class="px-4 py-3 bg-surface-muted border-2 border-border rounded-xl
+                         text-text placeholder:text-text-muted text-center text-lg font-mono
+                         focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
+                         transition-all duration-300"
+              />
+
+              <button
+                (click)="enableTotp()"
+                [disabled]="!code || loading"
+                class="w-full px-6 py-4 bg-success text-white rounded-2xl font-bold
+                       hover:bg-success/90 hover:scale-105 active:scale-95 transition-all duration-300
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       flex items-center justify-center gap-2">
+                <i class="bi bi-check-lg text-xl"></i>
+                <span>Enable TOTP</span>
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Contact-based 2FA -->
+    @if (!tfaEnabled) {
+      <div class="bg-white rounded-3xl shadow-2xl border-2 border-border mb-6 overflow-hidden">
+        <div class="p-6 border-b border-border bg-gradient-to-r from-success/5 to-transparent">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center">
+              <i class="bi bi-envelope-check-fill text-success text-2xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-serif font-bold text-text">Contact-based 2FA</h3>
+              <p class="text-text-muted text-sm">Receive codes via email or SMS</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-8 space-y-6">
+          @if (!showContactCodeInput) {
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button
+                *ngIf="hasVerifiedEmail"
+                (click)="useContactMethod('EMAIL')"
+                [disabled]="loading"
+                class="px-6 py-4 bg-blue-100 text-blue-700 border-2 border-blue-200 rounded-2xl
+                       font-bold hover:bg-blue-200 hover:scale-105 active:scale-95
+                       transition-all duration-300 disabled:opacity-50
+                       flex items-center justify-center gap-2">
+                <i class="bi bi-envelope-fill text-xl"></i>
+                <span>Use Email</span>
+              </button>
+
+              <button
+                *ngIf="hasVerifiedPhone"
+                (click)="useContactMethod('SMS')"
+                [disabled]="loading"
+                class="px-6 py-4 bg-green-100 text-green-700 border-2 border-green-200 rounded-2xl
+                       font-bold hover:bg-green-200 hover:scale-105 active:scale-95
+                       transition-all duration-300 disabled:opacity-50
+                       flex items-center justify-center gap-2">
+                <i class="bi bi-telephone-fill text-xl"></i>
+                <span>Use SMS</span>
+              </button>
+            </div>
+
+            @if (!hasVerifiedEmail && !hasVerifiedPhone) {
+              <div class="text-center py-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-4">
+                  <i class="bi bi-exclamation-triangle-fill text-amber-600 text-2xl"></i>
+                </div>
+                <p class="text-text-muted">
+                  You need at least one verified contact to use this method.
+                  <br/>
+                  <a href="/profile/contacts" class="text-primary font-bold hover:underline">
+                    Add and verify a contact
+                  </a>
+                </p>
+              </div>
+            }
+          } @else {
+            <div class="space-y-4">
+              <div class="p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                <p class="text-text-muted text-sm text-center">
+                  A verification code was sent via
+                  <span class="font-bold text-text">{{ selectedContactMethod }}</span>
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-text mb-2">
+                  Verification Code
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter 6-digit code"
+                  [(ngModel)]="code"
+                  maxlength="6"
+                  class="w-full px-4 py-3 bg-surface-muted border-2 border-border rounded-xl
+                         text-text placeholder:text-text-muted text-center text-lg font-mono
+                         focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
+                         transition-all duration-300"
+                />
+              </div>
+
+              <div class="flex gap-3">
+                <button
+                  (click)="verifyContactCode()"
+                  [disabled]="!code || loading"
+                  class="flex-1 px-6 py-3 bg-success text-white rounded-xl font-bold
+                         hover:bg-success/90 hover:scale-105 active:scale-95 transition-all duration-300
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         flex items-center justify-center gap-2">
+                  <i class="bi bi-check-lg text-lg"></i>
+                  <span>Verify</span>
+                </button>
+
+                <button
+                  (click)="showContactCodeInput = false; code = ''; message = null"
+                  class="px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-bold
+                         hover:border-primary hover:text-primary hover:scale-105 active:scale-95
+                         transition-all duration-300 flex items-center justify-center gap-2">
+                  <i class="bi bi-x-lg"></i>
+                  <span>Cancel</span>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Disable 2FA -->
+    @if (tfaEnabled) {
+      <div class="bg-gradient-to-br from-red-50 to-white rounded-3xl shadow-2xl border-2 border-red-200 p-8">
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 bg-error/10 rounded-xl flex items-center justify-center">
+            <i class="bi bi-shield-fill-x text-error text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-serif font-bold text-text">Disable Two-Factor Authentication</h3>
+            <p class="text-text-muted text-sm">
+              You must confirm this action with a valid 2FA code.
+            </p>
+          </div>
+        </div>
+
+        <!-- SEND CODE (ONLY FOR EMAIL / SMS) -->
+        @if (currentMethod === 'EMAIL' || currentMethod === 'SMS') {
+          <button
+            (click)="requestDisableCode()"
+            [disabled]="loading"
+            class="w-full mb-4 px-6 py-3 bg-primary text-white rounded-xl font-bold
+               hover:bg-text transition-all duration-300">
+            Send code via {{ currentMethod }}
+          </button>
+        }
+
+        <!-- CODE INPUT -->
+        <div class="mb-4">
+          <label class="block text-sm font-bold text-text mb-2">
+            2FA Code
+          </label>
+          <input
+            type="text"
+            placeholder="Enter 6-digit code"
+            [(ngModel)]="code"
+            maxlength="6"
+            class="w-full px-4 py-3 bg-white border-2 border-red-200 rounded-xl
+               text-text placeholder:text-text-muted text-center text-lg font-mono
+               focus:outline-none focus:ring-4 focus:ring-error/20 focus:border-error
+               transition-all duration-300"
+          />
+        </div>
+
+        <!-- DISABLE BUTTON -->
+        <button
+          (click)="disableTfa()"
+          [disabled]="!code || loading"
+          class="w-full px-6 py-4 bg-error text-white rounded-2xl font-bold
+             hover:bg-error/90 hover:scale-105 active:scale-95 transition-all duration-300
+             disabled:opacity-50 disabled:cursor-not-allowed
+             flex items-center justify-center gap-2">
+          <i class="bi bi-shield-x text-xl"></i>
+          <span>Disable 2FA</span>
+        </button>
+
+      </div>
+    }
+
+  </div>
+</div>

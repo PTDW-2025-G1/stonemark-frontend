@@ -65,14 +65,6 @@ export class AuthService {
 
     this.http.post<any>(`${this.baseUrl}/google`, payload, { observe: 'response' }).pipe(
       tap((apiResponse: HttpResponse<any>) => {
-        const accessToken = apiResponse.body?.accessToken;
-        const refreshToken = apiResponse.body?.refreshToken;
-        const role = apiResponse.body?.role;
-
-        if (accessToken && refreshToken) {
-          this.saveTokens(accessToken, refreshToken, role);
-          this.authStateSubject.next(true);
-        }
         this.googleAuthSubject.next(apiResponse);
       }),
 
@@ -94,34 +86,23 @@ export class AuthService {
   }
 
   // Core Auth
-  login(data: AuthenticationRequestDto): Observable<HttpResponse<AuthenticationResponseDto>> {
-    return this.http.post<AuthenticationResponseDto>(`${this.baseUrl}/authenticate`, data, { observe: 'response' })
-      .pipe(
-        tap((response: HttpResponse<AuthenticationResponseDto>) => {
-          if (response.body?.accessToken) {
-            this.saveTokens(response.body.accessToken!, response.body.refreshToken!, response.body.role);
-            this.authStateSubject.next(true);
-          }
-        }),
-        catchError(this.handleError('Login failed'))
-      );
+  login(
+    data: AuthenticationRequestDto
+  ): Observable<HttpResponse<AuthenticationResponseDto>> {
+    return this.http.post<AuthenticationResponseDto>(
+      `${this.baseUrl}/authenticate`,
+      data,
+      { observe: 'response' }
+    );
   }
 
-  register(data: RegisterRequestDto): Observable<HttpResponse<AuthenticationResponseDto>> {
-    return this.http.post<AuthenticationResponseDto>(`${this.baseUrl}/register`, data, {
-      observe: 'response' as const
-    }).pipe(
-      tap((response: HttpResponse<AuthenticationResponseDto>) => {
-        const accessToken = response.body?.accessToken;
-        const refreshToken = response.body?.refreshToken;
-        const role = response.body?.role;
-
-        if(response.status === 200 && accessToken && refreshToken){
-          this.saveTokens(accessToken, refreshToken, role);
-          this.authStateSubject.next(true);
-        }
-      }),
-      catchError(this.handleError('Registration failed'))
+  register(
+    data: RegisterRequestDto
+  ): Observable<HttpResponse<AuthenticationResponseDto>> {
+    return this.http.post<AuthenticationResponseDto>(
+      `${this.baseUrl}/register`,
+      data,
+      { observe: 'response' }
     );
   }
 

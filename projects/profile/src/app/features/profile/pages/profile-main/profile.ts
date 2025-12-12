@@ -174,6 +174,14 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/profile/change-email']);
   }
 
+  openSecurity(): void {
+    this.router.navigate(['/profile/security']);
+  }
+
+  openContacts(): void {
+    this.router.navigate(['/profile/contacts']);
+  }
+
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {

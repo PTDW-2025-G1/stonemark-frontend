@@ -30,6 +30,18 @@ export const PROFILE_ROUTES: Routes = [
     loadComponent: () =>
       import('./pages/change-password/change-password').then(m => m.ChangePasswordComponent),
     title: 'Change Password'
+  },
+  {
+    path: 'security',
+    loadComponent: () =>
+      import('./pages/security/account-security').then(m => m.AccountSecurityComponent),
+    title: 'Security'
+  },
+  {
+    path: 'contacts',
+    loadComponent: () =>
+      import('./pages/contacts/account-contacts').then(m => m.AccountContactsComponent),
+    title: 'Contacts'
   }
 
 ]

@@ -1,0 +1,292 @@
+<div class="min-h-screen bg-gradient-to-br from-surface via-surface-alt to-surface py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-4 mb-3">
+        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+          <i class="bi bi-person-lines-fill text-primary text-3xl"></i>
+        </div>
+        <div>
+          <h1 class="text-4xl font-serif font-bold text-text">Contact Information</h1>
+          <p class="text-text-muted">Manage your email addresses and phone numbers</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Alert -->
+    @if (message) {
+      <div
+        class="mb-6 p-4 rounded-2xl border-2 flex items-start gap-3 animate-in slide-in-from-top duration-300"
+        [ngClass]="{
+      'bg-success/10 border-success': messageType === 'success',
+      'bg-error/10 border-error': messageType === 'error',
+      'bg-info/10 border-info': messageType === 'info'
+    }">
+        <i
+          class="text-2xl flex-shrink-0"
+          [ngClass]="{
+        'bi-check-circle-fill text-success': messageType === 'success',
+        'bi-exclamation-triangle-fill text-error': messageType === 'error',
+        'bi-info-circle-fill text-info': messageType === 'info'
+      }">
+        </i>
+        <p class="text-text font-medium flex-1">{{ message }}</p>
+        <button
+          (click)="message = null"
+          class="text-text-muted hover:text-text transition-colors">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    }
+
+    <!-- Verification Modal -->
+    @if (verifyingContact) {
+      <div class="mb-6 bg-white rounded-3xl shadow-2xl border-2 border-border p-8">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+            <i class="bi bi-shield-check text-primary text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-serif font-bold text-text">Verify Contact</h3>
+            <p class="text-text-muted">
+              {{ verifyingContact.type }}:
+              <span class="font-bold text-text">{{ verifyingContact.value }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-bold text-text mb-2">
+              Verification Code
+            </label>
+            <input
+              type="text"
+              placeholder="Enter 6-digit code"
+              [(ngModel)]="verificationCode"
+              maxlength="6"
+              class="w-full px-4 py-3 bg-surface-muted border-2 border-border rounded-xl
+                     text-text placeholder:text-text-muted
+                     focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
+                     transition-all duration-300"
+            />
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              (click)="confirmVerificationCode()"
+              [disabled]="!verificationCode"
+              class="flex-1 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold
+                     hover:bg-text hover:scale-105 active:scale-95 transition-all duration-300
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                     flex items-center justify-center gap-2">
+              <i class="bi bi-check-lg text-lg"></i>
+              <span>Confirm Code</span>
+            </button>
+
+            <button
+              (click)="cancelVerification()"
+              class="px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-bold
+                     hover:border-primary hover:text-primary hover:scale-105 active:scale-95
+                     transition-all duration-300 flex items-center justify-center gap-2">
+              <i class="bi bi-x-lg"></i>
+              <span>Cancel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Contacts List -->
+    <div class="bg-white rounded-3xl shadow-2xl border-2 border-border overflow-hidden mb-6">
+      <div class="p-6 border-b border-border">
+        <h2 class="text-2xl font-serif font-bold text-text flex items-center gap-2">
+          <i class="bi bi-list-ul text-primary"></i>
+          Your Contacts
+        </h2>
+      </div>
+
+      @if (contacts.length === 0) {
+        <div class="p-12 text-center">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-surface-alt rounded-full mb-4">
+            <i class="bi bi-inbox text-4xl text-text-muted"></i>
+          </div>
+          <h3 class="text-xl font-serif font-bold text-text mb-2">No Contacts Yet</h3>
+          <p class="text-text-muted">Add your first email or phone number below</p>
+        </div>
+      }
+
+      <div class="divide-y divide-border">
+        @for (contact of contacts; track contact.id) {
+          <div class="p-6 hover:bg-surface-alt transition-all duration-300 group">
+            <div class="flex items-center justify-between gap-4">
+
+              <!-- Contact Info -->
+              <div class="flex items-center gap-4 flex-1 min-w-0">
+                <div
+                  class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0
+           group-hover:scale-110 transition-transform duration-300"
+                  [ngClass]="{
+                    'bg-blue-100': contact.type === ContactDto.TypeEnum.Email,
+                    'bg-green-100': contact.type === ContactDto.TypeEnum.Telephone
+                  }">
+                  <i
+                    [class]="(contact.type ? getContactIcon(contact.type) : 'bi-question-circle') + ' text-2xl'"
+                    [ngClass]="{
+                      'text-primary': contact.type === ContactDto.TypeEnum.Email,
+                      'text-success': contact.type === ContactDto.TypeEnum.Telephone
+                    }">
+                  </i>
+                </div>
+
+
+                <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <p class="font-bold text-text truncate">{{ contact.value }}</p>
+
+                  @if (contact.primaryAccount) {
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full
+                                   text-xs font-bold flex items-center gap-1">
+                        <i class="bi bi-star-fill"></i>
+                        Primary
+                      </span>
+                  }
+
+                  @if (contact.verified) {
+                    <span class="px-2 py-0.5 bg-success/10 text-success rounded-full
+                                   text-xs font-bold flex items-center gap-1">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Verified
+                      </span>
+                  } @else {
+                    <span class="px-2 py-0.5 bg-error/10 text-error rounded-full
+                                   text-xs font-bold flex items-center gap-1">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Unverified
+                      </span>
+                  }
+                </div>
+
+                <p class="text-sm text-text-muted">
+                  {{ contact.type === ContactDto.TypeEnum.Email ? 'Email Address' : 'Phone Number' }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2">
+
+              @if (!contact.verified) {
+                <button
+                  (click)="verifyContact(contact)"
+                  class="px-4 py-2 bg-primary text-primary-foreground rounded-xl
+                           font-bold text-sm hover:bg-text hover:scale-105 active:scale-95
+                           transition-all duration-300 flex items-center gap-2">
+                  <i class="bi bi-shield-check"></i>
+                  <span class="hidden sm:inline">Verify</span>
+                </button>
+              }
+
+              @if (contact.verified && !contact.primaryAccount) {
+                <button
+                  (click)="setPrimary(contact)"
+                  class="px-4 py-2 bg-amber-100 text-amber-700 rounded-xl
+                           font-bold text-sm hover:bg-amber-200 hover:scale-105 active:scale-95
+                           transition-all duration-300 flex items-center gap-2">
+                  <i class="bi bi-star"></i>
+                  <span class="hidden sm:inline">Set Primary</span>
+                </button>
+              }
+
+              <button
+                (click)="deleteContact(contact)"
+                class="p-2 bg-error/10 text-error rounded-xl
+                         hover:bg-error hover:text-white hover:scale-105 active:scale-95
+                         transition-all duration-300">
+                <i class="bi bi-trash-fill text-lg"></i>
+              </button>
+            </div>
+          </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Add New Contact -->
+    <div class="bg-gradient-to-br from-white to-surface-alt rounded-3xl shadow-2xl
+                border-2 border-border p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center">
+          <i class="bi bi-plus-circle-fill text-success text-2xl"></i>
+        </div>
+        <h3 class="text-2xl font-serif font-bold text-text">Add New Contact</h3>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Type Selector -->
+        <div>
+          <label class="block text-sm font-bold text-text mb-2">Contact Type</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              (click)="newContactType = ContactDto.TypeEnum.Email"
+              [class.bg-primary]="newContactType === ContactDto.TypeEnum.Email"
+              [class.text-primary-foreground]="newContactType === ContactDto.TypeEnum.Email"
+              [class.bg-surface-alt]="newContactType !== ContactDto.TypeEnum.Email"
+              [class.text-text]="newContactType !== ContactDto.TypeEnum.Email"
+              [class.border-primary]="newContactType === ContactDto.TypeEnum.Email"
+              [class.border-border]="newContactType !== ContactDto.TypeEnum.Email"
+              class="px-6 py-4 border-2 rounded-2xl font-bold transition-all duration-300
+                     hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+              <i class="bi bi-envelope-fill text-xl"></i>
+              <span>Email</span>
+            </button>
+
+            <button
+              (click)="newContactType = ContactDto.TypeEnum.Telephone"
+              [class.bg-primary]="newContactType === ContactDto.TypeEnum.Telephone"
+              [class.text-primary-foreground]="newContactType === ContactDto.TypeEnum.Telephone"
+              [class.bg-surface-alt]="newContactType !== ContactDto.TypeEnum.Telephone"
+              [class.text-text]="newContactType !== ContactDto.TypeEnum.Telephone"
+              [class.border-primary]="newContactType === ContactDto.TypeEnum.Telephone"
+              [class.border-border]="newContactType !== ContactDto.TypeEnum.Telephone"
+              class="px-6 py-4 border-2 rounded-2xl font-bold transition-all duration-300
+                     hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+              <i class="bi bi-telephone-fill text-xl"></i>
+              <span>Phone</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Value Input -->
+        <div>
+          <label class="block text-sm font-bold text-text mb-2">
+            {{ newContactType === ContactDto.TypeEnum.Email ? 'Email Address' : 'Phone Number' }}
+          </label>
+          <input
+            type="text"
+            [placeholder]="newContactType === ContactDto.TypeEnum.Email ? 'example@email.com' : '+351 912 345 678'"
+            [(ngModel)]="newContactValue"
+            class="w-full px-4 py-3 bg-surface-muted border-2 border-border rounded-xl
+                   text-text placeholder:text-text-muted
+                   focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
+                   transition-all duration-300"
+          />
+        </div>
+
+        <!-- Add Button -->
+        <button
+          (click)="addContact()"
+          [disabled]="!newContactValue"
+          class="w-full px-6 py-4 bg-primary text-primary-foreground rounded-2xl font-bold
+                 hover:bg-text hover:scale-105 active:scale-95 transition-all duration-300
+                 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                 flex items-center justify-center gap-2 text-lg group">
+          <i class="bi bi-plus-lg text-xl group-hover:rotate-90 transition-transform duration-300"></i>
+          <span>Add Contact</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

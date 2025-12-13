@@ -14,8 +14,6 @@ import { UserContactDto } from '@api/model/user-contact-dto';
 })
 export class AccountSecurityComponent implements OnInit {
 
-  /* ---------- STATE ---------- */
-
   tfaEnabled = false;
   currentMethod: 'TOTP' | 'EMAIL' | 'SMS' | 'NONE' = 'NONE';
 
@@ -36,8 +34,6 @@ export class AccountSecurityComponent implements OnInit {
     private securityService: AccountSecurityService,
     private contactService: AccountContactService
   ) {}
-
-  /* ---------- INIT ---------- */
 
   ngOnInit(): void {
     this.loadContacts();
@@ -66,8 +62,6 @@ export class AccountSecurityComponent implements OnInit {
       }
     });
   }
-
-  /* ---------- TOTP ---------- */
 
   setupTotp(): void {
     this.resetMessages();
@@ -106,8 +100,6 @@ export class AccountSecurityComponent implements OnInit {
       }
     });
   }
-
-  /* ---------- CONTACT-BASED 2FA ---------- */
 
   useContactMethod(method: 'EMAIL' | 'SMS'): void {
     this.resetMessages();
@@ -170,9 +162,6 @@ export class AccountSecurityComponent implements OnInit {
     });
   }
 
-
-  /* ---------- DISABLE 2FA ---------- */
-
   disableTfa(): void {
     if (!this.code) return;
 
@@ -196,9 +185,20 @@ export class AccountSecurityComponent implements OnInit {
     });
   }
 
-  /* ---------- HELPERS ---------- */
-
   private resetMessages(): void {
     this.message = null;
+  }
+
+  getFormattedMethod(): string {
+    switch (this.currentMethod) {
+      case 'EMAIL':
+        return 'Email';
+      case 'SMS':
+        return 'SMS';
+      case 'TOTP':
+        return 'Authenticator App';
+      default:
+        return '';
+    }
   }
 }

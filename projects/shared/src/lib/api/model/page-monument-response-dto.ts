@@ -18,11 +18,11 @@ export interface PageMonumentResponseDto {
     size?: number;
     content?: Array<MonumentResponseDto>;
     number?: number;
-    sort?: SortObject;
-    numberOfElements?: number;
     pageable?: PageableObject;
+    sort?: SortObject;
     first?: boolean;
     last?: boolean;
+    numberOfElements?: number;
     empty?: boolean;
 }
 

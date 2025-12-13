@@ -141,6 +141,14 @@ export class AuthService {
     );
   }
 
+  reauthenticate(data: { password?: string; otp?: string }) {
+    return this.http.post<void>(
+      `${this.baseUrl}/reauthenticate`,
+      data,
+      { withCredentials: true }
+    );
+  }
+
   private redirectToLogin(): void {
     const base = environment.authUrl || '';
     const normalized = base.replace(/\/+$/, '');

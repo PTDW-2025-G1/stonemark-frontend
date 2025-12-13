@@ -98,6 +98,148 @@
       </div>
     }
 
+    @if (showReauthModal) {
+      <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl shadow-2xl border-2 border-border p-8 animate-in zoom-in-95 duration-300">
+
+          <!-- Header -->
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-14 h-14 bg-error/10 rounded-2xl flex items-center justify-center">
+              <i class="bi bi-shield-lock-fill text-error text-3xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-2xl font-serif font-bold text-text mb-1">
+                Security Verification
+              </h3>
+              <p class="text-sm text-text-muted">
+                Confirm deletion of <span class="font-bold text-text">{{ contactToDelete?.value }}</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Success Message -->
+          @if (reauthSuccess) {
+            <div class="mb-6 p-4 rounded-xl bg-success/10 border-2 border-success/50 text-success animate-in slide-in-from-top duration-300">
+              <div class="flex items-start gap-3">
+                <i class="bi bi-check-circle-fill text-xl flex-shrink-0 mt-0.5"></i>
+                <p class="text-sm font-semibold">{{ reauthSuccess }}</p>
+              </div>
+            </div>
+          }
+
+          <!-- Error Message -->
+          @if (reauthError) {
+            <div class="mb-6 p-4 rounded-xl bg-error/10 border-2 border-error/50 text-error animate-in slide-in-from-top duration-300">
+              <div class="flex items-start gap-3">
+                <i class="bi bi-exclamation-circle-fill text-xl flex-shrink-0 mt-0.5"></i>
+                <p class="text-sm font-semibold">{{ reauthError }}</p>
+              </div>
+            </div>
+          }
+
+          <div class="space-y-6">
+            <!-- Step 1: Password -->
+            <div>
+              <label class="text-sm font-bold text-text mb-3 flex items-center gap-2">
+                <span class="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                <span>Enter Your Password</span>
+              </label>
+              <input
+                type="password"
+                [(ngModel)]="reauthPassword"
+                placeholder="Your account password"
+                class="w-full px-4 py-3 bg-surface-muted border-2 border-border rounded-xl
+                       text-text placeholder:text-text-muted
+                       focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
+                       transition-all duration-300"
+              />
+            </div>
+
+            <!-- Step 2: OTP (only show after password validated) -->
+            @if (reauthSuccess) {
+              <div class="pt-2 border-t-2 border-dashed border-border animate-in slide-in-from-top duration-500">
+                <label class="text-sm font-bold text-text mb-3 flex items-center gap-2">
+                  <span class="w-6 h-6 bg-success text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                  <span>Enter Verification Code</span>
+                </label>
+                <input
+                  type="text"
+                  [(ngModel)]="reauthOtp"
+                  maxlength="6"
+                  placeholder="000000"
+                  class="w-full text-center tracking-[0.5em] font-mono text-2xl font-bold px-4 py-4
+                         bg-surface-muted border-2 border-border rounded-xl
+                         text-text placeholder:text-text-muted/50
+                         focus:outline-none focus:ring-4 focus:ring-success/20 focus:border-success
+                         transition-all duration-300"
+                />
+                <p class="text-xs text-text-muted text-center mt-3 flex items-center justify-center gap-1">
+                  <i class="bi bi-info-circle-fill"></i>
+                  <span>Enter your active OTP code</span>
+                </p>
+              </div>
+            }
+
+            <!-- Actions -->
+            <div class="space-y-3 pt-2">
+              <!-- Continue/Delete Button -->
+              @if (!reauthSuccess) {
+                <!-- Before OTP: Show "Continue" button -->
+                <button
+                  (click)="confirmReauthAndDelete()"
+                  [disabled]="reauthLoading || !reauthPassword"
+                  class="w-full px-6 py-4 bg-error text-white rounded-xl font-bold text-lg
+                         hover:bg-error/90 hover:scale-[1.02] active:scale-[0.98]
+                         transition-all duration-300
+                         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                         flex items-center justify-center gap-3 shadow-lg shadow-error/30">
+                  @if (reauthLoading) {
+                    <i class="bi bi-hourglass-split animate-spin text-xl"></i>
+                    <span>Verifying Password…</span>
+                  } @else {
+                    <i class="bi bi-trash-fill text-xl"></i>
+                    <span>Delete Contact</span>
+                  }
+                </button>
+              } @else {
+                <!-- After OTP received: Show "Confirm Deletion" button -->
+                <button
+                  (click)="confirmReauthAndDelete()"
+                  [disabled]="reauthLoading || !reauthOtp"
+                  class="w-full px-6 py-4 bg-error text-white rounded-xl font-bold text-lg
+                         hover:bg-error/90 hover:scale-[1.02] active:scale-[0.98]
+                         transition-all duration-300
+                         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                         flex items-center justify-center gap-3 shadow-lg shadow-error/30">
+                  @if (reauthLoading) {
+                    <i class="bi bi-hourglass-split animate-spin text-xl"></i>
+                    <span>Confirming…</span>
+                  } @else {
+                    <i class="bi bi-trash-fill text-xl"></i>
+                    <span>Confirm Deletion</span>
+                  }
+                </button>
+              }
+
+              <!-- Cancel Button -->
+              <button
+                (click)="closeReauthModal()"
+                [disabled]="reauthLoading"
+                class="w-full px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl
+                       font-bold hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]
+                       transition-all duration-300
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       flex items-center justify-center gap-2">
+                <i class="bi bi-x-lg"></i>
+                <span>Cancel</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    }
+
     <!-- Contacts List -->
     <div class="bg-white rounded-3xl shadow-2xl border-2 border-border overflow-hidden mb-6">
       <div class="p-6 border-b border-border">
@@ -265,24 +407,40 @@
           </label>
           <input
             type="text"
-            [placeholder]="newContactType === ContactDto.TypeEnum.Email ? 'example@email.com' : '+351 912 345 678'"
+            [placeholder]="newContactType === ContactDto.TypeEnum.Email ? 'example@email.com' : '+351912345678'"
             [(ngModel)]="newContactValue"
             class="w-full px-4 py-3 bg-surface-muted border-2 border-border rounded-xl
                    text-text placeholder:text-text-muted
                    focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
                    transition-all duration-300"
           />
+          @if (newContactValue && !isNewContactValid()) {
+            <p class="text-xs text-error mt-2 flex items-center gap-1">
+              <i class="bi bi-exclamation-circle-fill"></i>
+              <span>
+                @if (newContactType === ContactDto.TypeEnum.Email) {
+                  Please enter a valid email address
+                } @else {
+                  Please enter a valid Portuguese phone number (+351xxxxxxxxx)
+                }
+              </span>
+            </p>
+          }
         </div>
 
         <!-- Add Button -->
         <button
           (click)="addContact()"
-          [disabled]="!newContactValue"
-          class="w-full px-6 py-4 bg-primary text-primary-foreground rounded-2xl font-bold
-                 hover:bg-text hover:scale-105 active:scale-95 transition-all duration-300
-                 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
-                 flex items-center justify-center gap-2 text-lg group">
-          <i class="bi bi-plus-lg text-xl group-hover:rotate-90 transition-transform duration-300"></i>
+          [disabled]="!isNewContactValid()"
+          class="w-full px-6 py-4 rounded-2xl font-bold text-lg
+                 transition-all duration-300
+                 flex items-center justify-center gap-2 group"
+          [ngClass]="{
+            'bg-primary text-primary-foreground hover:bg-text hover:scale-105 active:scale-95': isNewContactValid(),
+            'bg-surface-muted text-text-muted cursor-not-allowed': !isNewContactValid()
+          }">
+          <i class="bi bi-plus-lg text-xl transition-transform duration-300"
+             [ngClass]="{'group-hover:rotate-90': isNewContactValid()}"></i>
           <span>Add Contact</span>
         </button>
       </div>

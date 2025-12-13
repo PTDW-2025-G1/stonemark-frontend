@@ -43,7 +43,8 @@ export class AccountContactService {
 
   deleteContact(contactId: number): Observable<MessageResponseDto> {
     return this.http.delete<MessageResponseDto>(
-      `${this.baseUrl}/${contactId}`
+      `${this.baseUrl}/${contactId}`,
+      { withCredentials: true }
     );
   }
 }

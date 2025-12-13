@@ -145,7 +145,7 @@
                 <div class="flex items-center gap-2 mb-1">
                   <p class="font-bold text-text truncate">{{ contact.value }}</p>
 
-                  @if (contact.primaryAccount) {
+                  @if (contact.primaryContact) {
                     <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full
                                    text-xs font-bold flex items-center gap-1">
                         <i class="bi bi-star-fill"></i>
@@ -188,7 +188,7 @@
                 </button>
               }
 
-              @if (contact.verified && !contact.primaryAccount) {
+              @if (contact.verified && !contact.primaryContact) {
                 <button
                   (click)="setPrimary(contact)"
                   class="px-4 py-2 bg-amber-100 text-amber-700 rounded-xl

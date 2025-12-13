@@ -26,7 +26,6 @@ export class Header implements OnInit, OnDestroy {
     { label: 'Marks', route: `${environment.baseUrl}/search/marks` },
     { label: 'Discover', route: `${environment.baseUrl}/discover` },
     { label: 'About', route: `${environment.baseUrl}/about` },
-    { label: 'Contact', route: `${environment.baseUrl}/contact` },
   ];
 
   constructor(protected authService: AuthService, private profileService: ProfileService) {}

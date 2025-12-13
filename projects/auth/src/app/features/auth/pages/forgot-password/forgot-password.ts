@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
+import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,15 +14,29 @@ import { AuthService } from '@core/services/auth/auth.service';
 export class ForgotPasswordComponent {
 
   form: FormGroup;
+  codeForm: FormGroup;
+
   loading = false;
+  verifying = false;
   submitted = false;
+
+  codeError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) {
     this.form = this.fb.group({
-      contact: ['', [Validators.required]]
+      contact: ['', Validators.required]
+    });
+
+    this.codeForm = this.fb.group({
+      code: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6)
+      ]]
     });
   }
 
@@ -29,19 +44,46 @@ export class ForgotPasswordComponent {
     if (this.form.invalid || this.loading) return;
 
     this.loading = true;
-
     const contactValue = this.form.value.contact as string;
 
     this.auth.requestPasswordReset(contactValue).subscribe({
       next: () => {
-        // 🔐 nunca revelar se existe ou não
         this.submitted = true;
         this.loading = false;
+        this.codeError = null;
+        this.codeForm.reset();
       },
       error: () => {
-        // 🔐 comportamento idêntico por segurança
         this.submitted = true;
         this.loading = false;
+        this.codeError = null;
+        this.codeForm.reset();
+      }
+    });
+  }
+
+  confirmCode(): void {
+    if (this.codeForm.invalid || this.verifying) return;
+
+    this.verifying = true;
+    this.codeError = null;
+
+    const code = (this.codeForm.value.code as string).trim().toUpperCase();
+
+    this.auth.confirmCode(code).subscribe({
+      next: (res: ConfirmationResponseDto) => {
+        if (res?.token) {
+          this.router.navigate(['/reset-password'], {
+            queryParams: { token: res.token }
+          });
+        } else {
+          this.codeError = 'Invalid or expired code.';
+        }
+        this.verifying = false;
+      },
+      error: () => {
+        this.codeError = 'Invalid or expired code.';
+        this.verifying = false;
       }
     });
   }

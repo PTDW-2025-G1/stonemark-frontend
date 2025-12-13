@@ -176,7 +176,7 @@ export class AuthService {
 
   confirmCode(code: string): Observable<ConfirmationResponseDto> {
     const payload: CodeConfirmationRequestDto = { code };
-    return this.http.post<ConfirmationResponseDto>(`${this.baseUrl}/confirm-code`, payload).pipe(
+    return this.http.post<ConfirmationResponseDto>(`${this.baseUrl}/account-verification/confirm`, payload).pipe(
       catchError(this.handleError('Code confirmation failed'))
     );
   }

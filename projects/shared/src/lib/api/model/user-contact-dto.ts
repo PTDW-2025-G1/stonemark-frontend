@@ -13,7 +13,7 @@ export interface UserContactDto {
     id?: number;
     value?: string;
     type?: UserContactDto.TypeEnum;
-    primaryAccount?: boolean;
+    primaryContact?: boolean;
     verified?: boolean;
 }
 export namespace UserContactDto {

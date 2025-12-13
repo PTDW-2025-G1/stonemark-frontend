@@ -4,14 +4,22 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { AuthFormComponent } from '../../components/auth-form/auth-form';
 import { BaseAuthComponent } from '@shared/directives/base-auth';
+import {TfaVerificationComponent} from '../tfa-verification/tfa-verification';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, AuthFormComponent],
+  imports: [
+    CommonModule,
+    AuthFormComponent,
+    TfaVerificationComponent,
+  ],
   template: `
     <section class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-12 pb-24">
+
+      <!-- LOGIN FORM -->
       <app-auth-form
+        *ngIf="!tfaRequired"
         mode="login"
         [loading]="loading"
         [errorMsg]="errorMsg"
@@ -20,12 +28,35 @@ import { BaseAuthComponent } from '@shared/directives/base-auth';
         (googleAuth)="onGoogleAuth()"
         (forgotPassword)="onForgotPassword()"
       />
+
+      <!-- 2FA VERIFICATION -->
+      <app-tfa-verification
+        *ngIf="tfaRequired"
+        (verify)="onTfaSubmit($event)">
+      </app-tfa-verification>
+
     </section>
 
-    <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="stonemarkbot" data-size="large" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
+    <!-- Telegram widget (mantém como está) -->
+    <script
+      async
+      src="https://telegram.org/js/telegram-widget.js?22"
+      data-telegram-login="stonemarkbot"
+      data-size="large"
+      data-onauth="onTelegramAuth(user)"
+      data-request-access="write">
+    </script>
+
     <script type="text/javascript">
       function onTelegramAuth(user) {
-        alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+        alert(
+          'Logged in as ' +
+          user.first_name + ' ' +
+          user.last_name + ' (' +
+          user.id +
+          (user.username ? ', @' + user.username : '') +
+          ')'
+        );
       }
     </script>
   `

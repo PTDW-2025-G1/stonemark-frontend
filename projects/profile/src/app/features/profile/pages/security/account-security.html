@@ -1,0 +1,287 @@
+<div class="min-h-screen bg-surface">
+
+  <div class="max-w-4xl mx-auto px-6 py-16">
+
+    <!-- Header -->
+    <div class="mb-16 pb-8 border-b border-border">
+      <h1 class="text-4xl font-serif font-medium mb-3">Account Security</h1>
+      <p class="text-text-muted">
+        Manage two-factor authentication for your account
+      </p>
+    </div>
+
+    <!-- Message Alert -->
+    @if (message) {
+      <div class="mb-8 p-4 bg-surface-alt border-l-2 border-primary">
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-sm text-text">{{ message }}</p>
+          <button (click)="message = null" class="text-text-muted hover:text-text transition-colors">
+            <i class="bi bi-x-lg text-sm"></i>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Current Status -->
+    <section class="mb-16">
+      <div class="flex items-center justify-between pb-6 border-b border-border">
+        <div>
+          <h2 class="text-xl font-medium mb-1">Two-Factor Authentication</h2>
+          <p class="text-sm text-text-muted">
+            Status:
+            <span
+              class="font-medium"
+              [class.text-success]="tfaEnabled"
+              [class.text-error]="!tfaEnabled">
+              {{ tfaEnabled ? 'Enabled' : 'Disabled' }}
+            </span>
+            @if (tfaEnabled && currentMethod) {
+              <span class="text-text"> · {{ getFormattedMethod() }}</span>
+            }
+          </p>
+        </div>
+        @if (tfaEnabled) {
+          <div class="w-10 h-10 rounded-full flex items-center justify-center bg-success/10 shrink-0">
+            <i class="bi bi-shield-check text-success text-lg leading-none"></i>
+          </div>
+        } @else {
+          <div class="w-10 h-10 rounded-full flex items-center justify-center bg-error/10 shrink-0">
+            <i class="bi bi-shield-x text-error text-lg leading-none"></i>
+          </div>
+        }
+      </div>
+    </section>
+
+  <!-- Enable Methods (Only if disabled) -->
+  @if (!tfaEnabled) {
+
+    <!-- TOTP Method -->
+    <section class="mb-16">
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-medium">Authenticator App</h3>
+          <span class="text-xs uppercase tracking-wider text-text-muted font-medium">
+              Recommended
+            </span>
+        </div>
+        <p class="text-sm text-text-muted">
+          Use Google Authenticator, Authy, or similar apps
+        </p>
+      </div>
+
+      @if (!qrCodeImageUrl) {
+        <button
+          (click)="setupTotp()"
+          [disabled]="loading"
+          class="group w-full flex items-center justify-between py-4 border-b border-border
+                   hover:border-primary transition-colors disabled:opacity-50">
+          <span class="font-medium">Set up authenticator app</span>
+          <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      } @else {
+        <div class="space-y-6 py-6">
+          <div class="flex justify-center p-6 bg-surface-alt">
+            <img [src]="qrCodeImageUrl" width="180" height="180" alt="QR Code" />
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+                Verification Code
+              </label>
+              <input
+                type="text"
+                placeholder="000000"
+                [(ngModel)]="code"
+                maxlength="6"
+                class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                         text-xl font-mono text-center tracking-[0.5em]
+                         focus:outline-none focus:border-primary transition-colors
+                         placeholder:text-text-muted/30"
+              />
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button
+                (click)="enableTotp()"
+                [disabled]="!code || loading"
+                class="flex-1 border border-primary bg-primary text-primary-foreground px-4 py-2.5
+                         hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm">
+                Enable
+              </button>
+              <button
+                (click)="qrCodeImageUrl = undefined; code = ''"
+                class="px-4 py-2.5 border border-border hover:border-text-muted transition-colors
+                         font-medium text-sm">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- Contact Method -->
+    <section class="mb-16">
+      <div class="mb-8">
+        <h3 class="text-lg font-medium mb-2">Email or SMS</h3>
+        <p class="text-sm text-text-muted">
+          Receive codes via email or phone number
+        </p>
+      </div>
+
+      @if (!showContactCodeInput) {
+        @if (hasVerifiedEmail || hasVerifiedPhone) {
+          <div class="space-y-0">
+            @if (hasVerifiedEmail) {
+              <button
+                (click)="useContactMethod('EMAIL')"
+                [disabled]="loading"
+                class="group w-full flex items-center justify-between py-4 border-b border-border
+                         hover:border-primary transition-colors disabled:opacity-50">
+                <div class="flex items-center gap-3">
+                  <i class="bi bi-envelope text-lg text-text-muted"></i>
+                  <span class="font-medium">Email</span>
+                </div>
+                <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+              </button>
+            }
+
+            @if (hasVerifiedPhone) {
+              <button
+                (click)="useContactMethod('SMS')"
+                [disabled]="loading"
+                class="group w-full flex items-center justify-between py-4 border-b border-border
+                         hover:border-primary transition-colors disabled:opacity-50">
+                <div class="flex items-center gap-3">
+                  <i class="bi bi-telephone text-lg text-text-muted"></i>
+                  <span class="font-medium">SMS</span>
+                </div>
+                <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+              </button>
+            }
+          </div>
+        } @else {
+          <div class="py-8 text-center bg-surface-alt">
+            <p class="text-sm text-text-muted mb-3">No verified contacts available</p>
+            <a
+              href="/profile/contacts"
+              class="inline-flex items-center gap-2 text-sm font-medium border-b border-primary
+                       pb-0.5 hover:opacity-70 transition-opacity">
+              <span>Add and verify a contact</span>
+              <i class="bi bi-arrow-right text-xs"></i>
+            </a>
+          </div>
+        }
+      } @else {
+        <div class="space-y-6 py-6">
+          <div class="p-4 bg-surface-alt">
+            <p class="text-xs text-text-muted text-center">
+              Code sent via <span class="font-medium text-text">{{ selectedContactMethod }}</span>
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+              Verification Code
+            </label>
+            <input
+              type="text"
+              placeholder="000000"
+              [(ngModel)]="code"
+              maxlength="6"
+              class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                       text-xl font-mono text-center tracking-[0.5em]
+                       focus:outline-none focus:border-primary transition-colors
+                       placeholder:text-text-muted/30"
+            />
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              (click)="verifyContactCode()"
+              [disabled]="!code || loading"
+              class="flex-1 border border-primary bg-primary text-primary-foreground px-4 py-2.5
+                       hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm">
+              Verify & Enable
+            </button>
+            <button
+              (click)="showContactCodeInput = false; code = ''; message = null"
+              class="px-4 py-2.5 border border-border hover:border-text-muted transition-colors
+                       font-medium text-sm">
+              Cancel
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+  <!-- Disable Section (Only if enabled) -->
+  @if (tfaEnabled) {
+    <section class="mb-16">
+      <div class="mb-8">
+        <h3 class="text-lg font-medium mb-2">Disable Two-Factor Authentication</h3>
+        <p class="text-sm text-text-muted">
+          This will make your account less secure
+        </p>
+      </div>
+
+      <div class="space-y-6 py-6">
+
+        @if (currentMethod === 'EMAIL' || currentMethod === 'SMS') {
+          <button
+            (click)="requestDisableCode()"
+            [disabled]="loading"
+            class="group w-full flex items-center justify-between py-4 border-b border-border
+                     hover:border-error transition-colors disabled:opacity-50">
+            <span class="font-medium">Request verification code</span>
+            <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </button>
+        }
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+            Verification Code
+          </label>
+          <input
+            type="text"
+            placeholder="000000"
+            [(ngModel)]="code"
+            maxlength="6"
+            class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                     text-xl font-mono text-center tracking-[0.5em]
+                     focus:outline-none focus:border-error transition-colors
+                     placeholder:text-text-muted/30"
+          />
+        </div>
+
+        <button
+          (click)="disableTfa()"
+          [disabled]="!code || loading"
+          class="w-full border border-error text-error px-4 py-2.5
+                   hover:bg-error hover:text-white transition-colors disabled:opacity-50
+                   font-medium text-sm">
+          Disable Two-Factor Authentication
+        </button>
+      </div>
+    </section>
+  }
+
+  <!-- Info Section -->
+  <section class="pt-12 border-t border-border">
+    <h3 class="text-lg font-medium mb-4">About Two-Factor Authentication</h3>
+    <div class="space-y-4 text-sm text-text-muted">
+      <p>
+        Two-factor authentication adds an extra security layer by requiring both your password
+        and a verification code to access your account.
+      </p>
+      <p>
+        Authenticator apps provide the highest level of security. Email and SMS codes are
+        more convenient but less secure.
+      </p>
+    </div>
+  </section>
+
+</div>
+</div>

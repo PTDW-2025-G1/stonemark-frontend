@@ -13,8 +13,8 @@ export interface UserContactDto {
     id?: number;
     value?: string;
     type?: UserContactDto.TypeEnum;
-    isPrimary?: boolean;
-    isVerified?: boolean;
+    primaryContact?: boolean;
+    verified?: boolean;
 }
 export namespace UserContactDto {
     export const TypeEnum = {

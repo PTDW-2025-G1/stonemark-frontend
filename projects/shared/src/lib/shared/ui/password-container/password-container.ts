@@ -9,26 +9,16 @@ import {PasswordHelpComponent} from './sections/password-help';
 @Component({
   selector: 'app-password-container',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    PasswordHeaderComponent,
-    PasswordFormComponent,
-    PasswordMessagesComponent,
-    PasswordHelpComponent
-  ],
+  imports: [CommonModule, ReactiveFormsModule, PasswordHeaderComponent, PasswordFormComponent, PasswordMessagesComponent, PasswordHelpComponent],
   templateUrl: './password-container.html'
 })
 export class PasswordContainerComponent {
-  // === Modo geral ===
   @Input() mode: 'change' | 'reset' = 'change';
   @Input() token?: string | null;
   @Input() success = false;
 
-  // === Formulário ===
   @Input() passwordForm!: FormGroup;
 
-  // === Estados de UI ===
   @Input() showCurrentPassword = false;
   @Input() showNewPassword = false;
   @Input() showConfirmPassword = false;
@@ -40,12 +30,10 @@ export class PasswordContainerComponent {
   @Input() hasSpecialChar = false;
   @Input() isSubmitting = false;
 
-  // === Mensagens ===
   @Input() submitSuccess = false;
   @Input() submitError = false;
   @Input() errorMessage = '';
 
-  // === Outputs ===
   @Output() onSubmit = new EventEmitter<void>();
   @Output() toggleCurrentPassword = new EventEmitter<void>();
   @Output() toggleNewPassword = new EventEmitter<void>();

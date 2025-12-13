@@ -11,7 +11,6 @@ import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth/auth.service';
-import {MarkDto} from '@api/model/mark-dto';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 
 @Component({
@@ -166,12 +165,12 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/profile/change-password']);
   }
 
-  changeTelephone(): void {
-    this.router.navigate(['/profile/change-telephone']);
+  openSecurity(): void {
+    this.router.navigate(['/profile/security']);
   }
 
-  changeEmail(): void {
-    this.router.navigate(['/profile/change-email']);
+  openContacts(): void {
+    this.router.navigate(['/profile/contacts']);
   }
 
   onLogout(): void {

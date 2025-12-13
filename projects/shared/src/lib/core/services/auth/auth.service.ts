@@ -13,6 +13,7 @@ import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
 import { CodeConfirmationRequestDto } from '@api/model/code-confirmation-request-dto';
 import { GoogleAuthenticationRequestDto } from '@api/model/google-authentication-request-dto';
 import { RefreshTokenRequestDto } from '@api/model/refresh-token-request-dto';
+import { MessageResponseDto } from '@api/model/message-response-dto';
 
 declare const google: any;
 
@@ -21,6 +22,7 @@ declare const google: any;
 })
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/auth`;
+  private passwordResetBaseUrl = `${this.baseUrl}/password-reset`;
   private googleAuthSubject = new Subject<any>();
   private authStateSubject = new Subject<boolean>();
 
@@ -65,14 +67,6 @@ export class AuthService {
 
     this.http.post<any>(`${this.baseUrl}/google`, payload, { observe: 'response' }).pipe(
       tap((apiResponse: HttpResponse<any>) => {
-        const accessToken = apiResponse.body?.accessToken;
-        const refreshToken = apiResponse.body?.refreshToken;
-        const role = apiResponse.body?.role;
-
-        if (accessToken && refreshToken) {
-          this.saveTokens(accessToken, refreshToken, role);
-          this.authStateSubject.next(true);
-        }
         this.googleAuthSubject.next(apiResponse);
       }),
 
@@ -94,34 +88,23 @@ export class AuthService {
   }
 
   // Core Auth
-  login(data: AuthenticationRequestDto): Observable<HttpResponse<AuthenticationResponseDto>> {
-    return this.http.post<AuthenticationResponseDto>(`${this.baseUrl}/authenticate`, data, { observe: 'response' })
-      .pipe(
-        tap((response: HttpResponse<AuthenticationResponseDto>) => {
-          if (response.body?.accessToken) {
-            this.saveTokens(response.body.accessToken!, response.body.refreshToken!, response.body.role);
-            this.authStateSubject.next(true);
-          }
-        }),
-        catchError(this.handleError('Login failed'))
-      );
+  login(
+    data: AuthenticationRequestDto
+  ): Observable<HttpResponse<AuthenticationResponseDto>> {
+    return this.http.post<AuthenticationResponseDto>(
+      `${this.baseUrl}/authenticate`,
+      data,
+      { observe: 'response' }
+    );
   }
 
-  register(data: RegisterRequestDto): Observable<HttpResponse<AuthenticationResponseDto>> {
-    return this.http.post<AuthenticationResponseDto>(`${this.baseUrl}/register`, data, {
-      observe: 'response' as const
-    }).pipe(
-      tap((response: HttpResponse<AuthenticationResponseDto>) => {
-        const accessToken = response.body?.accessToken;
-        const refreshToken = response.body?.refreshToken;
-        const role = response.body?.role;
-
-        if(response.status === 200 && accessToken && refreshToken){
-          this.saveTokens(accessToken, refreshToken, role);
-          this.authStateSubject.next(true);
-        }
-      }),
-      catchError(this.handleError('Registration failed'))
+  register(
+    data: RegisterRequestDto
+  ): Observable<HttpResponse<AuthenticationResponseDto>> {
+    return this.http.post<AuthenticationResponseDto>(
+      `${this.baseUrl}/register`,
+      data,
+      { observe: 'response' }
     );
   }
 
@@ -158,6 +141,14 @@ export class AuthService {
     );
   }
 
+  reauthenticate(data: { password?: string; otp?: string }) {
+    return this.http.post<void>(
+      `${this.baseUrl}/reauthenticate`,
+      data,
+      { withCredentials: true }
+    );
+  }
+
   private redirectToLogin(): void {
     const base = environment.authUrl || '';
     const normalized = base.replace(/\/+$/, '');
@@ -166,17 +157,26 @@ export class AuthService {
   }
 
 
-  requestPasswordReset(contactValue: string): Observable<void> {
+  requestPasswordReset(contactValue: string): Observable<MessageResponseDto> {
     const payload: PasswordResetRequestDto = { contactValue };
-    return this.http.post<void>(`${this.baseUrl}/request-password-reset`, payload).pipe(
-      tap(() => console.log('Password reset request sent')),
+
+    return this.http.post<MessageResponseDto>(
+      `${this.passwordResetBaseUrl}/request`,
+      payload
+    ).pipe(
+      tap(() => console.log('Password reset initiated')),
       catchError(this.handleError('Password reset request failed'))
     );
   }
 
-  resetPassword(token: string, newPassword: string): Observable<void> {
-    const payload: ResetPasswordRequestDto = {token, newPassword};
-    return this.http.post<void>(`${this.baseUrl}/reset-password`, payload).pipe(
+
+  resetPassword(token: string, newPassword: string): Observable<MessageResponseDto> {
+    const payload: ResetPasswordRequestDto = { token, newPassword };
+
+    return this.http.post<MessageResponseDto>(
+      `${this.passwordResetBaseUrl}/reset`,
+      payload
+    ).pipe(
       tap(() => console.log('Password reset successful')),
       catchError(this.handleError('Password reset failed'))
     );
@@ -184,7 +184,7 @@ export class AuthService {
 
   confirmCode(code: string): Observable<ConfirmationResponseDto> {
     const payload: CodeConfirmationRequestDto = { code };
-    return this.http.post<ConfirmationResponseDto>(`${this.baseUrl}/confirm-code`, payload).pipe(
+    return this.http.post<ConfirmationResponseDto>(`${this.baseUrl}/account-verification/confirm`, payload).pipe(
       catchError(this.handleError('Code confirmation failed'))
     );
   }

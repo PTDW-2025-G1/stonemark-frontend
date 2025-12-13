@@ -1,0 +1,318 @@
+<div class="min-h-screen bg-surface">
+
+  <div class="max-w-4xl mx-auto px-6 py-16">
+
+    <!-- Header -->
+    <div class="mb-16 pb-8 border-b border-border">
+      <h1 class="text-4xl font-serif font-medium mb-3">Contact Information</h1>
+      <p class="text-text-muted">
+        Manage your email addresses and phone numbers
+      </p>
+    </div>
+
+    <!-- Message Alert -->
+    @if (message) {
+      <div class="mb-8 p-4 border-l-2 flex items-center justify-between gap-4"
+           [ngClass]="{
+             'bg-success/5 border-success': messageType === 'success',
+             'bg-error/5 border-error': messageType === 'error',
+             'bg-info/5 border-info': messageType === 'info'
+           }">
+        <p class="text-sm text-text">{{ message }}</p>
+        <button (click)="message = null" class="text-text-muted hover:text-text transition-colors">
+          <i class="bi bi-x-lg text-sm"></i>
+        </button>
+      </div>
+    }
+
+    <!-- Verification Modal -->
+    @if (verifyingContact) {
+      <div class="mb-8 pb-8 border-b border-border">
+        <div class="mb-6">
+          <h3 class="text-lg font-medium mb-2">Verify Contact</h3>
+          <p class="text-sm text-text-muted">
+            {{ verifyingContact.type }}:
+            <span class="font-medium text-text">{{ verifyingContact.value }}</span>
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+              Verification Code
+            </label>
+            <input
+              type="text"
+              placeholder="000000"
+              [(ngModel)]="verificationCode"
+              maxlength="6"
+              class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                     text-xl font-mono text-center tracking-[0.5em]
+                     focus:outline-none focus:border-primary transition-colors
+                     placeholder:text-text-muted/30"
+            />
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              (click)="confirmVerificationCode()"
+              [disabled]="!verificationCode"
+              class="flex-1 border border-primary bg-primary text-primary-foreground px-4 py-2.5
+                     hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm">
+              Confirm Code
+            </button>
+            <button
+              (click)="cancelVerification()"
+              class="px-4 py-2.5 border border-border hover:border-text-muted transition-colors
+                     font-medium text-sm">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Reauth Modal -->
+    @if (showReauthModal) {
+      <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+        <div class="bg-white p-8 border border-border">
+
+          <div class="mb-8 pb-6 border-b border-border">
+            <h3 class="text-xl font-medium mb-2">Security Verification</h3>
+            <p class="text-sm text-text-muted">
+              Confirm deletion of <span class="font-medium text-text">{{ contactToDelete?.value }}</span>
+            </p>
+          </div>
+
+          @if (reauthSuccess) {
+            <div class="mb-6 p-4 bg-success/5 border-l-2 border-success">
+              <p class="text-sm text-success">{{ reauthSuccess }}</p>
+            </div>
+          }
+
+          @if (reauthError) {
+            <div class="mb-6 p-4 bg-error/5 border-l-2 border-error">
+              <p class="text-sm text-error">{{ reauthError }}</p>
+            </div>
+          }
+
+          <div class="space-y-6">
+            <!-- Password -->
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+                Your Password
+              </label>
+              <input
+                type="password"
+                [(ngModel)]="reauthPassword"
+                placeholder="Enter password"
+                class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                       text-text placeholder:text-text-muted
+                       focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+
+            @if (reauthSuccess) {
+              <div class="pt-6 border-t border-dashed border-border">
+                <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+                  Verification Code
+                </label>
+                <input
+                  type="text"
+                  [(ngModel)]="reauthOtp"
+                  maxlength="6"
+                  placeholder="000000"
+                  class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                         text-xl font-mono text-center tracking-[0.5em]
+                         focus:outline-none focus:border-success transition-colors
+                         placeholder:text-text-muted/30"
+                />
+              </div>
+            }
+
+            <div class="space-y-3 pt-4">
+              <button
+                (click)="confirmReauthAndDelete()"
+                [disabled]="reauthLoading || (!reauthPassword && !reauthSuccess) || (reauthSuccess && !reauthOtp)"
+                class="w-full border border-error text-error px-4 py-2.5
+                       hover:bg-error hover:text-white transition-colors disabled:opacity-50
+                       font-medium text-sm">
+                @if (reauthLoading) {
+                  <span>Processing...</span>
+                } @else if (!reauthSuccess) {
+                  <span>Continue</span>
+                } @else {
+                  <span>Confirm Deletion</span>
+                }
+              </button>
+
+              <button
+                (click)="closeReauthModal()"
+                [disabled]="reauthLoading"
+                class="w-full px-4 py-2.5 border border-border hover:border-text-muted
+                       transition-colors font-medium text-sm disabled:opacity-50">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Contacts List -->
+    <section class="mb-16">
+      <div class="mb-8 pb-6 border-b border-border">
+        <h2 class="text-xl font-medium">Your Contacts</h2>
+      </div>
+
+      @if (contacts.length === 0) {
+        <div class="py-12 text-center bg-surface-alt">
+          <p class="text-sm text-text-muted mb-3">No contacts yet</p>
+          <p class="text-xs text-text-muted">Add your first email or phone number below</p>
+        </div>
+      } @else {
+        <div class="space-y-0">
+          @for (contact of contacts; track contact.id) {
+            <div class="group py-6 border-b border-border hover:bg-surface-alt transition-colors">
+              <div class="flex items-center justify-between gap-4">
+
+                <!-- Contact Info -->
+                <div class="flex items-center gap-4 flex-1 min-w-0">
+                  <i
+                    [class]="getContactIcon(contact.type!) + ' text-xl text-text-muted'"
+                  ></i>
+
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <p class="font-medium text-text truncate">{{ contact.value }}</p>
+
+                      @if (contact.primaryContact) {
+                        <span class="text-xs text-amber-700">Primary</span>
+                      }
+
+                      @if (contact.verified) {
+                        <span class="text-xs text-success flex items-center gap-1">
+                          <i class="bi bi-check-circle-fill"></i>
+                          Verified
+                        </span>
+                      } @else {
+                        <span class="text-xs text-error">Unverified</span>
+                      }
+                    </div>
+
+                    <p class="text-xs text-text-muted">
+                      {{ contact.type === ContactDto.TypeEnum.Email ? 'Email' : 'Phone' }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                  @if (!contact.verified) {
+                    <button
+                      (click)="verifyContact(contact)"
+                      class="text-sm font-medium border-b border-primary pb-0.5 hover:opacity-70 transition-opacity">
+                      Verify
+                    </button>
+                  }
+
+                  @if (contact.verified && !contact.primaryContact) {
+                    <button
+                      (click)="setPrimary(contact)"
+                      class="text-sm font-medium border-b border-text-muted pb-0.5 hover:opacity-70 transition-opacity">
+                      Set Primary
+                    </button>
+                  }
+
+                  <button
+                    (click)="deleteContact(contact)"
+                    class="text-error hover:opacity-70 transition-opacity">
+                    <i class="bi bi-trash text-lg"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Add New Contact -->
+    <section>
+      <div class="mb-8 pb-6 border-b border-border">
+        <h3 class="text-lg font-medium">Add New Contact</h3>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Type Selector -->
+        <div class="flex gap-4">
+          <button
+            (click)="newContactType = ContactDto.TypeEnum.Email"
+            class="flex-1 py-4 border-b-2 font-medium transition-colors"
+            [class.border-primary]="newContactType === ContactDto.TypeEnum.Email"
+            [class.text-primary]="newContactType === ContactDto.TypeEnum.Email"
+            [class.border-border]="newContactType !== ContactDto.TypeEnum.Email"
+            [class.text-text-muted]="newContactType !== ContactDto.TypeEnum.Email">
+            <div class="flex items-center justify-center gap-2">
+              <i class="bi bi-envelope text-lg"></i>
+              <span>Email</span>
+            </div>
+          </button>
+
+          <button
+            (click)="newContactType = ContactDto.TypeEnum.Telephone"
+            class="flex-1 py-4 border-b-2 font-medium transition-colors"
+            [class.border-primary]="newContactType === ContactDto.TypeEnum.Telephone"
+            [class.text-primary]="newContactType === ContactDto.TypeEnum.Telephone"
+            [class.border-border]="newContactType !== ContactDto.TypeEnum.Telephone"
+            [class.text-text-muted]="newContactType !== ContactDto.TypeEnum.Telephone">
+            <div class="flex items-center justify-center gap-2">
+              <i class="bi bi-telephone text-lg"></i>
+              <span>Phone</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Value Input -->
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-text-muted font-medium mb-3">
+            {{ newContactType === ContactDto.TypeEnum.Email ? 'Email Address' : 'Phone Number' }}
+          </label>
+          <input
+            type="text"
+            [placeholder]="newContactType === ContactDto.TypeEnum.Email ? 'example@email.com' : '+351 912 345 678'"
+            [(ngModel)]="newContactValue"
+            class="w-full px-0 py-3 bg-transparent border-b-2 border-border
+                   text-text placeholder:text-text-muted
+                   focus:outline-none focus:border-primary transition-colors"
+          />
+          @if (newContactValue && !isNewContactValid()) {
+            <p class="text-xs text-error mt-2">
+              @if (newContactType === ContactDto.TypeEnum.Email) {
+                Please enter a valid email address
+              } @else {
+                Please enter a valid Portuguese phone number
+              }
+            </p>
+          }
+        </div>
+
+        <!-- Add Button -->
+        <button
+          (click)="addContact()"
+          [disabled]="!isNewContactValid()"
+          class="w-full border px-4 py-2.5 font-medium text-sm transition-colors"
+          [class.border-primary]="isNewContactValid()"
+          [class.bg-primary]="isNewContactValid()"
+          [class.text-primary-foreground]="isNewContactValid()"
+          [class.hover:bg-text]="isNewContactValid()"
+          [class.border-border]="!isNewContactValid()"
+          [class.text-text-muted]="!isNewContactValid()"
+          [class.cursor-not-allowed]="!isNewContactValid()">
+          Add Contact
+        </button>
+      </div>
+    </section>
+
+  </div>
+</div>

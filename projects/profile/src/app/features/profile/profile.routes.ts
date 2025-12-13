@@ -14,22 +14,22 @@ export const PROFILE_ROUTES: Routes = [
     title: 'Edit Profile'
   },
   {
-    path: 'change-email',
-    loadComponent: () =>
-      import('./pages/change-email/change-email').then(m => m.ChangeEmailComponent),
-    title: 'Change Email'
-  },
-  {
-    path: 'change-telephone',
-    loadComponent: () =>
-      import('./pages/change-telephone/change-telephone').then(m => m.ChangeTelephoneComponent),
-    title: 'Change Telephone'
-  },
-  {
     path: 'change-password',
     loadComponent: () =>
       import('./pages/change-password/change-password').then(m => m.ChangePasswordComponent),
     title: 'Change Password'
+  },
+  {
+    path: 'security',
+    loadComponent: () =>
+      import('./pages/security/account-security').then(m => m.AccountSecurityComponent),
+    title: 'Security'
+  },
+  {
+    path: 'contacts',
+    loadComponent: () =>
+      import('./pages/contacts/account-contacts').then(m => m.AccountContactsComponent),
+    title: 'Contacts'
   }
 
 ]

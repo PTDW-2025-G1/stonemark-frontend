@@ -1,0 +1,134 @@
+<div class="flex flex-col items-center justify-center px-4 py-8">
+
+  <!-- Card -->
+  <div class="bg-white rounded-3xl shadow-2xl border-2 border-border p-8 sm:p-10
+                transform hover:scale-[1.01] transition-all duration-300">
+
+    <!-- Icon -->
+    <div class="flex justify-center mb-6">
+      <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-2xl
+                    flex items-center justify-center shadow-xl transform hover:rotate-6
+                    transition-transform duration-300">
+        <i class="bi bi-shield-lock-fill text-white text-4xl"></i>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-serif font-bold text-text mb-3">
+        Two-Factor Authentication
+      </h2>
+      <p class="text-text-muted text-base leading-relaxed">
+        Enter the 6-digit verification code from your authenticator app.
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Code Input -->
+      <div>
+        <label for="code" class="block text-sm font-bold text-text mb-3">
+          Verification Code
+        </label>
+
+        <input
+          id="code"
+          type="text"
+          inputmode="text"
+          maxlength="6"
+          placeholder="A1B2C3"
+          formControlName="code"
+          (input)="onCodeInput($event)"
+          autocomplete="one-time-code"
+          class="w-full px-6 py-4 text-center text-3xl font-bold tracking-[0.5em] uppercase
+                   bg-surface-muted border-2 border-border rounded-2xl text-text
+                   placeholder:text-text-muted/30 placeholder:tracking-[0.5em]
+                   focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary
+                   transition-all duration-300"
+          [class.border-error]="codeControl?.invalid && codeControl?.touched"
+          [class.border-success]="codeControl?.valid && codeControl?.value.length === 6"
+        />
+
+        <!-- Error Messages -->
+        @if (codeControl?.invalid && codeControl?.touched) {
+          <div class="mt-3 flex items-start gap-2 text-error text-sm">
+            <i class="bi bi-exclamation-circle-fill flex-shrink-0 mt-0.5"></i>
+            <div>
+              @if (codeControl?.errors?.['required']) {
+                <p>Verification code is required.</p>
+              }
+              @if (codeControl?.errors?.['pattern']) {
+                <p>Code must be exactly 6 alphanumeric characters.</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Success Indicator -->
+        @if (codeControl?.valid && codeControl?.value.length === 6) {
+          <div class="mt-3 flex items-center gap-2 text-success text-sm font-medium">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>Code format is valid</span>
+          </div>
+        }
+      </div>
+
+      <!-- Helper Text -->
+      <div class="bg-info/10 border-2 border-info/30 rounded-xl p-4">
+        <div class="flex items-start gap-3">
+          <i class="bi bi-info-circle text-info text-xl flex-shrink-0"></i>
+          <div class="text-sm text-text-muted leading-relaxed">
+            <p class="font-semibold text-text mb-1">Having trouble?</p>
+            <p>Make sure your authenticator app is synced with the correct time.
+              Codes expire after 30 seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="form.invalid || isSubmitting"
+        class="w-full px-6 py-4 bg-primary text-primary-foreground rounded-2xl
+                 font-bold text-lg shadow-lg hover:shadow-xl hover:bg-text
+                 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary
+                 transition-all duration-300 hover:scale-105 active:scale-95
+                 flex items-center justify-center gap-3 group"
+      >
+        @if (isSubmitting) {
+          <i class="bi bi-arrow-repeat animate-spin text-xl"></i>
+          <span>Verifying...</span>
+        } @else {
+          <span>Verify & Continue</span>
+          <i class="bi bi-arrow-right text-xl group-hover:translate-x-1 transition-transform"></i>
+        }
+      </button>
+    </form>
+
+    <!-- Alternative Methods -->
+    <div class="mt-8 pt-6 border-t border-border">
+      <p class="text-center text-sm text-text-muted mb-4">
+        Can't access your authenticator?
+      </p>
+      <button
+        type="button"
+        class="w-full px-4 py-3 bg-surface-muted border border-border text-text
+                 rounded-xl font-medium hover:border-primary hover:text-primary
+                 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+      >
+        <i class="bi bi-envelope"></i>
+        <span>Use recovery code instead</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Security Notice -->
+  <div class="mt-6 text-center">
+    <div class="inline-flex items-center gap-2 text-sm text-text-muted bg-white/50
+                  backdrop-blur-sm px-4 py-2 rounded-full border border-border">
+      <i class="bi bi-shield-check text-success"></i>
+      <span>Your connection is secure and encrypted</span>
+    </div>
+  </div>
+</div>

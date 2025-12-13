@@ -2,15 +2,25 @@ import { Directive } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { AuthService } from '@core/services/auth/auth.service';
 import { HttpResponse } from '@angular/common/http';
-import { environment } from '@env/environment';
+
+import { AuthService } from '@core/services/auth/auth.service';
 import { AuthenticationResponseDto } from '@api/model/authentication-response-dto';
+import { environment } from '@env/environment';
 
 @Directive()
 export abstract class BaseAuthComponent {
   loading = false;
   errorMsg: string | null = null;
+
+  // 🔐 2FA state
+  tfaRequired = false;
+  tfaCodeSent = false;
+
+  protected pendingLoginData: {
+    username: string;
+    password: string;
+  } | null = null;
 
   protected constructor(
     protected router: Router,
@@ -20,18 +30,30 @@ export abstract class BaseAuthComponent {
   abstract mode: 'login' | 'register';
   abstract navigateTo: string;
 
+  /* ----------------------------
+   * FORM SUBMIT (LOGIN / REGISTER)
+   * ---------------------------- */
   onSubmit(data: any): void {
+    this.errorMsg = null;
+
+    if (this.mode === 'login') {
+      this.pendingLoginData = {
+        username: data.username,
+        password: data.password,
+      };
+    }
+
     const payload =
       this.mode === 'login'
         ? {
           username: data.username,
-          password: data.password
+          password: data.password,
         }
         : {
           firstName: data.firstName,
           lastName: data.lastName,
           username: data.username,
-          password: data.password
+          password: data.password,
         };
 
     const auth$ =
@@ -42,6 +64,27 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(auth$);
   }
 
+  /* ----------------------------
+   * SUBMIT 2FA CODE
+   * ---------------------------- */
+  onTfaSubmit(code: string): void {
+    if (!this.pendingLoginData) {
+      this.errorMsg = 'Authentication session expired. Please login again.';
+      this.resetTfaState();
+      return;
+    }
+
+    this._handleAuthRequest(
+      this.authService.login({
+        ...this.pendingLoginData,
+        tfaCode: code,
+      })
+    );
+  }
+
+  /* ----------------------------
+   * UI ACTIONS
+   * ---------------------------- */
   onForgotPassword(): void {
     this.router.navigate(['/forgot-password']);
   }
@@ -54,6 +97,12 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(this.authService.googleAuth());
   }
 
+  /* ----------------------------
+   * AUTH HANDLER (CORE LOGIC)
+   * ---------------------------- */
+  /* ----------------------------
+ * AUTH HANDLER (CORE LOGIC)
+ * ---------------------------- */
   private _handleAuthRequest(
     auth$: Observable<HttpResponse<AuthenticationResponseDto>>
   ): void {
@@ -63,32 +112,59 @@ export abstract class BaseAuthComponent {
     auth$
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
+        // ✅ SUCCESS PATH (2xx)
         next: (response) => {
-          const status = response.status;
           const body = response.body;
 
-          if (status === 200 && body?.accessToken) {
-            const { accessToken, refreshToken, role } = body;
-
-            this.authService.saveTokens(accessToken, refreshToken!, role);
-            this.errorMsg = null;
-            this._postLoginRedirect(role);
-
-          } else if (status === 202) {
-            this.router.navigate(['/verify-pending']);
+          if (!body) {
+            this.errorMsg = 'Unexpected authentication response.';
+            return;
           }
-        },
-        error: (err) => {
-          this.loading = false;
 
-          if (err.status === 401) {
-            this.errorMsg = 'Invalid credentials. Please try again.';
-          } else if (err.status === 202) {
-            this.router.navigate(['/verify-pending']);
-          } else if (err?.error?.message) {
-            this.errorMsg = err.error.message;
-          } else if (err?.message) {
-            this.errorMsg = err.message;
+          // 🔐 2FA REQUIRED (backend returned 200 + flag)
+          if (body.tfaRequired === true) {
+            this.tfaRequired = true;
+            this.tfaCodeSent = !!body.tfaCodeSent;
+            this.errorMsg = null;
+            return;
+          }
+
+          // ✅ LOGIN COMPLETE
+          if (body.accessToken) {
+            this.authService.saveTokens(
+              body.accessToken,
+              body.refreshToken!,
+              body.role
+            );
+
+            this.resetTfaState();
+            this._postLoginRedirect(body.role);
+            return;
+          }
+
+          // ❌ FALLBACK
+          this.errorMsg = 'Authentication failed.';
+        },
+
+        // ⚠️ ERROR PATH (401, 400, etc.)
+        error: (err) => {
+          const message = err?.error?.message;
+
+          // 🔐 2FA REQUIRED (backend returned 401)
+          if (
+            err.status === 401 &&
+            typeof message === 'string' &&
+            message.includes('Two-Factor Authentication')
+          ) {
+            this.tfaRequired = true;
+            this.tfaCodeSent = false; // TOTP → código vem do authenticator
+            this.errorMsg = null;
+            return;
+          }
+
+          // ❌ REAL ERROR
+          if (message) {
+            this.errorMsg = message;
           } else {
             this.errorMsg = 'Occorred an error. Please try again later.';
           }
@@ -96,25 +172,32 @@ export abstract class BaseAuthComponent {
       });
   }
 
+  /* ----------------------------
+   * POST LOGIN REDIRECT
+   * ---------------------------- */
   private _postLoginRedirect(role?: string | null): void {
-    console.log('Role from auth response:', role);
-
     const redirect = localStorage.getItem('redirectAfterLogin');
 
     if (redirect && redirect.startsWith('http://localhost:')) {
-      console.log('Redirecting back to original URL:', redirect);
       localStorage.removeItem('redirectAfterLogin');
       window.location.href = redirect;
       return;
     }
 
     if (role === 'ADMIN' || role === 'MODERATOR') {
-      console.log('Redirecting to staff:', environment.staffUrl);
       window.location.href = environment.staffUrl;
       return;
     }
 
-    console.log('Redirecting to base app:', environment.baseUrl);
     window.location.href = environment.baseUrl;
+  }
+
+  /* ----------------------------
+   * RESET 2FA STATE
+   * ---------------------------- */
+  private resetTfaState(): void {
+    this.tfaRequired = false;
+    this.tfaCodeSent = false;
+    this.pendingLoginData = null;
   }
 }

@@ -62,6 +62,12 @@ npm run start:prod:all
 
 This will serve each application on its designated port. You can then access them in your browser using their production URLs (e.g., `http://auth.stonemark.pt`, `http://account.stonemark.pt`).
 
+If you have already built the applications and want to start the servers without rebuilding, you can use:
+
+```bash
+npm run start:prod:all:no-build
+```
+
 ## Angular CLI Commands
 
 ### Code Scaffolding

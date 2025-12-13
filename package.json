@@ -24,6 +24,7 @@
     "api:gen-models": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o ./projects/shared/src/lib/api --global-property models,modelDocs=false,modelTests=false --additional-properties=fileNaming=kebab-case",
     "start:prod": "npm run build:all && serve -s dist/app/browser",
     "start:prod:all": "npm run build:all && concurrently \"npm:serve:app\" \"npm:serve:auth\" \"npm:serve:profile\" \"npm:serve:staff\"",
+    "start:prod:all:no-build": "concurrently \"npm:serve:app\" \"npm:serve:auth\" \"npm:serve:profile\" \"npm:serve:staff\"",
     "serve:app": "serve -s dist/app/browser -l 4200",
     "serve:auth": "serve -s dist/auth/browser -l 4201",
     "serve:profile": "serve -s dist/profile/browser -l 4202",

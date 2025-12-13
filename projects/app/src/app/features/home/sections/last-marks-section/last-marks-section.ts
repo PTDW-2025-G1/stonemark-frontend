@@ -22,8 +22,8 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (occurrence of lastOccurrences; track occurrence.id) {
             <app-entity-card
-              [cover]="'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'"
-              [title]="'Mark of ' + occurrence.mark?.title"
+              [cover]="occurrence.mark?.cover?.storagePath ?? 'assets/images/placeholder.jpg'"
+              [title]="'Mark of ' + (occurrence.mark?.title ?? 'Untitled')"
               [subtitle]="occurrence.monument?.name || 'Unknown monument'"
               [id]="occurrence.mark?.id ?? 0"
               [type]="'marks/occurrence'"

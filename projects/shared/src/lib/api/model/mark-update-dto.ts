@@ -7,11 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { User } from './user';
 
 
-export interface ChatMember { 
-    user?: User;
-    status?: string;
+export interface MarkUpdateDto { 
+    title?: string;
+    description?: string;
+    embedding?: Array<number>;
+    coverId?: number;
 }
 

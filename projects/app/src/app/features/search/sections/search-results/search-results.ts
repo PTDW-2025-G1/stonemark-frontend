@@ -9,6 +9,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { finalize } from 'rxjs/operators';
 import { environment } from '@env/environment';
+import {imageUrl} from '@core/config/image.config';
 
 type SearchItem = MonumentResponseDto | MarkDto;
 
@@ -144,7 +145,7 @@ export class SearchResultsComponent {
 
   getItemCover(item: SearchItem): string {
     return this.isMark(item)
-      ? "https://upload.wikimedia.org/wikipedia/commons/4/4d/Igreja_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_%28Ermida%29_sigla_0456_1.JPG"
+      ? (item.cover?.storagePath ? imageUrl + item.cover.storagePath : "assets/images/placeholder.png")
       : "https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg";
   }
 

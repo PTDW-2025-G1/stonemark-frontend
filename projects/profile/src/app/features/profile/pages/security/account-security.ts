@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { AccountSecurityService } from '@core/services/account-security/account-security.service';
 import { AccountContactService } from '@core/services/account-contact/account-contact.service';
 import { UserContactDto } from '@api/model/user-contact-dto';
+import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 
 @Component({
   selector: 'app-account-security',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BreadcrumbProfileComponent],
   templateUrl: './account-security.html'
 })
 export class AccountSecurityComponent implements OnInit {

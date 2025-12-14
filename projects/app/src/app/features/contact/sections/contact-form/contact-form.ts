@@ -201,9 +201,18 @@ export class ContactFormComponent implements OnInit{
       this.profileService.getCurrentUser().subscribe({
         next: user => {
           this.user = user;
+
+          let email = '';
+          if (user.contacts && user.contacts.length > 0) {
+            const emailContact = user.contacts.find(c => c.type === 'EMAIL' && c.primaryContact);
+            if (emailContact) {
+              email = emailContact.value || '';
+            }
+          }
+
           this.contactForm.patchValue({
             name: `${user.firstName} ${user.lastName}`,
-            email: user.email
+            email: email
           });
         }
       });

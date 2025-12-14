@@ -44,14 +44,26 @@ export class ProfileComponent implements OnInit {
   loadUserProfile(): void {
     this.profileService.getCurrentUser().subscribe({
       next: (data: UserDto) => {
-
         const memberSinceString = data.createdAt
           ? data.createdAt.split('T')[0]
           : null;
 
+        let contactValue: string | undefined = undefined;
+        let contactType: 'EMAIL' | 'TELEPHONE' | undefined = undefined;
+
+        if (data.contacts && data.contacts.length > 0) {
+          const primaryContact = data.contacts.find(c => c.primaryContact && c.verified);
+          if (primaryContact) {
+            contactValue = primaryContact.value;
+            contactType = primaryContact.type;
+          }
+        }
+
         this.user = {
           name: `${data.firstName} ${data.lastName}`,
-          email: data.email,
+          username: data.username ? `@${data.username}` : undefined,
+          contact: contactValue,
+          contactType: contactType,
           avatar: 'https://i.pravatar.cc/300?img=12',
           memberSince: memberSinceString,
           stats: {

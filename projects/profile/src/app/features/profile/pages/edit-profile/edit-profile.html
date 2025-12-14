@@ -1,6 +1,11 @@
-<div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  @if (!profileUpdated) {
-    <app-edit-profile-form
+<div class="min-h-screen bg-surface">
+  <div class="max-w-4xl mx-auto px-6 py-12">
+    <!-- Breadcrumb -->
+    <app-breadcrumb-profile currentPage="Edit Profile" />
+
+    <div class="flex items-center justify-center">
+      @if (!profileUpdated) {
+        <app-edit-profile-form
       [currentProfile]="currentProfile"
       [currentEmail]="currentProfile.email"
       [isSubmitting]="isSubmitting"
@@ -17,4 +22,6 @@
       (backToProfile)="goBack()"
     />
   }
+    </div>
+  </div>
 </div>

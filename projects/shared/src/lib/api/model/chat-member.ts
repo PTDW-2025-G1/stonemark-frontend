@@ -11,7 +11,7 @@ import { User } from './user';
 
 
 export interface ChatMember { 
-    user?: User;
     status?: string;
+    user?: User;
 }
 

@@ -7,14 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserContactDto } from './user-contact-dto';
 
 
 export interface UserDto { 
     id?: number;
     firstName?: string;
     lastName?: string;
-    email?: string;
-    telephone?: string;
+    username?: string;
+    contacts?: Array<UserContactDto>;
     role?: string;
     createdAt?: string;
     accountLocked?: boolean;

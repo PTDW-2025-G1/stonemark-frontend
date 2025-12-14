@@ -6,11 +6,12 @@ import {EditProfileFormComponent, ProfileFormData} from './sections/edit-profile
 import {EditProfileSuccessComponent} from './sections/edit-profile-success/edit-profile-success';
 import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
+import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, EditProfileFormComponent, EditProfileSuccessComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, EditProfileFormComponent, EditProfileSuccessComponent, BreadcrumbProfileComponent],
   templateUrl: './edit-profile.html'
 })
 export class EditProfileComponent implements OnInit {
@@ -32,10 +33,18 @@ export class EditProfileComponent implements OnInit {
   private loadCurrentProfile(): void {
     this.profileService.getCurrentUser().subscribe({
       next: (user: UserDto) => {
+        let email = '';
+        if (user.contacts && user.contacts.length > 0) {
+          const emailContact = user.contacts.find(c => c.type === 'EMAIL' && c.primaryContact);
+          if (emailContact) {
+            email = emailContact.value || '';
+          }
+        }
+
         this.currentProfile = {
           firstName: user.firstName || '',
           lastName: user.lastName || '',
-          email: user.email || ''
+          email: email
         }
       },
       error: err => {

@@ -17,11 +17,11 @@ export interface Page {
     size?: number;
     content?: Array<any>;
     number?: number;
-    pageable?: PageableObject;
     sort?: SortObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
+    pageable?: PageableObject;
     empty?: boolean;
 }
 

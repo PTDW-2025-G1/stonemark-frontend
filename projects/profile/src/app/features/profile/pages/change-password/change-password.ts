@@ -6,11 +6,12 @@ import { Location } from '@angular/common';
 import { ProfileService } from '@core/services/profile/profile.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
 import { PasswordService } from '@shared/helpers/password.service';
+import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PasswordContainerComponent],
+  imports: [CommonModule, ReactiveFormsModule, PasswordContainerComponent, BreadcrumbProfileComponent],
   templateUrl: './change-password.html',
 })
 export class ChangePasswordComponent implements OnInit {

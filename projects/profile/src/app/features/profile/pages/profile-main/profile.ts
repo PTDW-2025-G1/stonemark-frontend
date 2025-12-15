@@ -185,6 +185,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/profile/contacts']);
   }
 
+  openSocial(): void {
+    this.router.navigate(['/profile/social']);
+  }
+
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {

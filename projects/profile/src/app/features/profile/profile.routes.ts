@@ -20,6 +20,12 @@ export const PROFILE_ROUTES: Routes = [
     title: 'Change Password'
   },
   {
+    path: 'set-password',
+    loadComponent: () =>
+      import('./pages/set-password/set-password').then(m => m.SetPasswordComponent),
+    title: 'Set Password'
+  },
+  {
     path: 'security',
     loadComponent: () =>
       import('./pages/security/account-security').then(m => m.AccountSecurityComponent),
@@ -30,6 +36,12 @@ export const PROFILE_ROUTES: Routes = [
     loadComponent: () =>
       import('./pages/contacts/account-contacts').then(m => m.AccountContactsComponent),
     title: 'Contacts'
+  },
+  {
+    path: 'social',
+    loadComponent: () =>
+      import('./pages/social/account-social').then(m => m.AccountSocialComponent),
+    title: 'Social'
   }
 
 ]

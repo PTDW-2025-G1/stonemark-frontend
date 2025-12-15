@@ -9,12 +9,22 @@ import { Component, Input } from '@angular/core';
         <i class="bi bi-check-circle-fill text-success text-xl"></i>
         <div>
           <p class="text-sm font-semibold text-success mb-1">
-            {{ mode === 'change' ? 'Password changed successfully!' : 'Password reset successfully!' }}
+            {{
+              mode === 'change'
+                ? 'Password changed successfully!'
+                : mode === 'set'
+                  ? 'Password set successfully!'
+                  : 'Password reset successfully!'
+            }}
           </p>
           <p class="text-xs text-text-muted">
-            {{ mode === 'change'
-              ? 'You can now use your new password to log in.'
-              : 'You can now log in with your new password.' }}
+            {{
+              mode === 'change'
+                ? 'You can now use your new password to log in.'
+                : mode === 'set'
+                  ? 'Your account is now secured with a password.'
+                  : 'You can now log in with your new password.'
+            }}
           </p>
         </div>
       </div>
@@ -25,7 +35,13 @@ import { Component, Input } from '@angular/core';
         <i class="bi bi-exclamation-triangle-fill text-error text-xl"></i>
         <div>
           <p class="text-sm font-semibold text-error mb-1">
-            {{ mode === 'change' ? 'Failed to change password' : 'Failed to reset password' }}
+            {{
+              mode === 'change'
+                ? 'Failed to change password'
+                : mode === 'set'
+                  ? 'Failed to set password'
+                  : 'Failed to reset password'
+            }}
           </p>
           <p class="text-xs text-text-muted">{{ errorMessage }}</p>
         </div>
@@ -35,7 +51,7 @@ import { Component, Input } from '@angular/core';
   styles: []
 })
 export class PasswordMessagesComponent {
-  @Input() mode: 'change' | 'reset' = 'change';
+  @Input() mode: 'change' | 'set' | 'reset' = 'change';
   @Input() submitSuccess = false;
   @Input() submitError = false;
   @Input() errorMessage = '';

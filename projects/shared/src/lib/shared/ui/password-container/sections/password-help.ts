@@ -12,10 +12,15 @@ import { RouterLink } from '@angular/router';
         <a routerLink="/forgot-password" class="text-primary hover:underline font-semibold">
           Reset it here
         </a>
-      } @else {
+      } @else if (mode === 'reset') {
         Remembered your password?
         <a routerLink="/login" class="text-primary hover:underline font-semibold">
           Go back to login
+        </a>
+      } @else {
+        Want to secure your account?
+        <a routerLink="/profile/security" class="text-primary hover:underline font-semibold">
+          Go to security settings
         </a>
       }
     </p>
@@ -23,5 +28,5 @@ import { RouterLink } from '@angular/router';
   styles: []
 })
 export class PasswordHelpComponent {
-  @Input() mode: 'change' | 'reset' = 'change';
+  @Input() mode: 'change' | 'set' | 'reset' = 'change';
 }

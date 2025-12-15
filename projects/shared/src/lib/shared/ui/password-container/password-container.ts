@@ -13,7 +13,7 @@ import {PasswordHelpComponent} from './sections/password-help';
   templateUrl: './password-container.html'
 })
 export class PasswordContainerComponent {
-  @Input() mode: 'change' | 'reset' = 'change';
+  @Input() mode: 'change' | 'set' | 'reset' = 'change';
   @Input() token?: string | null;
   @Input() success = false;
 

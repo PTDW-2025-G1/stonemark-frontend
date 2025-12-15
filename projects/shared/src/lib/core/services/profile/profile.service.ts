@@ -9,6 +9,7 @@ import { ProfileUpdateRequestDto } from "@api/model/profile-update-request-dto"
 import { TelephoneChangeRequestDto } from "@api/model/telephone-change-request-dto"
 import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';
 import {CodeConfirmationRequestDto} from '@api/model/code-confirmation-request-dto';
+import {PasswordSetRequestDto} from '@api/model/password-set-request-dto';
 
 
 @Injectable({ providedIn: 'root' })
@@ -22,8 +23,18 @@ export class ProfileService {
     return this.http.get<UserDto>(`${this.baseUrl}/profile`);
   }
 
+  getSecurityStatus(): Observable<{ hasPassword: boolean }> {
+    return this.http.get<{ hasPassword: boolean }>(
+      `${this.baseUrl}/security/status`
+    );
+  }
+
   updateProfile(profile: ProfileUpdateRequestDto): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/profile`, profile);
+  }
+
+  setPassword(password: PasswordSetRequestDto): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/set-password`, password);
   }
 
   changeEmail(newEmail: string): Observable<void> {

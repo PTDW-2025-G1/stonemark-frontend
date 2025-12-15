@@ -13,8 +13,6 @@ export class AccountSecurityService {
 
   constructor(private http: HttpClient) {}
 
-  /* ---------- TOTP ---------- */
-
   setupTotp(): Observable<TfaSetupResponseDto> {
     return this.http.post<TfaSetupResponseDto>(
       `${this.baseUrl}/setup/totp`,
@@ -29,8 +27,6 @@ export class AccountSecurityService {
       payload
     );
   }
-
-  /* ---------- GENERAL 2FA ---------- */
 
   getTfaStatus(): Observable<{ enabled: boolean; method: 'TOTP' | 'EMAIL' | 'SMS' | 'NONE' }> {
     return this.http.get<{ enabled: boolean; method: 'TOTP' | 'EMAIL' | 'SMS' | 'NONE' }>(
@@ -53,8 +49,6 @@ export class AccountSecurityService {
       payload
     );
   }
-
-  /* ---------- CONTACT-BASED 2FA ---------- */
 
   requestContactCode(): Observable<MessageResponseDto> {
     return this.http.post<MessageResponseDto>(

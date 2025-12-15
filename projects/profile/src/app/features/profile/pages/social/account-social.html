@@ -1,0 +1,211 @@
+<div class="min-h-screen bg-surface">
+
+  <div class="max-w-4xl mx-auto px-6 py-16">
+
+    <app-breadcrumb-profile currentPage="Connected Accounts" />
+
+    <!-- Header -->
+    <div class="mb-16 pb-8 border-b border-border">
+      <h1 class="text-4xl font-serif font-medium mb-3">Connected Accounts</h1>
+      <p class="text-text-muted">
+        Link external accounts for easier sign-in
+      </p>
+    </div>
+
+    <!-- Password Required Warning -->
+    @if (mustDefinePassword) {
+      <div class="mb-8 p-6 bg-warning/10 border border-warning">
+        <div class="flex items-start gap-4">
+          <i class="bi bi-exclamation-triangle-fill text-warning text-xl mt-0.5"></i>
+          <div class="flex-1">
+            <h3 class="text-lg font-medium mb-2 text-warning">
+              Password Required to Disconnect
+            </h3>
+            <p class="text-sm text-text-muted mb-4">
+              Your account currently relies on Google for authentication.
+              Please set a password before disconnecting this provider to ensure you can still access your account.
+            </p>
+            <a
+              routerLink="/profile/set-password"
+              class="inline-flex items-center gap-2 border border-primary
+               bg-primary text-primary-foreground px-4 py-2.5
+               hover:bg-text transition-colors font-medium text-sm">
+              <i class="bi bi-shield-lock"></i>
+              Set Password Now
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Message Alert -->
+    @if (message) {
+      <div class="mb-8 p-4 bg-surface-alt border-l-2 border-primary">
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-sm text-text">{{ message }}</p>
+          <button (click)="message = null" class="text-text-muted hover:text-text transition-colors">
+            <i class="bi bi-x-lg text-sm"></i>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Providers Section -->
+    <section>
+      <div class="mb-8 pb-6 border-b border-border">
+        <h2 class="text-xl font-medium">Available Providers</h2>
+      </div>
+
+      <!-- Google Provider -->
+      <div class="group py-8 border-b border-border hover:bg-surface-alt transition-colors">
+        <div class="flex items-center justify-between gap-6">
+
+          <!-- Provider Info -->
+          <div class="flex items-center gap-4 flex-1">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-surface-alt group-hover:bg-surface transition-colors">
+              <i class="bi bi-google text-xl text-text"></i>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <p class="font-medium text-lg">Google</p>
+                @if (isGoogleLinked) {
+                  <span class="text-xs text-success flex items-center gap-1">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Connected
+                  </span>
+                } @else {
+                  <span class="text-xs text-text-muted">Not connected</span>
+                }
+              </div>
+              <p class="text-sm text-text-muted">
+                Sign in with your Google account
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          @if (!isGoogleLinked) {
+            <button
+              (click)="startGoogleLinking()"
+              [disabled]="loading"
+              class="border border-primary bg-primary text-primary-foreground px-6 py-2.5
+                     hover:bg-text transition-colors disabled:opacity-50
+                     font-medium text-sm whitespace-nowrap">
+              @if (loading) {
+                <span>Connecting...</span>
+              } @else {
+                <span>Connect</span>
+              }
+            </button>
+          } @else {
+            <button
+              (click)="disconnectGoogle()"
+              [disabled]="loading || mustDefinePassword"
+              class="border px-6 py-2.5 font-medium text-sm whitespace-nowrap
+         transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              [class.border-border]="!mustDefinePassword"
+              [class.text-text]="!mustDefinePassword"
+              [class.hover:border-error]="!mustDefinePassword"
+              [class.hover:text-error]="!mustDefinePassword"
+              [class.border-warning]="mustDefinePassword"
+              [class.text-warning]="mustDefinePassword"
+            >
+              <span *ngIf="loading">Processing...</span>
+              <span *ngIf="!loading && !mustDefinePassword">Disconnect</span>
+              <span *ngIf="!loading && mustDefinePassword">Password required</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (mustSetPassword) {
+        <div class="mt-8 p-6 bg-surface-alt border border-warning">
+          <h3 class="text-lg font-medium mb-2">
+            Password required
+          </h3>
+          <p class="text-sm text-text-muted mb-4">
+            Your account currently relies on Google for authentication.
+            Please set a password before disconnecting this provider.
+          </p>
+
+          <a
+            routerLink="/profile/set-password"
+            class="inline-flex items-center gap-2 border border-primary
+             bg-primary text-primary-foreground px-4 py-2.5
+             hover:bg-text transition-colors font-medium text-sm">
+            <i class="bi bi-shield-lock"></i>
+            Set password
+          </a>
+        </div>
+      }
+
+      <!-- Future Providers Placeholder -->
+      <div class="py-8 border-b border-border opacity-40 pointer-events-none">
+        <div class="flex items-center justify-between gap-6">
+          <div class="flex items-center gap-4 flex-1">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-surface-alt">
+              <i class="bi bi-github text-xl text-text"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <p class="font-medium text-lg">GitHub</p>
+                <span class="text-xs text-text-muted">Coming soon</span>
+              </div>
+              <p class="text-sm text-text-muted">
+                Sign in with your GitHub account
+              </p>
+            </div>
+          </div>
+          <button
+            disabled
+            class="border border-border text-text-muted px-6 py-2.5
+                   font-medium text-sm whitespace-nowrap cursor-not-allowed">
+            Connect
+          </button>
+        </div>
+      </div>
+
+      <div class="py-8 border-b border-border opacity-40 pointer-events-none">
+        <div class="flex items-center justify-between gap-6">
+          <div class="flex items-center gap-4 flex-1">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-surface-alt">
+              <i class="bi bi-microsoft text-xl text-text"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-3 mb-1">
+                <p class="font-medium text-lg">Microsoft</p>
+                <span class="text-xs text-text-muted">Coming soon</span>
+              </div>
+              <p class="text-sm text-text-muted">
+                Sign in with your Microsoft account
+              </p>
+            </div>
+          </div>
+          <button
+            disabled
+            class="border border-border text-text-muted px-6 py-2.5
+                   font-medium text-sm whitespace-nowrap cursor-not-allowed">
+            Connect
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="mt-16 pt-12 border-t border-border">
+      <h3 class="text-lg font-medium mb-4">About Connected Accounts</h3>
+      <div class="space-y-4 text-sm text-text-muted">
+        <p>
+          Linking external accounts allows you to sign in to StoneMark without using your password.
+          Your account remains secure through the provider's authentication.
+        </p>
+        <p>
+          You can disconnect a provider at any time. Make sure you have at least one way to
+          access your account (password or another provider) before disconnecting.
+        </p>
+      </div>
+    </section>
+
+  </div>
+</div>

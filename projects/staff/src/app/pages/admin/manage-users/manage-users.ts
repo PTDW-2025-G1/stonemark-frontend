@@ -14,12 +14,38 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-manage-users',
   standalone: true,
-  imports: [CommonModule, Toast, Dialog, AutoCompleteModule, ButtonModule, FormsModule, AppToolbarComponent, AppTableComponent],
+  imports: [
+    CommonModule,
+    Toast,
+    Dialog,
+    AutoCompleteModule,
+    ButtonModule,
+    FormsModule,
+    AppToolbarComponent,
+    AppTableComponent
+  ],
   template: `
-    <app-toolbar title="Manage User's" subtitle="Here you can manage the user list of StoneMark" (export)="exportCSV()"></app-toolbar>
+    <app-toolbar
+      title="Manage Users"
+      subtitle="Here you can manage the user list of StoneMark"
+      (export)="exportCSV()"
+    ></app-toolbar>
+
     <p-toast />
 
-    <app-table #table [data]="users()" [columns]="cols" [globalFilterFields]="['id', 'firstName', 'lastName', 'email', 'role']">
+    <app-table
+      #table
+      [data]="users()"
+      [columns]="cols"
+      [globalFilterFields]="[
+        'id',
+        'firstName',
+        'lastName',
+        'username',
+        'primaryContact',
+        'role'
+      ]"
+    >
       <ng-template #actions let-user>
         <p-button
           label="Change Role"
@@ -35,32 +61,29 @@ import { FormsModule } from '@angular/forms';
       [header]="'Change role of ' + selectedUser?.firstName + ' ' + selectedUser?.lastName"
       [modal]="true"
       [style]="{ width: '90vw', maxWidth: '500px' }"
-      [contentStyle]="{ overflow: 'visible' }"
       (onHide)="closeDialog()"
     >
       <div class="flex flex-column gap-3 pt-3">
-        <div class="flex flex-column gap-2">
-          <p-autocomplete
-            id="role"
-            [(ngModel)]="selectedRole"
-            [suggestions]="filteredRoles"
-            (completeMethod)="filterRoles($event)"
-            field="label"
-            [dropdown]="true"
-            placeholder="Select a Role"
-            appendTo="body"
-            styleClass="w-full"
-          ></p-autocomplete>
-        </div>
+        <p-autocomplete
+          [(ngModel)]="selectedRole"
+          [suggestions]="filteredRoles"
+          (completeMethod)="filterRoles($event)"
+          field="label"
+          [dropdown]="true"
+          placeholder="Select a role"
+          appendTo="body"
+          class="w-full"
+        ></p-autocomplete>
       </div>
 
       <ng-template #footer>
         <p-button
           label="Cancel"
           icon="pi pi-times"
-          (onClick)="closeDialog()"
           severity="secondary"
+          (onClick)="closeDialog()"
         ></p-button>
+
         <p-button
           label="Save"
           icon="pi pi-check"
@@ -73,7 +96,7 @@ import { FormsModule } from '@angular/forms';
   providers: [MessageService]
 })
 export class ManageUsers implements OnInit {
-  users = signal<UserDto[]>([]);
+  users = signal<any[]>([]);
   @ViewChild('table') tableComp!: AppTableComponent;
 
   displayDialog = false;
@@ -91,7 +114,8 @@ export class ManageUsers implements OnInit {
     { field: 'id', header: 'ID' },
     { field: 'firstName', header: 'First Name' },
     { field: 'lastName', header: 'Last Name' },
-    { field: 'email', header: 'Email' },
+    { field: 'username', header: 'Username' },
+    { field: 'primaryContact', header: 'Primary Contact' },
     { field: 'role', header: 'Role' },
     { field: 'createdAt', header: 'Created At' }
   ];
@@ -108,13 +132,28 @@ export class ManageUsers implements OnInit {
   loadUsers() {
     this.userManagementService.getAll(0, 100).subscribe({
       next: (page) => {
-        const formattedUsers = (page.content || []).map(user => ({
-          ...user,
-          createdAt: user.createdAt ? new Date(user.createdAt).toLocaleString('pt-PT') : ''
-        }));
+        const formattedUsers = (page.content || []).map(user => {
+          let primaryContact = '';
+
+          if (user.contacts?.length) {
+            const primary = user.contacts.find(
+              c => c.primaryContact && c.verified
+            );
+            primaryContact = primary?.value ?? '';
+          }
+
+          return {
+            ...user,
+            primaryContact,
+            createdAt: user.createdAt
+              ? new Date(user.createdAt).toLocaleString('pt-PT')
+              : ''
+          };
+        });
+
         this.users.set(formattedUsers);
       },
-      error: (err) => {
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
@@ -131,10 +170,10 @@ export class ManageUsers implements OnInit {
     );
   }
 
-  openRoleDialog(user: UserDto) {
+  openRoleDialog(user: any) {
     this.selectedUser = user;
-    const currentRole = this.roleOptions.find(r => r.value === user.role);
-    this.selectedRole = currentRole || null;
+    this.selectedRole =
+      this.roleOptions.find(r => r.value === user.role) ?? null;
     this.filteredRoles = this.roleOptions;
     this.displayDialog = true;
   }
@@ -147,31 +186,48 @@ export class ManageUsers implements OnInit {
   }
 
   saveRole() {
-    if (!this.selectedUser?.id || !this.selectedRole) return;
+    if (!this.selectedUser?.id) return;
 
-    const newRoleValue = typeof this.selectedRole === 'string'
-      ? this.selectedRole
-      : this.selectedRole.value;
+    let roleValue: string | undefined;
 
-    this.userManagementService.updateRole(this.selectedUser.id, newRoleValue)
+    if (typeof this.selectedRole === 'string') {
+      roleValue = this.roleOptions.find(
+        r => r.label === this.selectedRole || r.value === this.selectedRole
+      )?.value;
+    } else if (this.selectedRole?.value) {
+      roleValue = this.selectedRole.value;
+    }
+
+    if (!roleValue) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Invalid role',
+        detail: 'Please select a role from the list'
+      });
+      return;
+    }
+
+    this.userManagementService
+      .updateRole(this.selectedUser.id, roleValue)
       .subscribe({
         next: (updatedUser) => {
-          const formattedUser = {
-            ...updatedUser,
-            createdAt: updatedUser.createdAt ? new Date(updatedUser.createdAt).toLocaleString('pt-PT') : ''
-          };
-          const list = this.users().map(u => u.id === formattedUser.id ? formattedUser : u);
-          this.users.set(list);
+          this.users.set(
+            this.users().map(u =>
+              u.id === updatedUser.id
+                ? { ...u, role: updatedUser.role }
+                : u
+            )
+          );
 
-          const roleLabel = this.roleOptions.find(r => r.value === newRoleValue)?.label || newRoleValue;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: `Role changed for ${roleLabel}`
+            detail: `Role changed to ${roleValue}`
           });
+
           this.closeDialog();
         },
-        error: (err) => {
+        error: () => {
           this.messageService.add({
             severity: 'error',
             summary: 'Erro',

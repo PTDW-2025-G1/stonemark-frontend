@@ -7,7 +7,7 @@ import {NotificationService} from '@core/services/notification.service';
 export class PasswordService {
   constructor(private fb: FormBuilder, private notificationService: NotificationService) {}
 
-  createForm(mode: 'change' | 'reset'): FormGroup {
+  createForm(mode: 'change' | 'reset' | 'set'): FormGroup {
     const controls: any = {
       newPassword: [
         '',

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { AccountContactService } from '@core/services/account-contact/account-contact.service';
+import { AccountContactService } from '@core/services/account/account-contact/account-contact.service';
 import { AuthService } from '@core/services/auth/auth.service';
 
 import { UserContactDto } from '@api/model/user-contact-dto';

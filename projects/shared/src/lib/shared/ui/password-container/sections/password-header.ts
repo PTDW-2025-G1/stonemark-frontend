@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-password-header',
@@ -11,24 +11,42 @@ import { Component, Input } from '@angular/core';
           class="text-primary text-3xl"
           [class.bi-shield-lock]="mode === 'change'"
           [class.bi-key]="mode === 'reset'"
+          [class.bi-shield-check]="mode === 'set'"
         ></i>
       </div>
 
       <h2 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-2">
-        {{ mode === 'change' ? 'Change Password' : 'Reset Password' }}
+        {{ title }}
       </h2>
 
       <p class="text-text-muted">
-        {{
-          mode === 'change'
-            ? 'Keep your account secure with a strong password'
-            : 'Enter your new password to regain access to your account'
-        }}
+        {{ description }}
       </p>
     </div>
-  `,
-  styles: []
+  `
 })
 export class PasswordHeaderComponent {
-  @Input() mode: 'change' | 'reset' = 'change';
+  @Input() mode: 'change' | 'set' | 'reset' = 'change';
+
+  get title(): string {
+    switch (this.mode) {
+      case 'set':
+        return 'Set Password';
+      case 'reset':
+        return 'Reset Password';
+      default:
+        return 'Change Password';
+    }
+  }
+
+  get description(): string {
+    switch (this.mode) {
+      case 'set':
+        return 'Create a password to secure your account';
+      case 'reset':
+        return 'Enter your new password to regain access to your account';
+      default:
+        return 'Keep your account secure with a strong password';
+    }
+  }
 }

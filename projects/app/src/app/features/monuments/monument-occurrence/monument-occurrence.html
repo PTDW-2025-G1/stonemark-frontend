@@ -61,13 +61,39 @@
         </div>
       }
 
+      <!-- Filter -->
+      <div class="flex items-center justify-end gap-3 mb-6">
+        <label class="text-xs font-semibold text-text-muted uppercase tracking-wider">Filter by Mark ({{ marks.length }})</label>
+        <div class="w-64">
+          <app-shared-select
+            [options]="marks"
+            [selected]="selectedMarkId"
+            [label]="'All Marks'"
+            [searchable]="true"
+            [optionLabelKey]="'title'"
+            [optionValueKey]="'id'"
+            (selectionChange)="onMarkFilterChange($event)">
+          </app-shared-select>
+        </div>
+        @if (selectedMarkId) {
+          <button
+            (click)="onMarkFilterChange('')"
+            class="text-xs text-primary hover:text-primary/80 transition-colors font-medium flex items-center gap-1.5"
+          >
+            <i class="bi bi-x-circle"></i>
+            <span>Clear filter</span>
+          </button>
+        }
+      </div>
+
       <!-- Occurrences Grid -->
       @if (!loading) {
         @if (occurrences.length > 0) {
           <app-occurrences-grid
             [occurrences]="occurrences"
+            [showMarkBadge]="true"
             (viewOccurrence)="viewOccurrence($event)"
-            (viewMonument)="viewMonument($event)">
+            (viewMark)="viewMark($event)">
           </app-occurrences-grid>
 
           @if (totalPages > 1) {

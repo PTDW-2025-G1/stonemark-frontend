@@ -14,17 +14,20 @@ import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrence
 import { EmptyStateComponent } from '@features/marks/mark-detail/sections/empty-state';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
+import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
 import { MarkDto } from '@api/model/mark-dto';
 import { MarkService } from '@core/services/mark/mark.service';
 import { BookmarkService } from '@core/services/bookmark/bookmark.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
+import { MonumentService } from '@core/services/monument/monument.service';
+import { MonumentResponseDto } from '@api/model/monument-response-dto';
 
 @Component({
   selector: 'app-mark-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent, PaginationComponent],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent, PaginationComponent, SharedSelectComponent],
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
@@ -37,10 +40,12 @@ export class MarkDetailComponent implements OnInit {
   bookmarksCount = 0;
   isBookmarked = false;
 
-  // Pagination
   currentPage = 1;
   totalPages = 1;
   pageSize = 6;
+
+  monuments: MonumentResponseDto[] = [];
+  selectedMonumentId: number | string = '';
 
   private currentMarkId?: number;
 
@@ -51,7 +56,8 @@ export class MarkDetailComponent implements OnInit {
     private markService: MarkService,
     private markOccurrenceService: MarkOccurrenceService,
     private bookmarkService: BookmarkService,
-    private authService: AuthService
+    private authService: AuthService,
+    private monumentService: MonumentService
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +65,10 @@ export class MarkDetailComponent implements OnInit {
       switchMap(params => {
         const markId = Number(params.get('id'));
         this.currentMarkId = markId;
-        this.loadOccurrences(markId);
+
+        this.loadMonuments(markId);
+
+        this.loadOccurrences(markId, 0);
 
         this.markOccurrenceService.countByMarkId(markId).subscribe(count => {
           this.occurrencesCount = count;
@@ -95,22 +104,37 @@ export class MarkDetailComponent implements OnInit {
     });
   }
 
+  private loadMonuments(markId: number): void {
+    this.markOccurrenceService.getAvailableMonumentsByMark(markId).subscribe({
+      next: monuments => {
+        this.monuments = monuments;
+        console.log('Available monuments for mark:', monuments.length, monuments);
+      },
+      error: err => {
+        console.error('Error loading monuments for filter:', err);
+      }
+    });
+  }
+
   private loadOccurrences(markId: number, page: number = 0): void {
     this.loading = true;
 
-    this.markOccurrenceService.getByMarkId(markId, page, this.pageSize).subscribe({
-      next: pageData => {
+    const request$ = this.selectedMonumentId
+      ? this.markOccurrenceService.filterByMarkAndMonument(markId, Number(this.selectedMonumentId), page, this.pageSize)
+      : this.markOccurrenceService.getByMarkId(markId, page, this.pageSize);
+
+    request$.subscribe({
+      next: (pageData: any) => {
         this.occurrences = pageData.content ?? [];
         this.totalPages = pageData.totalPages ?? 1;
         this.currentPage = (pageData.number ?? 0) + 1; // Backend uses 0-based, UI uses 1-based
 
-        // Calculate unique monuments from all occurrences (this might need adjustment if you want all pages)
         this.uniqueMonumentsCount = new Set(
-          pageData.content?.map(o => o.monument?.id).filter(Boolean)
+          pageData.content?.map((o: any) => o.monument?.id).filter(Boolean)
         ).size;
         this.loading = false;
       },
-      error: err => {
+      error: (err: any) => {
         console.error('Error loading occurrences:', err);
         this.occurrences = [];
         this.loading = false;
@@ -122,6 +146,14 @@ export class MarkDetailComponent implements OnInit {
     if (this.currentMarkId != null) {
       this.loadOccurrences(this.currentMarkId, page - 1); // Convert to 0-based for backend
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  onMonumentFilterChange(monumentId: string | number): void {
+    this.selectedMonumentId = monumentId;
+    this.currentPage = 1;
+    if (this.currentMarkId != null) {
+      this.loadOccurrences(this.currentMarkId, 0);
     }
   }
 

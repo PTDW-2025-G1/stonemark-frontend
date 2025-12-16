@@ -20,14 +20,25 @@ import { DateUtils } from '@shared/utils/date.utils';
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-            <!-- Monumento -->
+            <!-- Badge (Monumento ou Marca) -->
             <div class="absolute top-3 left-3">
-              <button
-                (click)="viewMonument.emit(occurrence.monument?.id); $event.stopPropagation()"
-                class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">
-                <i class="bi bi-building"></i>
-                {{ occurrence.monument?.name }}
-              </button>
+              @if (showMarkBadge) {
+                <!-- Marca -->
+                <button
+                  (click)="viewMark.emit(occurrence.mark?.id); $event.stopPropagation()"
+                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">
+                  <i class="bi bi-grid-3x3-gap"></i>
+                  {{ occurrence.mark?.title }}
+                </button>
+              } @else {
+                <!-- Monumento -->
+                <button
+                  (click)="viewMonument.emit(occurrence.monument?.id); $event.stopPropagation()"
+                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">
+                  <i class="bi bi-building"></i>
+                  {{ occurrence.monument?.name }}
+                </button>
+              }
             </div>
 
             <!-- Quick View -->
@@ -70,8 +81,10 @@ import { DateUtils } from '@shared/utils/date.utils';
 })
 export class OccurrencesGridComponent {
   @Input() occurrences: MarkOccurrenceDto[] = [];
+  @Input() showMarkBadge = false; // false = mostra monumento (default), true = mostra marca
   @Output() viewOccurrence = new EventEmitter<number>();
   @Output() viewMonument = new EventEmitter<number>();
+  @Output() viewMark = new EventEmitter<number>();
 
   formatDate(date: string | undefined): string {
     return DateUtils.formatShortDate(date);

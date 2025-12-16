@@ -12,12 +12,14 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrences-grid';
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
-import {InfoBoxComponent} from '@features/marks/mark-detail/sections/info-box';
+import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
+import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
+import { MarkDto } from '@api/model/mark-dto';
 
 @Component({
   selector: 'app-monument-occurrence',
   standalone: true,
-  imports: [CommonModule, RouterModule, BreadcrumbComponent, OccurrencesGridComponent, PaginationComponent, InfoBoxComponent],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent, OccurrencesGridComponent, PaginationComponent, InfoBoxComponent, SharedSelectComponent],
   templateUrl: './monument-occurrence.html'
 })
 export class MonumentOccurrenceComponent implements OnInit {
@@ -31,6 +33,10 @@ export class MonumentOccurrenceComponent implements OnInit {
   totalPages = 1;
   pageSize = 6;
 
+  // Filter by mark
+  marks: MarkDto[] = [];
+  selectedMarkId: number | string = '';
+
   private currentMonumentId?: number;
 
   constructor(
@@ -42,6 +48,8 @@ export class MonumentOccurrenceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadMarks();
+
     this.monument$ = this.route.paramMap.pipe(
       switchMap(params => {
         const monumentId = Number(params.get('id'));
@@ -70,10 +78,25 @@ export class MonumentOccurrenceComponent implements OnInit {
     );
   }
 
+  private loadMarks(): void {
+    this.markOccurrenceService.getAvailableMarks().subscribe({
+      next: marks => {
+        this.marks = marks;
+      },
+      error: err => {
+        console.error('Error loading marks for filter:', err);
+      }
+    });
+  }
+
   private loadOccurrences(monumentId: number, page: number = 0): void {
     this.loading = true;
 
-    this.markOccurrenceService.getByMonumentId(monumentId, page, this.pageSize).subscribe({
+    const request$ = this.selectedMarkId
+      ? this.markOccurrenceService.filterByMark(Number(this.selectedMarkId), page, this.pageSize)
+      : this.markOccurrenceService.getByMonumentId(monumentId, page, this.pageSize);
+
+    request$.subscribe({
       next: pageData => {
         this.occurrences = pageData.content ?? [];
         this.totalPages = pageData.totalPages ?? 1;
@@ -90,8 +113,16 @@ export class MonumentOccurrenceComponent implements OnInit {
 
   onPageChange(page: number): void {
     if (this.currentMonumentId != null) {
-      this.loadOccurrences(this.currentMonumentId, page - 1);
+      this.loadOccurrences(this.currentMonumentId, page - 1); // Convert to 0-based for backend
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  onMarkFilterChange(markId: string | number): void {
+    this.selectedMarkId = markId;
+    this.currentPage = 1;
+    if (this.currentMonumentId != null) {
+      this.loadOccurrences(this.currentMonumentId, 0);
     }
   }
 
@@ -99,8 +130,8 @@ export class MonumentOccurrenceComponent implements OnInit {
     this.router.navigate(['marks/occurrence', occurrenceId]);
   }
 
-  viewMonument(monumentId: number): void {
-    this.router.navigate(['/monuments', monumentId]);
+  viewMark(markId: number): void {
+    this.router.navigate(['/marks', markId]);
   }
 
   backToMonument(): void {

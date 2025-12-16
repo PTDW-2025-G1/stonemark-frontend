@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import {MarkDto} from '@api/model/mark-dto';
 
 @Component({

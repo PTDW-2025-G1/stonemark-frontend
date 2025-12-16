@@ -33,15 +33,32 @@ export class MarkOccurrenceService {
     return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-mark/${markId}`, { params });
   }
 
-  getLatestOccurrences(): Observable<MarkOccurrenceDto[]> {
-    return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/latest`);
-  }
-
   getByMonumentId(monumentId: number, page: number = 0, size: number = 20): Observable<PageMarkOccurrenceDto> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size);
     return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-monument/${monumentId}`, { params });
+  }
+
+  filterByMark(markId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceDto> {
+    const params = new HttpParams()
+      .set('markId', markId)
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/filter-by-mark`, { params });
+  }
+
+  filterByMarkAndMonument(markId: number, monumentId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceDto> {
+    const params = new HttpParams()
+      .set('markId', markId)
+      .set('monumentId', monumentId)
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/filter-by-mark-and-monument`, { params });
+  }
+
+  getLatestOccurrences(): Observable<MarkOccurrenceDto[]> {
+    return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/latest`);
   }
 
   countByMarkId(markId: number | undefined): Observable<number> {
@@ -62,5 +79,15 @@ export class MarkOccurrenceService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  // Filter endpoints
+  getAvailableMarks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/filters/marks`);
+  }
+
+  getAvailableMonumentsByMark(markId: number): Observable<any[]> {
+    const params = new HttpParams().set('markId', markId);
+    return this.http.get<any[]>(`${this.baseUrl}/filters/monuments-by-mark`, { params });
   }
 }

@@ -2,70 +2,45 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-features-section',
+  standalone: true,
   template: `
-    <div class="max-w-6xl mx-auto py-20 px-6">
+    <section class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">Why Choose Stone Mark?</h2>
+        <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Key Features</div>
+        <h2 class="text-4xl md:text-5xl font-serif">Why Choose Stone Mark?</h2>
       </div>
-      <div class="grid md:grid-cols-2 gap-12">
-        <!-- Feature 1 -->
-        <div class="flex gap-6 p-6 bg-surface-alt rounded-2xl hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
-              <i class="bi bi-globe-europe-africa text-3xl text-primary"></i>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-3">Explore Monuments</h3>
-            <p class="text-text-muted leading-relaxed">
-              Navigate through an extensive database of historical monuments and discover the marks left by craftsmen.
-            </p>
-          </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+        <div class="relative pl-8">
+          <div class="absolute left-0 top-1 text-primary font-serif text-xl">01</div>
+          <h3 class="text-2xl font-serif mb-3">Explore Monuments</h3>
+          <p class="text-text-muted leading-relaxed">
+            Navigate through an extensive database of historical monuments and discover the marks left by craftsmen.
+          </p>
         </div>
-        <!-- Feature 2 -->
-        <div class="flex gap-6 p-6 bg-surface-alt rounded-2xl hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-info/10 rounded-xl flex items-center justify-center">
-              <i class="bi bi-hammer text-3xl text-info"></i>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-3">Discover Marks</h3>
-            <p class="text-text-muted leading-relaxed">
-              Explore a living archive of stonemason marks scattered across monuments and heritage sites.
-            </p>
-          </div>
+        <div class="relative pl-8">
+          <div class="absolute left-0 top-1 text-primary font-serif text-xl">02</div>
+          <h3 class="text-2xl font-serif mb-3">Discover Marks</h3>
+          <p class="text-text-muted leading-relaxed">
+            Explore a living archive of stonemason marks scattered across monuments and heritage sites.
+          </p>
         </div>
-        <!-- Feature 3 -->
-        <div class="flex gap-6 p-6 bg-surface-alt rounded-2xl hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-success/10 rounded-xl flex items-center justify-center">
-              <i class="bi bi-geo-alt-fill text-3xl text-success"></i>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-3">Location Mapping</h3>
-            <p class="text-text-muted leading-relaxed">
-              Every submission is automatically geotagged, creating a comprehensive map of cultural heritage markers.
-            </p>
-          </div>
+        <div class="relative pl-8">
+          <div class="absolute left-0 top-1 text-primary font-serif text-xl">03</div>
+          <h3 class="text-2xl font-serif mb-3">Location Mapping</h3>
+          <p class="text-text-muted leading-relaxed">
+            Every submission is automatically geotagged, creating a comprehensive map of cultural heritage markers.
+          </p>
         </div>
-        <!-- Feature 4 -->
-        <div class="flex gap-6 p-6 bg-surface-alt rounded-2xl hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-warning/10 rounded-xl flex items-center justify-center">
-              <i class="bi bi-graph-up-arrow text-3xl text-warning"></i>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-3">Track Your Impact</h3>
-            <p class="text-text-muted leading-relaxed">
-              Monitor your submissions from your personal dashboard and see your contributions.
-            </p>
-          </div>
+        <div class="relative pl-8">
+          <div class="absolute left-0 top-1 text-primary font-serif text-xl">04</div>
+          <h3 class="text-2xl font-serif mb-3">Track Your Impact</h3>
+          <p class="text-text-muted leading-relaxed">
+            Monitor your submissions from your personal dashboard and see your contributions.
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   `,
 })
 export class FeaturesSectionComponent {}

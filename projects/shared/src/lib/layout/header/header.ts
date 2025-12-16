@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
-import {ButtonComponent} from '@shared/ui/button/button';
 import { AuthService } from '@core/services/auth/auth.service';
 import { ProfileService } from '@core/services/profile/profile.service';
 import { UserDto } from '@api/model/user-dto';
@@ -11,7 +10,7 @@ import {environment} from '@env/environment';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss']
 })
@@ -19,6 +18,9 @@ export class Header implements OnInit, OnDestroy {
   isMenuOpen = false;
   isDropdownOpen = false;
   user: UserDto | null = null;
+  isHeaderVisible = true;
+  private lastScrollY = 0;
+  private scrollThreshold = 100;
   private authSubscription?: Subscription;
 
   menuItems = [
@@ -42,10 +44,14 @@ export class Header implements OnInit, OnDestroy {
         this.user = null;
       }
     });
+
+    // Add scroll listener
+    window.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
+    window.removeEventListener('scroll', this.handleScroll.bind(this));
   }
 
   private loadUser(): void {
@@ -96,5 +102,29 @@ export class Header implements OnInit, OnDestroy {
     const currentPath = window.location.pathname;
     const routePath = route.replace(environment.baseUrl, '');
     return currentPath.startsWith(routePath) || currentPath.includes(routePath);
+  }
+
+  private handleScroll(): void {
+    const currentScrollY = window.scrollY;
+
+    // Always show header at the top of the page
+    if (currentScrollY < this.scrollThreshold) {
+      this.isHeaderVisible = true;
+      this.lastScrollY = currentScrollY;
+      return;
+    }
+
+    // Hide header when scrolling down, show when scrolling up
+    if (currentScrollY > this.lastScrollY) {
+      // Scrolling down
+      this.isHeaderVisible = false;
+      this.closeMenu(); // Close mobile menu if open
+      this.isDropdownOpen = false; // Close dropdown if open
+    } else if (currentScrollY < this.lastScrollY) {
+      // Scrolling up
+      this.isHeaderVisible = true;
+    }
+
+    this.lastScrollY = currentScrollY;
   }
 }

@@ -21,44 +21,63 @@ describe('HeroSectionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the main heading', () => {
-    const heading = fixture.debugElement.query(By.css('h1'));
-    expect(heading).toBeTruthy();
-    expect(heading.nativeElement.textContent.trim()).toBe('Discover. Capture. Preserve.');
+  it('should render the section badge with correct text', () => {
+    const badge = fixture.debugElement.query(By.css('.border.border-border'));
+    expect(badge).toBeTruthy();
+    expect(badge.nativeElement.textContent.trim()).toBe('Help & Guide');
   });
 
-  it('should render the description paragraph', () => {
-    const paragraph = fixture.debugElement.query(By.css('p'));
+  it('should render badge with uppercase tracking-widest style', () => {
+    const badge = fixture.debugElement.query(By.css('.uppercase.tracking-widest'));
+    expect(badge).toBeTruthy();
+  });
+
+  it('should render the main heading with Capture in italic', () => {
+    const heading = fixture.debugElement.query(By.css('h1'));
+    expect(heading).toBeTruthy();
+    expect(heading.nativeElement.textContent).toContain('Discover');
+    expect(heading.nativeElement.textContent).toContain('Capture');
+    expect(heading.nativeElement.textContent).toContain('Preserve');
+  });
+
+  it('should have italic span for Capture word', () => {
+    const italicSpan = fixture.debugElement.query(By.css('h1 .italic'));
+    expect(italicSpan).toBeTruthy();
+    expect(italicSpan.nativeElement.textContent).toBe('Capture');
+  });
+
+  it('should render subtitle paragraph', () => {
+    const paragraph = fixture.debugElement.query(By.css('p.text-text-muted'));
     expect(paragraph).toBeTruthy();
     expect(paragraph.nativeElement.textContent).toContain('Every mark tells a story');
   });
 
-  it('should render the bank icon', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-bank2'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should render the geo-alt-fill background icon', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-geo-alt-fill'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should have proper text gradient styling on heading', () => {
-    const heading = fixture.debugElement.query(By.css('h1'));
-    const classes = heading.nativeElement.className;
-    expect(classes).toContain('bg-gradient-to-r');
-    expect(classes).toContain('bg-clip-text');
-    expect(classes).toContain('text-transparent');
-  });
-
-  it('should have proper section structure with relative positioning', () => {
-    const container = fixture.debugElement.query(By.css('.relative.py-20'));
+  it('should have centered text layout', () => {
+    const container = fixture.debugElement.query(By.css('.text-center'));
     expect(container).toBeTruthy();
   });
 
-  it('should render description with muted text styling', () => {
-    const paragraph = fixture.debugElement.query(By.css('.text-text-muted'));
-    expect(paragraph).toBeTruthy();
+  it('should have proper section structure with padding', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    const classes = section.nativeElement.className;
+
+    expect(classes).toContain('pt-32');
+    expect(classes).toContain('pb-20');
+  });
+
+  it('should have max-width constraint on container', () => {
+    const container = fixture.debugElement.query(By.css('.max-w-4xl'));
+    expect(container).toBeTruthy();
+  });
+
+  it('should have font-serif on heading', () => {
+    const heading = fixture.debugElement.query(By.css('h1'));
+    expect(heading.nativeElement.className).toContain('font-serif');
+  });
+
+  it('should not render any icons', () => {
+    const icons = fixture.debugElement.queryAll(By.css('.bi'));
+    expect(icons.length).toBe(0);
   });
 
   it('should mention joining explorers in the description', () => {

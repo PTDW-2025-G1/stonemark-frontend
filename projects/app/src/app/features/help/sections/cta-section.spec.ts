@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CallToActionComponent } from './cta-section';
 import { By } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CallToActionComponent', () => {
   let component: CallToActionComponent;
@@ -10,8 +10,7 @@ describe('CallToActionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CallToActionComponent],
-      providers: [provideRouter([])]
+      imports: [CallToActionComponent, RouterTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CallToActionComponent);
@@ -29,76 +28,77 @@ describe('CallToActionComponent', () => {
   });
 
   it('should render the description paragraph', () => {
-    const paragraph = fixture.debugElement.query(By.css('.text-xl.text-text-muted'));
-    expect(paragraph.nativeElement.textContent).toContain('Join our growing community');
+    const paragraphs = fixture.debugElement.queryAll(By.css('p'));
+    const description = paragraphs[0];
+    expect(description.nativeElement.textContent).toContain('Join our growing community');
   });
 
-  it('should render link to submit page', () => {
-    const link = fixture.debugElement.query(By.css('a[href="/submit"]'));
+  it('should have a link to submit page', () => {
+    const link = fixture.debugElement.query(By.css('a[routerLink="/submit"]'));
     expect(link).toBeTruthy();
+    expect(link.nativeElement.textContent.trim()).toBe('Submit Your First Mark');
   });
 
-  it('should render Submit Your First Mark button text', () => {
-    const link = fixture.debugElement.query(By.css('a[href="/submit"]'));
-    expect(link.nativeElement.textContent).toContain('Submit Your First Mark');
+  it('should have a link to search monuments', () => {
+    const link = fixture.debugElement.query(By.css('a[href="/search/monuments"]'));
+    expect(link).toBeTruthy();
+    expect(link.nativeElement.textContent.trim()).toBe('Explore Database');
   });
 
-  it('should render camera-fill icon in button', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-camera-fill'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should render arrow-right icon in button', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-arrow-right'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should render footer trust indicators', () => {
-    const footer = fixture.debugElement.query(By.css('.text-sm.text-text-muted'));
-    expect(footer.nativeElement.textContent).toContain('Secure');
-    expect(footer.nativeElement.textContent).toContain('Private');
-    expect(footer.nativeElement.textContent).toContain('Free Forever');
-  });
-
-  it('should render shield-check icon in footer', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-shield-check'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should have primary button styling', () => {
-    const button = fixture.debugElement.query(By.css('a[href="/submit"]'));
-    const classes = button.nativeElement.className;
+  it('should apply primary button styles to Submit link', () => {
+    const link = fixture.debugElement.query(By.css('a[routerLink="/submit"]'));
+    const classes = link.nativeElement.className;
     expect(classes).toContain('bg-primary');
     expect(classes).toContain('text-primary-foreground');
+    expect(classes).toContain('border-primary');
   });
 
-  it('should have rounded-full styling on button', () => {
-    const button = fixture.debugElement.query(By.css('a[href="/submit"]'));
-    expect(button.nativeElement.className).toContain('rounded-full');
+  it('should apply secondary button styles to Explore link', () => {
+    const link = fixture.debugElement.query(By.css('a[href="/search/monuments"]'));
+    const classes = link.nativeElement.className;
+    expect(classes).toContain('bg-surface');
+    expect(classes).toContain('border-border');
   });
 
-  it('should have hover scale effect on button', () => {
-    const button = fixture.debugElement.query(By.css('a[href="/submit"]'));
-    expect(button.nativeElement.className).toContain('hover:scale-105');
+  it('should render both action buttons', () => {
+    const buttons = fixture.debugElement.queryAll(By.css('a'));
+    expect(buttons.length).toBe(2);
   });
 
-  it('should mention heritage enthusiasts in description', () => {
-    const paragraph = fixture.debugElement.query(By.css('.text-xl.text-text-muted'));
-    expect(paragraph.nativeElement.textContent).toContain('heritage enthusiasts');
+  it('should have proper section structure', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    expect(section).toBeTruthy();
+    expect(section.nativeElement.className).toContain('py-24');
   });
 
-  it('should mention preserving stories for future generations', () => {
-    const paragraph = fixture.debugElement.query(By.css('.text-xl.text-text-muted'));
-    expect(paragraph.nativeElement.textContent).toContain('future generations');
-  });
-
-  it('should have proper section padding', () => {
-    const section = fixture.debugElement.query(By.css('.py-24'));
+  it('should have border-top on section', () => {
+    const section = fixture.debugElement.query(By.css('section.border-t.border-border'));
     expect(section).toBeTruthy();
   });
 
-  it('should have relative positioning for overlay', () => {
-    const container = fixture.debugElement.query(By.css('.relative.overflow-hidden'));
+  it('should have centered text layout', () => {
+    const container = fixture.debugElement.query(By.css('.text-center'));
     expect(container).toBeTruthy();
   });
+
+  it('should have font-serif on heading', () => {
+    const heading = fixture.debugElement.query(By.css('h2'));
+    expect(heading.nativeElement.className).toContain('font-serif');
+  });
+
+  it('should render italic closing statement', () => {
+    const paragraphs = fixture.debugElement.queryAll(By.css('p'));
+    const lastParagraph = paragraphs[paragraphs.length - 1];
+    expect(lastParagraph.nativeElement.className).toContain('italic');
+    expect(lastParagraph.nativeElement.textContent).toContain('Secure');
+  });
+
+  it('should mention secure, private, and free', () => {
+    const paragraphs = fixture.debugElement.queryAll(By.css('p'));
+    const lastParagraph = paragraphs[paragraphs.length - 1];
+    expect(lastParagraph.nativeElement.textContent).toContain('Secure');
+    expect(lastParagraph.nativeElement.textContent).toContain('Private');
+    expect(lastParagraph.nativeElement.textContent).toContain('Free Forever');
+  });
 });
+

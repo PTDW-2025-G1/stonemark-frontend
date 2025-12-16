@@ -11,12 +11,8 @@ import { CommonModule } from '@angular/common';
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div class="text-center max-w-4xl mx-auto mb-16 sm:mb-24">
 
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border border-border shadow-sm mb-8 animate-fade-in">
-            <span class="flex h-2 w-2 relative">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span class="text-xs font-semibold text-text-muted uppercase tracking-wider">Digital Archive</span>
+          <div class="inline-block border border-border px-3 py-1 text-xs uppercase tracking-widest font-bold mb-6 bg-surface-alt">
+            Digital Archive
           </div>
 
           <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-medium text-text leading-[1.05] tracking-tight mb-6 animate-slide-up">

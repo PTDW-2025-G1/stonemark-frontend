@@ -1,162 +1,188 @@
-<header class="bg-surface-alt shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
+<header
+  class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-6 transition-transform duration-300 ease-in-out"
+  [class.-translate-y-full]="!isHeaderVisible"
+>
+  <div class="max-w-7xl mx-auto">
+    <div class="bg-white/80 backdrop-blur-xl border border-border rounded-full shadow-lg px-6 py-3">
+      <div class="flex items-center justify-between gap-8">
 
-      <!-- Logo -->
-      <div
-        (click)="onHome()"
-        class="flex items-center cursor-pointer select-none"
-        aria-label="StoneMark — Início"
-        title="StoneMark"
-      >
-        <img
-          src="assets/stonemark-big-logo.png"
-          alt="StoneMark Logo"
-          class="h-12 w-auto sm:h-16"
-        />
+        <!-- Logo -->
+        <div
+          (click)="onHome()"
+          class="flex items-center cursor-pointer select-none shrink-0"
+          aria-label="StoneMark"
+        >
+          <img
+            src="assets/stonemark-big-logo.png"
+            alt="StoneMark"
+            class="h-10 w-auto"
+          />
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-1">
+          @for (item of menuItems; track item.route) {
+            <a
+              [href]="item.route"
+              class="px-4 py-2 text-sm font-medium transition-colors rounded-full hover:text-text hover:bg-surface-alt/50"
+              [class.text-text]="isActiveRoute(item.route)"
+              [class.bg-surface-alt]="isActiveRoute(item.route)"
+              [class.text-text-muted]="!isActiveRoute(item.route)"
+            >
+              {{ item.label }}
+            </a>
+          }
+        </nav>
+
+        <!-- User Section -->
+        <div class="hidden lg:flex items-center gap-3 shrink-0">
+          @if (authService.getAccessToken() && user) {
+            <div class="relative">
+              <button
+                (click)="toggleDropdown()"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-text
+                       hover:bg-surface-alt rounded-full transition-colors"
+              >
+                <span>{{ user.firstName }}</span>
+                <i class="bi text-xs" [ngClass]="isDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+              </button>
+
+              <!-- Dropdown -->
+              @if (isDropdownOpen) {
+                <div class="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-xl border border-border
+                            rounded-2xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <button
+                    (click)="goToProfile()"
+                    class="w-full text-left px-4 py-2.5 text-sm text-text-muted hover:text-text
+                           hover:bg-surface-alt transition-colors flex items-center gap-3"
+                  >
+                    <i class="bi bi-person-circle"></i>
+                    <span>Profile</span>
+                  </button>
+                  <button
+                    (click)="goToBookmarks()"
+                    class="w-full text-left px-4 py-2.5 text-sm text-text-muted hover:text-text
+                           hover:bg-surface-alt transition-colors flex items-center gap-3"
+                  >
+                    <i class="bi bi-bookmark"></i>
+                    <span>Bookmarks</span>
+                  </button>
+                  <div class="h-px bg-border my-2"></div>
+                  <button
+                    (click)="onLogout()"
+                    class="w-full text-left px-4 py-2.5 text-sm text-error hover:bg-error/10
+                           transition-colors flex items-center gap-3"
+                  >
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                  </button>
+                </div>
+              }
+            </div>
+          } @else {
+            <button
+              (click)="onLogin()"
+              class="px-6 py-2 bg-primary text-primary-foreground text-sm font-medium
+                     rounded-full hover:bg-text transition-colors"
+            >
+              Sign In
+            </button>
+          }
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          (click)="toggleMenu()"
+          class="lg:hidden p-2 text-text-muted hover:text-text rounded-full
+                 hover:bg-surface-alt transition-colors"
+          [attr.aria-expanded]="isMenuOpen"
+        >
+          @if (!isMenuOpen) {
+            <i class="bi bi-list text-2xl"></i>
+          } @else {
+            <i class="bi bi-x-lg text-xl"></i>
+          }
+        </button>
       </div>
+    </div>
+  </div>
+</header>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex flex-1 items-center justify-center space-x-8">
+<!-- Mobile Menu -->
+@if (isMenuOpen) {
+  <div class="fixed inset-0 z-40 lg:hidden">
+    <!-- Backdrop -->
+    <div
+      class="absolute inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200"
+      (click)="closeMenu()"
+    ></div>
+
+    <!-- Menu Panel -->
+    <div class="absolute top-24 left-4 right-4 bg-white/95 backdrop-blur-xl border border-border
+                rounded-3xl shadow-2xl p-6 animate-in slide-in-from-top-4 duration-300">
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1 mb-6">
         @for (item of menuItems; track item.route) {
           <a
             [href]="item.route"
-            [class]="'pb-1 border-b-2 transition-all duration-200 font-medium text-m ' +
-                     (isActiveRoute(item.route)
-                       ? 'text-primary border-primary'
-                       : 'text-text-muted border-transparent hover:text-primary hover:border-primary')"
+            (click)="closeMenu()"
+            class="block px-4 py-3 text-sm font-medium rounded-xl transition-colors"
+            [class.text-text]="isActiveRoute(item.route)"
+            [class.bg-surface-alt]="isActiveRoute(item.route)"
+            [class.text-text-muted]="!isActiveRoute(item.route)"
+            [class.hover:bg-surface-alt]="!isActiveRoute(item.route)"
           >
             {{ item.label }}
           </a>
         }
       </nav>
 
-      <!-- User Menu (separado do nav) -->
-      <div class="hidden md:flex items-center">
-        @if (authService.getAccessToken() && user){
-          <div class="relative">
-            <button
-              (click)="toggleDropdown()"
-              class="flex items-center gap-2 text-sm font-semibold text-text-muted hover:text-primary transition"
-            >
-              <span>{{ user.firstName }}</span>
-              <i class="bi" [ngClass]="isDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-            </button>
-
-            <!-- Dropdown -->
-            @if (isDropdownOpen) {
-              <div
-                class="absolute right-0 mt-2 w-40 bg-surface-alt border border-border rounded-lg shadow-lg py-2"
-              >
-                <button
-                  (click)="goToProfile()"
-                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
-                >
-                  <i class="bi bi-person-circle"></i>
-                  Profile
-                </button>
-                <button
-                  (click)="goToBookmarks()"
-                  class="block w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-primary"
-                >
-                  <i class="bi bi-bookmark"></i>
-                  Bookmarks
-                </button>
-                <button
-                  (click)="onLogout()"
-                  class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-text-muted hover:bg-surface-muted hover:text-error transition"
-                >
-                  <i class="bi bi-box-arrow-right"></i>
-                  Logout
-                </button>
-              </div>
-            }
-          </div>
-        } @else {
-          <a (click)="onLogin()" class="inline-block">
-            <app-button variant="secondary">
-              <i class="bi bi-person"></i>
-              Sign In
-            </app-button>
-          </a>
-        }
-      </div>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
-        <button
-          (click)="toggleMenu()"
-          class="inline-flex items-center justify-center p-2 rounded-lg text-text-muted hover:text-primary hover:bg-surface-muted transition-colors duration-200"
-          [attr.aria-expanded]="isMenuOpen"
-        >
-          <span class="sr-only">Toggle menu</span>
-
-          @if (!isMenuOpen) {
-            <i class="bi bi-list text-2xl"></i>
-          } @else {
-            <i class="bi bi-x-lg text-2xl"></i>
-          }
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile menu -->
-  <div
-    class="md:hidden transition-all duration-300 ease-in-out overflow-hidden"
-    [class.max-h-96]="isMenuOpen"
-    [class.max-h-0]="!isMenuOpen"
-    [class.opacity-100]="isMenuOpen"
-    [class.opacity-0]="!isMenuOpen"
-  >
-    <div class="px-4 pt-2 pb-6 space-y-1 bg-surface rounded-b-2xl shadow-md">
-      @for (item of menuItems; track item.route) {
-        <a
-          [href]="item.route"
-          (click)="closeMenu()"
-          [class]="'block px-4 py-3 rounded-lg transition-all duration-200 font-medium border-l-4 ' +
-                   (isActiveRoute(item.route)
-                     ? 'text-primary border-primary bg-surface-muted'
-                     : 'text-text-muted border-transparent hover:bg-surface-muted hover:text-primary hover:border-primary')"
-        >
-          {{ item.label }}
-        </a>
-      }
-
       @if (authService.getAccessToken() && user) {
-        <div class="h-px bg-border my-2"></div>
-
-        <a
-          (click)="closeMenu(); goToProfile()"
-          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold cursor-pointer"
-        >
-          Profile
-        </a>
-        <a
-          (click)="closeMenu(); goToBookmarks()"
-          class="block px-4 py-3 rounded-lg text-text hover:bg-surface-muted transition-colors duration-200 font-semibold cursor-pointer"
-        >
-          Bookmarks
-        </a>
-      }
-
-      <div class="pt-4">
-        @if (authService.getAccessToken() && user){
-          <button (click)="onLogout()" class="w-full">
-            <app-button variant="secondary" [fullWidth]="true">
-              <i class="bi bi-box-arrow-right"></i>
-              Logout
-            </app-button>
+        <!-- User Actions -->
+        <div class="pt-4 border-t border-border space-y-1 mb-6">
+          <button
+            (click)="closeMenu(); goToProfile()"
+            class="w-full text-left px-4 py-3 text-sm font-medium text-text-muted
+                   hover:text-text hover:bg-surface-alt rounded-xl transition-colors
+                   flex items-center gap-3"
+          >
+            <i class="bi bi-person-circle"></i>
+            <span>Profile</span>
           </button>
-        } @else {
-          <a (click)="onLogin()" class="w-full inline-block cursor-pointer">
-            <app-button variant="secondary" [fullWidth]="true">
-              <i class="bi bi-person"></i>
-              Sign In
-            </app-button>
-          </a>
-        }
-      </div>
+          <button
+            (click)="closeMenu(); goToBookmarks()"
+            class="w-full text-left px-4 py-3 text-sm font-medium text-text-muted
+                   hover:text-text hover:bg-surface-alt rounded-xl transition-colors
+                   flex items-center gap-3"
+          >
+            <i class="bi bi-bookmark"></i>
+            <span>Bookmarks</span>
+          </button>
+        </div>
+
+        <!-- Logout -->
+        <button
+          (click)="onLogout()"
+          class="w-full px-4 py-3 bg-error/10 text-error rounded-xl font-medium text-sm
+                 hover:bg-error hover:text-white transition-colors flex items-center justify-center gap-2"
+        >
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      } @else {
+        <!-- Sign In -->
+        <button
+          (click)="onLogin()"
+          class="w-full px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium
+                 hover:bg-text transition-colors"
+        >
+          Sign In
+        </button>
+      }
     </div>
   </div>
-</header>
+}
+
+<!-- Spacer for fixed header -->
+<div class="h-24"></div>

@@ -22,42 +22,27 @@ describe('TrustIndicatorsComponent', () => {
   });
 
   it('should render 3 trust indicator cards', () => {
-    const cards = fixture.debugElement.queryAll(By.css('.rounded-3xl'));
+    const cards = fixture.debugElement.queryAll(By.css('.border-t.border-primary'));
     expect(cards.length).toBe(3);
   });
 
   it('should render GDPR Compliant card', () => {
-    const heading = fixture.debugElement.queryAll(By.css('h3'))[0];
+    const heading = fixture.debugElement.queryAll(By.css('h4'))[0];
     expect(heading.nativeElement.textContent.trim()).toBe('GDPR Compliant');
   });
 
   it('should render Community Driven card', () => {
-    const heading = fixture.debugElement.queryAll(By.css('h3'))[1];
+    const heading = fixture.debugElement.queryAll(By.css('h4'))[1];
     expect(heading.nativeElement.textContent.trim()).toBe('Community Driven');
   });
 
   it('should render AI-Powered card', () => {
-    const heading = fixture.debugElement.queryAll(By.css('h3'))[2];
+    const heading = fixture.debugElement.queryAll(By.css('h4'))[2];
     expect(heading.nativeElement.textContent.trim()).toBe('AI-Powered');
   });
 
-  it('should render shield-check icon for GDPR card', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-shield-check'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should render people-fill icon for Community card', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-people-fill'));
-    expect(icon).toBeTruthy();
-  });
-
-  it('should render cpu icon for AI card', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-cpu'));
-    expect(icon).toBeTruthy();
-  });
-
   it('should have proper grid layout for cards', () => {
-    const grid = fixture.debugElement.query(By.css('.grid.md\\:grid-cols-3'));
+    const grid = fixture.debugElement.query(By.css('.grid.grid-cols-1.md\\:grid-cols-3'));
     expect(grid).toBeTruthy();
   });
 
@@ -79,23 +64,30 @@ describe('TrustIndicatorsComponent', () => {
     expect(aiDescription).toContain('Automatic analysis');
   });
 
-  it('should have hover shadow transition on cards', () => {
-    const cards = fixture.debugElement.queryAll(By.css('.hover\\:shadow-lg'));
-    expect(cards.length).toBe(3);
+  it('should have border-top on section', () => {
+    const section = fixture.debugElement.query(By.css('section.border-t.border-border'));
+    expect(section).toBeTruthy();
   });
 
-  it('should apply success text color to shield icon', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-shield-check'));
-    expect(icon.nativeElement.className).toContain('text-success');
+  it('should have proper section padding', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    const classes = section.nativeElement.className;
+    expect(classes).toContain('py-24');
+    expect(classes).toContain('px-6');
   });
 
-  it('should apply info text color to people icon', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-people-fill'));
-    expect(icon.nativeElement.className).toContain('text-info');
+  it('should have font-serif on all card titles', () => {
+    const titles = fixture.debugElement.queryAll(By.css('h4.font-serif'));
+    expect(titles.length).toBe(3);
   });
 
-  it('should apply warning text color to cpu icon', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-cpu'));
-    expect(icon.nativeElement.className).toContain('text-warning');
+  it('should have text-sm on descriptions', () => {
+    const descriptions = fixture.debugElement.queryAll(By.css('p.text-sm'));
+    expect(descriptions.length).toBe(3);
+  });
+
+  it('should not render any icons', () => {
+    const icons = fixture.debugElement.queryAll(By.css('.bi'));
+    expect(icons.length).toBe(0);
   });
 });

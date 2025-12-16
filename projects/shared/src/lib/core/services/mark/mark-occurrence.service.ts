@@ -86,6 +86,11 @@ export class MarkOccurrenceService {
     return this.http.get<any[]>(`${this.baseUrl}/filters/marks`);
   }
 
+  getAvailableMarksByMonument(monumentId: number): Observable<any[]> {
+    const params = new HttpParams().set('monumentId', monumentId);
+    return this.http.get<any[]>(`${this.baseUrl}/filters/marks-by-monument`, { params });
+  }
+
   getAvailableMonumentsByMark(markId: number): Observable<any[]> {
     const params = new HttpParams().set('markId', markId);
     return this.http.get<any[]>(`${this.baseUrl}/filters/monuments-by-mark`, { params });

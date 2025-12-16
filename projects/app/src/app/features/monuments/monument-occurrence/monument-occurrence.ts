@@ -48,12 +48,11 @@ export class MonumentOccurrenceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMarks();
-
     this.monument$ = this.route.paramMap.pipe(
       switchMap(params => {
         const monumentId = Number(params.get('id'));
         this.currentMonumentId = monumentId;
+        this.loadMarks(monumentId);
         this.loadOccurrences(monumentId);
 
         this.markOccurrenceService.countByMonumentId(monumentId).subscribe(count => {
@@ -78,8 +77,8 @@ export class MonumentOccurrenceComponent implements OnInit {
     );
   }
 
-  private loadMarks(): void {
-    this.markOccurrenceService.getAvailableMarks().subscribe({
+  private loadMarks(monumentId: number): void {
+    this.markOccurrenceService.getAvailableMarksByMonument(monumentId).subscribe({
       next: marks => {
         this.marks = marks;
       },
@@ -93,7 +92,7 @@ export class MonumentOccurrenceComponent implements OnInit {
     this.loading = true;
 
     const request$ = this.selectedMarkId
-      ? this.markOccurrenceService.filterByMark(Number(this.selectedMarkId), page, this.pageSize)
+      ? this.markOccurrenceService.filterByMarkAndMonument(Number(this.selectedMarkId), monumentId, page, this.pageSize)
       : this.markOccurrenceService.getByMonumentId(monumentId, page, this.pageSize);
 
     request$.subscribe({

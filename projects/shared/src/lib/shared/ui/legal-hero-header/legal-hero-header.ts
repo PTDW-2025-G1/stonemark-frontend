@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
         Stonemark Legal
       </p>
 
-      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-text leading-tight">
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium text-text leading-tight">
         {{ title }}
       </h1>
 

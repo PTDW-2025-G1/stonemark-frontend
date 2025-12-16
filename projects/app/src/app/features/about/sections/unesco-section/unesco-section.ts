@@ -1,51 +1,55 @@
 import { Component } from '@angular/core';
-import {HighlightCardComponent} from '@shared/ui/highlight-card/highlight-card';
 
 @Component({
   selector: 'app-unesco-section',
   standalone: true,
-  imports: [
-    HighlightCardComponent
-  ],
   template: `
-    <section class="py-16 sm:py-20 lg:py-28 bg-white text-black relative overflow-hidden">
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 sm:mb-16">
-          <div
-            class="inline-flex items-center gap-2 px-4 py-2 bg-black/10 backdrop-blur-sm rounded-full mb-6 border border-black/20">
-            <i class="bi bi-globe"></i>
-            <span class="text-sm font-medium uppercase tracking-wider">Global Initiative</span>
+    <section class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
+      <div class="text-center mb-16">
+        <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Global Initiative</div>
+        <h2 class="text-4xl md:text-5xl font-serif">Partnering with UNESCO</h2>
+        <p class="max-w-3xl mx-auto mt-4 text-text-muted">
+          Stone Mark is being developed in collaboration with UNESCO to preserve and promote world heritage sites.
+          With proven technology and a scalable architecture, we're preparing for international expansion.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="border-t border-primary pt-6">
+          <div class="text-2xl mb-4 text-primary">
+            <i class="bi bi-award"></i>
           </div>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold mb-6">
-            Partnering with UNESCO
-          </h2>
-          <p class="text-lg sm:text-xl text-black/80 max-w-3xl mx-auto leading-relaxed">
-            Stone Mark is being developed in collaboration with UNESCO to preserve and promote world heritage sites.
-            With proven technology and a scalable architecture, we're preparing for international expansion.
+          <h4 class="font-serif text-lg font-bold mb-3">UNESCO Partnership</h4>
+          <p class="text-text-muted text-sm leading-relaxed">
+            Official collaboration for heritage preservation
           </p>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          <app-highlight-card
-            icon="bi bi-award"
-            title="UNESCO Partnership"
-            description="Official collaboration for heritage preservation"
-          ></app-highlight-card>
-          <app-highlight-card
-            icon="bi bi-globe2"
-            title="Global Expansion"
-            description="Deployment across multiple countries"
-          ></app-highlight-card>
-          <app-highlight-card
-            icon="bi bi-people"
-            title="Cultural Impact"
-            description="Empowering millions to connect with heritage"
-          ></app-highlight-card>
-          <app-highlight-card
-            icon="bi bi-graph-up"
-            title="Sustainable Growth"
-            description="Built for scale with proven architecture"
-          ></app-highlight-card>
+        <div class="border-t border-primary pt-6">
+          <div class="text-2xl mb-4 text-primary">
+            <i class="bi bi-globe2"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold mb-3">Global Expansion</h4>
+          <p class="text-text-muted text-sm leading-relaxed">
+            Deployment across multiple countries
+          </p>
+        </div>
+        <div class="border-t border-primary pt-6">
+          <div class="text-2xl mb-4 text-primary">
+            <i class="bi bi-people"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold mb-3">Cultural Impact</h4>
+          <p class="text-text-muted text-sm leading-relaxed">
+            Empowering millions to connect with heritage
+          </p>
+        </div>
+        <div class="border-t border-primary pt-6">
+          <div class="text-2xl mb-4 text-primary">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold mb-3">Sustainable Growth</h4>
+          <p class="text-text-muted text-sm leading-relaxed">
+            Built for scale with proven architecture
+          </p>
         </div>
       </div>
     </section>

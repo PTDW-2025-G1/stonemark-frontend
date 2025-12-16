@@ -64,7 +64,6 @@ export class ProfileComponent implements OnInit {
           username: data.username ? `@${data.username}` : undefined,
           contact: contactValue,
           contactType: contactType,
-          avatar: 'https://i.pravatar.cc/300?img=12',
           memberSince: memberSinceString,
           stats: {
             totalMarks: 0,

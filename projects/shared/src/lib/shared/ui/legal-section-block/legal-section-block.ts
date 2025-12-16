@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 
       <!-- Title -->
       <div class="flex items-center gap-3 mb-4">
-        <h2 class="font-serif text-2xl lg:text-3xl font-bold text-text">
+        <h2 class="font-serif text-2xl lg:text-3xl font-medium text-text">
           {{ title }}
         </h2>
       </div>

@@ -15,7 +15,7 @@ import {Component, Input} from '@angular/core';
         ></i>
       </div>
 
-      <h2 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-2">
+      <h2 class="text-3xl sm:text-4xl font-serif font-medium text-text mb-2">
         {{ title }}
       </h2>
 

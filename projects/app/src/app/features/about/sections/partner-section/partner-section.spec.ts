@@ -21,20 +21,15 @@ describe('PartnerSectionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the section badge with correct text', () => {
-    const badge = fixture.debugElement.query(By.css('.bg-primary\\/10'));
-    expect(badge).toBeTruthy();
-    expect(badge.nativeElement.textContent).toContain('Partner');
-  });
-
-  it('should render building icon in badge', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-building'));
-    expect(icon).toBeTruthy();
+  it('should render the section label', () => {
+    const label = fixture.debugElement.query(By.css('.uppercase.tracking-widest'));
+    expect(label).toBeTruthy();
+    expect(label.nativeElement.textContent.trim()).toBe('Institutional Partner');
   });
 
   it('should render the main heading', () => {
     const heading = fixture.debugElement.query(By.css('h2'));
-    expect(heading.nativeElement.textContent.trim()).toBe('Institutional Partner');
+    expect(heading.nativeElement.textContent.trim()).toBe('Working with APRUPP');
   });
 
   it('should render APRUPP title', () => {
@@ -43,118 +38,105 @@ describe('PartnerSectionComponent', () => {
   });
 
   it('should render APRUPP full name', () => {
-    const fullName = fixture.debugElement.query(By.css('h3 + .text-primary.font-semibold'));
+    const fullName = fixture.debugElement.query(By.css('.text-primary.font-semibold'));
     expect(fullName.nativeElement.textContent.trim()).toBe('Portuguese Association for Urban Rehabilitation and Heritage Protection');
   });
 
   it('should render APRUPP description paragraph', () => {
-    const paragraph = fixture.debugElement.query(By.css('.text-text-muted.leading-relaxed'));
-    expect(paragraph.nativeElement.textContent).toContain('Founded in 2012');
-    expect(paragraph.nativeElement.textContent).toContain('non-profit association');
+    const paragraphs = fixture.debugElement.queryAll(By.css('p.text-text-muted'));
+    const description = paragraphs[0];
+    expect(description.nativeElement.textContent).toContain('Founded in 2012');
+    expect(description.nativeElement.textContent).toContain('non-profit association');
+  });
+
+  it('should render statistics with border-top', () => {
+    const statsGrid = fixture.debugElement.query(By.css('.grid.grid-cols-3.gap-6.border-t'));
+    expect(statsGrid).toBeTruthy();
   });
 
   it('should render statistic labels', () => {
     const labels = fixture.debugElement.queryAll(By.css('.text-sm.text-text-muted'));
-    const statLabels = Array.from(labels).slice(0, 3);
 
-    expect(statLabels[0].nativeElement.textContent.trim()).toBe('Founded');
-    expect(statLabels[1].nativeElement.textContent.trim()).toBe('Headquarters');
-    expect(statLabels[2].nativeElement.textContent.trim()).toBe('Reach');
+    expect(labels[0].nativeElement.textContent.trim()).toBe('Founded');
+    expect(labels[1].nativeElement.textContent.trim()).toBe('Headquarters');
+    expect(labels[2].nativeElement.textContent.trim()).toBe('Reach');
   });
 
-  it('should render "Learn More About APRUPP" link', () => {
-    const link = fixture.debugElement.query(By.css('a.bg-primary'));
-    expect(link).toBeTruthy();
-    expect(link.nativeElement.textContent).toContain('Learn More About APRUPP');
+  it('should render statistic values in serif font', () => {
+    const values = fixture.debugElement.queryAll(By.css('.font-serif.font-bold'));
+    expect(values.length).toBeGreaterThanOrEqual(3);
   });
 
-  it('should render arrow icon in CTA button', () => {
-    const arrow = fixture.debugElement.query(By.css('.bi-arrow-right'));
-    expect(arrow).toBeTruthy();
+  it('should render APRUPP logo image', () => {
+    const image = fixture.debugElement.query(By.css('img'));
+    expect(image).toBeTruthy();
+    expect(image.nativeElement.getAttribute('src')).toBe('assets/images/aprupp.png');
+    expect(image.nativeElement.getAttribute('alt')).toBe('APRUPP logo');
   });
 
-  it('should render 4 pillars', () => {
-    const pillars = fixture.debugElement.queryAll(By.css('.flex.gap-4'));
+  it('should have logo with object-contain', () => {
+    const image = fixture.debugElement.query(By.css('img.object-contain'));
+    expect(image).toBeTruthy();
+  });
+
+  it('should render 4 pillars with border-top', () => {
+    const pillars = fixture.debugElement.queryAll(By.css('.border-t.border-primary.pt-6'));
     expect(pillars.length).toBe(4);
   });
 
   it('should render Heritage Protection pillar', () => {
-    const pillars = fixture.debugElement.queryAll(By.css('.flex.gap-4'));
-    const heritagePillar = pillars[0];
-
-    const icon = heritagePillar.query(By.css('.bi-shield-check'));
-    const title = heritagePillar.query(By.css('h4'));
-    const description = heritagePillar.query(By.css('p.text-sm'));
-
-    expect(icon).toBeTruthy();
-    expect(title.nativeElement.textContent.trim()).toBe('Heritage Protection');
-    expect(description.nativeElement.textContent).toContain('Safeguarding built heritage');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[0].nativeElement.textContent.trim()).toBe('Heritage Protection');
   });
 
   it('should render Urban Rehabilitation pillar', () => {
-    const pillars = fixture.debugElement.queryAll(By.css('.flex.gap-4'));
-    const urbanPillar = pillars[1];
-
-    const icon = urbanPillar.query(By.css('.bi-buildings'));
-    const title = urbanPillar.query(By.css('h4'));
-
-    expect(icon).toBeTruthy();
-    expect(title.nativeElement.textContent.trim()).toBe('Urban Rehabilitation');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[1].nativeElement.textContent.trim()).toBe('Urban Rehabilitation');
   });
 
   it('should render Civic Participation pillar', () => {
-    const pillars = fixture.debugElement.queryAll(By.css('.flex.gap-4'));
-    const civicPillar = pillars[2];
-
-    const icon = civicPillar.query(By.css('.bi-people'));
-    const title = civicPillar.query(By.css('h4'));
-
-    expect(icon).toBeTruthy();
-    expect(title.nativeElement.textContent.trim()).toBe('Civic Participation');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[2].nativeElement.textContent.trim()).toBe('Civic Participation');
   });
 
   it('should render Knowledge & Innovation pillar', () => {
-    const pillars = fixture.debugElement.queryAll(By.css('.flex.gap-4'));
-    const knowledgePillar = pillars[3];
-
-    const icon = knowledgePillar.query(By.css('.bi-lightbulb'));
-    const title = knowledgePillar.query(By.css('h4'));
-
-    expect(icon).toBeTruthy();
-    expect(title.nativeElement.textContent.trim()).toBe('Knowledge & Innovation');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[3].nativeElement.textContent.trim()).toBe('Knowledge & Innovation');
   });
 
-  it('should have proper grid layout classes', () => {
-    const grid = fixture.debugElement.query(By.css('.grid.grid-cols-1.lg\\:grid-cols-5'));
-    expect(grid).toBeTruthy();
+  it('should have proper grid layout for content and image', () => {
+    const mainGrid = fixture.debugElement.query(By.css('.grid.grid-cols-1.md\\:grid-cols-2'));
+    expect(mainGrid).toBeTruthy();
   });
 
-  it('should have left content section with 3 columns span', () => {
-    const leftSection = fixture.debugElement.query(By.css('.lg\\:col-span-3'));
-    expect(leftSection).toBeTruthy();
-  });
-
-  it('should have right pillars section with 2 columns span', () => {
-    const rightSection = fixture.debugElement.query(By.css('.lg\\:col-span-2'));
-    expect(rightSection).toBeTruthy();
+  it('should have proper grid layout for pillars', () => {
+    const pillarsGrid = fixture.debugElement.query(By.css('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4'));
+    expect(pillarsGrid).toBeTruthy();
   });
 
   it('should have proper section structure with padding', () => {
     const section = fixture.debugElement.query(By.css('section'));
     const classes = section.nativeElement.className;
 
-    expect(classes).toContain('py-16');
-    expect(classes).toContain('sm:py-20');
-    expect(classes).toContain('lg:py-28');
+    expect(classes).toContain('py-24');
+    expect(classes).toContain('px-6');
   });
 
-  it('should have gradient background on main card', () => {
-    const card = fixture.debugElement.query(By.css('.bg-gradient-to-br.from-surface-alt'));
-    expect(card).toBeTruthy();
+  it('should have border-top on section', () => {
+    const section = fixture.debugElement.query(By.css('section.border-t.border-border'));
+    expect(section).toBeTruthy();
   });
 
-  it('should have gradient background on pillars section', () => {
-    const pillarsSection = fixture.debugElement.query(By.css('.bg-gradient-to-br.from-primary\\/5'));
-    expect(pillarsSection).toBeTruthy();
+  it('should have centered text in header', () => {
+    const textCenter = fixture.debugElement.query(By.css('.text-center'));
+    expect(textCenter).toBeTruthy();
+  });
+
+  it('should have font-serif on headings', () => {
+    const h2 = fixture.debugElement.query(By.css('h2'));
+    const h3 = fixture.debugElement.query(By.css('h3'));
+
+    expect(h2.nativeElement.className).toContain('font-serif');
+    expect(h3.nativeElement.className).toContain('font-serif');
   });
 });

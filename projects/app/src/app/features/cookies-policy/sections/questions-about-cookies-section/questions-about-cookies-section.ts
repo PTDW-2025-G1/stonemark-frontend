@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   template: `
     <section class="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20 rounded-2xl p-6 lg:p-8 shadow-lg">
       <div class="flex items-center gap-3 mb-4">
-        <h2 class="font-serif text-2xl lg:text-3xl font-bold text-text">
+        <h2 class="font-serif text-2xl lg:text-3xl font-medium text-text">
           Questions About Cookies?
         </h2>
       </div>

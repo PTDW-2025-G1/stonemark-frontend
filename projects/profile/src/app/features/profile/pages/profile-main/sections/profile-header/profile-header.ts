@@ -15,4 +15,16 @@ export class ProfileHeaderComponent {
   @Output() openSocial = new EventEmitter<void>();
 
   @Output() logout = new EventEmitter<void>();
+
+  getInitials(): string {
+    if (!this.user?.name) return '';
+
+    const names = this.user.name.trim().split(' ');
+    if (names.length === 0) return '';
+
+    const firstInitial = names[0][0]?.toUpperCase() || '';
+    const lastInitial = names.length > 1 ? names[names.length - 1][0]?.toUpperCase() || '' : '';
+
+    return firstInitial + lastInitial;
+  }
 }

@@ -27,8 +27,9 @@ describe('CtaSectionComponent', () => {
   });
 
   it('should render the description paragraph', () => {
-    const paragraph = fixture.debugElement.query(By.css('p'));
-    expect(paragraph.nativeElement.textContent).toContain('Be part of a global movement');
+    const paragraphs = fixture.debugElement.queryAll(By.css('p'));
+    const description = paragraphs[0];
+    expect(description.nativeElement.textContent).toContain('Be part of a global movement');
   });
 
   it('should have a link to search monuments', () => {
@@ -48,13 +49,14 @@ describe('CtaSectionComponent', () => {
     const classes = link.nativeElement.className;
     expect(classes).toContain('bg-primary');
     expect(classes).toContain('text-primary-foreground');
+    expect(classes).toContain('border-primary');
   });
 
   it('should apply secondary button styles to Get in Touch link', () => {
     const link = fixture.debugElement.query(By.css('a[href="/contact"]'));
     const classes = link.nativeElement.className;
-    expect(classes).toContain('bg-surface-alt');
-    expect(classes).toContain('border-2');
+    expect(classes).toContain('bg-surface');
+    expect(classes).toContain('border-border');
   });
 
   it('should render both action buttons', () => {
@@ -65,6 +67,28 @@ describe('CtaSectionComponent', () => {
   it('should have proper section structure', () => {
     const section = fixture.debugElement.query(By.css('section'));
     expect(section).toBeTruthy();
-    expect(section.nativeElement.className).toContain('py-16');
+    expect(section.nativeElement.className).toContain('py-24');
+  });
+
+  it('should have border-top on section', () => {
+    const section = fixture.debugElement.query(By.css('section.border-t.border-border'));
+    expect(section).toBeTruthy();
+  });
+
+  it('should have centered text layout', () => {
+    const container = fixture.debugElement.query(By.css('.text-center'));
+    expect(container).toBeTruthy();
+  });
+
+  it('should have font-serif on heading', () => {
+    const heading = fixture.debugElement.query(By.css('h2'));
+    expect(heading.nativeElement.className).toContain('font-serif');
+  });
+
+  it('should render italic closing statement', () => {
+    const paragraphs = fixture.debugElement.queryAll(By.css('p'));
+    const lastParagraph = paragraphs[paragraphs.length - 1];
+    expect(lastParagraph.nativeElement.className).toContain('italic');
+    expect(lastParagraph.nativeElement.textContent).toContain('Open collaboration');
   });
 });

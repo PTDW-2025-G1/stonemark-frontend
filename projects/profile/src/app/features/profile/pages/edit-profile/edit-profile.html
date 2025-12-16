@@ -6,22 +6,21 @@
     <div class="flex items-center justify-center">
       @if (!profileUpdated) {
         <app-edit-profile-form
-      [currentProfile]="currentProfile"
-      [currentEmail]="currentProfile.email"
-      [isSubmitting]="isSubmitting"
-      [errorMessage]="errorMessage"
-      (submitProfile)="onSubmitProfile($event)"
-      (cancel)="goBack()"
-    />
-  }
-
-  @if (profileUpdated) {
-    <app-edit-profile-success
-      [updatedProfile]="currentProfile"
-      (editAgain)="editAgain()"
-      (backToProfile)="goBack()"
-    />
-  }
+          [currentProfile]="currentProfile"
+          [currentEmail]="currentProfile.email"
+          [isSubmitting]="isSubmitting"
+          [errorMessage]="errorMessage"
+          (submitProfile)="onSubmitProfile($event)"
+          (cancel)="goBack()"
+        />
+      }
+      @if (profileUpdated) {
+        <app-edit-profile-success
+          [updatedProfile]="currentProfile"
+          (editAgain)="editAgain()"
+          (backToProfile)="goBack()"
+        />
+      }
     </div>
   </div>
 </div>

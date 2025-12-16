@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UnescoSectionComponent } from './unesco-section';
-import { HighlightCardComponent } from '@shared/ui/highlight-card/highlight-card';
 import { By } from '@angular/platform-browser';
 
 describe('UnescoSectionComponent', () => {
@@ -10,7 +9,7 @@ describe('UnescoSectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UnescoSectionComponent, HighlightCardComponent]
+      imports: [UnescoSectionComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UnescoSectionComponent);
@@ -22,15 +21,10 @@ describe('UnescoSectionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the section badge with correct text', () => {
-    const badge = fixture.debugElement.query(By.css('.bg-black\\/10'));
-    expect(badge).toBeTruthy();
-    expect(badge.nativeElement.textContent).toContain('Global Initiative');
-  });
-
-  it('should render globe icon in badge', () => {
-    const icon = fixture.debugElement.query(By.css('.bi-globe'));
-    expect(icon).toBeTruthy();
+  it('should render the section label', () => {
+    const label = fixture.debugElement.query(By.css('.uppercase.tracking-widest'));
+    expect(label).toBeTruthy();
+    expect(label.nativeElement.textContent.trim()).toBe('Global Initiative');
   });
 
   it('should render the main heading', () => {
@@ -39,106 +33,100 @@ describe('UnescoSectionComponent', () => {
   });
 
   it('should render UNESCO partnership description', () => {
-    const description = fixture.debugElement.query(By.css('.text-lg.sm\\:text-xl'));
-    expect(description.nativeElement.textContent).toContain('Stone Mark is being developed in collaboration with UNESCO');
-    expect(description.nativeElement.textContent).toContain('world heritage sites');
+    const paragraph = fixture.debugElement.query(By.css('.text-center p'));
+    expect(paragraph.nativeElement.textContent).toContain('Stone Mark is being developed in collaboration with UNESCO');
+    expect(paragraph.nativeElement.textContent).toContain('world heritage sites');
   });
 
-  it('should render 4 highlight cards', () => {
-    const cards = fixture.debugElement.queryAll(By.directive(HighlightCardComponent));
+  it('should render 4 cards with border-top', () => {
+    const cards = fixture.debugElement.queryAll(By.css('.border-t.border-primary.pt-6'));
     expect(cards.length).toBe(4);
   });
 
   it('should render UNESCO Partnership card', () => {
-    const cards = fixture.debugElement.queryAll(By.directive(HighlightCardComponent));
-    const partnershipCard = cards[0].componentInstance;
-
-    expect(partnershipCard.icon).toBe('bi bi-award');
-    expect(partnershipCard.title).toBe('UNESCO Partnership');
-    expect(partnershipCard.description).toBe('Official collaboration for heritage preservation');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[0].nativeElement.textContent.trim()).toBe('UNESCO Partnership');
   });
 
   it('should render Global Expansion card', () => {
-    const cards = fixture.debugElement.queryAll(By.directive(HighlightCardComponent));
-    const expansionCard = cards[1].componentInstance;
-
-    expect(expansionCard.icon).toBe('bi bi-globe2');
-    expect(expansionCard.title).toBe('Global Expansion');
-    expect(expansionCard.description).toBe('Deployment across multiple countries');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[1].nativeElement.textContent.trim()).toBe('Global Expansion');
   });
 
   it('should render Cultural Impact card', () => {
-    const cards = fixture.debugElement.queryAll(By.directive(HighlightCardComponent));
-    const impactCard = cards[2].componentInstance;
-
-    expect(impactCard.icon).toBe('bi bi-people');
-    expect(impactCard.title).toBe('Cultural Impact');
-    expect(impactCard.description).toBe('Empowering millions to connect with heritage');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[2].nativeElement.textContent.trim()).toBe('Cultural Impact');
   });
 
   it('should render Sustainable Growth card', () => {
-    const cards = fixture.debugElement.queryAll(By.directive(HighlightCardComponent));
-    const growthCard = cards[3].componentInstance;
-
-    expect(growthCard.icon).toBe('bi bi-graph-up');
-    expect(growthCard.title).toBe('Sustainable Growth');
-    expect(growthCard.description).toBe('Built for scale with proven architecture');
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    expect(titles[3].nativeElement.textContent.trim()).toBe('Sustainable Growth');
   });
 
-  it('should have proper grid layout classes', () => {
-    const grid = fixture.debugElement.query(By.css('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4'));
-    expect(grid).toBeTruthy();
+  it('should have proper grid layout for cards', () => {
+    const cardsGrid = fixture.debugElement.query(By.css('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4'));
+    expect(cardsGrid).toBeTruthy();
   });
 
-  it('should have proper section structure with padding', () => {
+  it('should have border-top on section', () => {
+    const section = fixture.debugElement.query(By.css('section.border-t.border-border'));
+    expect(section).toBeTruthy();
+  });
+
+  it('should have centered text in header', () => {
+    const textCenter = fixture.debugElement.query(By.css('.text-center'));
+    expect(textCenter).toBeTruthy();
+  });
+
+  it('should have font-serif on heading', () => {
+    const heading = fixture.debugElement.query(By.css('h2'));
+    expect(heading.nativeElement.className).toContain('font-serif');
+  });
+
+  it('should have font-serif on all card titles', () => {
+    const titles = fixture.debugElement.queryAll(By.css('h4.font-serif'));
+    expect(titles.length).toBe(4);
+  });
+
+  it('should render icons for all cards', () => {
+    const icons = fixture.debugElement.queryAll(By.css('.bi'));
+    expect(icons.length).toBe(4);
+  });
+
+  it('should render award icon for UNESCO Partnership card', () => {
+    const icon = fixture.debugElement.query(By.css('.bi-award'));
+    expect(icon).toBeTruthy();
+  });
+
+  it('should render globe icon for Global Expansion card', () => {
+    const icon = fixture.debugElement.query(By.css('.bi-globe2'));
+    expect(icon).toBeTruthy();
+  });
+
+  it('should render people icon for Cultural Impact card', () => {
+    const icon = fixture.debugElement.query(By.css('.bi-people'));
+    expect(icon).toBeTruthy();
+  });
+
+  it('should render graph icon for Sustainable Growth card', () => {
+    const icon = fixture.debugElement.query(By.css('.bi-graph-up'));
+    expect(icon).toBeTruthy();
+  });
+
+  it('should have proper section padding', () => {
     const section = fixture.debugElement.query(By.css('section'));
     const classes = section.nativeElement.className;
-
-    expect(classes).toContain('py-16');
-    expect(classes).toContain('sm:py-20');
-    expect(classes).toContain('lg:py-28');
+    expect(classes).toContain('py-24');
+    expect(classes).toContain('px-6');
   });
 
-  it('should have white background', () => {
-    const section = fixture.debugElement.query(By.css('section'));
-    expect(section.nativeElement.className).toContain('bg-white');
+  it('should have max-width constraint', () => {
+    const section = fixture.debugElement.query(By.css('section.max-w-7xl'));
+    expect(section).toBeTruthy();
   });
 
-  it('should have overflow hidden', () => {
-    const section = fixture.debugElement.query(By.css('section'));
-    expect(section.nativeElement.className).toContain('overflow-hidden');
-  });
-
-  it('should center content text', () => {
-    const centerDiv = fixture.debugElement.query(By.css('.text-center'));
-    expect(centerDiv).toBeTruthy();
-  });
-
-  it('should have badge with backdrop blur', () => {
-    const badge = fixture.debugElement.query(By.css('.backdrop-blur-sm'));
-    expect(badge).toBeTruthy();
-  });
-
-  it('should have rounded badge', () => {
-    const badge = fixture.debugElement.query(By.css('.rounded-full'));
-    expect(badge).toBeTruthy();
-  });
-
-  it('should have uppercase tracking wider text in badge', () => {
-    const badgeText = fixture.debugElement.query(By.css('.uppercase.tracking-wider'));
-    expect(badgeText.nativeElement.textContent.trim()).toBe('Global Initiative');
-  });
-
-  it('should have proper heading font classes', () => {
-    const heading = fixture.debugElement.query(By.css('h2'));
-    const classes = heading.nativeElement.className;
-
-    expect(classes).toContain('font-serif');
-    expect(classes).toContain('font-bold');
-  });
-
-  it('should have max width constraint on description', () => {
-    const description = fixture.debugElement.query(By.css('.max-w-3xl'));
-    expect(description).toBeTruthy();
+  it('should have text-primary on icons', () => {
+    const iconContainers = fixture.debugElement.queryAll(By.css('.text-primary'));
+    expect(iconContainers.length).toBeGreaterThanOrEqual(4);
   });
 });

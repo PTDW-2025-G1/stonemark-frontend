@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 
       <div class="flex items-center gap-3 mb-4">
         <i class="bi bi-sliders text-primary text-2xl"></i>
-        <h2 class="font-serif text-2xl lg:text-3xl font-bold text-text">
+        <h2 class="font-serif text-2xl lg:text-3xl font-medium text-text">
           Managing Your Cookie Preferences
         </h2>
       </div>

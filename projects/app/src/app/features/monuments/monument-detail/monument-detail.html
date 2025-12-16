@@ -135,19 +135,39 @@
         </div>
       </div>
 
-      @if (occurrences$ | async; as occurrences) {
-        @if (occurrences.length > 0) {
-          <div class="pt-8 border-t border-border">
-            <h2 class="text-xl font-serif font-bold text-text mb-6 flex items-center gap-3">
+      <!-- Stone Marks Section -->
+      @if (occurrencesCount > 0) {
+        <div class="pt-8 border-t border-border">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-serif font-bold text-text flex items-center gap-3">
               Stone Marks Found
-              <span class="bg-primary/10 text-primary text-sm font-sans py-0.5 px-2 rounded-full">{{ occurrences.length }}</span>
+              <span class="bg-primary/10 text-primary text-sm font-sans py-0.5 px-2 rounded-full">{{ occurrencesCount }}</span>
             </h2>
-            <app-occurrences-grid
-              [occurrences]="occurrences"
-              (viewOccurrence)="onViewOccurrence($event)">
-            </app-occurrences-grid>
           </div>
-        }
+
+          <div class="bg-surface-alt border-2 border-dashed border-border rounded-2xl p-8 lg:p-12 text-center">
+            <div class="mx-auto">
+              <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                <i class="bi bi-grid-3x3-gap text-4xl text-primary"></i>
+              </div>
+              <h3 class="text-xl font-serif font-bold text-text mb-3">
+                {{ occurrencesCount }} {{ occurrencesCount === 1 ? 'Stone Mark' : 'Stone Marks' }} at this Monument
+              </h3>
+              <p class="text-text-muted mb-6">
+                Discover the historical signatures left by stonemasons on this monument.
+                Each mark tells a unique story about the craftsmen who built it.
+              </p>
+              <button
+                (click)="viewOccurrences()"
+                class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md hover:shadow-lg"
+              >
+                <i class="bi bi-eye"></i>
+                <span>View All Stone Marks</span>
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       }
 
     </div>

@@ -26,6 +26,14 @@
       <app-mark-detail-empty-state></app-mark-detail-empty-state>
     }
 
+    @if (!loading && occurrences.length > 0 && totalPages > 1) {
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    }
+
     <app-mark-detail-info-box></app-mark-detail-info-box>
   </div>
 }

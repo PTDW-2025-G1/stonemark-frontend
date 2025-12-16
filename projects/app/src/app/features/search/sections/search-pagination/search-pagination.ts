@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { PaginationComponent } from '@shared/ui/pagination/pagination';
 
 @Component({
   selector: 'app-search-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports: [PaginationComponent],
   templateUrl: './search-pagination.html'
 })
 export class SearchPaginationComponent {
@@ -13,8 +13,6 @@ export class SearchPaginationComponent {
   @Output() pageChange = new EventEmitter<number>();
 
   onPageChange(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageChange.emit(page);
-    }
+    this.pageChange.emit(page);
   }
 }

@@ -7,8 +7,6 @@ import { MonumentService } from '@core/services/monument/monument.service';
 import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
 import { NotificationService } from '@core/services/notification.service';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
-import {OccurrencesGridComponent} from '@shared/ui/occurrences-grid/occurrences-grid';
-import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 import {BookmarkService} from '@core/services/bookmark/bookmark.service';
 import {BookmarkDto} from '@api/model/bookmark-dto';
@@ -18,15 +16,17 @@ import { environment } from '@env/environment';
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, OccurrencesGridComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
   monument$!: Observable<MonumentResponseDto | undefined>;
-  occurrences$!: Observable<MarkOccurrenceDto[]>;
   mapUrl: SafeResourceUrl | null = null;
   isBookmarked = false;
   bookmarksCount = 0;
+  occurrencesCount = 0;
+
+  private currentMonumentId?: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,6 +48,13 @@ export class MonumentDetailComponent implements OnInit {
     this.monument$ = this.route.paramMap.pipe(
       switchMap(params => {
         const id = Number(params.get('id'));
+        this.currentMonumentId = id;
+
+        // Load occurrences count
+        this.markOccurrenceService.countByMonumentId(id).subscribe(count => {
+          this.occurrencesCount = count;
+        });
+
         return this.monumentService.getMonumentById(id);
       }),
       tap(monument => {
@@ -60,10 +67,6 @@ export class MonumentDetailComponent implements OnInit {
       })
     );
 
-    this.occurrences$ = monumentId$.pipe(
-      switchMap(id => this.markOccurrenceService.getByMonumentId(id)),
-      map(result => Array.isArray(result) ? result : result.content ?? []),
-    );
 
     monumentId$.subscribe(id => {
       if (id != null && this.authService.getAccessToken()) {
@@ -80,6 +83,7 @@ export class MonumentDetailComponent implements OnInit {
       this.bookmarksCount = bookmarks.filter(b => b.type === BookmarkDto.TypeEnum.Monument && b.targetId === monumentId).length;
     });
   }
+
 
   toggleBookmark(): void {
     if (!this.authService.getAccessToken()) {
@@ -118,14 +122,17 @@ export class MonumentDetailComponent implements OnInit {
     this.router.navigate(['/search/marks'], { queryParams: { monumentId } });
   }
 
+  viewOccurrences(): void {
+    if (this.currentMonumentId != null) {
+      this.router.navigate(['/monuments', this.currentMonumentId, 'occurrences']);
+    }
+  }
+
   suggestCorrection(): void {
     const monumentId = this.route.snapshot.paramMap.get('id');
     this.router.navigate(['/suggestions/new'], { queryParams: { monumentId } });
   }
 
-  onViewOccurrence(occurrenceId: number): void {
-    this.router.navigate(['marks/occurrence', occurrenceId]);
-  }
 
   setMapUrl(latitude: number, longitude: number) {
     const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;

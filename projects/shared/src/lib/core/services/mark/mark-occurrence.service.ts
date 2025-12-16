@@ -26,8 +26,11 @@ export class MarkOccurrenceService {
     return this.http.get<MarkOccurrenceDto>(`${this.baseUrl}/${id}`);
   }
 
-  getByMarkId(markId: number): Observable<MarkOccurrenceDto[]> {
-    return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/by-mark/${markId}`);
+  getByMarkId(markId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceDto> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-mark/${markId}`, { params });
   }
 
   getLatestOccurrences(): Observable<MarkOccurrenceDto[]> {

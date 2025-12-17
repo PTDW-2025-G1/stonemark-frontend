@@ -40,14 +40,6 @@ export class MarkOccurrenceService {
     return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-monument/${monumentId}`, { params });
   }
 
-  filterByMark(markId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceDto> {
-    const params = new HttpParams()
-      .set('markId', markId)
-      .set('page', page)
-      .set('size', size);
-    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/filter-by-mark`, { params });
-  }
-
   filterByMarkAndMonument(markId: number, monumentId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceDto> {
     const params = new HttpParams()
       .set('markId', markId)

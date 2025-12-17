@@ -30,21 +30,22 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
         <div class="lg:col-span-7 space-y-4">
-          <div class="relative group rounded-2xl overflow-hidden bg-surface-muted border-2 border-border shadow-md aspect-[4/3]">
+          <div class="relative group rounded-2xl overflow-hidden bg-surface-muted border-2 border-border shadow-md aspect-4/3">
             <img
               [src]="'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg'"
               [alt]="monument.name"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
 
-            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+            <div class="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
 
             <div class="absolute top-4 right-4 z-10">
               <button
                 (click)="toggleBookmark()"
                 [class.text-primary]="isBookmarked"
                 [class.text-text-muted]="!isBookmarked"
-                class="w-10 h-10 sm:w-12 sm:h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg text-xl sm:text-2xl cursor-pointer">
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg text-xl sm:text-2xl cursor-pointer"
+              >
                 <i [class.bi-bookmark-check-fill]="isBookmarked" [class.bi-bookmark]="!isBookmarked"></i>
               </button>
             </div>
@@ -53,13 +54,13 @@
           <div class="flex items-center justify-between px-2 pt-1">
             <span class="text-xs font-bold text-text-muted uppercase tracking-wider">Share monument</span>
             <div class="flex gap-5">
-              <button (click)="shareOnFacebook()" class="text-text-muted hover:text-blue-600 transition-colors transform hover:scale-110" title="Share on Facebook">
+              <button (click)="shareOnFacebook()" class="text-text-muted hover:text-blue-600 transition-colors transform hover:scale-110 cursor-pointer" title="Share on Facebook">
                 <i class="bi bi-facebook text-xl"></i>
               </button>
-              <button (click)="shareOnInstagram()" class="text-text-muted hover:text-pink-600 transition-colors transform hover:scale-110" title="Share on Instagram">
+              <button (click)="shareOnInstagram()" class="text-text-muted hover:text-pink-600 transition-colors transform hover:scale-110 cursor-pointer" title="Share on Instagram">
                 <i class="bi bi-instagram text-xl"></i>
               </button>
-              <button (click)="copyLink()" class="text-text-muted hover:text-primary transition-colors transform hover:scale-110" title="Copy Link">
+              <button (click)="copyLink()" class="text-text-muted hover:text-primary transition-colors transform hover:scale-110 cursor-pointer" title="Copy Link">
                 <i class="bi bi-link-45deg text-2xl"></i>
               </button>
             </div>
@@ -104,16 +105,18 @@
           <div class="grid grid-cols-1 gap-3 pt-2">
             <button
               (click)="captureMark()"
-              class="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-bold shadow-md hover:bg-primary/90 hover:shadow-lg transition-all flex items-center justify-center gap-2">
+              class="flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm cursor-pointer"
+            >
               <i class="bi bi-camera-fill text-lg"></i>
               <span>Capture Mark</span>
             </button>
 
             <button
               (click)="suggestCorrection()"
-              class="w-full py-2.5 bg-surface border border-border text-text rounded-xl font-medium hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 text-sm">
-              <i class="bi bi-pencil-square"></i>
-              <span>Edit Info</span>
+              class="flex items-center justify-center gap-2 w-full py-2.5 bg-surface border border-border text-text rounded-xl font-medium hover:border-primary hover:text-primary hover:bg-black transition-all duration-200 group cursor-pointer"
+            >
+              <i class="bi bi-pencil-square text-base transition-colors duration-200 group-hover:text-white"></i>
+              <span class="transition-colors duration-200 group-hover:text-white">Edit Info</span>
             </button>
           </div>
 
@@ -122,7 +125,8 @@
               <iframe width="100%" height="100%" style="border:0;" [src]="mapUrl" class="grayscale group-hover:grayscale-0 transition-all duration-500"></iframe>
               <button
                 (click)="openDirections(monument.latitude!, monument.longitude!)"
-                class="absolute top-3 right-3 bg-white/90 text-text text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:text-primary transition-colors flex items-center gap-1">
+                class="absolute top-3 right-3 bg-white/90 text-text text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
+              >
                 <i class="bi bi-cursor-fill"></i>
                 <span>Directions</span>
               </button>
@@ -157,14 +161,16 @@
                 Discover the historical signatures left by stonemasons on this monument.
                 Each mark tells a unique story about the craftsmen who built it.
               </p>
-              <button
-                (click)="viewOccurrences()"
-                class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md hover:shadow-lg"
-              >
-                <i class="bi bi-eye"></i>
-                <span>View All Stone Marks</span>
-                <i class="bi bi-arrow-right"></i>
-              </button>
+              <div class="flex justify-center">
+                <button
+                  (click)="viewOccurrences()"
+                  class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm flex items-center gap-2 group cursor-pointer"
+                >
+                  <i class="bi bi-eye group-hover:text-primary transition-colors"></i>
+                  <span>View All Stone Marks</span>
+                  <i class="bi bi-arrow-right group-hover:translate-x-1 group-hover:text-primary transition-all"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>

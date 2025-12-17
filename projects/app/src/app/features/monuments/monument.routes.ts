@@ -8,9 +8,9 @@ export const MONUMENT_ROUTES: Routes = [
         m => m.MonumentDetailComponent),
   },
   {
-    path: ':id/occurrences',
+    path: ':id/marks',
     loadComponent: () =>
-      import('./monument-occurrence/monument-occurrence').then(
-        m => m.MonumentOccurrenceComponent),
+      import('@features/monuments/monument-marks/monument-marks').then(
+        m => m.MonumentMarksComponent),
   }
 ];

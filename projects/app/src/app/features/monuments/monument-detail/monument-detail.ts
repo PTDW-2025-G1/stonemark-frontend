@@ -117,14 +117,13 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   viewMarks(): void {
-    console.log('View Marks');
     const monumentId = this.route.snapshot.paramMap.get('id');
     this.router.navigate(['/search/marks'], { queryParams: { monumentId } });
   }
 
   viewOccurrences(): void {
     if (this.currentMonumentId != null) {
-      this.router.navigate(['/monuments', this.currentMonumentId, 'occurrences']);
+      this.router.navigate(['/monuments', this.currentMonumentId, 'marks']);
     }
   }
 

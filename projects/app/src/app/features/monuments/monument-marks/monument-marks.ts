@@ -17,12 +17,12 @@ import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box'
 import { MarkDto } from '@api/model/mark-dto';
 
 @Component({
-  selector: 'app-monument-occurrence',
+  selector: 'app-monument-marks',
   standalone: true,
   imports: [CommonModule, RouterModule, BreadcrumbComponent, OccurrencesGridComponent, PaginationComponent, InfoBoxComponent, SharedSelectComponent],
-  templateUrl: './monument-occurrence.html'
+  templateUrl: './monument-marks.html'
 })
-export class MonumentOccurrenceComponent implements OnInit {
+export class MonumentMarksComponent implements OnInit {
   monument$!: Observable<MonumentResponseDto | undefined>;
   occurrences: MarkOccurrenceDto[] = [];
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
@@ -33,7 +33,6 @@ export class MonumentOccurrenceComponent implements OnInit {
   totalPages = 1;
   pageSize = 6;
 
-  // Filter by mark
   marks: MarkDto[] = [];
   selectedMarkId: number | string = '';
 

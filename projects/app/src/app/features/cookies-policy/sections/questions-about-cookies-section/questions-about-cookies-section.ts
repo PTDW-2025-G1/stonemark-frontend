@@ -22,7 +22,7 @@ import { RouterModule } from '@angular/router';
       <div class="flex flex-wrap gap-4">
         <a
           routerLink="/contact"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all hover:scale-105"
+          class="flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm cursor-pointer"
         >
           <i class="bi bi-chat-dots"></i>
           Contact Us
@@ -30,7 +30,7 @@ import { RouterModule } from '@angular/router';
 
         <a
           routerLink="/privacy-policy"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-surface border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all"
+          class="flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-white text-primary hover:bg-black hover:text-white hover:border-black rounded-lg transition-colors duration-200 ease-soft shadow-sm cursor-pointer"
         >
           <i class="bi bi-shield-check"></i>
           Privacy Policy

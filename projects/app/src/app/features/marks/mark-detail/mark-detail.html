@@ -16,7 +16,6 @@
       (bookmarkToggled)="toggleBookmark()">
     </app-mark-detail-header>
 
-    <!-- Filter -->
     <div class="flex items-center justify-end gap-3 mb-6">
       <label class="text-xs font-semibold text-text-muted uppercase tracking-wider">Filter by Monument ({{ monuments.length }})</label>
       <div class="w-64">
@@ -41,7 +40,6 @@
       }
     </div>
 
-    <!-- Occurrences Grid -->
     <app-occurrences-grid
       [occurrences]="occurrences"
       (viewOccurrence)="viewOccurrence($event)"

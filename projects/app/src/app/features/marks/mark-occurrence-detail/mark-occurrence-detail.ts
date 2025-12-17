@@ -16,7 +16,6 @@ export class MarkOccurrenceDetail implements OnInit {
   occurrence: MarkOccurrenceDto = {} as MarkOccurrenceDto;
   loading = true;
 
-  // Placeholder image URL (replace with actual photo service)
   readonly placeholderImage = 'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg';
 
   constructor(

@@ -20,10 +20,9 @@ import { DateUtils } from '@shared/utils/date.utils';
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-            <!-- Badge (Monumento ou Marca) -->
+            <!-- Badge -->
             <div class="absolute top-3 left-3">
               @if (showMarkBadge) {
-                <!-- Marca -->
                 <button
                   (click)="viewMark.emit(occurrence.mark?.id); $event.stopPropagation()"
                   class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">
@@ -31,7 +30,6 @@ import { DateUtils } from '@shared/utils/date.utils';
                   {{ occurrence.mark?.title }}
                 </button>
               } @else {
-                <!-- Monumento -->
                 <button
                   (click)="viewMonument.emit(occurrence.monument?.id); $event.stopPropagation()"
                   class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">

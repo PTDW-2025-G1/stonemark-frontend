@@ -53,6 +53,15 @@ import {MarkDto} from '@api/model/mark-dto';
           <p class="text-text-muted mb-4 leading-relaxed">
             {{ mark?.description }}
           </p>
+
+          <div class="flex flex-wrap gap-3 mt-4">
+            <button
+              (click)="openReport()"
+              class="px-5 py-2.5 text-sm font-semibold text-text-muted border border-border rounded-lg hover:border-red-500 hover:text-red-500 transition-colors flex items-center gap-2 group">
+              <i class="bi bi-flag group-hover:text-red-500"></i>
+              Report Issue
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -67,8 +76,13 @@ export class MarkHeaderComponent {
   @Input() isBookmarked = false;
 
   @Output() bookmarkToggled = new EventEmitter<void>();
+  @Output() reportClicked = new EventEmitter<void>();
 
   toggleBookmark(): void {
     this.bookmarkToggled.emit();
+  }
+
+  openReport(): void {
+    this.reportClicked.emit();
   }
 }

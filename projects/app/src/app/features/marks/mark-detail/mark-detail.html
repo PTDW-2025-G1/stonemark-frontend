@@ -13,7 +13,8 @@
       [monumentsCount]="uniqueMonumentsCount"
       [bookmarksCount]="bookmarksCount"
       [isBookmarked]="isBookmarked"
-      (bookmarkToggled)="toggleBookmark()">
+      (bookmarkToggled)="toggleBookmark()"
+      (reportClicked)="openReportModal()">
     </app-mark-detail-header>
 
     <div class="flex items-center justify-end gap-3 mb-6">
@@ -61,3 +62,11 @@
     <app-mark-detail-info-box></app-mark-detail-info-box>
   </div>
 }
+
+<!-- Report Modal -->
+<app-report-modal
+  [(visible)]="reportModalVisible"
+  [config]="reportModalConfig"
+  (reportSubmit)="handleReportSubmit($event)"
+></app-report-modal>
+

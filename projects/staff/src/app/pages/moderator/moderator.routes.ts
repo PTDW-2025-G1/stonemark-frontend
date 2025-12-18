@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ModeratorMarksSubmissionsComponent } from './marks-submissions/marks-submissions';
 import { ContentProposals } from './content-proposals/content-proposals';
 import { ContactRequests } from './contact-requests/contact-requests';
+import { ManageReports } from './manage-reports/manage-reports';
 
 export const moderatorRoutes: Routes = [
   {
@@ -28,6 +29,15 @@ export const moderatorRoutes: Routes = [
       {
         path: '',
         component: ContactRequests
+      }
+    ]
+  },
+  {
+    path: 'manage-reports',
+    children: [
+      {
+        path: '',
+        component: ManageReports
       }
     ]
   }

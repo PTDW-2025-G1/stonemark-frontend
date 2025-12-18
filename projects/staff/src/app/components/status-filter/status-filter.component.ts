@@ -6,7 +6,12 @@ import { Tag } from 'primeng/tag';
 import { getSeverity } from '../../utils/severity.util';
 import {PrimeTemplate} from 'primeng/api';
 
-export type StatusFilterValue = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
+export type StatusFilterValue = string;
+
+export interface StatusOption {
+    label: string;
+    value: string;
+}
 
 @Component({
     selector: 'app-status-filter',
@@ -18,8 +23,8 @@ export type StatusFilterValue = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
                 <ng-template let-option pTemplate="item">
                     <p-tag [value]="option.label" [severity]="getSeverity(option.value)"></p-tag>
                 </ng-template>
-                <ng-template let-value pTemplate="selectedItem">
-                    <p-tag [value]="getLabel(value)" [severity]="getSeverity(value)"></p-tag>
+                <ng-template let-option pTemplate="selectedItem">
+                    <p-tag [value]="option.label" [severity]="getSeverity(option.value)"></p-tag>
                 </ng-template>
             </p-select>
         </div>
@@ -31,22 +36,18 @@ export type StatusFilterValue = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
 })
 export class StatusFilterComponent {
     @Input() selected: StatusFilterValue = 'ALL';
-    @Output() statusChange = new EventEmitter<StatusFilterValue>();
-
-    options = [
+    @Input() options: StatusOption[] = [
         { label: 'All', value: 'ALL' },
         { label: 'Pending', value: 'PENDING' },
         { label: 'Approved', value: 'APPROVED' },
         { label: 'Rejected', value: 'REJECTED' }
     ];
+    @Output() statusChange = new EventEmitter<StatusFilterValue>();
 
     emitChange() {
         this.statusChange.emit(this.selected);
     }
 
-    getLabel(value: StatusFilterValue): string {
-        return this.options.find(o => o.value === value)?.label || 'All';
-    }
 
     protected readonly getSeverity = getSeverity;
 }

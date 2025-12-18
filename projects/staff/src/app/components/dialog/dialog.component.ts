@@ -39,7 +39,7 @@ import { getSeverity } from '../../utils/severity.util';
             </div>
 
             <ng-template #footer>
-                <p-button label="Fechar" icon="pi pi-times" (click)="close.emit()"></p-button>
+                <p-button label="Close" icon="pi pi-times" (click)="close.emit()"></p-button>
             </ng-template>
         </p-dialog>
     `

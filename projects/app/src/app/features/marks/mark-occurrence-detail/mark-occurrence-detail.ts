@@ -5,16 +5,26 @@ import { Title } from '@angular/platform-browser';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { DateUtils } from '@shared/utils/date.utils';
+import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
+import { ReportService } from '@core/services/report/report.service';
+import { ReportRequestDto } from '@api/model/report-request-dto';
+import { AuthService } from '@core/services/auth/auth.service';
+import { environment } from '@env/environment';
+import { NotificationService } from '@core/services/notification.service';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ReportModalComponent],
   templateUrl: './mark-occurrence-detail.html'
 })
 export class MarkOccurrenceDetail implements OnInit {
   occurrence: MarkOccurrenceDto = {} as MarkOccurrenceDto;
   loading = true;
+
+  // Report modal
+  reportModalVisible = false;
+  reportModalConfig: ReportModalConfig | null = null;
 
   readonly placeholderImage = 'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg';
 
@@ -22,7 +32,10 @@ export class MarkOccurrenceDetail implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private titleService: Title,
-    private markOccurrenceService: MarkOccurrenceService
+    private markOccurrenceService: MarkOccurrenceService,
+    private reportService: ReportService,
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -107,5 +120,36 @@ export class MarkOccurrenceDetail implements OnInit {
     if (monument?.latitude && monument?.longitude) {
       window.open(`https://www.google.com/maps?q=${monument.latitude},${monument.longitude}`, '_blank');
     }
+  }
+
+  openReportModal(): void {
+    if (!this.authService.getAccessToken()) {
+      window.location.href = `${environment.authUrl}/login`;
+      return;
+    }
+
+    if (this.occurrence && this.occurrence.id) {
+      const targetName = `${this.occurrence.mark?.title} at ${this.occurrence.monument?.name}`;
+      this.reportModalConfig = {
+        targetId: this.occurrence.id,
+        targetType: 'MARK_OCCURRENCE' as ReportRequestDto.TargetTypeEnum,
+        targetName: targetName
+      };
+      this.reportModalVisible = true;
+    }
+  }
+
+  handleReportSubmit(report: ReportRequestDto): void {
+    this.reportService.createReport(report).subscribe({
+      next: () => {
+        this.notificationService.showSuccess('Report submitted successfully. Thank you for your contribution!');
+        this.reportModalVisible = false;
+      },
+      error: (err) => {
+        console.error('Error submitting report:', err);
+        this.notificationService.showError('Failed to submit report. Please try again.');
+        this.reportModalVisible = false;
+      }
+    });
   }
 }

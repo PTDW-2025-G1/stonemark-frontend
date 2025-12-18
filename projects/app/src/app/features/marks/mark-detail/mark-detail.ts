@@ -23,11 +23,15 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
+import { ReportService } from '@core/services/report/report.service';
+import { ReportRequestDto } from '@api/model/report-request-dto';
+import { NotificationService } from '@core/services/notification.service';
 
 @Component({
   selector: 'app-mark-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent, PaginationComponent, SharedSelectComponent],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent, PaginationComponent, SharedSelectComponent, ReportModalComponent],
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
@@ -47,6 +51,10 @@ export class MarkDetailComponent implements OnInit {
   monuments: MonumentResponseDto[] = [];
   selectedMonumentId: number | string = '';
 
+  // Report modal
+  reportModalVisible = false;
+  reportModalConfig: ReportModalConfig | null = null;
+
   private currentMarkId?: number;
 
   constructor(
@@ -57,7 +65,9 @@ export class MarkDetailComponent implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     private bookmarkService: BookmarkService,
     private authService: AuthService,
-    private monumentService: MonumentService
+    private monumentService: MonumentService,
+    private reportService: ReportService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -191,5 +201,40 @@ export class MarkDetailComponent implements OnInit {
 
   viewMonument(monumentId: number): void {
     this.router.navigate(['/monuments', monumentId]);
+  }
+
+  openReportModal(): void {
+    if (!this.authService.getAccessToken()) {
+      window.location.href = `${environment.authUrl}/login`;
+      return;
+    }
+
+    // Get the current mark ID from the component
+    if (!this.currentMarkId) return;
+
+    this.markService.getMark(this.currentMarkId).subscribe(mark => {
+      if (mark && mark.id) {
+        this.reportModalConfig = {
+          targetId: mark.id,
+          targetType: 'MARK' as ReportRequestDto.TargetTypeEnum,
+          targetName: mark.title
+        };
+        this.reportModalVisible = true;
+      }
+    });
+  }
+
+  handleReportSubmit(report: ReportRequestDto): void {
+    this.reportService.createReport(report).subscribe({
+      next: () => {
+        this.notificationService.showSuccess('Report submitted successfully. Thank you for your feedback!');
+        this.reportModalVisible = false;
+      },
+      error: (err) => {
+        console.error('Error submitting report:', err);
+        this.notificationService.showError('Failed to submit report. Please try again.');
+        this.reportModalVisible = false;
+      }
+    });
   }
 }

@@ -8,16 +8,17 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageable-object';
+import { ReportResponseDto } from './report-response-dto';
 import { SortObject } from './sort-object';
 
 
-export interface Page { 
+export interface PageReportResponseDto { 
     totalPages?: number;
     totalElements?: number;
     first?: boolean;
     last?: boolean;
     size?: number;
-    content?: Array<any>;
+    content?: Array<ReportResponseDto>;
     number?: number;
     sort?: SortObject;
     numberOfElements?: number;

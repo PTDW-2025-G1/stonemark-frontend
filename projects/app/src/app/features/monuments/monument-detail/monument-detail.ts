@@ -12,11 +12,14 @@ import {BookmarkService} from '@core/services/bookmark/bookmark.service';
 import {BookmarkDto} from '@api/model/bookmark-dto';
 import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
+import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
+import { ReportService } from '@core/services/report/report.service';
+import { ReportRequestDto } from '@api/model/report-request-dto';
 
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ReportModalComponent],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
@@ -25,6 +28,8 @@ export class MonumentDetailComponent implements OnInit {
   isBookmarked = false;
   bookmarksCount = 0;
   occurrencesCount = 0;
+  reportModalVisible = false;
+  reportModalConfig: ReportModalConfig | null = null;
 
   private currentMonumentId?: number;
 
@@ -37,7 +42,8 @@ export class MonumentDetailComponent implements OnInit {
     private titleService: Title,
     private notificationService: NotificationService,
     private bookmarkService: BookmarkService,
-    private authService: AuthService
+    private authService: AuthService,
+    private reportService: ReportService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +56,6 @@ export class MonumentDetailComponent implements OnInit {
         const id = Number(params.get('id'));
         this.currentMonumentId = id;
 
-        // Load occurrences count
         this.markOccurrenceService.countByMonumentId(id).subscribe(count => {
           this.occurrencesCount = count;
         });
@@ -155,5 +160,40 @@ export class MonumentDetailComponent implements OnInit {
 
   shareOnInstagram() {
     window.open('https://www.instagram.com/', '_blank');
+  }
+
+  openReportModal(): void {
+    if (!this.authService.getAccessToken()) {
+      window.location.href = `${environment.authUrl}/login`;
+      return;
+    }
+
+    const monumentId = this.route.snapshot.paramMap.get('id');
+    if (!monumentId) return;
+
+    this.monumentService.getMonumentById(Number(monumentId)).subscribe(monument => {
+      if (monument && monument.id) {
+        this.reportModalConfig = {
+          targetId: monument.id,
+          targetType: 'MONUMENT' as ReportRequestDto.TargetTypeEnum,
+          targetName: monument.name
+        };
+        this.reportModalVisible = true;
+      }
+    });
+  }
+
+  handleReportSubmit(report: ReportRequestDto): void {
+    this.reportService.createReport(report).subscribe({
+      next: () => {
+        this.notificationService.showSuccess('Report submitted successfully. Thank you for helping improve StoneMark!');
+        this.reportModalVisible = false;
+      },
+      error: (err) => {
+        console.error('Error submitting report:', err);
+        this.notificationService.showError('Failed to submit report. Please try again.');
+        this.reportModalVisible = false;
+      }
+    });
   }
 }

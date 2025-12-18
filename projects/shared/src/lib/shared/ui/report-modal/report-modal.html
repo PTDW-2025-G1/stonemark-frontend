@@ -1,0 +1,244 @@
+@if (visible && config) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+    <!-- Modal Container -->
+    <div
+      class="bg-surface border-2 border-border rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-scale-in"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- Header -->
+      <div class="px-6 py-5 border-b border-border bg-surface-alt">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <h2 class="text-2xl font-serif font-bold text-text mb-1">
+              Report {{ getTargetTypeLabel() }}
+            </h2>
+            @if (config.targetName) {
+              <p class="text-sm text-text-muted">
+                <i class="bi bi-info-circle mr-1"></i>
+                {{ config.targetName }}
+              </p>
+            }
+          </div>
+          <button
+            (click)="close()"
+            [disabled]="isSubmitting"
+            class="text-text-muted hover:text-text transition-colors p-2 rounded-lg hover:bg-surface-muted disabled:opacity-50"
+            aria-label="Close"
+          >
+            <i class="bi bi-x-lg text-xl"></i>
+          </button>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-1">
+            <div
+              [class.bg-primary]="currentStep >= 1"
+              [class.bg-border]="currentStep < 1"
+              class="h-2 rounded-full transition-all duration-300 flex-1"
+            ></div>
+            <div
+              [class.bg-primary]="currentStep >= 2"
+              [class.bg-border]="currentStep < 2"
+              class="h-2 rounded-full transition-all duration-300 flex-1"
+            ></div>
+          </div>
+          <span class="text-xs font-bold text-text-muted">Step {{ currentStep }}/2</span>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="flex-1 overflow-y-auto p-6">
+
+        <!-- STEP 1: Select Reason -->
+        @if (currentStep === 1) {
+          <div class="animate-fade-in space-y-6">
+            <div>
+              <label class="block text-sm font-bold text-text uppercase tracking-wider mb-3">
+                <i class="bi bi-1-circle-fill text-primary mr-2"></i>
+                Select the reason for your report
+              </label>
+              <p class="text-sm text-text-muted mb-4">
+                Choose the option that best describes the issue you're reporting
+              </p>
+
+              <div class="grid grid-cols-1 gap-3">
+                @for (reason of reasons; track reason.value) {
+                  <button
+                    type="button"
+                    (click)="selectReason(reason.value)"
+                    [ngClass]="{
+                      'border-primary bg-primary/5': selectedReason === reason.value,
+                      'border-border': selectedReason !== reason.value
+                    }"
+                    [disabled]="isSubmitting"
+                    class="text-left p-4 border-2 rounded-lg transition-all hover:border-primary hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed group"
+                  >
+                    <div class="flex items-start gap-3">
+                      <i
+                        [class]="reason.icon"
+                        [class.text-primary]="selectedReason === reason.value"
+                        [class.text-text-muted]="selectedReason !== reason.value"
+                        class="text-xl mt-0.5 transition-colors group-hover:text-primary"
+                      ></i>
+                      <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                          <span
+                            class="font-semibold text-text"
+                            [class.text-primary]="selectedReason === reason.value"
+                          >
+                            {{ reason.label }}
+                          </span>
+                          @if (selectedReason === reason.value) {
+                            <i class="bi bi-check-circle-fill text-primary text-sm"></i>
+                          }
+                        </div>
+                        <p class="text-sm text-text-muted">
+                          {{ reason.description }}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 2: Describe the Issue -->
+        @if (currentStep === 2) {
+          <div class="animate-fade-in space-y-6">
+            <!-- Summary of selected reason -->
+            <div class="bg-primary/5 border border-primary/20 rounded-lg p-4">
+              <div class="flex items-start gap-3">
+                <i class="bi bi-check-circle-fill text-primary text-xl shrink-0"></i>
+                <div>
+                  <p class="text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Selected Reason</p>
+                  <p class="font-semibold text-text">{{ getSelectedReasonLabel() }}</p>
+                  <button
+                    (click)="goToStep1()"
+                    class="text-xs text-primary hover:underline mt-2 flex items-center gap-1"
+                  >
+                    <i class="bi bi-arrow-left"></i>
+                    Change reason
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description input -->
+            <div>
+              <label class="block text-sm font-bold text-text uppercase tracking-wider mb-3">
+                <i class="bi bi-2-circle-fill text-primary mr-2"></i>
+                Describe the issue <span class="text-red-500">*</span>
+              </label>
+              <p class="text-sm text-text-muted mb-4">
+                Please provide details to help our moderation team understand and address the issue. Minimum 10 characters required.
+              </p>
+
+              <textarea
+                [(ngModel)]="description"
+                [disabled]="isSubmitting"
+                placeholder="Example: This monument's location is incorrect. The actual coordinates are..."
+                class="w-full px-4 py-3 bg-surface border-2 border-border rounded-lg text-text placeholder:text-text-muted focus:border-primary focus:outline-none transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+                [class.border-red-500]="description.length > 0 && description.length < 10"
+                rows="6"
+                maxlength="500"
+                autofocus
+              ></textarea>
+
+              <div class="flex items-center justify-between mt-2">
+                <div class="text-xs">
+                  @if (description.length === 0) {
+                    <span class="text-text-muted">
+                      <i class="bi bi-info-circle mr-1"></i>
+                      Required field - minimum 10 characters
+                    </span>
+                  } @else if (description.length < 10) {
+                    <span class="text-red-500">
+                      <i class="bi bi-exclamation-circle mr-1"></i>
+                      {{ 10 - description.length }} more characters needed
+                    </span>
+                  } @else {
+                    <span class="text-green-600">
+                      <i class="bi bi-check-circle mr-1"></i>
+                      Looking good!
+                    </span>
+                  }
+                </div>
+                <span class="text-xs text-text-muted">{{ description.length }}/500</span>
+              </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="bg-surface-alt border border-border rounded-lg p-4">
+              <div class="flex gap-3">
+                <i class="bi bi-shield-check text-primary text-xl shrink-0"></i>
+                <div class="text-sm text-text-muted">
+                  <p class="font-semibold text-text mb-1">Your report helps improve StoneMark</p>
+                  <p>
+                    Our moderation team will review this report carefully. False or malicious reports may result in account restrictions.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-border bg-surface-alt flex items-center justify-between gap-3">
+
+        <!-- Left side: Cancel or Back -->
+        @if (currentStep === 1) {
+          <button
+            (click)="close()"
+            [disabled]="isSubmitting"
+            class="px-6 py-2.5 text-sm font-semibold text-text border border-border rounded-lg hover:bg-surface-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Cancel
+          </button>
+        } @else {
+          <button
+            (click)="goToStep1()"
+            [disabled]="isSubmitting"
+            class="px-6 py-2.5 text-sm font-semibold text-text border border-border rounded-lg hover:bg-surface-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <i class="bi bi-arrow-left"></i>
+            Back
+          </button>
+        }
+
+        <!-- Right side: Next or Submit -->
+        @if (currentStep === 1) {
+          <button
+            (click)="goToStep2()"
+            [disabled]="!selectedReason || isSubmitting"
+            class="px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <span>Next</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        } @else {
+          <button
+            (click)="submit()"
+            [disabled]="!canSubmit() || isSubmitting"
+            class="px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            [title]="!canSubmit() ? 'Please provide at least 10 characters in the description' : ''"
+          >
+            @if (isSubmitting) {
+              <i class="bi bi-hourglass-split animate-spin"></i>
+              <span>Submitting...</span>
+            } @else {
+              <i class="bi bi-send-fill"></i>
+              <span>Submit Report</span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+}
+

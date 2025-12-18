@@ -19,6 +19,7 @@ export class Header implements OnInit, OnDestroy {
   isDropdownOpen = false;
   user: UserDto | null = null;
   isHeaderVisible = true;
+  isAuthLoading = true; // Prevent flash while checking auth state
   private lastScrollY = 0;
   private scrollThreshold = 100;
   private authSubscription?: Subscription;
@@ -33,8 +34,13 @@ export class Header implements OnInit, OnDestroy {
   constructor(protected authService: AuthService, private profileService: ProfileService) {}
 
   ngOnInit(): void {
-    if (this.authService.getAccessToken()) {
+    const hasToken = this.authService.getAccessToken();
+
+    if (hasToken) {
       this.loadUser();
+    } else {
+      // No token, not loading anymore
+      this.isAuthLoading = false;
     }
 
     this.authSubscription = this.authService.authState$.subscribe(isAuthenticated => {
@@ -42,6 +48,7 @@ export class Header implements OnInit, OnDestroy {
         this.loadUser();
       } else {
         this.user = null;
+        this.isAuthLoading = false;
       }
     });
 
@@ -56,8 +63,14 @@ export class Header implements OnInit, OnDestroy {
 
   private loadUser(): void {
     this.profileService.getCurrentUser().subscribe({
-      next: user => (this.user = user),
-      error: () => (this.user = null)
+      next: user => {
+        this.user = user;
+        this.isAuthLoading = false;
+      },
+      error: () => {
+        this.user = null;
+        this.isAuthLoading = false;
+      }
     });
   }
 

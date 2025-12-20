@@ -3,10 +3,12 @@ import { ModeratorMarksSubmissionsComponent } from './marks-submissions/marks-su
 import { ContentProposals } from './content-proposals/content-proposals';
 import { ContactRequests } from './contact-requests/contact-requests';
 import { ManageReports } from './manage-reports/manage-reports';
+import { moderatorGuard } from '@core/guards/moderator.guard';
 
 export const moderatorRoutes: Routes = [
   {
     path: 'marks-submissions',
+    canActivate: [moderatorGuard],
     children: [
       {
         path: '',
@@ -16,6 +18,7 @@ export const moderatorRoutes: Routes = [
   },
   {
     path: 'content-proposals',
+    canActivate: [moderatorGuard],
     children: [
       {
         path: '',
@@ -25,6 +28,7 @@ export const moderatorRoutes: Routes = [
   },
   {
     path: 'contact-requests',
+    canActivate: [moderatorGuard],
     children: [
       {
         path: '',
@@ -34,6 +38,7 @@ export const moderatorRoutes: Routes = [
   },
   {
     path: 'manage-reports',
+    canActivate: [moderatorGuard],
     children: [
       {
         path: '',

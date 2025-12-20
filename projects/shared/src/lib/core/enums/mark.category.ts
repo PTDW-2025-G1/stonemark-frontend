@@ -1,8 +1,0 @@
-export enum MarkCategory {
-  RELIGIOUS = 'RELIGIOUS',
-  MASONIC = 'MASONIC',
-  TRADE = 'TRADE',
-  HERALDIC = 'HERALDIC',
-  GEOMETRIC = 'GEOMETRIC',
-  UNKNOWN = 'UNKNOWN'
-}

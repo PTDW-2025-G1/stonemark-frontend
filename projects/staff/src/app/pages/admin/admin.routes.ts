@@ -3,10 +3,12 @@ import {ManageMonuments} from './manage-monuments/manage-monuments';
 import {CreateMonument} from './manage-monuments/create-monument/create-monument';
 import {EditMonument} from './manage-monuments/edit-monument/edit-monument';
 import {ManageUsers} from './manage-users/manage-users';
+import {adminGuard} from '@core/guards/admin.guard';
 
 export const adminRoutes: Routes = [
   {
     path: 'monuments',
+    canActivate: [adminGuard],
     children: [
       {
         path: '',
@@ -24,6 +26,7 @@ export const adminRoutes: Routes = [
   },
   {
     path: 'users',
+    canActivate: [adminGuard],
     children: [
       {
         path: '',

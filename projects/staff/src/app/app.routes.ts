@@ -17,8 +17,6 @@ export const appRoutes: Routes = [
             { path: 'moderator', children: moderatorRoutes },
             { path: 'admin', children: adminRoutes },
             { path: 'logout', component: LogoutComponent },
-            { path: 'uikit', loadChildren: () => import('../app/pages/uikit/uikit.routes') },
-            { path: 'pages', loadChildren: () => import('../app/pages/pages.routes') }
         ],
     },
     { path: 'notfound', component: Notfound },

@@ -3,7 +3,6 @@ import { ContactFormComponent } from './contact-form';
 import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
-
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
@@ -64,20 +63,41 @@ describe('ContactFormComponent', () => {
     expect(component.contactForm.get('message')?.hasError('minlength')).toBe(true);
   });
 
-  it('should prefill form if user is authenticated', () => {
+  it('should prefill form with main contact email if user is authenticated', () => {
     authService.getAccessToken.mockReturnValue('token');
     profileService.getCurrentUser.mockReturnValue(
       of({
         firstName: 'John',
         lastName: 'Doe',
-        email: 'john@example.com'
+        contacts: [
+          { type: 'EMAIL', value: 'john@main.com', primaryContact: true },
+          { type: 'EMAIL', value: 'john@other.com', primaryContact: false }
+        ]
       })
     );
 
     component.ngOnInit();
 
     expect(component.contactForm.get('name')?.value).toBe('John Doe');
-    expect(component.contactForm.get('email')?.value).toBe('john@example.com');
+    expect(component.contactForm.get('email')?.value).toBe('john@main.com');
+  });
+
+  it('should prefill email as empty if user has no main contact', () => {
+    authService.getAccessToken.mockReturnValue('token');
+    profileService.getCurrentUser.mockReturnValue(
+      of({
+        firstName: 'Jane',
+        lastName: 'Smith',
+        contacts: [
+          { type: 'EMAIL', value: 'jane@other.com', primaryContact: false }
+        ]
+      })
+    );
+
+    component.ngOnInit();
+
+    expect(component.contactForm.get('name')?.value).toBe('Jane Smith');
+    expect(component.contactForm.get('email')?.value).toBe('');
   });
 
   it('should submit form successfully', () => {

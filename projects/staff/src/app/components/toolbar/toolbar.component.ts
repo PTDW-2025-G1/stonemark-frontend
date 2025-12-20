@@ -121,7 +121,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   @Input() title: string = '';
   @Input() subtitle?: string;
   @Input() showBackButton: boolean = false;
-  @Input() showExport: boolean = true;
+  @Input() showExport: boolean = false;
   @Input() showImport: boolean = false;
   @Input() exportLabel: string = 'Export';
   @Input() exportIcon: string = 'pi pi-upload';

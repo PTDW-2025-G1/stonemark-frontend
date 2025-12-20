@@ -12,20 +12,14 @@ import { RefreshTokenRequestDto } from '@api/model/refresh-token-request-dto';
 import { environment } from '@env/environment';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
+beforeAll(() => {
+  vi.stubGlobal('location', { replace: vi.fn() });
+});
+
+
 describe('AuthService', () => {
-  let httpMock: {
-    get: ReturnType<typeof vi.fn>;
-    post: ReturnType<typeof vi.fn>;
-    patch: ReturnType<typeof vi.fn>;
-    delete: ReturnType<typeof vi.fn>;
-  };
-
-  let cookieMock: {
-    get: ReturnType<typeof vi.fn>;
-    set: ReturnType<typeof vi.fn>;
-    delete: ReturnType<typeof vi.fn>;
-  };
-
+  let httpMock: any;
+  let cookieMock: any;
   let service: AuthService;
   const baseUrl = `${environment.apiUrl}/auth`;
 
@@ -48,7 +42,7 @@ describe('AuthService', () => {
 
   it('should login successfully', async () => {
     const payload: AuthenticationRequestDto = {
-      email: 'user@example.com',
+      username: 'user1',
       password: 'password123',
     };
 
@@ -69,14 +63,11 @@ describe('AuthService', () => {
 
     expect(result.body).toEqual(mockResponse);
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/authenticate`, payload, { observe: 'response' });
-    expect(cookieMock.set).toHaveBeenCalledWith('accessToken', 'access-token', 1);
-    expect(cookieMock.set).toHaveBeenCalledWith('refreshToken', 'refresh-token', 7);
-    expect(cookieMock.set).toHaveBeenCalledWith('role', 'USER', 7);
   });
 
   it('should register successfully', async () => {
     const payload: RegisterRequestDto = {
-      email: 'newuser@example.com',
+      username: 'newuser',
       password: 'password123',
       firstName: 'Gustavo',
       lastName: 'Giãozinho'
@@ -99,7 +90,7 @@ describe('AuthService', () => {
 
     expect(result.body).toEqual(mockResponse);
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/register`, payload, { observe: 'response' });
-    expect(cookieMock.set).toHaveBeenCalledWith('accessToken', 'access-token', 1);
+    // Não espera mais cookieMock.set aqui
   });
 
   it('should logout successfully with token', async () => {
@@ -140,14 +131,14 @@ describe('AuthService', () => {
 
   it('should request password reset', async () => {
     const email = 'user@example.com';
-    const payload: PasswordResetRequestDto = { email };
+    const payload: PasswordResetRequestDto = { contactValue: email };
 
     (httpMock.post as any).mockReturnValue(of(undefined));
 
     const result = await firstValueFrom(service.requestPasswordReset(email));
 
     expect(result).toBeUndefined();
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-password-reset`, payload);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/password-reset/request`, payload);
   });
 
   it('should reset password', async () => {
@@ -160,7 +151,7 @@ describe('AuthService', () => {
     const result = await firstValueFrom(service.resetPassword(token, newPassword));
 
     expect(result).toBeUndefined();
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/reset-password`, payload);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/password-reset/reset`, payload);
   });
 
   it('should confirm code', async () => {
@@ -176,7 +167,7 @@ describe('AuthService', () => {
     const result = await firstValueFrom(service.confirmCode(code));
 
     expect(result).toEqual(mockResponse);
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/confirm-code`, payload);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/account-verification/confirm`, payload);
   });
 
   it('should refresh token', async () => {

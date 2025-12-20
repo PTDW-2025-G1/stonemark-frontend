@@ -73,11 +73,6 @@ export class MarkOccurrenceService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  // Filter endpoints
-  getAvailableMarks(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/filters/marks`);
-  }
-
   getAvailableMarksByMonument(monumentId: number): Observable<any[]> {
     const params = new HttpParams().set('monumentId', monumentId);
     return this.http.get<any[]>(`${this.baseUrl}/filters/marks-by-monument`, { params });

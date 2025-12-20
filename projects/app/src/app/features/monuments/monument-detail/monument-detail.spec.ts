@@ -4,7 +4,6 @@ import { of, throwError } from 'rxjs';
 import { convertToParamMap } from '@angular/router';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { firstValueFrom } from 'rxjs';
-import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -21,6 +20,8 @@ describe('MonumentDetailComponent', () => {
   let titleService: any;
   let notificationService: any;
   let bookmarkService: any;
+  let authService: any;
+  let reportService: any;
 
   const mockMonument: MonumentResponseDto = {
     id: 1,
@@ -56,6 +57,7 @@ describe('MonumentDetailComponent', () => {
 
     markOccurrenceService = {
       getByMonumentId: vi.fn().mockReturnValue(of([])),
+      countByMonumentId: vi.fn().mockReturnValue(of(2)),
     };
 
     sanitizer = {
@@ -68,6 +70,7 @@ describe('MonumentDetailComponent', () => {
 
     notificationService = {
       showSuccess: vi.fn(),
+      showError: vi.fn(),
     };
 
     bookmarkService = {
@@ -75,6 +78,14 @@ describe('MonumentDetailComponent', () => {
       getUserBookmarks: vi.fn().mockReturnValue(of([])),
       createBookmark: vi.fn().mockReturnValue(of({ id: 1 })),
       deleteBookmark: vi.fn().mockReturnValue(of({})),
+    };
+
+    authService = {
+      getAccessToken: vi.fn().mockReturnValue('token'),
+    };
+
+    reportService = {
+      createReport: vi.fn().mockReturnValue(of({})),
     };
 
     component = new MonumentDetailComponent(
@@ -86,61 +97,46 @@ describe('MonumentDetailComponent', () => {
       titleService,
       notificationService,
       bookmarkService,
+      authService,
+      reportService
     );
   });
 
-
-  it('should load monument on init', async () => {
+  it('should load monument details', async () => {
     monumentService.getMonumentById.mockReturnValue(of(mockMonument));
-
     component.ngOnInit();
-
     await firstValueFrom(component.monument$);
-
     expect(monumentService.getMonumentById).toHaveBeenCalledWith(1);
   });
 
-  it('should set page title with monument name', async () => {
+  it('should define the name of the monument in the title', async () => {
     monumentService.getMonumentById.mockReturnValue(of(mockMonument));
-
     component.ngOnInit();
-
     await firstValueFrom(component.monument$);
-
     expect(titleService.setTitle).toHaveBeenCalledWith('Torre de Belém - StoneMark');
   });
 
-  it('should set map URL when monument has coordinates', async () => {
+  it('should define the mapUrl when the monument has coordinates', async () => {
     monumentService.getMonumentById.mockReturnValue(of(mockMonument));
-
     component.ngOnInit();
-
     await firstValueFrom(component.monument$);
-
     expect(component.mapUrl).toBe('safe-url');
     expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalled();
   });
 
-  it('should not set map URL when monument has no coordinates', async () => {
+  it('should not define the mapUrl when the monument has no coordinates', async () => {
     const monumentWithoutCoords = { ...mockMonument, latitude: null, longitude: null };
     monumentService.getMonumentById.mockReturnValue(of(monumentWithoutCoords));
-
     component.ngOnInit();
-
     await firstValueFrom(component.monument$);
-
     expect(component.mapUrl).toBeNull();
   });
 
   it('should toggle bookmark from false to true', async () => {
     component.isBookmarked = false;
-
     bookmarkService.createBookmark.mockReturnValue(of({ id: 1 }));
-
     component.toggleBookmark();
-
     await new Promise(resolve => setTimeout(resolve, 100));
-
     expect(bookmarkService.createBookmark).toHaveBeenCalledWith('MONUMENT', 1);
     expect(component.isBookmarked).toBe(true);
     expect(component.bookmarksCount).toBe(1);
@@ -149,66 +145,48 @@ describe('MonumentDetailComponent', () => {
   it('should toggle bookmark from true to false', async () => {
     component.isBookmarked = true;
     component.bookmarksCount = 1;
-
     const mockBookmarks = [
       { id: 1, type: 'MONUMENT', targetId: 1 }
     ];
-
     bookmarkService.getUserBookmarks.mockReturnValue(of(mockBookmarks));
     bookmarkService.deleteBookmark.mockReturnValue(of({}));
-
     component.toggleBookmark();
-
     await new Promise(resolve => setTimeout(resolve, 100));
-
     expect(bookmarkService.getUserBookmarks).toHaveBeenCalled();
     expect(bookmarkService.deleteBookmark).toHaveBeenCalledWith(1);
     expect(component.isBookmarked).toBe(false);
     expect(component.bookmarksCount).toBe(0);
   });
 
-
-  it('should navigate to capture mark page', () => {
-    component.captureMark();
-
-    expect(router.navigate).toHaveBeenCalledWith(['/marks/capture']);
-  });
-
   it('should navigate to view marks with monument ID', () => {
     component.viewMarks();
-
     expect(router.navigate).toHaveBeenCalledWith(['/search/marks'], {
       queryParams: { monumentId: '1' },
     });
   });
 
-  it('should navigate to suggest correction with monument ID', () => {
+  it('should navigate to suggestion with monument ID', () => {
     component.suggestCorrection();
-
     expect(router.navigate).toHaveBeenCalledWith(['/suggestions/new'], {
       queryParams: { monumentId: '1' },
     });
   });
 
-  it('should set map URL with correct coordinates', () => {
+  it('should set the mapUrl with correct coordinates', () => {
     const latitude = 38.6916;
     const longitude = -9.2160;
-
     component.setMapUrl(latitude, longitude);
-
     expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(
       `https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`
     );
     expect(component.mapUrl).toBe('safe-url');
   });
 
-  it('should open directions in new window', () => {
+  it('should open directions in a new tab', () => {
     const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     const latitude = 38.6916;
     const longitude = -9.2160;
-
     component.openDirections(latitude, longitude);
-
     expect(windowOpenSpy).toHaveBeenCalledWith(
       `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`,
       '_blank'
@@ -222,9 +200,7 @@ describe('MonumentDetailComponent', () => {
         writeText: writeTextSpy,
       },
     });
-
     await component.copyLink();
-
     expect(writeTextSpy).toHaveBeenCalledWith(window.location.href);
     expect(notificationService.showSuccess).toHaveBeenCalledWith('Link copied to clipboard!');
   });
@@ -232,9 +208,7 @@ describe('MonumentDetailComponent', () => {
   it('should share on Facebook', () => {
     const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     const currentUrl = encodeURIComponent(window.location.href);
-
     component.shareOnFacebook();
-
     expect(windowOpenSpy).toHaveBeenCalledWith(
       `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
       '_blank'
@@ -243,29 +217,52 @@ describe('MonumentDetailComponent', () => {
 
   it('should share on Instagram', () => {
     const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
-
     component.shareOnInstagram();
-
     expect(windowOpenSpy).toHaveBeenCalledWith('https://www.instagram.com/', '_blank');
   });
 
-  it('should handle monument service error', async () => {
+  it('should handle error when loading monument', async () => {
     const error = new Error('Failed to load monument');
     monumentService.getMonumentById.mockReturnValue(throwError(() => error));
-
     component.ngOnInit();
-
     await expect(firstValueFrom(component.monument$)).rejects.toThrow('Failed to load monument');
   });
 
-  it('should parse monument ID from route params', async () => {
+  it('should analyze monument ID from route parameters', async () => {
     monumentService.getMonumentById.mockReturnValue(of(mockMonument));
-
     component.ngOnInit();
-
     await firstValueFrom(component.monument$);
-
     expect(monumentService.getMonumentById).toHaveBeenCalledWith(1);
   });
 
+  it('should open report modal when user is logged in', async () => {
+    monumentService.getMonumentById.mockReturnValue(of(mockMonument));
+    component.openReportModal();
+    await new Promise(resolve => setTimeout(resolve, 100));
+    expect(component.reportModalVisible).toBe(true);
+    expect(component.reportModalConfig).toMatchObject({
+      targetId: 1,
+      targetType: 'MONUMENT',
+      targetName: 'Torre de Belém'
+    });
+  });
+
+  it('should submit report successfully', async () => {
+    const report = { targetId: 1, targetType: 'MONUMENT', targetName: 'Torre de Belém' };
+    reportService.createReport.mockReturnValue(of({}));
+    component.reportModalVisible = true;
+    await component.handleReportSubmit(report as any);
+    expect(reportService.createReport).toHaveBeenCalledWith(report);
+    expect(notificationService.showSuccess).toHaveBeenCalled();
+    expect(component.reportModalVisible).toBe(false);
+  });
+
+  it('should handle error when submitting report', async () => {
+    const report = { targetId: 1, targetType: 'MONUMENT', targetName: 'Torre de Belém' };
+    reportService.createReport.mockReturnValue(throwError(() => new Error('Erro')));
+    component.reportModalVisible = true;
+    await component.handleReportSubmit(report as any);
+    expect(notificationService.showError).toHaveBeenCalled();
+    expect(component.reportModalVisible).toBe(false);
+  });
 });

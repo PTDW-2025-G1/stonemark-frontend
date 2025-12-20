@@ -178,7 +178,8 @@ export abstract class BaseAuthComponent {
   private _postLoginRedirect(role?: string | null): void {
     const redirect = localStorage.getItem('redirectAfterLogin');
 
-    if (redirect && redirect.startsWith('http://localhost:')) {
+    // Check if there's a valid redirect URL from one of our apps
+    if (redirect && this._isValidRedirectUrl(redirect)) {
       localStorage.removeItem('redirectAfterLogin');
       window.location.href = redirect;
       return;
@@ -190,6 +191,25 @@ export abstract class BaseAuthComponent {
     }
 
     window.location.href = environment.baseUrl;
+  }
+
+  /* ----------------------------
+   * VALIDATE REDIRECT URL
+   * ---------------------------- */
+  private _isValidRedirectUrl(url: string): boolean {
+    try {
+      const validOrigins = [
+        environment.baseUrl,
+        environment.authUrl,
+        environment.profileUrl,
+        environment.staffUrl
+      ];
+
+      // Check if the URL starts with any of our valid origins
+      return validOrigins.some(origin => url.startsWith(origin));
+    } catch {
+      return false;
+    }
   }
 
   /* ----------------------------

@@ -56,7 +56,7 @@ describe('HeroSectionComponent', () => {
   });
 
   it('should render the "Digital Archive" badge', () => {
-    const badge = fixture.debugElement.query(By.css('.text-xs.font-semibold'));
+    const badge = fixture.debugElement.query(By.css('.inline-block.border'));
     expect(badge.nativeElement.textContent).toContain('Digital Archive');
   });
 });

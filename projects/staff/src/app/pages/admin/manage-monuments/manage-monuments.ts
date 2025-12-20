@@ -10,20 +10,32 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import {Router} from '@angular/router';
 import {take} from 'rxjs';
+import { ProgressBar } from 'primeng/progressbar';
+import { BlockUI } from 'primeng/blockui';
 
 @Component({
   selector: 'app-manage-monuments',
   standalone: true,
-  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog],
+  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI],
   template: `
     <app-toolbar
       title="Manage Monuments"
       subtitle="Manage monuments in the system."
       [showImport]="true"
+      [showExport]="true"
       (import)="importMonuments()"
-      (export)="exportCSV()"></app-toolbar>
+      (export)="exportCSV()">
+    </app-toolbar>
     <p-toast />
     <p-confirmDialog />
+
+    <p-blockUI [blocked]="isImporting()" [style]="{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 'z-index': 9999}">
+      <div *ngIf="isImporting()" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000;">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3rem; color: var(--primary-color);"></i>
+        <p style="margin-top: 1.5rem; font-size: 1.2rem; font-weight: 500; color: #333;">Importing monuments...</p>
+        <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '300px', 'margin-top': '1rem'}"></p-progressBar>
+      </div>
+    </p-blockUI>
 
     <div class="mb-3" style="display: flex; justify-content: flex-end;">
       <p-button
@@ -53,6 +65,7 @@ import {take} from 'rxjs';
 })
 export class ManageMonuments implements OnInit {
   monuments = signal<MonumentResponseDto[]>([]);
+  isImporting = signal<boolean>(false);
   @ViewChild('table') tableComp!: AppTableComponent;
 
   cols = [
@@ -160,8 +173,12 @@ export class ManageMonuments implements OnInit {
           try {
             const geoJsonContent = e.target.result;
 
+            // Set loading state to true
+            this.isImporting.set(true);
+
             this.monumentService.importMonumentsFromOverpass(geoJsonContent).subscribe({
               next: (monuments) => {
+                this.isImporting.set(false);
                 this.messageService.add({
                   severity: 'success',
                   summary: 'Success',
@@ -170,6 +187,7 @@ export class ManageMonuments implements OnInit {
                 this.loadMonuments();
               },
               error: (error) => {
+                this.isImporting.set(false);
                 this.messageService.add({
                   severity: 'error',
                   summary: 'Error',
@@ -178,6 +196,7 @@ export class ManageMonuments implements OnInit {
               }
             });
           } catch (parseError) {
+            this.isImporting.set(false);
             this.messageService.add({
               severity: 'error',
               summary: 'Error',

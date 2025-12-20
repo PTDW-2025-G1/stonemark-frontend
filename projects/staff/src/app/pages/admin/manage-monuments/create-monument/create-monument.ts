@@ -19,7 +19,8 @@ import {take} from 'rxjs';
       title="Create Monument"
       subtitle="Add a new monument"
       [showBackButton]="true"
-      (back)="goBack()"></app-toolbar>
+      (back)="goBack()">
+    </app-toolbar>
     <p-toast />
     <div class="card">
       <app-form-monument

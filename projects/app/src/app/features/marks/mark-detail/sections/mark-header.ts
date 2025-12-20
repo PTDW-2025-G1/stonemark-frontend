@@ -34,7 +34,7 @@ import {MarkDto} from '@api/model/mark-dto';
 
             <button
               (click)="toggleBookmark()"
-              class="px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 border transition-colors"
+              class="px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 border transition-colors cursor-pointer"
               [class]="isBookmarked
               ? 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20'
               : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'">
@@ -57,7 +57,7 @@ import {MarkDto} from '@api/model/mark-dto';
           <div class="flex flex-wrap gap-3 mt-4">
             <button
               (click)="openReport()"
-              class="px-5 py-2.5 text-sm font-semibold text-text-muted border border-border rounded-lg hover:border-red-500 hover:text-red-500 transition-colors flex items-center gap-2 group">
+              class="px-5 py-2.5 text-sm font-semibold text-text-muted border border-border rounded-lg hover:border-red-500 hover:text-red-500 transition-colors flex items-center gap-2 group cursor-pointer">
               <i class="bi bi-flag group-hover:text-red-500"></i>
               Report Issue
             </button>

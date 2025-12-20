@@ -11,18 +11,19 @@ import { ReportRequestDto } from '@api/model/report-request-dto';
 import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
 import { NotificationService } from '@core/services/notification.service';
+import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReportModalComponent],
+  imports: [CommonModule, RouterModule, ReportModalComponent, BreadcrumbComponent],
   templateUrl: './mark-occurrence-detail.html'
 })
 export class MarkOccurrenceDetail implements OnInit {
   occurrence: MarkOccurrenceDto = {} as MarkOccurrenceDto;
   loading = true;
+  breadcrumbItems: BreadcrumbItem[] = [];
 
-  // Report modal
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
 
@@ -51,6 +52,7 @@ export class MarkOccurrenceDetail implements OnInit {
         if (occurrence) {
           this.occurrence = occurrence;
           this.titleService.setTitle(`${occurrence.mark?.title} at ${occurrence.monument?.name} - StoneMark`);
+          this.updateBreadcrumbs();
         }
         this.loading = false;
       },
@@ -60,6 +62,26 @@ export class MarkOccurrenceDetail implements OnInit {
         this.router.navigate(['/marks']);
       }
     });
+  }
+
+  updateBreadcrumbs(): void {
+    this.breadcrumbItems = [
+      { label: 'Marks', link: '/marks', icon: 'bi bi-grid-3x3-gap' }
+    ];
+
+    if (this.occurrence.mark) {
+      this.breadcrumbItems.push({
+        label: this.occurrence.mark.title || 'Unknown Mark',
+        link: ['/marks', this.occurrence.mark.id]
+      });
+
+      this.breadcrumbItems.push({
+        label: `Occurrence #${this.occurrence.id}`,
+        link: [],
+        active: true,
+        icon: 'bi bi-pin-map-fill'
+      });
+    }
   }
 
   viewMonument(): void {
@@ -80,7 +102,7 @@ export class MarkOccurrenceDetail implements OnInit {
 
   getUserInitials(): string {
     const userName = this.occurrence?.createdBy;
-    if (!userName || typeof userName !== 'string') return 'U';
+    if (!userName) return 'U';
 
     const nameParts = userName.trim().split(' ');
     if (nameParts.length === 0) return 'U';

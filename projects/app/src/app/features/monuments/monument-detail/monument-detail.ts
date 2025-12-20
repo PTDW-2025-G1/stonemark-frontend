@@ -118,7 +118,7 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   captureMark(): void {
-    this.router.navigate(['/marks/capture']);
+    window.open('https://t.me/stonemarkbot', '_blank');
   }
 
   viewMarks(): void {

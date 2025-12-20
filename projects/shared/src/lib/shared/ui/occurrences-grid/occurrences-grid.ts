@@ -11,7 +11,7 @@ import { DateUtils } from '@shared/utils/date.utils';
           class="group bg-surface rounded-2xl border border-border overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
           (click)="viewOccurrence.emit(occurrence.id)">
 
-          <!-- Imagem -->
+          <!-- Image -->
           <div class="relative h-48 overflow-hidden bg-surface-muted">
             <img
               [src]="'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'"
@@ -25,14 +25,14 @@ import { DateUtils } from '@shared/utils/date.utils';
               @if (showMarkBadge) {
                 <button
                   (click)="viewMark.emit(occurrence.mark?.id); $event.stopPropagation()"
-                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">
+                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1 cursor-pointer">
                   <i class="bi bi-grid-3x3-gap"></i>
                   {{ occurrence.mark?.title }}
                 </button>
               } @else {
                 <button
                   (click)="viewMonument.emit(occurrence.monument?.id); $event.stopPropagation()"
-                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1">
+                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1 cursor-pointer">
                   <i class="bi bi-building"></i>
                   {{ occurrence.monument?.name }}
                 </button>
@@ -79,7 +79,7 @@ import { DateUtils } from '@shared/utils/date.utils';
 })
 export class OccurrencesGridComponent {
   @Input() occurrences: MarkOccurrenceDto[] = [];
-  @Input() showMarkBadge = false; // false = mostra monumento (default), true = mostra marca
+  @Input() showMarkBadge = false;
   @Output() viewOccurrence = new EventEmitter<number>();
   @Output() viewMonument = new EventEmitter<number>();
   @Output() viewMark = new EventEmitter<number>();

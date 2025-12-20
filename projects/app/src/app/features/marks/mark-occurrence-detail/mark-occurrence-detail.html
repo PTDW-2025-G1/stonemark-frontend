@@ -11,45 +11,7 @@
 }
 
 <!-- Breadcrumb -->
-<nav class="bg-surface border-b border-border py-4" aria-label="Breadcrumb">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <ol class="flex items-center space-x-2 text-sm">
-      <li>
-        <a
-          routerLink="/marks"
-          class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors group"
-        >
-          <i class="bi bi-grid-3x3-gap text-lg group-hover:scale-110 transition-transform"></i>
-          <span class="font-medium">Marks</span>
-        </a>
-      </li>
-
-      <li>
-        <i class="bi bi-chevron-right text-text-muted text-xs"></i>
-      </li>
-
-      @if (occurrence.mark) {
-        <li>
-          <a
-            [routerLink]="['/marks', occurrence.mark.id]"
-            class="text-text-muted hover:text-primary transition-colors"
-          >
-            {{ occurrence.mark.title }}
-          </a>
-        </li>
-
-        <li>
-          <i class="bi bi-chevron-right text-text-muted text-xs"></i>
-        </li>
-
-        <li class="flex items-center gap-2">
-          <i class="bi bi-pin-map-fill text-primary text-lg"></i>
-          <span class="font-semibold text-text">Occurrence #{{ occurrence.id }}</span>
-        </li>
-      }
-    </ol>
-  </div>
-</nav>
+<app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
 
 <!-- Content -->
 @if (!loading && occurrence) {
@@ -92,13 +54,13 @@
         <div class="flex flex-wrap gap-4">
           <button
             (click)="viewMark()"
-            class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200"
+            class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 cursor-pointer"
           >
             View Full Mark Details
           </button>
           <button
             (click)="openReportModal()"
-            class="px-8 py-4 text-sm font-bold tracking-wide border border-border hover:border-red-500 hover:text-red-500 transition-colors duration-200 flex items-center gap-2"
+            class="px-8 py-4 text-sm font-bold tracking-wide border border-border hover:border-red-500 hover:text-red-500 transition-colors duration-200 flex items-center gap-2 cursor-pointer"
           >
             <i class="bi bi-flag"></i>
             Report Issue
@@ -148,12 +110,12 @@
           <div class="flex flex-wrap gap-4">
             <button
               (click)="viewMonument()"
-              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors">
+              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer">
               Monument Details
             </button>
             <button
               (click)="openInMaps()"
-              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors">
+              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer">
               Open in Maps
             </button>
           </div>

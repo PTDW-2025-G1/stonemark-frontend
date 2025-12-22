@@ -20,8 +20,6 @@ export namespace BookmarkDto {
         Monument: 'MONUMENT',
         Mark: 'MARK',
         MarkOccurrence: 'MARK_OCCURRENCE',
-        Guild: 'GUILD',
-        Mason: 'MASON',
         User: 'USER',
         Proposal: 'PROPOSAL'
     } as const;

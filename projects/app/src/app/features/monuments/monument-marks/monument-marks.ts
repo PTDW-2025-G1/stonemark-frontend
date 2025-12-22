@@ -15,6 +15,7 @@ import { PaginationComponent } from '@shared/ui/pagination/pagination';
 import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
 import { MarkDto } from '@api/model/mark-dto';
+import { ImageUtils } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-monument-marks',
@@ -141,5 +142,8 @@ export class MonumentMarksComponent implements OnInit {
   captureMark(): void {
     window.open('https://t.me/stonemarkbot', '_blank');
   }
-}
 
+  getImageUrl(monument: MonumentResponseDto): string {
+    return ImageUtils.getImageUrl(monument.coverId, 'assets/images/placeholder.png');
+  }
+}

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-last-marks-section',
@@ -22,7 +23,7 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (occurrence of lastOccurrences; track occurrence.id) {
             <app-entity-card
-              [cover]="occurrence.mark?.cover?.storagePath ?? 'assets/images/placeholder.jpg'"
+              [cover]="getImageUrl(occurrence)"
               [title]="'Mark of ' + (occurrence.mark?.title ?? 'Untitled')"
               [subtitle]="occurrence.monument?.name || 'Unknown monument'"
               [id]="occurrence.mark?.id ?? 0"
@@ -36,4 +37,8 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 })
 export class LastMarkSectionComponent {
   @Input() lastOccurrences: MarkOccurrenceDto[] = [];
+
+  getImageUrl(occurrence: MarkOccurrenceDto): string {
+    return ImageUtils.getImageUrl(occurrence.mark?.coverId, 'assets/images/placeholder.png');
+  }
 }

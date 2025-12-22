@@ -12,6 +12,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
 import { NotificationService } from '@core/services/notification.service';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
@@ -26,8 +27,6 @@ export class MarkOccurrenceDetail implements OnInit {
 
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
-
-  readonly placeholderImage = 'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg';
 
   constructor(
     private route: ActivatedRoute,
@@ -173,5 +172,13 @@ export class MarkOccurrenceDetail implements OnInit {
         this.reportModalVisible = false;
       }
     });
+  }
+
+  getImageUrl(): string {
+    return ImageUtils.getImageUrl(this.occurrence.mark?.coverId, 'assets/images/placeholder.png');
+  }
+
+  getMonumentImageUrl(): string {
+    return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/images/placeholder.png');
   }
 }

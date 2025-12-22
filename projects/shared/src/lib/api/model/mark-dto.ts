@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MediaFileDto } from './media-file-dto';
 
 
 export interface MarkDto { 
@@ -15,6 +14,6 @@ export interface MarkDto {
     title?: string;
     description?: string;
     embedding?: Array<number>;
-    cover?: MediaFileDto;
+    coverId?: number;
 }
 

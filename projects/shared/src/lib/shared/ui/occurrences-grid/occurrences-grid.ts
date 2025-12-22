@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { DateUtils } from '@shared/utils/date.utils';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-occurrences-grid',
@@ -14,7 +15,7 @@ import { DateUtils } from '@shared/utils/date.utils';
           <!-- Image -->
           <div class="relative h-48 overflow-hidden bg-surface-muted">
             <img
-              [src]="'https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg'"
+              [src]="getImageUrl(occurrence)"
               [alt]="'Mark Occurrence of: ' + occurrence.mark?.title"
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
@@ -86,5 +87,9 @@ export class OccurrencesGridComponent {
 
   formatDate(date: string | undefined): string {
     return DateUtils.formatShortDate(date);
+  }
+
+  getImageUrl(occurrence: MarkOccurrenceDto): string {
+    return ImageUtils.getImageUrl(occurrence.mark?.coverId, 'assets/images/placeholder.png');
   }
 }

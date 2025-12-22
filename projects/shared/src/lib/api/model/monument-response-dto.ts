@@ -19,9 +19,8 @@ export interface MonumentResponseDto {
     longitude?: number;
     address?: string;
     city?: string;
+    coverId?: number;
     createdAt?: string;
     lastModifiedAt?: string;
-    createdBy?: string;
-    lastModifiedBy?: string;
 }
 

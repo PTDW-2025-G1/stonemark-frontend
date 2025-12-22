@@ -8,6 +8,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrences-grid';
@@ -52,7 +53,7 @@ export class MonumentMarksComponent implements OnInit {
     private titleService: Title,
     private monumentService: MonumentService,
     private markOccurrenceService: MarkOccurrenceService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.monument$ = this.route.paramMap.pipe(
@@ -70,16 +71,16 @@ export class MonumentMarksComponent implements OnInit {
       }),
       tap(monument => {
         if (monument?.name) {
-          this.titleService.setTitle(`${monument.name} - Stone Marks`);
+          this.titleService.setTitle(`${monument.name} - Mason Marks`);
         }
       })
     );
 
     this.breadcrumbItems$ = this.monument$.pipe(
       map(monument => [
-        { label: 'Monuments', link: '/search/monuments', icon: 'bi bi-building' },
+        { label: 'Monuments', link: '/search/monuments', iconHtml: MONUMENTS_ICON },
         { label: monument?.name ?? 'Monument', link: ['/monuments', monument?.id] },
-        { label: 'Stone Marks', link: [], active: true, icon: 'bi bi-grid-3x3-gap' }
+        { label: 'Mason Marks', link: [], active: true, iconHtml: MARKS_ICON }
       ])
     );
   }

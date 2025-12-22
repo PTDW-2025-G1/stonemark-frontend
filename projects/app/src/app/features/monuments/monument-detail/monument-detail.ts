@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import {Observable, tap} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument/monument.service';
-import {DomSanitizer, SafeResourceUrl, Title} from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
 import { NotificationService } from '@core/services/notification.service';
-import {MonumentResponseDto} from '@api/model/monument-response-dto';
-import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
-import {BookmarkService} from '@core/services/bookmark/bookmark.service';
-import {BookmarkDto} from '@api/model/bookmark-dto';
+import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { BookmarkService } from '@core/services/bookmark/bookmark.service';
+import { BookmarkDto } from '@api/model/bookmark-dto';
 import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
 import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
 import { ReportService } from '@core/services/report/report.service';
 import { ReportRequestDto } from '@api/model/report-request-dto';
-import {ImageUtils} from '@shared/utils/image.utils';
+import { ImageUtils } from '@shared/utils/image.utils';
+import { MONUMENTS_ICON } from '@core/constants/content-icons';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReportModalComponent],
+  imports: [CommonModule, RouterModule, ReportModalComponent, SafeHtmlPipe],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
@@ -45,7 +47,9 @@ export class MonumentDetailComponent implements OnInit {
     private bookmarkService: BookmarkService,
     private authService: AuthService,
     private reportService: ReportService
-  ) {}
+  ) { }
+
+  monumentsIcon = MONUMENTS_ICON;
 
   ngOnInit(): void {
     const monumentId$ = this.route.paramMap.pipe(

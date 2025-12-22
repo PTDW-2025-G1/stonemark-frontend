@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MARKS_ICON } from '@core/constants/content-icons';
 
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { LoadingStateComponent } from '@features/marks/mark-detail/sections/loading-state';
@@ -68,7 +69,7 @@ export class MarkDetailComponent implements OnInit {
     private monumentService: MonumentService,
     private reportService: ReportService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.mark$ = this.route.paramMap.pipe(
@@ -99,7 +100,7 @@ export class MarkDetailComponent implements OnInit {
 
     this.breadcrumbItems$ = this.mark$.pipe(
       map(mark => [
-        { label: 'Marks', link: '/search/marks', icon: 'bi bi-grid-3x3-gap' },
+        { label: 'Marks', link: '/search/marks', iconHtml: MARKS_ICON },
         { label: mark?.title ?? 'Mark', link: ['/marks', mark?.id], active: true }
       ])
     );
@@ -209,7 +210,6 @@ export class MarkDetailComponent implements OnInit {
       return;
     }
 
-    // Get the current mark ID from the component
     if (!this.currentMarkId) return;
 
     this.markService.getMark(this.currentMarkId).subscribe(mark => {

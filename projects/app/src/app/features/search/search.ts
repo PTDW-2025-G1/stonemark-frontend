@@ -77,7 +77,7 @@ export class SearchComponent implements OnInit {
 
   private getTitle(type: string): string {
     switch (type) {
-      case 'marks': return 'Stone Marks';
+      case 'marks': return 'Mason Marks';
       case 'monuments': return 'Historic Monuments';
       default: return 'Search Results';
     }

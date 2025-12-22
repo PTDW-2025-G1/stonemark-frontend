@@ -2,31 +2,34 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <ol class="flex items-center space-x-2 text-sm">
       @for (item of items; track item.label; let isLast = $last) {
-        <li>
-          @if (!item.active) {
-            <a
-              [routerLink]="item.link"
-              class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors group"
-            >
-              @if (item.icon) {
-                <i [class]="item.icon + ' text-lg group-hover:scale-110 transition-transform'"></i>
-              }
-              <span class="font-medium">{{ item.label }}</span>
-            </a>
-          } @else {
-            <span class="flex items-center gap-2">
-              @if (item.icon) {
-                <i [class]="item.icon + ' text-primary text-lg'"></i>
-              }
-              <span class="font-semibold text-text">{{ item.label }}</span>
-            </span>
+      <li>
+        @if (!item.active) {
+        <a [routerLink]="item.link"
+          class="flex items-center gap-2 text-text-muted hover:text-primary transition-colors group">
+          @if (item.iconHtml) {
+          <span class="text-lg group-hover:scale-110 transition-transform flex items-center"
+            [innerHTML]="item.iconHtml | safeHtml"></span>
+          } @else if (item.icon) {
+          <i [class]="item.icon + ' text-lg group-hover:scale-110 transition-transform'"></i>
           }
-        </li>
-        @if (!isLast) {
-          <li>
-            <i class="bi bi-chevron-right text-text-muted text-xs"></i>
-          </li>
+          <span class="font-medium">{{ item.label }}</span>
+        </a>
+        } @else {
+        <span class="flex items-center gap-2">
+          @if (item.iconHtml) {
+          <span class="text-primary text-lg flex items-center" [innerHTML]="item.iconHtml | safeHtml"></span>
+          } @else if (item.icon) {
+          <i [class]="item.icon + ' text-primary text-lg'"></i>
+          }
+          <span class="font-semibold text-text">{{ item.label }}</span>
+        </span>
         }
+      </li>
+      @if (!isLast) {
+      <li>
+        <i class="bi bi-chevron-right text-text-muted text-xs"></i>
+      </li>
+      }
       }
     </ol>
   </div>

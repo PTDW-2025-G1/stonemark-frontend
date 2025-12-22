@@ -17,32 +17,32 @@
 @if (!loading && occurrence) {
   <!-- Hero Section -->
   <section class="pt-16 pb-20 md:pb-32 px-6 bg-surface">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
 
       <!-- Image -->
-      <div class="order-2 lg:order-1 relative">
-        <div class="aspect-4/5 md:aspect-square bg-surface-muted overflow-hidden relative transition-all duration-700">
+      <div class="order-2 lg:order-1 lg:col-span-3 relative">
+        <div class="aspect-square bg-surface-muted overflow-hidden relative transition-all duration-700 shadow-xl rounded-lg">
           <img
             [src]="getImageUrl()"
-            [alt]="'Occurrence of ' + occurrence.mark?.title"
+            [alt]="'Occurrence image'"
             class="w-full h-full object-cover"
           />
 
           <!-- Overlay Badge -->
-          <div class="absolute top-6 left-6 bg-surface/90 backdrop-blur-sm px-4 py-2 border border-border">
+          <div class="absolute top-6 left-6 bg-surface/90 backdrop-blur-sm px-4 py-2 border border-border rounded-sm">
             <p class="font-mono text-sm font-bold">Occurrence #{{ occurrence.id }}</p>
           </div>
         </div>
       </div>
 
       <!-- Content -->
-      <div class="order-1 lg:order-2">
-        <div class="inline-block border border-border px-3 py-1 text-xs uppercase tracking-widest font-bold mb-6 bg-surface-alt">
+      <div class="order-1 lg:order-2 lg:col-span-2">
+        <div class="inline-block border border-border px-3 py-1 text-xs uppercase tracking-widest font-bold mb-6 bg-surface-alt rounded-sm">
           Stone Mason Mark
         </div>
 
-        <h1 class="text-5xl md:text-7xl font-serif font-medium leading-[1.1] mb-8">
-          {{ occurrence.mark?.title || 'Unknown Mark' }}
+        <h1 class="text-5xl md:text-6xl font-serif font-medium leading-[1.1] mb-8">
+          Mark Occurrence
         </h1>
 
         @if (occurrence.mark?.description) {
@@ -51,16 +51,16 @@
           </p>
         }
 
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-col sm:flex-row gap-4">
           <button
             (click)="viewMark()"
-            class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 cursor-pointer"
+            class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 cursor-pointer text-center rounded-sm"
           >
             View Full Mark Details
           </button>
           <button
             (click)="openReportModal()"
-            class="px-8 py-4 text-sm font-bold tracking-wide border border-border hover:border-red-500 hover:text-red-500 transition-colors duration-200 flex items-center gap-2 cursor-pointer"
+            class="px-8 py-4 text-sm font-bold tracking-wide border border-border hover:border-red-500 hover:text-red-500 transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer rounded-sm"
           >
             <i class="bi bi-flag"></i>
             Report Issue
@@ -110,12 +110,12 @@
           <div class="flex flex-wrap gap-4">
             <button
               (click)="viewMonument()"
-              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer">
+              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer rounded-sm">
               Monument Details
             </button>
             <button
               (click)="openInMaps()"
-              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer">
+              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer rounded-sm">
               Open in Maps
             </button>
           </div>
@@ -224,4 +224,3 @@
   [config]="reportModalConfig"
   (reportSubmit)="handleReportSubmit($event)"
 ></app-report-modal>
-

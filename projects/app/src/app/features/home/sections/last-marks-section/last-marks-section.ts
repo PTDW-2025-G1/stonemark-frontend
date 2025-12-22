@@ -15,7 +15,7 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
 
         <app-home-header
           [badge]="'Recently Discovered'"
-          [title]="'Latest Stone Marks'"
+          [title]="'Latest Mason Marks'"
           [subtitle]="'Explore the most recent mason marks documented by our community'"
         />
 
@@ -23,6 +23,7 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (occurrence of lastOccurrences; track occurrence.id) {
             <app-entity-card
+              [iconType]="'monument'"
               [cover]="getImageUrl(occurrence)"
               [subtitle]="occurrence.monument?.name || 'Unknown Monument'"
               [id]="occurrence.id ?? 0"

@@ -23,6 +23,7 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (monument of monuments; track monument.id) {
             <app-entity-card
+              [iconType]="'city'"
               [cover]="getImageUrl(monument)"
               [title]="monument.name || 'Unknown Monument'"
               [subtitle]="monument.city + ', Portugal'"

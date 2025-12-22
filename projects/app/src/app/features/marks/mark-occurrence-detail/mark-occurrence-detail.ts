@@ -12,7 +12,8 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
 import { NotificationService } from '@core/services/notification.service';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
-import {ImageUtils} from '@shared/utils/image.utils';
+import { ImageUtils } from '@shared/utils/image.utils';
+import { MARKS_ICON } from '@core/constants/content-icons';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
@@ -36,7 +37,7 @@ export class MarkOccurrenceDetail implements OnInit {
     private reportService: ReportService,
     private authService: AuthService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const occurrenceId = this.route.snapshot.paramMap.get('id');
@@ -50,7 +51,7 @@ export class MarkOccurrenceDetail implements OnInit {
       next: (occurrence) => {
         if (occurrence) {
           this.occurrence = occurrence;
-          this.titleService.setTitle(`${occurrence.mark?.title} at ${occurrence.monument?.name} - StoneMark`);
+          this.titleService.setTitle(`Occurrence at ${occurrence.monument?.name} - StoneMark`);
           this.updateBreadcrumbs();
         }
         this.loading = false;
@@ -65,12 +66,12 @@ export class MarkOccurrenceDetail implements OnInit {
 
   updateBreadcrumbs(): void {
     this.breadcrumbItems = [
-      { label: 'Marks', link: '/marks', icon: 'bi bi-grid-3x3-gap' }
+      { label: 'Marks', link: '/marks', iconHtml: MARKS_ICON }
     ];
 
     if (this.occurrence.mark) {
       this.breadcrumbItems.push({
-        label: this.occurrence.mark.title || 'Unknown Mark',
+        label: 'Mark Details',
         link: ['/marks', this.occurrence.mark.id]
       });
 
@@ -150,7 +151,7 @@ export class MarkOccurrenceDetail implements OnInit {
     }
 
     if (this.occurrence && this.occurrence.id) {
-      const targetName = `${this.occurrence.mark?.title} at ${this.occurrence.monument?.name}`;
+      const targetName = `Occurrence at ${this.occurrence.monument?.name}`;
       this.reportModalConfig = {
         targetId: this.occurrence.id,
         targetType: 'MARK_OCCURRENCE' as ReportRequestDto.TargetTypeEnum,

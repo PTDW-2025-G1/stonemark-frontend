@@ -36,9 +36,9 @@ export class DiscoverPageComponent {
   ];
 
   galleryImages = [
-    "https://www.portugalresident.com/wp-content/uploads/2025/10/Silves-stone-marks-1416.jpg",
-    "https://per-storemyr.net/wp-content/uploads/2015/05/harrell-storemyr_fig-10_op.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/d/da/Steinhoggermerke_211_Nidaros.jpg",
-    "https://photos1.blogger.com/blogger/6821/1071/1600/marca_alco6.jpg"
+    "/assets/images/galleryMarkImage1.jpg",
+    "/assets/images/galleryMarkImage2.jpg",
+    "/assets/images/galleryMarkImage3.jpg",
+    "/assets/images/galleryMarkImage4.jpg"
   ];
 }

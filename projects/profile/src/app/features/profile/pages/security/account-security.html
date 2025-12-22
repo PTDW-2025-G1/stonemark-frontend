@@ -18,7 +18,7 @@
       <div class="mb-8 p-4 bg-surface-alt border-l-2 border-primary">
         <div class="flex items-center justify-between gap-4">
           <p class="text-sm text-text">{{ message }}</p>
-          <button (click)="message = null" class="text-text-muted hover:text-text transition-colors">
+          <button (click)="message = null" class="text-text-muted hover:text-text transition-colors cursor-pointer">
             <i class="bi bi-x-lg text-sm"></i>
           </button>
         </div>
@@ -76,7 +76,7 @@
           (click)="setupTotp()"
           [disabled]="loading"
           class="group w-full flex items-center justify-between py-4 border-b border-border
-                   hover:border-primary transition-colors disabled:opacity-50">
+                   hover:border-primary transition-colors disabled:opacity-50 cursor-pointer">
           <span class="font-medium">Set up authenticator app</span>
           <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
         </button>
@@ -108,13 +108,13 @@
                 (click)="enableTotp()"
                 [disabled]="!code || loading"
                 class="flex-1 border border-primary bg-primary text-primary-foreground px-4 py-2.5
-                         hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm">
+                         hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm cursor-pointer">
                 Enable
               </button>
               <button
                 (click)="qrCodeImageUrl = undefined; code = ''"
                 class="px-4 py-2.5 border border-border hover:border-text-muted transition-colors
-                         font-medium text-sm">
+                         font-medium text-sm cursor-pointer">
                 Cancel
               </button>
             </div>
@@ -236,7 +236,7 @@
             (click)="requestDisableCode()"
             [disabled]="loading"
             class="group w-full flex items-center justify-between py-4 border-b border-border
-                     hover:border-error transition-colors disabled:opacity-50">
+                     hover:border-error transition-colors disabled:opacity-50 cursor-pointer">
             <span class="font-medium">Request verification code</span>
             <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
           </button>
@@ -263,7 +263,7 @@
           [disabled]="!code || loading"
           class="w-full border border-error text-error px-4 py-2.5
                    hover:bg-error hover:text-white transition-colors disabled:opacity-50
-                   font-medium text-sm">
+                   font-medium text-sm cursor-pointer">
           Disable Two-Factor Authentication
         </button>
       </div>

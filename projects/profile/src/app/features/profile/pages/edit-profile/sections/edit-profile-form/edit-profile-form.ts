@@ -18,7 +18,6 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
     firstName: '',
     lastName: '',
   };
-  @Input() currentEmail: string = '';
   @Input() isSubmitting: boolean = false;
   @Input() errorMessage: string = '';
   @Output() submitProfile = new EventEmitter<ProfileFormData>();

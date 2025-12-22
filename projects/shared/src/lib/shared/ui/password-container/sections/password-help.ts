@@ -7,12 +7,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   template: `
     <p class="text-center text-sm text-text-muted mt-6">
-      @if (mode === 'change') {
-        Forgot your current password?
-        <a routerLink="/forgot-password" class="text-primary hover:underline font-semibold">
-          Reset it here
-        </a>
-      } @else if (mode === 'reset') {
+      @if (mode === 'reset') {
         Remembered your password?
         <a routerLink="/login" class="text-primary hover:underline font-semibold">
           Go back to login

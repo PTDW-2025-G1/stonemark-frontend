@@ -36,7 +36,7 @@ import { CommonModule } from '@angular/common';
               <button
                 type="button"
                 (click)="toggleCurrentPassword.emit()"
-                class="absolute inset-y-0 right-0 pr-4 flex items-center text-text-muted hover:text-text">
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-text-muted hover:text-text cursor-pointer">
                 <i [class]="showCurrentPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
               </button>
             </div>
@@ -77,7 +77,7 @@ import { CommonModule } from '@angular/common';
             <button
               type="button"
               (click)="toggleNewPassword.emit()"
-              class="absolute inset-y-0 right-0 pr-4 flex items-center text-text-muted hover:text-text">
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-text-muted hover:text-text cursor-pointer">
               <i [class]="showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
           </div>
@@ -152,7 +152,7 @@ import { CommonModule } from '@angular/common';
             <button
               type="button"
               (click)="toggleConfirmPassword.emit()"
-              class="absolute inset-y-0 right-0 pr-4 flex items-center text-text-muted hover:text-text">
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-text-muted hover:text-text cursor-pointer">
               <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
           </div>
@@ -176,7 +176,7 @@ import { CommonModule } from '@angular/common';
           type="submit"
           [disabled]="passwordForm.invalid || isSubmitting"
           class="w-full px-6 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold
-                 hover:shadow-lg transition-all duration-300 disabled:opacity-50">
+                 hover:shadow-lg transition-all duration-300 disabled:opacity-50 cursor-pointer">
           <span class="flex items-center justify-center gap-2">
             @if (isSubmitting) {
               <i class="bi bi-hourglass-split animate-spin"></i>
@@ -206,7 +206,7 @@ import { CommonModule } from '@angular/common';
             type="button"
             (click)="goBack.emit()"
             class="w-full mt-3 px-6 py-3 bg-surface-alt border-2 border-border
-                   text-text rounded-xl font-semibold hover:border-primary transition-all">
+                   text-text rounded-xl font-semibold hover:border-primary transition-all cursor-pointer">
             Cancel
           </button>
         }

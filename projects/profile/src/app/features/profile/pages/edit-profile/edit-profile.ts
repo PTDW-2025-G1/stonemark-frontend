@@ -18,7 +18,6 @@ export class EditProfileComponent implements OnInit {
   currentProfile = {
     firstName: '',
     lastName: '',
-    email: ''
   };
   profileUpdated: boolean = false;
   isSubmitting: boolean = false;
@@ -33,18 +32,9 @@ export class EditProfileComponent implements OnInit {
   private loadCurrentProfile(): void {
     this.profileService.getCurrentUser().subscribe({
       next: (user: UserDto) => {
-        let email = '';
-        if (user.contacts && user.contacts.length > 0) {
-          const emailContact = user.contacts.find(c => c.type === 'EMAIL' && c.primaryContact);
-          if (emailContact) {
-            email = emailContact.value || '';
-          }
-        }
-
         this.currentProfile = {
           firstName: user.firstName || '',
           lastName: user.lastName || '',
-          email: email
         }
       },
       error: err => {

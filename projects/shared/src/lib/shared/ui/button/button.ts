@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
       [disabled]="disabled || loading"
       [class.w-full]="fullWidth"
       [ngClass]="classes"
-      class="group relative inline-flex items-center justify-center font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none overflow-hidden"
+      class="group relative inline-flex items-center justify-center font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none overflow-hidden cursor-pointer"
     >
       @if (variant === 'primary') {
         <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -51,7 +51,7 @@ export class ButtonComponent {
     return [
       this.getSizeClasses(),
       this.getVariantClasses(),
-      'active:scale-[0.98]', // Efeito tátil ao clicar
+      'active:scale-[0.98]',
     ].join(' ');
   }
 

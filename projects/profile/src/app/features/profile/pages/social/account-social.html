@@ -43,7 +43,7 @@
       <div class="mb-8 p-4 bg-surface-alt border-l-2 border-primary">
         <div class="flex items-center justify-between gap-4">
           <p class="text-sm text-text">{{ message }}</p>
-          <button (click)="message = null" class="text-text-muted hover:text-text transition-colors">
+          <button (click)="message = null" class="text-text-muted hover:text-text transition-colors cursor-pointer">
             <i class="bi bi-x-lg text-sm"></i>
           </button>
         </div>
@@ -91,7 +91,7 @@
               [disabled]="loading"
               class="border border-primary bg-primary text-primary-foreground px-6 py-2.5
                      hover:bg-text transition-colors disabled:opacity-50
-                     font-medium text-sm whitespace-nowrap">
+                     font-medium text-sm whitespace-nowrap cursor-pointer">
               @if (loading) {
                 <span>Connecting...</span>
               } @else {
@@ -160,7 +160,7 @@
           <button
             disabled
             class="border border-border text-text-muted px-6 py-2.5
-                   font-medium text-sm whitespace-nowrap cursor-not-allowed">
+                   font-medium text-sm whitespace-nowrap cursor-pointer">
             Connect
           </button>
         </div>
@@ -185,7 +185,7 @@
           <button
             disabled
             class="border border-border text-text-muted px-6 py-2.5
-                   font-medium text-sm whitespace-nowrap cursor-not-allowed">
+                   font-medium text-sm whitespace-nowrap cursor-pointer">
             Connect
           </button>
         </div>

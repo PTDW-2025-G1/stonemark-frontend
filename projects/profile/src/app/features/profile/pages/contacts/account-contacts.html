@@ -22,7 +22,7 @@
              'bg-info/5 border-info': messageType === 'info'
            }">
         <p class="text-sm text-text">{{ message }}</p>
-        <button (click)="message = null" class="text-text-muted hover:text-text transition-colors">
+        <button (click)="message = null" class="text-text-muted hover:text-text transition-colors cursor-pointer">
           <i class="bi bi-x-lg text-sm"></i>
         </button>
       </div>
@@ -61,13 +61,13 @@
               (click)="confirmVerificationCode()"
               [disabled]="!verificationCode"
               class="flex-1 border border-primary bg-primary text-primary-foreground px-4 py-2.5
-                     hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm">
+                     hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm cursor-pointer">
               Confirm Code
             </button>
             <button
               (click)="cancelVerification()"
               class="px-4 py-2.5 border border-border hover:border-text-muted transition-colors
-                     font-medium text-sm">
+                     font-medium text-sm cursor-pointer">
               Cancel
             </button>
           </div>
@@ -139,7 +139,7 @@
                 [disabled]="reauthLoading || (!reauthPassword && !reauthSuccess) || (reauthSuccess && !reauthOtp)"
                 class="w-full border border-error text-error px-4 py-2.5
                        hover:bg-error hover:text-white transition-colors disabled:opacity-50
-                       font-medium text-sm">
+                       font-medium text-sm cursor-pointer">
                 @if (reauthLoading) {
                   <span>Processing...</span>
                 } @else if (!reauthSuccess) {
@@ -153,7 +153,7 @@
                 (click)="closeReauthModal()"
                 [disabled]="reauthLoading"
                 class="w-full px-4 py-2.5 border border-border hover:border-text-muted
-                       transition-colors font-medium text-sm disabled:opacity-50">
+                       transition-colors font-medium text-sm disabled:opacity-50 cursor-pointer">
                 Cancel
               </button>
             </div>
@@ -214,7 +214,7 @@
                   @if (!contact.verified) {
                     <button
                       (click)="verifyContact(contact)"
-                      class="text-sm font-medium border-b border-primary pb-0.5 hover:opacity-70 transition-opacity">
+                      class="text-sm font-medium border-b border-primary pb-0.5 hover:opacity-70 transition-opacity cursor-pointer">
                       Verify
                     </button>
                   }
@@ -222,14 +222,14 @@
                   @if (contact.verified && !contact.primaryContact) {
                     <button
                       (click)="setPrimary(contact)"
-                      class="text-sm font-medium border-b border-text-muted pb-0.5 hover:opacity-70 transition-opacity">
+                      class="text-sm font-medium border-b border-text-muted pb-0.5 hover:opacity-70 transition-opacity cursor-pointer">
                       Set Primary
                     </button>
                   }
 
                   <button
                     (click)="deleteContact(contact)"
-                    class="text-error hover:opacity-70 transition-opacity">
+                    class="text-error hover:opacity-70 transition-opacity cursor-pointer">
                     <i class="bi bi-trash text-lg"></i>
                   </button>
                 </div>
@@ -251,7 +251,7 @@
         <div class="flex gap-4">
           <button
             (click)="newContactType = ContactDto.TypeEnum.Email"
-            class="flex-1 py-4 border-b-2 font-medium transition-colors"
+            class="flex-1 py-4 border-b-2 font-medium transition-colors cursor-pointer"
             [class.border-primary]="newContactType === ContactDto.TypeEnum.Email"
             [class.text-primary]="newContactType === ContactDto.TypeEnum.Email"
             [class.border-border]="newContactType !== ContactDto.TypeEnum.Email"
@@ -264,7 +264,7 @@
 
           <button
             (click)="newContactType = ContactDto.TypeEnum.Telephone"
-            class="flex-1 py-4 border-b-2 font-medium transition-colors"
+            class="flex-1 py-4 border-b-2 font-medium transition-colors cursor-pointer"
             [class.border-primary]="newContactType === ContactDto.TypeEnum.Telephone"
             [class.text-primary]="newContactType === ContactDto.TypeEnum.Telephone"
             [class.border-border]="newContactType !== ContactDto.TypeEnum.Telephone"
@@ -304,7 +304,7 @@
         <button
           (click)="addContact()"
           [disabled]="!isNewContactValid()"
-          class="w-full border px-4 py-2.5 font-medium text-sm transition-colors"
+          class="w-full border px-4 py-2.5 font-medium text-sm transition-colors cursor-pointer"
           [class.border-primary]="isNewContactValid()"
           [class.bg-primary]="isNewContactValid()"
           [class.text-primary-foreground]="isNewContactValid()"

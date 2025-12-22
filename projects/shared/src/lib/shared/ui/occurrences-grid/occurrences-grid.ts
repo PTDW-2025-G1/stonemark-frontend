@@ -81,6 +81,6 @@ export class OccurrencesGridComponent {
   }
 
   getImageUrl(occurrence: MarkOccurrenceDto): string {
-    return ImageUtils.getImageUrl(occurrence.mark?.coverId, 'assets/images/placeholder.png');
+    return ImageUtils.getImageUrl(occurrence.mark?.coverId, 'assets/placeholder.png');
   }
 }

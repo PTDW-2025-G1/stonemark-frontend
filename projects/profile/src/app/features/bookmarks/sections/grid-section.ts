@@ -1,5 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ImageUtils } from '@shared/utils/image.utils';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 
 interface BookmarkItem {
   bookmarkId: number;
@@ -27,8 +30,8 @@ interface BookmarkItem {
           </button>
 
           <!-- Type Badge -->
-          <div class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-sm rounded-full text-xs font-medium border border-border">
-            <i [class]="item.type === 'monument' ? 'bi bi-building' : 'bi bi-grid-3x3'" class="mr-1"></i>
+          <div class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-sm rounded-full text-xs font-medium border border-border flex items-center">
+            <span class="mr-1" [innerHTML]="item.type === 'monument' ? monumentsIcon : marksIcon"></span>
             {{ item.type === 'monument' ? 'Monument' : 'Mark' }}
           </div>
 
@@ -62,10 +65,20 @@ export class GridSectionComponent {
   @Output() remove = new EventEmitter<{ bookmarkId: number, type: 'monument' | 'mark' }>();
   @Output() viewDetails = new EventEmitter<BookmarkItem>();
 
+  monumentsIcon: SafeHtml;
+  marksIcon: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer) {
+    this.monumentsIcon = this.sanitizer.bypassSecurityTrustHtml(MONUMENTS_ICON);
+    this.marksIcon = this.sanitizer.bypassSecurityTrustHtml(MARKS_ICON);
+  }
+
   getItemCover(item: BookmarkItem): string {
-    return item.type === 'mark'
-      ? 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Igreja_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_%28Ermida%29_sigla_0456_1.JPG'
-      : 'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg';
+    if (item.type === 'mark') {
+      return ImageUtils.getImageUrl(item.id, 'assets/placeholder.png');
+    } else {
+      return ImageUtils.getImageUrl(item.id, 'assets/placeholder.png');
+    }
   }
 
   getItemName(item: BookmarkItem): string {

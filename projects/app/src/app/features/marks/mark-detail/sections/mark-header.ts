@@ -88,6 +88,6 @@ export class MarkHeaderComponent {
   }
 
   getImageUrl(): string {
-    return ImageUtils.getImageUrl(this.mark?.coverId, 'assets/images/placeholder.png');
+    return ImageUtils.getImageUrl(this.mark?.coverId, 'assets/placeholder.png');
   }
 }

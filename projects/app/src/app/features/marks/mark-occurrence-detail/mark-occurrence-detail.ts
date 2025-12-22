@@ -176,10 +176,10 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.mark?.coverId, 'assets/images/placeholder.png');
+    return ImageUtils.getImageUrl(this.occurrence.mark?.coverId, 'assets/placeholder.png');
   }
 
   getMonumentImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/images/placeholder.png');
+    return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/placeholder.png');
   }
 }

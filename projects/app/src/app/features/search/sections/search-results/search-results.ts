@@ -145,9 +145,9 @@ export class SearchResultsComponent {
 
   getItemCover(item: SearchItem): string {
     if (this.isMark(item)) {
-      return ImageUtils.getImageUrl(item.coverId, 'assets/images/placeholder.png');
+      return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png');
     } else {
-      return ImageUtils.getImageUrl((item as MonumentResponseDto).coverId, 'assets/images/placeholder.png');
+      return ImageUtils.getImageUrl((item as MonumentResponseDto).coverId, 'assets/placeholder.png');
     }
   }
 

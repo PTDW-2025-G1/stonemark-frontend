@@ -203,6 +203,6 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   getImageUrl(monument: MonumentResponseDto): string {
-    return ImageUtils.getImageUrl(monument.coverId, 'assets/images/placeholder.png');
+    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');
   }
 }

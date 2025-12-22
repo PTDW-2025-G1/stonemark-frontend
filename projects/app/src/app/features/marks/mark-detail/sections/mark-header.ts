@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {MarkDto} from '@api/model/mark-dto';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-mark-detail-header',
@@ -10,7 +11,7 @@ import {MarkDto} from '@api/model/mark-dto';
         <div class="w-full lg:w-48 lg:flex-shrink-0">
           <div class="w-full h-64 sm:h-72 lg:h-48 rounded-2xl overflow-hidden border-2 border-border shadow-lg">
             <img
-              [src]="'https://upload.wikimedia.org/wikipedia/commons/4/4d/Igreja_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_%28Ermida%29_sigla_0456_1.JPG'"
+              [src]="getImageUrl()"
               [alt]="mark?.title"
               class="w-full h-full object-cover"
             />
@@ -84,5 +85,9 @@ export class MarkHeaderComponent {
 
   openReport(): void {
     this.reportClicked.emit();
+  }
+
+  getImageUrl(): string {
+    return ImageUtils.getImageUrl(this.mark?.coverId, 'assets/images/placeholder.png');
   }
 }

@@ -12,7 +12,6 @@ import { MediaFileDto } from './media-file-dto';
 
 export interface ProposedMarkDto { 
     id?: number;
-    name?: string;
     description?: string;
     mediaFile?: MediaFileDto;
 }

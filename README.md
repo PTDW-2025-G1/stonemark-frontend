@@ -30,6 +30,16 @@ To run all applications concurrently in development mode, use the following comm
 npm run start:all
 ```
 
+### Generating API Models
+
+To generate the TypeScript models from the backend API documentation, ensure the backend is running at `http://localhost:8080` and run:
+
+```bash
+npm run api:gen-models
+```
+
+This will update the models in `projects/shared/src/lib/api`.
+
 ## Production
 
 ### Building for Production

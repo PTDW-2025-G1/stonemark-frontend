@@ -39,7 +39,7 @@
           <div class="hidden md:flex items-center gap-3">
             <div class="w-32 h-32 lg:w-40 lg:h-40 rounded-xl overflow-hidden border-2 border-border shadow-lg bg-surface-muted">
               <img
-                [src]="'https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg'"
+                [src]="getImageUrl(monument)"
                 [alt]="monument.name"
                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
@@ -131,4 +131,3 @@
     </div>
   </div>
 }
-

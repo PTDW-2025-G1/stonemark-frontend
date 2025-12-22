@@ -155,8 +155,6 @@ export class ReportModalComponent {
       MONUMENT: 'Monument',
       MARK: 'Mark',
       MARK_OCCURRENCE: 'Mark Occurrence',
-      GUILD: 'Guild',
-      MASON: 'Mason',
       USER: 'User',
       PROPOSAL: 'Proposal'
     };

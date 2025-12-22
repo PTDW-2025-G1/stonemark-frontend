@@ -15,6 +15,7 @@ import { environment } from '@env/environment';
 import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
 import { ReportService } from '@core/services/report/report.service';
 import { ReportRequestDto } from '@api/model/report-request-dto';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-monument-detail',
@@ -195,5 +196,9 @@ export class MonumentDetailComponent implements OnInit {
         this.reportModalVisible = false;
       }
     });
+  }
+
+  getImageUrl(monument: MonumentResponseDto): string {
+    return ImageUtils.getImageUrl(monument.coverId, 'assets/images/placeholder.png');
   }
 }

@@ -9,7 +9,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { finalize } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import {imageUrl} from '@core/config/image.config';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 type SearchItem = MonumentResponseDto | MarkDto;
 
@@ -144,9 +144,11 @@ export class SearchResultsComponent {
   }
 
   getItemCover(item: SearchItem): string {
-    return this.isMark(item)
-      ? (item.cover?.storagePath ? imageUrl + item.cover.storagePath : "assets/images/placeholder.png")
-      : "https://celina-tours.com/blog/wp-content/uploads/2025/02/BLOG-4-180.jpg";
+    if (this.isMark(item)) {
+      return ImageUtils.getImageUrl(item.coverId, 'assets/images/placeholder.png');
+    } else {
+      return ImageUtils.getImageUrl((item as MonumentResponseDto).coverId, 'assets/images/placeholder.png');
+    }
   }
 
   getItemName(item: SearchItem): string {

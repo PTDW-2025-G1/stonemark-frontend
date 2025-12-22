@@ -16,33 +16,12 @@ import { MonumentResponseDto } from './monument-response-dto';
 
 export interface MarkOccurrenceProposalDto { 
     id?: number;
-    status?: MarkOccurrenceProposalDto.StatusEnum;
+    priority?: number;
     originalMediaFile?: MediaFileDto;
     existingMonument?: MonumentResponseDto;
     proposedMonument?: ProposedMonumentDto;
     existingMark?: MarkDto;
     proposedMark?: ProposedMarkDto;
+    isSubmitted?: boolean;
 }
-export namespace MarkOccurrenceProposalDto {
-    export const StatusEnum = {
-        InProgress: 'IN_PROGRESS',
-        AwaitingAuthentication: 'AWAITING_AUTHENTICATION',
-        AwaitingMonumentInfo: 'AWAITING_MONUMENT_INFO',
-        AwaitingMonumentName: 'AWAITING_MONUMENT_NAME',
-        AwaitingMarkInfo: 'AWAITING_MARK_INFO',
-        AwaitingMarkSelection: 'AWAITING_MARK_SELECTION',
-        AwaitingMonumentSelection: 'AWAITING_MONUMENT_SELECTION',
-        AwaitingMonumentVerification: 'AWAITING_MONUMENT_VERIFICATION',
-        AwaitingNotes: 'AWAITING_NOTES',
-        AwaitingPhoto: 'AWAITING_PHOTO',
-        AwaitingCoordinates: 'AWAITING_COORDINATES',
-        AwaitingCoordinatesConfirmation: 'AWAITING_COORDINATES_CONFIRMATION',
-        ReadyToSubmit: 'READY_TO_SUBMIT',
-        Submitted: 'SUBMITTED',
-        Approved: 'APPROVED',
-        Rejected: 'REJECTED'
-    } as const;
-    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
-}
-
 

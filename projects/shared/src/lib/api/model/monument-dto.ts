@@ -15,5 +15,6 @@ export interface MonumentDto {
     description?: string;
     latitude?: number;
     longitude?: number;
+    coverId?: number;
 }
 

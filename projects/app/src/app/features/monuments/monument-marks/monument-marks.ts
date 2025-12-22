@@ -39,6 +39,13 @@ export class MonumentMarksComponent implements OnInit {
 
   private currentMonumentId?: number;
 
+  get formattedMarks() {
+    return this.marks.map(mark => ({
+      ...mark,
+      displayLabel: `Mark #${mark.id}`
+    }));
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

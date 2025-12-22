@@ -1,32 +1,31 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
-import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
-import {ImageUtils} from '@shared/utils/image.utils';
+import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { ImageUtils } from '@shared/utils/image.utils';
+import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
 
 @Component({
   selector: 'app-last-marks-section',
   standalone: true,
-  imports: [CommonModule, EntityCardComponent],
+  imports: [CommonModule, EntityCardComponent, HomeHeaderComponent],
   template: `
-    <section class="py-12 sm:py-16 lg:py-24">
+    <section class="py-12 sm:py-16 lg:py-24 bg-surface">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10 sm:mb-12 lg:mb-16">
-          <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-text-muted mb-2">
-            Marks
-          </p>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-text">
-            Last Marks Discovered
-          </h2>
-        </div>
 
+        <app-home-header
+          [badge]="'Recently Discovered'"
+          [title]="'Latest Stone Marks'"
+          [subtitle]="'Explore the most recent mason marks documented by our community'"
+        />
+
+        <!-- Grid -->
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (occurrence of lastOccurrences; track occurrence.id) {
             <app-entity-card
               [cover]="getImageUrl(occurrence)"
-              [title]="'Mark of ' + (occurrence.mark?.title ?? 'Untitled')"
-              [subtitle]="occurrence.monument?.name || 'Unknown monument'"
-              [id]="occurrence.mark?.id ?? 0"
+              [subtitle]="occurrence.monument?.name || 'Unknown Monument'"
+              [id]="occurrence.id ?? 0"
               [type]="'marks/occurrence'"
             />
           }
@@ -39,6 +38,9 @@ export class LastMarkSectionComponent {
   @Input() lastOccurrences: MarkOccurrenceDto[] = [];
 
   getImageUrl(occurrence: MarkOccurrenceDto): string {
-    return ImageUtils.getImageUrl(occurrence.mark?.coverId, 'assets/images/placeholder.png');
+    return ImageUtils.getImageUrl(
+      occurrence.mark?.coverId,
+      'assets/images/placeholder.png'
+    );
   }
 }

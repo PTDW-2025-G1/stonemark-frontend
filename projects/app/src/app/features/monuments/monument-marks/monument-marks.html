@@ -66,11 +66,11 @@
         <label class="text-xs font-semibold text-text-muted uppercase tracking-wider">Filter by Mark ({{ marks.length }})</label>
         <div class="w-64">
           <app-shared-select
-            [options]="marks"
+            [options]="formattedMarks"
             [selected]="selectedMarkId"
             [label]="'All Marks'"
             [searchable]="true"
-            [optionLabelKey]="'title'"
+            [optionLabelKey]="'displayLabel'"
             [optionValueKey]="'id'"
             (selectionChange)="onMarkFilterChange($event)">
           </app-shared-select>

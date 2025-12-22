@@ -14,23 +14,22 @@ import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
 
 @Component({
   selector: 'app-map-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HomeHeaderComponent],
   encapsulation: ViewEncapsulation.None,
   template: `
     <section class="py-16 bg-surface-alt/30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10 sm:mb-12 lg:mb-16">
-          <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-text-muted mb-2">
-            Explore
-          </p>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-text">
-            Heritage in Maps
-          </h2>
-        </div>
+
+        <app-home-header
+          [badge]="'Explore'"
+          [title]="'Heritage in Maps'"
+          [subtitle]="'Browse monuments and their marks directly on the interactive map'"
+        />
 
         <div class="relative rounded-2xl shadow-xl border border-border overflow-hidden group">
           <div

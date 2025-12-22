@@ -9,26 +9,31 @@
         <h1 class="text-5xl font-serif font-medium leading-[1.1]">
           {{ title }}
         </h1>
+        @if (type === 'marks') {
+          <p class="text-base sm:text-lg text-text-muted mt-3 max-w-3xl">
+            Explore our collection of historic stone marks found across monuments. Each mark tells a unique story of the craftsmen who left their signature in stone.
+          </p>
+        }
       </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-4">
-      <!-- Search Input -->
-      <div class="relative group flex-1">
-        <div class="absolute inset-y-0 left-3 sm:left-4 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
-          <i class="bi bi-search text-lg sm:text-xl"></i>
+    @if (type === 'monuments') {
+      <div class="flex flex-col sm:flex-row gap-4">
+        <!-- Search Input -->
+        <div class="relative group flex-1">
+          <div class="absolute inset-y-0 left-3 sm:left-4 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">
+            <i class="bi bi-search text-lg sm:text-xl"></i>
+          </div>
+          <input
+            type="text"
+            placeholder="Search..."
+            (input)="onSearchInput($event)"
+            class="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-surface border-2 border-border rounded-xl
+                       focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm sm:text-base text-text placeholder-text-muted
+                       transition-all duration-300 shadow-sm hover:shadow-md"
+          />
         </div>
-        <input
-          type="text"
-          placeholder="Search..."
-          (input)="onSearchInput($event)"
-          class="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-surface border-2 border-border rounded-xl
-                     focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm sm:text-base text-text placeholder-text-muted
-                     transition-all duration-300 shadow-sm hover:shadow-md"
-        />
-      </div>
 
-      @if (type === 'monuments') {
         <div class="w-full sm:w-64">
           <app-shared-select
             [options]="selectOptions"
@@ -40,7 +45,7 @@
             (selectionChange)="selectOption($event)">
           </app-shared-select>
         </div>
-      }
-    </div>
+      </div>
+    }
   </div>
 </section>

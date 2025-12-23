@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
-import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { DateUtils } from '@shared/utils/date.utils';
 import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
 import { ReportService } from '@core/services/report/report.service';
@@ -14,6 +13,7 @@ import { NotificationService } from '@core/services/notification.service';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
+import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
@@ -22,7 +22,7 @@ import { MARKS_ICON } from '@core/constants/content-icons';
   templateUrl: './mark-occurrence-detail.html'
 })
 export class MarkOccurrenceDetail implements OnInit {
-  occurrence: MarkOccurrenceDto = {} as MarkOccurrenceDto;
+  occurrence: MarkOccurrenceDetailedDto = {} as MarkOccurrenceDetailedDto;
   loading = true;
   breadcrumbItems: BreadcrumbItem[] = [];
 
@@ -69,10 +69,10 @@ export class MarkOccurrenceDetail implements OnInit {
       { label: 'Marks', link: '/marks', iconHtml: MARKS_ICON }
     ];
 
-    if (this.occurrence.mark) {
+    if (this.occurrence.markId) {
       this.breadcrumbItems.push({
         label: 'Mark Details',
-        link: ['/marks', this.occurrence.mark.id]
+        link: ['/marks', this.occurrence.markId]
       });
 
       this.breadcrumbItems.push({
@@ -91,8 +91,8 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   viewMark(): void {
-    if (this.occurrence?.mark?.id) {
-      this.router.navigate(['/marks', this.occurrence.mark.id]);
+    if (this.occurrence?.markId) {
+      this.router.navigate(['/marks', this.occurrence.markId]);
     }
   }
 
@@ -101,7 +101,7 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getUserInitials(): string {
-    const userName = this.occurrence?.createdBy;
+    const userName = this.occurrence?.proposer;
     if (!userName) return 'U';
 
     const nameParts = userName.trim().split(' ');
@@ -176,7 +176,7 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.mark?.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(this.occurrence.coverId, 'assets/placeholder.png');
   }
 
   getMonumentImageUrl(): string {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { BookmarkService } from '@core/services/bookmark/bookmark.service';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkService } from '@core/services/mark/mark.service';
@@ -23,6 +23,8 @@ interface BookmarkItem {
   title: string;
   subtitle?: string;
   occurrenceCount?: number;
+  coverId?: number;
+  city?: string;
 }
 
 @Component({
@@ -44,7 +46,6 @@ export class BookmarksComponent implements OnInit {
   Math = Math;
 
   constructor(
-    private router: Router,
     private bookmarkService: BookmarkService,
     private monumentService: MonumentService,
     private markService: MarkService,
@@ -77,12 +78,14 @@ export class BookmarksComponent implements OnInit {
             id: m.id!,
             type: 'monument' as const,
             title: m.name ?? 'Unknown Monument',
-            subtitle: m.city ? `${m.city}, Portugal` : 'Portugal'
+            subtitle: m.city ? `${m.city}, Portugal` : 'Portugal',
+            coverId: m.coverId,
+            city: m.city
           }))
         );
       } else {
         return this.markService.getMark(b.targetId!).pipe(
-          map(mark => ({ bookmarkId: b.id!, id: mark.id!, type: 'mark' as const, title: mark.title ?? 'Unknown Mark' })),
+          map(mark => ({ bookmarkId: b.id!, id: mark.id!, type: 'mark' as const, title: mark.title ?? 'Unknown Mark', coverId: mark.coverId })),
         );
       }
     });

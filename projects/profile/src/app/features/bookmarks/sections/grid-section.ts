@@ -12,6 +12,7 @@ interface BookmarkItem {
   subtitle?: string;
   location?: string;
   city?: string;
+  coverId?: number;
 }
 
 @Component({
@@ -74,11 +75,7 @@ export class GridSectionComponent {
   }
 
   getItemCover(item: BookmarkItem): string {
-    if (item.type === 'mark') {
-      return ImageUtils.getImageUrl(item.id, 'assets/placeholder.png');
-    } else {
-      return ImageUtils.getImageUrl(item.id, 'assets/placeholder.png');
-    }
+    return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png');
   }
 
   getItemName(item: BookmarkItem): string {

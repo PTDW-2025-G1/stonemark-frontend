@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
+import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,8 @@ export class MarkOccurrenceService {
     return this.http.get<PageMarkOccurrenceDto>(this.baseUrl, { params });
   }
 
-  getById(id: number): Observable<MarkOccurrenceDto> {
-    return this.http.get<MarkOccurrenceDto>(`${this.baseUrl}/${id}`);
+  getById(id: number): Observable<MarkOccurrenceDetailedDto> {
+    return this.http.get<MarkOccurrenceDetailedDto>(`${this.baseUrl}/${id}`);
   }
 
   getByMarkId(markId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceDto> {

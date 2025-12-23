@@ -13,9 +13,8 @@ import { MonumentDto } from './monument-dto';
 
 export interface MarkOccurrenceDto { 
     id?: number;
+    coverId?: number;
     mark?: MarkDto;
     monument?: MonumentDto;
-    createdAt?: string;
-    createdBy?: string;
 }
 

@@ -45,11 +45,11 @@
           Mark Occurrence
         </h1>
 
-        @if (occurrence.mark?.description) {
-          <p class="text-lg text-text-muted mb-8 leading-relaxed">
-            {{ occurrence.mark?.description }}
-          </p>
-        }
+<!--        @if (occurrence.mark?.description) {-->
+<!--          <p class="text-lg text-text-muted mb-8 leading-relaxed">-->
+<!--            {{ occurrence.mark?.description }}-->
+<!--          </p>-->
+<!--        }-->
 
         <div class="flex flex-col sm:flex-row gap-4">
           <button
@@ -141,7 +141,7 @@
             {{ getUserInitials() }}
           </div>
           <p class="text-sm text-text-muted mb-2">Discovered by</p>
-          <p class="text-2xl font-serif font-bold">{{ occurrence.createdBy || 'Unknown' }}</p>
+          <p class="text-2xl font-serif font-bold">{{ occurrence.proposer || 'Unknown' }}</p>
         </div>
       </div>
 

@@ -14,6 +14,9 @@ import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/bread
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
+import {UserManagementService} from '@core/services/user/user-management.service';
+import {UserPublicDto} from '@api/model/user-public-dto';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
@@ -25,6 +28,9 @@ export class MarkOccurrenceDetail implements OnInit {
   occurrence: MarkOccurrenceDetailedDto = {} as MarkOccurrenceDetailedDto;
   loading = true;
   breadcrumbItems: BreadcrumbItem[] = [];
+  proposer: UserPublicDto | null = null;
+  proposerLoading = false;
+  proposerLoaded = false;
 
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
@@ -36,7 +42,8 @@ export class MarkOccurrenceDetail implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     private reportService: ReportService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userManagementService: UserManagementService
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +69,25 @@ export class MarkOccurrenceDetail implements OnInit {
         this.router.navigate(['/marks']);
       }
     });
+  }
+
+  loadProposer(): void {
+    if (this.proposerLoaded || this.proposerLoading || !this.occurrence.proposerId) return;
+
+    this.proposerLoading = true;
+    this.userManagementService.publicGetById(this.occurrence.proposerId)
+      .pipe(finalize(() => this.proposerLoading = false))
+      .subscribe({
+        next: (user) => {
+          if (user) {
+            this.proposer = user;
+            this.proposerLoaded = true;
+          }
+        },
+        error: (err) => {
+          console.error('Error loading proposer:', err);
+        }
+      });
   }
 
   updateBreadcrumbs(): void {
@@ -97,11 +123,14 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getFormattedDate(date: string | Date | undefined): string {
-    return DateUtils.formatDate(date);
+    return DateUtils.formatShortDate(date);
   }
 
   getUserInitials(): string {
-    const userName = this.occurrence?.proposer;
+    const user = this.proposer;
+    if (!user) return 'U';
+
+    const userName = user.username || [user.firstName, user.lastName].filter(Boolean).join(' ');
     if (!userName) return 'U';
 
     const nameParts = userName.trim().split(' ');
@@ -111,6 +140,15 @@ export class MarkOccurrenceDetail implements OnInit {
     const lastInitial = nameParts[nameParts.length - 1]?.[0] || '';
 
     return `${firstInitial}${lastInitial}`.toUpperCase();
+  }
+
+  getProposerName(): string {
+    if (!this.proposer) return 'Unknown';
+    return this.proposer.username || [this.proposer.firstName, this.proposer.lastName].filter(Boolean).join(' ') || 'Unknown';
+  }
+
+  getProposerImage(): string | null {
+    return ImageUtils.getImageUrl(this.proposer?.photoId, "assets/portrait-placeholder.png");
   }
 
   copyLocation(): void {

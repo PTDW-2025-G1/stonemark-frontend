@@ -134,16 +134,42 @@
 
   <!-- Discovered By -->
   <div class="border-t border-border">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
-      <div class="order-2 md:order-1 border-r-0 md:border-r border-border bg-surface-alt relative min-h-[300px] flex items-center justify-center">
-        <div class="text-center px-12">
-          <div class="w-24 h-24 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-4xl mx-auto mb-6">
-            {{ getUserInitials() }}
+    <div class="max-w-7xl mx-auto grid grid-cols-1" [class.md:grid-cols-2]="occurrence.proposerId">
+
+      @if (occurrence.proposerId) {
+      <div class="order-2 md:order-1 border-r-0 md:border-r border-border bg-surface-alt relative min-h-[300px] flex items-center justify-center perspective-1000">
+
+        @if (!proposerLoaded) {
+          <button
+            (click)="loadProposer()"
+            [disabled]="proposerLoading"
+            class="px-6 py-3 text-sm font-bold border border-border bg-surface hover:border-primary hover:text-primary transition-colors cursor-pointer rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-wait"
+          >
+            @if (proposerLoading) {
+              <div class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+              Loading...
+            } @else {
+              <i class="bi bi-person-badge"></i>
+              Show Discoverer
+            }
+          </button>
+        }
+
+        @if (proposerLoaded && proposer) {
+          <div class="text-center px-12 animate-flip-in">
+            <div class="w-24 h-24 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-4xl mx-auto mb-6 overflow-hidden shadow-lg">
+              @if (getProposerImage()) {
+                <img [src]="getProposerImage()" [alt]="getProposerName()" class="w-full h-full object-cover">
+              } @else {
+                {{ getUserInitials() }}
+              }
+            </div>
+            <p class="text-sm text-text-muted mb-2">Discovered by</p>
+            <p class="text-2xl font-serif font-bold">{{ getProposerName() }}</p>
           </div>
-          <p class="text-sm text-text-muted mb-2">Discovered by</p>
-          <p class="text-2xl font-serif font-bold">{{ occurrence.proposer || 'Unknown' }}</p>
-        </div>
+        }
       </div>
+      }
 
       <div class="order-1 md:order-2 p-12 md:p-24 flex flex-col justify-center">
         <span class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Attribution</span>
@@ -224,3 +250,26 @@
   [config]="reportModalConfig"
   (reportSubmit)="handleReportSubmit($event)"
 ></app-report-modal>
+
+<style>
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  @keyframes flipIn {
+    0% {
+      opacity: 0;
+      transform: rotateY(-90deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotateY(0);
+    }
+  }
+
+  .animate-flip-in {
+    animation: flipIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+</style>

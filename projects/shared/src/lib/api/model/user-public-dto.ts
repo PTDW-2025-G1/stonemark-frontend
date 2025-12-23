@@ -7,15 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MonumentDto } from './monument-dto';
 
 
-export interface MarkOccurrenceDetailedDto { 
+export interface UserPublicDto { 
     id?: number;
-    markId?: number;
-    monument?: MonumentDto;
-    coverId?: number;
-    proposerId?: number;
-    createdAt?: string;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    photoId?: number;
 }
 

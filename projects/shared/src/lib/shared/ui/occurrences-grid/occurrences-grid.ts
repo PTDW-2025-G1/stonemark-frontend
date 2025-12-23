@@ -54,7 +54,7 @@ import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto
               <div class="flex items-center justify-between text-white">
                 <div class="flex items-center gap-2">
                   <i class="bi bi-person-circle"></i>
-                  <span class="text-sm font-medium">{{ occurrence.proposer }}</span>
+                  <span class="text-sm font-medium">{{ occurrence.proposerId }}</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <i class="bi bi-calendar-event"></i>

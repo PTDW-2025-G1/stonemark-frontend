@@ -9,10 +9,8 @@
  */
 
 
-export interface MarkDto { 
+export interface MarkOccurrenceListDto { 
     id?: number;
-    title?: string;
-    description?: string;
     coverId?: number;
 }
 

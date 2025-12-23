@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
-import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { DateUtils } from '@shared/utils/date.utils';
 import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
 import { ReportService } from '@core/services/report/report.service';
@@ -14,6 +13,10 @@ import { NotificationService } from '@core/services/notification.service';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
+import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
+import {UserManagementService} from '@core/services/user/user-management.service';
+import {UserPublicDto} from '@api/model/user-public-dto';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-mark-occurrence-detail',
@@ -22,9 +25,12 @@ import { MARKS_ICON } from '@core/constants/content-icons';
   templateUrl: './mark-occurrence-detail.html'
 })
 export class MarkOccurrenceDetail implements OnInit {
-  occurrence: MarkOccurrenceDto = {} as MarkOccurrenceDto;
+  occurrence: MarkOccurrenceDetailedDto = {} as MarkOccurrenceDetailedDto;
   loading = true;
   breadcrumbItems: BreadcrumbItem[] = [];
+  proposer: UserPublicDto | null = null;
+  proposerLoading = false;
+  proposerLoaded = false;
 
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
@@ -36,7 +42,8 @@ export class MarkOccurrenceDetail implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     private reportService: ReportService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userManagementService: UserManagementService
   ) { }
 
   ngOnInit(): void {
@@ -64,15 +71,34 @@ export class MarkOccurrenceDetail implements OnInit {
     });
   }
 
+  loadProposer(): void {
+    if (this.proposerLoaded || this.proposerLoading || !this.occurrence.proposerId) return;
+
+    this.proposerLoading = true;
+    this.userManagementService.publicGetById(this.occurrence.proposerId)
+      .pipe(finalize(() => this.proposerLoading = false))
+      .subscribe({
+        next: (user) => {
+          if (user) {
+            this.proposer = user;
+            this.proposerLoaded = true;
+          }
+        },
+        error: (err) => {
+          console.error('Error loading proposer:', err);
+        }
+      });
+  }
+
   updateBreadcrumbs(): void {
     this.breadcrumbItems = [
       { label: 'Marks', link: '/marks', iconHtml: MARKS_ICON }
     ];
 
-    if (this.occurrence.mark) {
+    if (this.occurrence.markId) {
       this.breadcrumbItems.push({
         label: 'Mark Details',
-        link: ['/marks', this.occurrence.mark.id]
+        link: ['/marks', this.occurrence.markId]
       });
 
       this.breadcrumbItems.push({
@@ -91,17 +117,20 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   viewMark(): void {
-    if (this.occurrence?.mark?.id) {
-      this.router.navigate(['/marks', this.occurrence.mark.id]);
+    if (this.occurrence?.markId) {
+      this.router.navigate(['/marks', this.occurrence.markId]);
     }
   }
 
   getFormattedDate(date: string | Date | undefined): string {
-    return DateUtils.formatDate(date);
+    return DateUtils.formatShortDate(date);
   }
 
   getUserInitials(): string {
-    const userName = this.occurrence?.createdBy;
+    const user = this.proposer;
+    if (!user) return 'U';
+
+    const userName = user.username || [user.firstName, user.lastName].filter(Boolean).join(' ');
     if (!userName) return 'U';
 
     const nameParts = userName.trim().split(' ');
@@ -111,6 +140,15 @@ export class MarkOccurrenceDetail implements OnInit {
     const lastInitial = nameParts[nameParts.length - 1]?.[0] || '';
 
     return `${firstInitial}${lastInitial}`.toUpperCase();
+  }
+
+  getProposerName(): string {
+    if (!this.proposer) return 'Unknown';
+    return this.proposer.username || [this.proposer.firstName, this.proposer.lastName].filter(Boolean).join(' ') || 'Unknown';
+  }
+
+  getProposerImage(): string | null {
+    return ImageUtils.getImageUrl(this.proposer?.photoId, "assets/portrait-placeholder.png");
   }
 
   copyLocation(): void {
@@ -176,7 +214,7 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.mark?.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(this.occurrence.coverId, 'assets/placeholder.png');
   }
 
   getMonumentImageUrl(): string {

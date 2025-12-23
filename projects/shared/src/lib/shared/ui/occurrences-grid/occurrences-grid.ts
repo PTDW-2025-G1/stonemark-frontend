@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { DateUtils } from '@shared/utils/date.utils';
 import {ImageUtils} from '@shared/utils/image.utils';
+import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
 
 @Component({
   selector: 'app-occurrences-grid',
@@ -27,10 +27,10 @@ import {ImageUtils} from '@shared/utils/image.utils';
             <div class="absolute top-3 left-3 z-10">
               @if (showMarkBadge) {
                 <button
-                  (click)="viewMark.emit(occurrence.mark?.id); $event.stopPropagation()"
+                  (click)="viewMark.emit(occurrence.markId); $event.stopPropagation()"
                   class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1 cursor-pointer">
                   <i class="bi bi-grid-3x3-gap"></i>
-                  Mark #{{ occurrence.mark?.id }}
+                  Mark #{{ occurrence.markId }}
                 </button>
               } @else {
                 <button
@@ -54,7 +54,7 @@ import {ImageUtils} from '@shared/utils/image.utils';
               <div class="flex items-center justify-between text-white">
                 <div class="flex items-center gap-2">
                   <i class="bi bi-person-circle"></i>
-                  <span class="text-sm font-medium">{{ occurrence.createdBy }}</span>
+                  <span class="text-sm font-medium">{{ occurrence.proposerId }}</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <i class="bi bi-calendar-event"></i>
@@ -70,7 +70,7 @@ import {ImageUtils} from '@shared/utils/image.utils';
   styles: []
 })
 export class OccurrencesGridComponent {
-  @Input() occurrences: MarkOccurrenceDto[] = [];
+  @Input() occurrences: MarkOccurrenceDetailedDto[] = [];
   @Input() showMarkBadge = false;
   @Output() viewOccurrence = new EventEmitter<number>();
   @Output() viewMonument = new EventEmitter<number>();
@@ -80,7 +80,7 @@ export class OccurrencesGridComponent {
     return DateUtils.formatShortDate(date);
   }
 
-  getImageUrl(occurrence: MarkOccurrenceDto): string {
-    return ImageUtils.getImageUrl(occurrence.mark?.coverId, 'assets/placeholder.png');
+  getImageUrl(occurrence: MarkOccurrenceDetailedDto): string {
+    return ImageUtils.getImageUrl(occurrence.coverId, 'assets/placeholder.png');
   }
 }

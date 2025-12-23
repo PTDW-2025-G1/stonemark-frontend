@@ -9,10 +9,11 @@
  */
 
 
-export interface MarkDto { 
+export interface UserPublicDto { 
     id?: number;
-    title?: string;
-    description?: string;
-    coverId?: number;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    photoId?: number;
 }
 

@@ -19,7 +19,7 @@ export const routes: Routes = [
       import('projects/app/src/app/features/contact/contact.routes').then(m => m.CONTACT_ROUTES)
   },
   {
-    path: 'help',
+    path: 'contribute',
     loadChildren: () =>
       import('projects/app/src/app/features/help/help.routes').then(m => m.HELP_ROUTES)
   },
@@ -67,6 +67,11 @@ export const routes: Routes = [
     path: 'marks',
     loadChildren: () =>
       import('projects/app/src/app/features/marks/mark.routes').then(m => m.MARK_ROUTES)
+  },
+  {
+    path: 'submit',
+    component: NotFoundComponent,
+    canActivate: [() => { window.location.href = 'https://t.me/stonemarkbot'; return false; }]
   },
   {
     path: '**',

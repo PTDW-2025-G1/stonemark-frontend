@@ -148,7 +148,7 @@ export class MonumentMarksComponent implements OnInit {
   }
 
   captureMark(): void {
-    window.open('https://t.me/stonemarkbot', '_blank');
+    this.router.navigate(['/submit'])
   }
 
   getImageUrl(monument: MonumentResponseDto): string {

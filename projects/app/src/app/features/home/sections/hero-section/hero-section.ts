@@ -85,7 +85,7 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
             </div>
           </a>
 
-          <a href="https://t.me/stonemarkbot" target="_blank" rel="noopener noreferrer" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
+          <a routerLink="/contribute" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
 
             <div class="absolute inset-0">
               <img src="/assets/images/home_featured_contribute.jpg"

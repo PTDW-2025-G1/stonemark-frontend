@@ -25,7 +25,7 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
             <app-entity-card
               [iconType]="'monument'"
               [cover]="getImageUrl(occurrence)"
-              [subtitle]="occurrence.monument?.name || 'Unknown Monument'"
+              [subtitle]="occurrence.monument?.name|| 'Unknown Monument'"
               [id]="occurrence.id ?? 0"
               [type]="'marks/occurrence'"
             />

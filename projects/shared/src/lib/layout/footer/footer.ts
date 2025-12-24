@@ -28,7 +28,7 @@ export class Footer {
   ];
 
   supportLinks = [
-    { label: 'Help Center', route: `${this.baseUrl}/help`, external: false },
+    { label: 'How To Contribute', route: `${this.baseUrl}/contribute`, external: false },
     { label: 'Contact', route: `${this.baseUrl}/contact`, external: false },
     { label: 'Terms of Service', route: `${this.baseUrl}/terms-service`, external: false },
     { label: 'Privacy Policy', route: `${this.baseUrl}/privacy-policy`, external: false },

@@ -123,7 +123,7 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   captureMark(): void {
-    window.open('https://t.me/stonemarkbot', '_blank');
+    this.router.navigate(['/submit'])
   }
 
   viewMarks(): void {

@@ -17,29 +17,19 @@
       (reportClicked)="openReportModal()">
     </app-mark-detail-header>
 
-    <div class="flex items-center justify-end gap-3 mb-6">
-      <label class="text-xs font-semibold text-text-muted uppercase tracking-wider">Filter by Monument ({{ monuments.length }})</label>
-      <div class="w-64">
-        <app-shared-select
-          [options]="monuments"
-          [selected]="selectedMonumentId"
-          [label]="'All Monuments'"
-          [searchable]="true"
-          [optionLabelKey]="'name'"
-          [optionValueKey]="'id'"
-          (selectionChange)="onMonumentFilterChange($event)">
-        </app-shared-select>
-      </div>
-      @if (selectedMonumentId) {
-        <button
-          (click)="onMonumentFilterChange('')"
-          class="text-xs text-primary hover:text-primary/80 transition-colors font-medium flex items-center gap-1.5"
-        >
-          <i class="bi bi-x-circle"></i>
-          <span>Clear filter</span>
-        </button>
-      }
-    </div>
+    <!-- Filters Section -->
+    <app-filters
+      [sortOrder]="selectedSort === 'asc' ? 'asc' : 'desc'"
+      [filterOptions]="monuments"
+      [selectedFilterValue]="selectedMonumentId"
+      [filterLabel]="'Filter by Monument (' + monuments.length + ')'"
+      [filterIconHtml]="monumentsIcon"
+      [filterPlaceholder]="'All Monuments'"
+      [optionLabelKey]="'name'"
+      [optionValueKey]="'id'"
+      (sortChange)="onSortChange($event)"
+      (filterChange)="onMonumentFilterChange($event)">
+    </app-filters>
 
     <app-occurrences-grid
       [occurrences]="occurrences"
@@ -69,4 +59,3 @@
   [config]="reportModalConfig"
   (reportSubmit)="handleReportSubmit($event)"
 ></app-report-modal>
-

@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
 import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
+import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
+import {DateUtils} from '@shared/utils/date.utils';
 
 @Component({
   selector: 'app-last-marks-section',
@@ -23,9 +25,9 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           @for (occurrence of lastOccurrences; track occurrence.id) {
             <app-entity-card
-              [iconType]="'monument'"
+              [iconType]="'time'"
               [cover]="getImageUrl(occurrence)"
-              [subtitle]="occurrence.monument?.name|| 'Unknown Monument'"
+              [subtitle]="formatDate(occurrence.createdAt)"
               [id]="occurrence.id ?? 0"
               [type]="'marks/occurrence'"
             />
@@ -36,7 +38,11 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
   `
 })
 export class LastMarkSectionComponent {
-  @Input() lastOccurrences: MarkOccurrenceDto[] = [];
+  @Input() lastOccurrences: MarkOccurrenceListDto[] = [];
+
+  formatDate(date: string | undefined): string {
+    return DateUtils.formatShortDate(date);
+  }
 
   getImageUrl(occurrence: MarkOccurrenceDto): string {
     return ImageUtils.getImageUrl(

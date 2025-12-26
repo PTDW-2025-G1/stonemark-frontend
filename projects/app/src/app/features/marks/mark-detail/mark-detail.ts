@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
-import { MARKS_ICON } from '@core/constants/content-icons';
+import { MARKS_ICON, MONUMENTS_ICON } from '@core/constants/content-icons';
 
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { LoadingStateComponent } from '@features/marks/mark-detail/sections/loading-state';
@@ -15,7 +15,6 @@ import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrence
 import { EmptyStateComponent } from '@features/marks/mark-detail/sections/empty-state';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
-import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
 import { MarkDto } from '@api/model/mark-dto';
 import { MarkService } from '@core/services/mark/mark.service';
 import { BookmarkService } from '@core/services/bookmark/bookmark.service';
@@ -28,11 +27,12 @@ import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal
 import { ReportService } from '@core/services/report/report.service';
 import { ReportRequestDto } from '@api/model/report-request-dto';
 import { NotificationService } from '@core/services/notification.service';
+import { FiltersComponent } from '@shared/ui/filters/filters';
 
 @Component({
   selector: 'app-mark-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent, PaginationComponent, SharedSelectComponent, ReportModalComponent],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent, LoadingStateComponent, MarkHeaderComponent, OccurrencesGridComponent, EmptyStateComponent, InfoBoxComponent, PaginationComponent, FiltersComponent, ReportModalComponent],
   templateUrl: './mark-detail.html'
 })
 export class MarkDetailComponent implements OnInit {
@@ -49,12 +49,19 @@ export class MarkDetailComponent implements OnInit {
   totalPages = 1;
   pageSize = 6;
 
+  sortOptions = [
+    { label: 'Recent', value: 'desc' },
+    { label: 'Older', value: 'asc' }
+  ];
+  selectedSort = 'desc';
+
   monuments: MonumentResponseDto[] = [];
   selectedMonumentId: number | string = '';
 
-  // Report modal
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
+
+  monumentsIcon = MONUMENTS_ICON;
 
   private currentMarkId?: number;
 
@@ -131,15 +138,14 @@ export class MarkDetailComponent implements OnInit {
     this.loading = true;
 
     const request$ = this.selectedMonumentId
-      ? this.markOccurrenceService.filterByMarkAndMonument(markId, Number(this.selectedMonumentId), page, this.pageSize)
-      : this.markOccurrenceService.getByMarkId(markId, page, this.pageSize);
+      ? this.markOccurrenceService.filterByMarkAndMonument(markId, Number(this.selectedMonumentId), page, this.pageSize, this.selectedSort)
+      : this.markOccurrenceService.getByMarkId(markId, page, this.pageSize, this.selectedSort);
 
     request$.subscribe({
       next: (pageData: any) => {
         this.occurrences = pageData.content ?? [];
         this.totalPages = pageData.totalPages ?? 1;
-        this.currentPage = (pageData.number ?? 0) + 1; // Backend uses 0-based, UI uses 1-based
-
+        this.currentPage = (pageData.number ?? 0) + 1;
         this.uniqueMonumentsCount = new Set(
           pageData.content?.map((o: any) => o.monument?.id).filter(Boolean)
         ).size;
@@ -157,6 +163,14 @@ export class MarkDetailComponent implements OnInit {
     if (this.currentMarkId != null) {
       this.loadOccurrences(this.currentMarkId, page - 1); // Convert to 0-based for backend
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  onSortChange(sort: string | number) {
+    this.selectedSort = String(sort);
+    this.currentPage = 1;
+    if (this.currentMarkId != null) {
+      this.loadOccurrences(this.currentMarkId, 0);
     }
   }
 
@@ -237,4 +251,6 @@ export class MarkDetailComponent implements OnInit {
       }
     });
   }
+
+  protected readonly Number = Number;
 }

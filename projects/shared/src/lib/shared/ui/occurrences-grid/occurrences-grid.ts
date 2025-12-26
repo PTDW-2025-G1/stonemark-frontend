@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DateUtils } from '@shared/utils/date.utils';
 import {ImageUtils} from '@shared/utils/image.utils';
-import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
+import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
 
 @Component({
   selector: 'app-occurrences-grid',
@@ -16,31 +16,12 @@ import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto
           <div class="relative w-full h-full overflow-hidden bg-surface-muted">
             <img
               [src]="getImageUrl(occurrence)"
-              [alt]="'Mark Occurrence at ' + occurrence.monument?.name"
+              [alt]="'Mark Occurrence'"
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
 
             <!-- Gradient overlay -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
-
-            <!-- Badge - Always visible -->
-            <div class="absolute top-3 left-3 z-10">
-              @if (showMarkBadge) {
-                <button
-                  (click)="viewMark.emit(occurrence.markId); $event.stopPropagation()"
-                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1 cursor-pointer">
-                  <i class="bi bi-grid-3x3-gap"></i>
-                  Mark #{{ occurrence.markId }}
-                </button>
-              } @else {
-                <button
-                  (click)="viewMonument.emit(occurrence.monument?.id); $event.stopPropagation()"
-                  class="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20 hover:bg-primary transition-colors flex items-center gap-1 cursor-pointer">
-                  <i class="bi bi-building"></i>
-                  {{ occurrence.monument?.name }}
-                </button>
-              }
-            </div>
 
             <!-- Quick View Icon -->
             <div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -52,10 +33,6 @@ import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto
             <!-- Info on hover - Bottom -->
             <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
               <div class="flex items-center justify-between text-white">
-                <div class="flex items-center gap-2">
-                  <i class="bi bi-person-circle"></i>
-                  <span class="text-sm font-medium">{{ occurrence.proposerId }}</span>
-                </div>
                 <div class="flex items-center gap-2">
                   <i class="bi bi-calendar-event"></i>
                   <span class="text-sm">{{ formatDate(occurrence.createdAt) }}</span>
@@ -70,7 +47,7 @@ import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto
   styles: []
 })
 export class OccurrencesGridComponent {
-  @Input() occurrences: MarkOccurrenceDetailedDto[] = [];
+  @Input() occurrences: MarkOccurrenceListDto[] = [];
   @Input() showMarkBadge = false;
   @Output() viewOccurrence = new EventEmitter<number>();
   @Output() viewMonument = new EventEmitter<number>();
@@ -80,7 +57,7 @@ export class OccurrencesGridComponent {
     return DateUtils.formatShortDate(date);
   }
 
-  getImageUrl(occurrence: MarkOccurrenceDetailedDto): string {
+  getImageUrl(occurrence: MarkOccurrenceListDto): string {
     return ImageUtils.getImageUrl(occurrence.coverId, 'assets/placeholder.png');
   }
 }

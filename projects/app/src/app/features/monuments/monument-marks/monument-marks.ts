@@ -13,15 +13,15 @@ import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrences-grid';
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
-import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
 import { MarkDto } from '@api/model/mark-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
+import { FiltersComponent } from '@shared/ui/filters/filters';
 
 @Component({
   selector: 'app-monument-marks',
   standalone: true,
-  imports: [CommonModule, RouterModule, BreadcrumbComponent, OccurrencesGridComponent, PaginationComponent, InfoBoxComponent, SharedSelectComponent],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent, OccurrencesGridComponent, PaginationComponent, InfoBoxComponent, FiltersComponent],
   templateUrl: './monument-marks.html'
 })
 export class MonumentMarksComponent implements OnInit {
@@ -34,9 +34,12 @@ export class MonumentMarksComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
   pageSize = 6;
+  selectedSort = 'desc';
 
   marks: MarkDto[] = [];
   selectedMarkId: number | string = '';
+
+  marksIcon = MARKS_ICON;
 
   private currentMonumentId?: number;
 
@@ -100,8 +103,8 @@ export class MonumentMarksComponent implements OnInit {
     this.loading = true;
 
     const request$ = this.selectedMarkId
-      ? this.markOccurrenceService.filterByMarkAndMonument(Number(this.selectedMarkId), monumentId, page, this.pageSize)
-      : this.markOccurrenceService.getByMonumentId(monumentId, page, this.pageSize);
+      ? this.markOccurrenceService.filterByMarkAndMonument(Number(this.selectedMarkId), monumentId, page, this.pageSize, this.selectedSort)
+      : this.markOccurrenceService.getByMonumentId(monumentId, page, this.pageSize, this.selectedSort);
 
     request$.subscribe({
       next: pageData => {
@@ -122,6 +125,14 @@ export class MonumentMarksComponent implements OnInit {
     if (this.currentMonumentId != null) {
       this.loadOccurrences(this.currentMonumentId, page - 1); // Convert to 0-based for backend
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  onSortChange(sort: 'asc' | 'desc') {
+    this.selectedSort = sort;
+    this.currentPage = 1;
+    if (this.currentMonumentId != null) {
+      this.loadOccurrences(this.currentMonumentId, 0);
     }
   }
 

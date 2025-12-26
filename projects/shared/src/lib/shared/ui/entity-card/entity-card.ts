@@ -34,9 +34,7 @@ import { Router } from '@angular/router';
             @if (iconType === 'city') {
               <i class="bi bi-geo-alt-fill text-white text-xs"></i>
             } @else {
-              <svg fill="#ffffff" height="12" width="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496" stroke="#ffffff">
-                <g><path d="M290.216,0h-84.432L0,123.472V160v8v32h16v216H0v32v8v40h496v-40v-8v-32h-16V200h16v-32v-8v-36.528L290.216,0z M16,168 h64v16H16V168z M144,200v216h-16v32H96v-32H80V200h16v-32h32v32H144z M288,200v216h-16v32h-48v-32h-16V200h16v-32h48v32H288z M416,200v216h-16v32h-32v-32h-16V200h16v-32h32v32H416z M352,184h-64v-16h64V184z M336,200v216h-32V200H336z M352,432v16h-64 v-16H352z M208,184h-64v-16h64V184z M192,200v216h-32V200H192z M208,432v16h-64v-16H208z M64,200v216H32V200H64z M16,432h64v16 H16V432z M480,480H16v-16h464V480z M480,448h-64v-16h64V448z M432,416V200h32v216H432z M480,184h-64v-16h64V184z M480,152H16 v-19.472L210.216,16h75.568L480,132.528V152z"></path><path d="M221.848,32L42.216,136h411.568L274.152,32H221.848z M101.784,120l124.36-72h43.704l124.36,72H101.784z"></path></g>
-              </svg>
+              <i class="bi bi-calendar-event text-white text-xs"></i>
             }
             <p class="text-white text-xs font-medium tracking-wide truncate max-w-[200px]">
               {{ subtitle }}
@@ -70,7 +68,7 @@ export class EntityCardComponent {
   @Input() subtitle!: string;
   @Input() id!: number;
   @Input() type: 'marks/occurrence' | 'monuments' = 'marks/occurrence';
-  @Input() iconType: 'city' | 'monument' = 'monument';
+  @Input() iconType: 'city' | 'time' = 'time';
 
   constructor(private router: Router) {}
 

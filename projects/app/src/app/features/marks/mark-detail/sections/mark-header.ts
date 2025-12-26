@@ -1,9 +1,14 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {MarkDto} from '@api/model/mark-dto';
-import {ImageUtils} from '@shared/utils/image.utils';
+import { CommonModule } from '@angular/common';
+import { MarkDto } from '@api/model/mark-dto';
+import { ImageUtils } from '@shared/utils/image.utils';
+import { MONUMENTS_ICON } from '@core/constants/content-icons';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-mark-detail-header',
+  standalone: true,
+  imports: [CommonModule, SafeHtmlPipe],
   template: `
     <div class="mb-8">
       <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
@@ -29,7 +34,7 @@ import {ImageUtils} from '@shared/utils/image.utils';
 
             <span
               class="px-4 py-1.5 bg-accent/10 text-accent rounded-full text-sm font-bold flex items-center gap-2 border border-accent/20">
-              <i class="bi bi-building"></i>
+              <span class="flex items-center" [innerHTML]="monumentsIcon | safeHtml"></span>
               {{ monumentsCount }} Monuments
             </span>
 
@@ -78,6 +83,8 @@ export class MarkHeaderComponent {
 
   @Output() bookmarkToggled = new EventEmitter<void>();
   @Output() reportClicked = new EventEmitter<void>();
+
+  monumentsIcon = MONUMENTS_ICON;
 
   toggleBookmark(): void {
     this.bookmarkToggled.emit();

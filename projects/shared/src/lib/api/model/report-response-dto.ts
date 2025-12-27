@@ -11,13 +11,15 @@
 
 export interface ReportResponseDto { 
     id?: number;
-    userId?: number;
     targetId?: number;
     targetType?: ReportResponseDto.TargetTypeEnum;
     reason?: ReportResponseDto.ReasonEnum;
     description?: string;
     status?: ReportResponseDto.StatusEnum;
+    createdById?: number;
+    modifiedById?: number;
     createdAt?: string;
+    lastModifiedAt?: string;
 }
 export namespace ReportResponseDto {
     export const TargetTypeEnum = {

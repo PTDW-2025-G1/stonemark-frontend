@@ -14,18 +14,13 @@ import { ReportService } from '@core/services/report/report.service';
 import { ReportResponseDto } from '@api/model/report-response-dto';
 import { PageReportResponseDto } from '@api/model/page-report-response-dto';
 
-interface ReportDisplay {
-  id?: number;
+type ReportDisplay = Omit<ReportResponseDto, 'createdById' | 'modifiedById' | 'lastModifiedAt'> & {
   userId?: number;
-  targetId?: number;
-  targetType?: string;
-  targetTypeEnum?: ReportResponseDto.TargetTypeEnum;
-  reason?: string;
-  reasonEnum?: ReportResponseDto.ReasonEnum;
-  description?: string;
-  status?: ReportResponseDto.StatusEnum;
   createdAt?: string;
-}
+  reasonLabel?: string;
+  targetTypeLabel?: string;
+  lastModifiedAt?: string;
+};
 
 @Component({
   selector: 'app-manage-reports',
@@ -60,7 +55,7 @@ interface ReportDisplay {
       #table
       [data]="filtered()"
       [columns]="cols"
-      [globalFilterFields]="['id', 'targetType', 'reason', 'status', 'description']"
+      [globalFilterFields]="['id', 'targetTypeLabel', 'reasonLabel', 'status', 'description']"
     >
       <ng-template #actions let-item>
         <p-button
@@ -71,32 +66,31 @@ interface ReportDisplay {
         ></p-button>
 
         <p-button
-          *ngIf="item.status !== 'UNDER_REVIEW'"
+          *ngIf="item.status !== ReportResponseDto.StatusEnum.UnderReview"
           icon="pi pi-book"
           severity="info"
           class="mr-2"
-          (click)="updateStatus(item, 'UNDER_REVIEW')"
+          (click)="updateStatus(item, ReportResponseDto.StatusEnum.UnderReview)"
           [pTooltip]="'Mark as Under Review'"
         ></p-button>
 
         <p-button
-          *ngIf="item.status !== 'RESOLVED'"
+          *ngIf="item.status !== ReportResponseDto.StatusEnum.Resolved"
           icon="pi pi-check"
           severity="success"
           class="mr-2"
-          (click)="updateStatus(item, 'RESOLVED')"
+          (click)="updateStatus(item, ReportResponseDto.StatusEnum.Resolved)"
           [pTooltip]="'Mark as Resolved'"
         ></p-button>
 
         <p-button
-          *ngIf="item.status !== 'REJECTED'"
+          *ngIf="item.status !== ReportResponseDto.StatusEnum.Rejected"
           icon="pi pi-times"
           severity="danger"
-          (click)="updateStatus(item, 'REJECTED')"
+          (click)="updateStatus(item, ReportResponseDto.StatusEnum.Rejected)"
           [pTooltip]="'Reject Report'"
         ></p-button>
       </ng-template>
-
     </app-table>
 
     <app-dialog
@@ -105,13 +99,15 @@ interface ReportDisplay {
       [data]="current"
       [fields]="[
         { key: 'id', label: 'Report ID' },
-        { key: 'targetType', label: 'Target Type' },
+        { key: 'targetTypeLabel', label: 'Target Type' },
         { key: 'targetId', label: 'Target ID' },
-        { key: 'reason', label: 'Reason' },
+        { key: 'reasonLabel', label: 'Reason' },
         { key: 'description', label: 'Description', type: 'text' },
         { key: 'status', label: 'Status', type: 'status' },
         { key: 'userId', label: 'Reported By (User ID)' },
-        { key: 'createdAt', label: 'Created At', type: 'text' }
+        { key: 'createdAt', label: 'Created At', type: 'text' },
+        { key: 'modifiedById', label: 'Modified By (User ID)' },
+        { key: 'lastModifiedAt', label: 'Modified At', type: 'text' }
       ]"
       (close)="dialogVisible = false"
     />
@@ -139,11 +135,12 @@ export class ManageReports implements OnInit {
 
   cols = [
     { field: 'id', header: 'ID' },
-    { field: 'targetType', header: 'Target Type' },
+    { field: 'targetTypeLabel', header: 'Target Type' },
     { field: 'targetId', header: 'Target ID' },
-    { field: 'reason', header: 'Reason' },
+    { field: 'reasonLabel', header: 'Reason' },
     { field: 'status', header: 'Status', type: 'status' },
-    { field: 'createdAt', header: 'Created At', type: 'date' }
+    { field: 'createdAt', header: 'Created At', type: 'date' },
+    { field: 'lastModifiedAt', header: 'Modified At', type: 'date' }
   ];
 
   constructor(
@@ -156,11 +153,11 @@ export class ManageReports implements OnInit {
       next: (page: PageReportResponseDto) => {
         this.reports = (page.content || []).map(item => ({
           ...item,
+          userId: item.createdById,
           createdAt: item.createdAt ? new Date(item.createdAt).toLocaleString('pt-PT') : '',
-          reason: this.formatReason(item.reason),
-          reasonEnum: item.reason,
-          targetType: this.formatTargetType(item.targetType),
-          targetTypeEnum: item.targetType
+          reasonLabel: this.formatReason(item.reason),
+          targetTypeLabel: this.formatTargetType(item.targetType),
+          lastModifiedAt: item.lastModifiedAt ? new Date(item.lastModifiedAt).toLocaleString('pt-PT') : ''
         }));
         this.applyFilter();
       },
@@ -182,7 +179,6 @@ export class ManageReports implements OnInit {
 
   applyFilter() {
     const s = this.statusFilter();
-
     if (s === 'ALL') {
       this.filtered.set(this.reports);
     } else {
@@ -204,11 +200,11 @@ export class ManageReports implements OnInit {
         if (index !== -1) {
           this.reports[index] = {
             ...updated,
+            userId: updated.createdById,
             createdAt: updated.createdAt ? new Date(updated.createdAt).toLocaleString('pt-PT') : '',
-            reason: this.formatReason(updated.reason),
-            reasonEnum: updated.reason,
-            targetType: this.formatTargetType(updated.targetType),
-            targetTypeEnum: updated.targetType
+            reasonLabel: this.formatReason(updated.reason),
+            targetTypeLabel: this.formatTargetType(updated.targetType),
+            lastModifiedAt: updated.lastModifiedAt ? new Date(updated.lastModifiedAt).toLocaleString('pt-PT') : ''
           };
           this.applyFilter();
         }
@@ -245,7 +241,6 @@ export class ManageReports implements OnInit {
 
   private formatReason(reason?: ReportResponseDto.ReasonEnum): string {
     if (!reason) return '';
-
     const reasonLabels: Record<string, string> = {
       'INCORRECT_INFORMATION': 'Incorrect Information',
       'WRONG_LOCATION': 'Wrong Location',
@@ -254,23 +249,20 @@ export class ManageReports implements OnInit {
       'INAPPROPRIATE_CONTENT': 'Inappropriate Content',
       'OTHER': 'Other'
     };
-
     return reasonLabels[reason] || reason;
   }
 
   private formatTargetType(targetType?: ReportResponseDto.TargetTypeEnum): string {
     if (!targetType) return '';
-
     const typeLabels: Record<string, string> = {
       'MONUMENT': 'Monument',
       'MARK': 'Mark',
       'MARK_OCCURRENCE': 'Mark Occurrence',
-      'GUILD': 'Guild',
-      'MASON': 'Mason',
       'USER': 'User',
       'PROPOSAL': 'Proposal'
     };
-
     return typeLabels[targetType] || targetType;
   }
+
+  protected readonly ReportResponseDto = ReportResponseDto;
 }

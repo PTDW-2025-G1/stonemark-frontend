@@ -33,8 +33,8 @@ describe('MonumentDetailComponent', () => {
     address: 'Av. Brasília, Lisboa',
     protectionTitle: 'Monumento Nacional',
     website: 'https://example.com',
-    lastModifiedAt: '2024-01-01T10:00:00Z',
-    lastModifiedBy: 'Admin',
+    createdAt: "2024-01-01T10:00:00Z",
+    lastModifiedAt: '2024-01-01T10:00:00Z'
   };
 
   beforeEach(() => {

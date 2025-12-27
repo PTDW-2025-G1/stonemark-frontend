@@ -9,9 +9,14 @@
  */
 
 
-export interface MarkDto { 
+export interface MarkDetailedDto { 
     id?: number;
+    title?: string;
     description?: string;
     coverId?: number;
+    createdById?: number;
+    modifiedById?: number;
+    createdAt?: string;
+    lastModifiedAt?: string;
 }
 

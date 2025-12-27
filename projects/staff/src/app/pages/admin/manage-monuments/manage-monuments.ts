@@ -173,7 +173,6 @@ export class ManageMonuments implements OnInit {
           try {
             const geoJsonContent = e.target.result;
 
-            // Set loading state to true
             this.isImporting.set(true);
 
             this.monumentService.importMonumentsFromOverpass(geoJsonContent).subscribe({

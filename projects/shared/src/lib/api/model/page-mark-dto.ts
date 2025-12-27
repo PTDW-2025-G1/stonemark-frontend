@@ -13,8 +13,8 @@ import { MarkDto } from './mark-dto';
 
 
 export interface PageMarkDto { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     size?: number;
     content?: Array<MarkDto>;
     number?: number;

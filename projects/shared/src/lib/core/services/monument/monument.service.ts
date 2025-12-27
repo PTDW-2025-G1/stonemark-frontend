@@ -6,6 +6,10 @@ import { PageMonumentDto } from '@api/model/page-monument-dto';
 import { environment } from '@env/environment';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {MonumentRequestDto} from '@api/model/monument-request-dto';
+import {MonumentListDto} from '@api/model/monument-list-dto';
+import {PageMonumentListDto} from '@api/model/page-monument-list-dto';
+import {MonumentMapDto} from '@api/model/monument-map-dto';
+import {PageMonumentMapDto} from '@api/model/page-monument-map-dto';
 
 @Injectable({ providedIn: 'root' })
 export class MonumentService {
@@ -32,36 +36,42 @@ export class MonumentService {
     );
   }
 
-  getPageMonuments(page: number = 0, size: number = 9): Observable<PageMonumentDto> {
+  getAllForMap(): Observable<MonumentMapDto[]> {
+    return this.http.get<PageMonumentMapDto>(`${this.baseUrl}/map`).pipe(
+      map(page => page.content || [])
+    );
+  }
+
+  getListMonuments(page: number = 0, size: number = 9): Observable<PageMonumentListDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<PageMonumentDto>(this.baseUrl, { params });
+    return this.http.get<PageMonumentListDto>(`${this.baseUrl}/list`, { params });
   }
 
-  searchMonuments(query: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentDto> {
+  searchMonuments(query: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentListDto> {
     const params = new HttpParams()
       .set('query', query)
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
 
-    return this.http.get<PageMonumentDto>(`${this.baseUrl}/search`, { params });
+    return this.http.get<PageMonumentListDto>(`${this.baseUrl}/search`, { params });
   }
 
-  filterByCity(city: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentDto> {
+  filterByCity(city: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentListDto> {
     const params = new HttpParams()
       .set('city', city)
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
 
-    return this.http.get<PageMonumentDto>(`${this.baseUrl}/filter`, { params });
+    return this.http.get<PageMonumentListDto>(`${this.baseUrl}/filter`, { params });
   }
 
-  getLatestMonuments(): Observable<MonumentResponseDto[]> {
-    return this.http.get<MonumentResponseDto[]>(`${this.baseUrl}/latest`);
+  getLatestMonuments(): Observable<MonumentListDto[]> {
+    return this.http.get<MonumentListDto[]>(`${this.baseUrl}/latest`);
   }
 
   getMonumentById(id: number): Observable<MonumentResponseDto> {

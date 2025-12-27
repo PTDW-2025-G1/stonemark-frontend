@@ -9,12 +9,13 @@
  */
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    superGroupMessage?: boolean;
-    groupMessage?: boolean;
-    userMessage?: boolean;
+export interface MonumentMapDto { 
+    id?: number;
+    name?: string;
+    city?: string;
+    latitude?: number;
+    longitude?: number;
+    protectionTitle?: string;
+    website?: string;
 }
 

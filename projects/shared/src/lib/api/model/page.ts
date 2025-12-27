@@ -12,8 +12,8 @@ import { SortObject } from './sort-object';
 
 
 export interface Page { 
-    totalElements?: number;
     totalPages?: number;
+    totalElements?: number;
     size?: number;
     content?: Array<any>;
     number?: number;

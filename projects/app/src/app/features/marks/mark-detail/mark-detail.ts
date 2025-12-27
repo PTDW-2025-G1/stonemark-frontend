@@ -99,8 +99,10 @@ export class MarkDetailComponent implements OnInit {
         return this.markService.getMark(markId);
       }),
       tap(mark => {
-        if (mark?.title) {
-          this.titleService.setTitle(mark.title);
+        if (mark?.description) {
+          this.titleService.setTitle(mark.description);
+        } else if (mark?.id) {
+          this.titleService.setTitle(`Mark #${mark.id}`);
         }
       })
     );
@@ -108,7 +110,7 @@ export class MarkDetailComponent implements OnInit {
     this.breadcrumbItems$ = this.mark$.pipe(
       map(mark => [
         { label: 'Marks', link: '/search/marks', iconHtml: MARKS_ICON },
-        { label: mark?.title ?? 'Mark', link: ['/marks', mark?.id], active: true }
+        { label: mark?.description ?? `Mark #${mark?.id ?? ''}`, link: ['/marks', mark?.id], active: true }
       ])
     );
   }
@@ -231,7 +233,7 @@ export class MarkDetailComponent implements OnInit {
         this.reportModalConfig = {
           targetId: mark.id,
           targetType: 'MARK' as ReportRequestDto.TargetTypeEnum,
-          targetName: mark.title
+          targetName: ""
         };
         this.reportModalVisible = true;
       }

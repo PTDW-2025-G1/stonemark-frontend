@@ -9,7 +9,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { finalize } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import {ImageUtils} from '@shared/utils/image.utils';
+import { ImageUtils } from '@shared/utils/image.utils';
 
 type SearchItem = MonumentResponseDto | MarkDto;
 
@@ -71,29 +71,23 @@ export class SearchResultsComponent {
   private loadOccurrenceCounts(): void {
     if (this.type === 'marks') {
       this.items.forEach(item => {
-        if (this.isMark(item)) {
-          this.markOccurrenceService.countByMarkId(item.id!).subscribe(
-            count => this.occurrenceCount[item.id!] = count
+        const id = (item as MarkDto).id;
+        if (id !== undefined) {
+          this.markOccurrenceService.countByMarkId(id).subscribe(
+            count => this.occurrenceCount[id] = count
           );
         }
       });
     } else {
       this.items.forEach(item => {
-        if (this.isMonument(item)) {
-          this.markOccurrenceService.countByMonumentId(item.id!).subscribe(
-            count => this.occurrenceCount[item.id!] = count
+        const id = (item as MonumentResponseDto).id;
+        if (id !== undefined) {
+          this.markOccurrenceService.countByMonumentId(id).subscribe(
+            count => this.occurrenceCount[id] = count
           );
         }
       });
     }
-  }
-
-  isMonument(item: SearchItem): item is MonumentResponseDto {
-    return 'name' in item;
-  }
-
-  isMark(item: SearchItem): item is MarkDto {
-    return 'title' in item;
   }
 
   toggleBookmark(event: Event, item: SearchItem): void {
@@ -117,7 +111,7 @@ export class SearchResultsComponent {
               this.bookmarkedItems.delete(itemId);
               this.bookmarkIds.delete(itemId);
             },
-            error: (error) => console.error('Error removing bookmark:', error)
+            error: (error) => console.error('Erro ao remover bookmark:', error)
           });
       }
     } else {
@@ -134,7 +128,7 @@ export class SearchResultsComponent {
               this.bookmarkIds.set(itemId, bookmark.id);
             }
           },
-          error: (error) => console.error('Error creating bookmark:', error)
+          error: (error) => console.error('Erro ao criar bookmark:', error)
         });
     }
   }
@@ -144,22 +138,21 @@ export class SearchResultsComponent {
   }
 
   getItemCover(item: SearchItem): string {
-    if (this.isMark(item)) {
-      return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png');
-    } else {
-      return ImageUtils.getImageUrl((item as MonumentResponseDto).coverId, 'assets/placeholder.png');
-    }
+    return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png');
   }
 
   getItemName(item: SearchItem): string {
-    return this.isMonument(item) ? item.name ?? '' : item.title ?? '';
+    return this.type === 'monuments'
+      ? (item as MonumentResponseDto).name ?? ''
+      : '';
   }
 
   getItemSubtitle(item: SearchItem): string {
-    if (this.isMonument(item)) {
-      return item.city ? `${item.city}, Portugal` : 'Portugal';
+    if (this.type === 'monuments') {
+      const monument = item as MonumentResponseDto;
+      return monument.city ? `${monument.city}, Portugal` : 'Portugal';
     }
-    const id = this.isMark(item) ? item.id : undefined;
+    const id = item.id;
     const count = id !== undefined ? this.occurrenceCount[id] ?? 0 : 0;
     return `Portugal · ${count} occurrence${count === 1 ? '' : 's'}`;
   }

@@ -17,7 +17,7 @@ import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
           <div class="w-full h-64 sm:h-72 lg:h-48 rounded-2xl overflow-hidden border-2 border-border shadow-lg">
             <img
               [src]="getImageUrl()"
-              [alt]="mark?.title"
+              [alt]="'Mason Mark'"
               class="w-full h-full object-cover"
             />
           </div>
@@ -51,10 +51,6 @@ import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
               }
             </button>
           </div>
-
-          <h1 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-3">
-            {{ mark?.title }}
-          </h1>
 
           <p class="text-text-muted mb-4 leading-relaxed">
             {{ mark?.description }}

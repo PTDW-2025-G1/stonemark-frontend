@@ -9,14 +9,14 @@
  */
 import { PageableObject } from './pageable-object';
 import { SortObject } from './sort-object';
-import { MonumentResponseDto } from './monument-response-dto';
+import { MonumentListDto } from './monument-list-dto';
 
 
-export interface PageMonumentResponseDto { 
+export interface PageMonumentListDto { 
     totalPages?: number;
     totalElements?: number;
     size?: number;
-    content?: Array<MonumentResponseDto>;
+    content?: Array<MonumentListDto>;
     number?: number;
     sort?: SortObject;
     first?: boolean;

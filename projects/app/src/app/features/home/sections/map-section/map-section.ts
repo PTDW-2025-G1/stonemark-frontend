@@ -117,8 +117,8 @@ export class MapSectionComponent implements AfterViewInit {
     });
     this.map.addOverlay(this.overlay);
 
-    this.monumentService.getMonuments().subscribe(monuments => {
-      monuments.forEach(monument => {
+    this.monumentService.getAllForMap().subscribe(monumentsArray => {
+      monumentsArray.forEach((monument: any) => {
         if (monument.id != null) {
           this.markOccurrenceService.countByMonumentId(monument.id).subscribe(count => {
             this.occurrenceCounts.set(String(monument.id), count);

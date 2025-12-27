@@ -85,7 +85,7 @@ export class BookmarksComponent implements OnInit {
         );
       } else {
         return this.markService.getMark(b.targetId!).pipe(
-          map(mark => ({ bookmarkId: b.id!, id: mark.id!, type: 'mark' as const, title: mark.title ?? 'Unknown Mark', coverId: mark.coverId })),
+          map(mark => ({ bookmarkId: b.id!, id: mark.id!, type: 'mark' as const, title: '', coverId: mark.coverId })),
         );
       }
     });

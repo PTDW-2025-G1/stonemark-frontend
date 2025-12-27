@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { MarkDto } from '@api/model/mark-dto';
 import { PageMarkDto } from '@api/model/page-mark-dto';
+import { PageMarkListDto } from '@api/model/page-mark-list-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,14 @@ export class MarkService {
     return this.http.get<MarkDto[]>(this.baseUrl);
   }
 
-  getPageMarks(page: number = 0, size: number = 10): Observable<PageMarkDto> {
-    return this.http.get<PageMarkDto>(`${this.baseUrl}?page=${page}&size=${size}`);
+  getListMarks(page: number = 0, size: number = 9): Observable<PageMarkListDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageMarkListDto>(`${this.baseUrl}/list`, { params });
   }
 
-  searchMarks(query: string, page: number = 0, size: number = 10, sort: string = 'title,asc'){
+  searchMarks(query: string, page: number = 0, size: number = 9, sort: string = 'title,asc'){
     const params = new HttpParams()
       .set('query', query)
       .set('page', page.toString())

@@ -8,15 +8,15 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageable-object';
+import { MarkListDto } from './mark-list-dto';
 import { SortObject } from './sort-object';
-import { MonumentResponseDto } from './monument-response-dto';
 
 
-export interface PageMonumentResponseDto { 
+export interface PageMarkListDto { 
     totalPages?: number;
     totalElements?: number;
     size?: number;
-    content?: Array<MonumentResponseDto>;
+    content?: Array<MarkListDto>;
     number?: number;
     sort?: SortObject;
     first?: boolean;

@@ -6,26 +6,24 @@
           class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
           (click)="onItemClick(item)">
 
-          <!-- Bookmark Button -->
           <button
             (click)="toggleBookmark($event, item)"
             class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-200 flex items-center justify-center hover:scale-110 active:scale-95"
-            [attr.aria-label]="isBookmarked(item) ? 'Remove bookmark' : 'Add bookmark'">
+            [attr.aria-label]="isBookmarked(item) ? 'Remover bookmark' : 'Adicionar bookmark'">
             <i
               [class]="isBookmarked(item) ? 'bi bi-bookmark-check-fill text-primary' : 'bi bi-bookmark text-text-muted'"
               class="text-lg">
             </i>
           </button>
 
-          <!-- Image -->
-          <div class="relative aspect-[4/3] overflow-hidden">
+          <!-- Imagem -->
+          <div class="relative aspect-4/3 overflow-hidden">
             <img
               [src]="getItemCover(item)"
               [alt]="getItemName(item)"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <!-- Overlay -->
-            @if (isMonument(item)) {
+            @if (type === 'monuments') {
               <div class="absolute top-4 left-4">
                 <div class="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg
                 text-xs font-semibold flex items-center gap-1.5 text-text">
@@ -36,7 +34,6 @@
             }
           </div>
 
-          <!-- Content -->
           <div class="p-4 sm:p-5 space-y-2">
             <h3 class="text-base sm:text-lg font-serif font-semibold text-text group-hover:text-primary transition-colors line-clamp-2">
               {{ getItemName(item) }}

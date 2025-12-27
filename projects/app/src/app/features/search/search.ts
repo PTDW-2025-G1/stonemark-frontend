@@ -55,7 +55,7 @@ export class SearchComponent implements OnInit {
     if (this.type === 'marks') {
       const source = this.searchQuery.trim()
         ? this.markService.searchMarks(this.searchQuery, pageIndex, this.pageSize)
-        : this.markService.getPageMarks(pageIndex, this.pageSize);
+        : this.markService.getListMarks(pageIndex, this.pageSize);
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);
@@ -65,7 +65,7 @@ export class SearchComponent implements OnInit {
     } else {
       const source = this.searchQuery.trim()
         ? this.monumentService.searchMonuments(this.searchQuery, pageIndex, this.pageSize)
-        : this.monumentService.getPageMonuments(pageIndex, this.pageSize);
+        : this.monumentService.getListMonuments(pageIndex, this.pageSize);
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);

@@ -146,11 +146,10 @@ export abstract class BaseAuthComponent {
           this.errorMsg = 'Authentication failed.';
         },
 
-        // ⚠️ ERROR PATH (401, 400, etc.)
         error: (err) => {
           const message = err?.error?.message;
 
-          // 🔐 2FA REQUIRED (backend returned 401)
+          // 2FA required
           if (
             err.status === 401 &&
             typeof message === 'string' &&
@@ -182,11 +181,6 @@ export abstract class BaseAuthComponent {
     if (redirect && this._isValidRedirectUrl(redirect)) {
       localStorage.removeItem('redirectAfterLogin');
       window.location.href = redirect;
-      return;
-    }
-
-    if (role === 'ADMIN' || role === 'MODERATOR') {
-      window.location.href = environment.staffUrl;
       return;
     }
 

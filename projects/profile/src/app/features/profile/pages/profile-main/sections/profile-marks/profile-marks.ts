@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
+import {ImageUtils} from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-profile-marks',
@@ -14,4 +15,11 @@ export class ProfileMarksComponent {
   @Output() editOccurrence = new EventEmitter<MarkOccurrenceDto>();
   @Output() removeOccurrence = new EventEmitter<MarkOccurrenceDto>();
   @Output() viewOccurrence = new EventEmitter<MarkOccurrenceDto>();
+
+  getImageUrl(occurrence: MarkOccurrenceDto): string {
+    return ImageUtils.getImageUrl(
+      occurrence.coverId,
+      'assets/placeholder.png'
+    );
+  }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-menu',
@@ -32,15 +33,8 @@ export class AppMenu implements OnInit {
           { label: 'Manage Reports', icon: 'pi pi-flag', routerLink: ['/moderator/manage-reports'] },
           { label: 'Manage Users', icon: 'pi pi-fw pi-users', routerLink: ['/admin/users'] },
           { label: 'Manage Monuments', icon: 'pi pi-fw pi-map', routerLink: ['/admin/monuments'] },
-          {
-            label: 'Profile',
-            icon: 'pi pi-fw pi-user',
-            items: [
-              { label: 'Logout', icon: 'pi pi-fw pi-sign-out', routerLink: ['/logout'] }
-            ]
-          },
-          { label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/pages/notfound'] },
-          { label: 'Empty', icon: 'pi pi-fw pi-circle-off', routerLink: ['/pages/empty'] }
+          { label: 'My Profile', icon: 'pi pi-fw pi-user', url: environment.profileUrl + '/profile' },
+          { label: 'Logout', icon: 'pi pi-fw pi-sign-out', routerLink: ['/logout'] }
         ]
       },
     ];

@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, ButtonComponent],
   template: `
     <section class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-surface pt-20 pb-32">
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -32,13 +33,15 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
             From medieval monasteries to hidden chapels, help us preserve the signatures of the past.
           </p>
 
-          <div class="animate-fade-in-delay-2">
-            <a routerLink="/search/monuments"
-               class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm">
-              Start Exploring
-              <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-            </a>
-          </div>
+          <app-button
+            variant="primary"
+            size="normal"
+            [fullWidth]="false"
+            [routerLink]="'/search/monuments'"
+          >
+            Start Exploring
+            <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </app-button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto animate-fade-in-delay-3">

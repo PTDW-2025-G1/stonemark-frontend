@@ -37,17 +37,22 @@ describe('QuestionsAboutCookiesSection', () => {
     expect(paragraph.textContent).toContain('If you have questions about how we use cookies');
   });
 
-  it('should have a link to contact page', () => {
-    const link = fixture.debugElement.query(By.css('a[routerLink="/contact"]'));
-    expect(link).toBeTruthy();
-    expect(link.nativeElement.textContent).toContain('Contact Us');
+  it('should have a button to contact page', () => {
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
+    const contactBtn = buttons.find(btn => btn.componentInstance.routerLink === '/contact');
+    expect(contactBtn).toBeTruthy();
+    if (!contactBtn) return;
+    expect(contactBtn.nativeElement.textContent).toContain('Contact Us');
   });
 
-  it('should have a link to the privacy policy page', () => {
-    const link = fixture.debugElement.query(By.css('a[routerLink="/privacy-policy"]'));
-    expect(link).toBeTruthy();
-    expect(link.nativeElement.textContent).toContain('Privacy Policy');
+  it('should have a button to the privacy policy page', () => {
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
+    const privacyBtn = buttons.find(btn => btn.componentInstance.routerLink === '/privacy-policy');
+    expect(privacyBtn).toBeTruthy();
+    if (!privacyBtn) return;
+    expect(privacyBtn.nativeElement.textContent).toContain('Privacy Policy');
   });
+
 
   it('should contain both icons', () => {
     const icons = fixture.debugElement.queryAll(By.css('i'));

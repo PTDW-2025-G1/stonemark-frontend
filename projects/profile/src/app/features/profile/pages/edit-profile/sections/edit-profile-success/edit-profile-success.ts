@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 export interface UpdatedProfileData {
   firstName: string;
@@ -9,7 +10,7 @@ export interface UpdatedProfileData {
 @Component({
   selector: 'app-edit-profile-success',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, ButtonComponent],
   templateUrl: './edit-profile-success.html'
 })
 export class EditProfileSuccessComponent {

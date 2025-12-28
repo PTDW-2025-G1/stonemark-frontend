@@ -191,41 +191,53 @@
       <!-- Footer -->
       <div class="px-6 py-4 border-t border-border bg-surface-alt flex items-center justify-between gap-3">
 
-        <!-- Left side: Cancel or Back -->
+        <!-- Left Side -->
         @if (currentStep === 1) {
-          <button
+          <app-button
+            type="button"
             (click)="close()"
             [disabled]="isSubmitting"
-            class="px-6 py-2.5 text-sm font-semibold text-text border border-border rounded-lg hover:bg-surface-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="outline"
+            size="md"
+            class="flex items-center"
           >
             Cancel
-          </button>
+          </app-button>
         } @else {
-          <button
+          <app-button
+            type="button"
             (click)="goToStep1()"
             [disabled]="isSubmitting"
-            class="px-6 py-2.5 text-sm font-semibold text-text border border-border rounded-lg hover:bg-surface-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            variant="outline"
+            size="md"
+            class="flex items-center gap-2"
           >
             <i class="bi bi-arrow-left"></i>
             Back
-          </button>
+          </app-button>
         }
 
-        <!-- Right side: Next or Submit -->
+        <!-- Right Side -->
         @if (currentStep === 1) {
-          <button
+          <app-button
+            type="button"
             (click)="goToStep2()"
             [disabled]="!selectedReason || isSubmitting"
-            class="px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            variant="primary"
+            size="md"
+            class="flex items-center gap-2"
           >
             <span>Next</span>
             <i class="bi bi-arrow-right"></i>
-          </button>
+          </app-button>
         } @else {
-          <button
+          <app-button
+            type="button"
             (click)="submit()"
             [disabled]="!canSubmit() || isSubmitting"
-            class="px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            variant="primary"
+            size="md"
+            class="flex items-center gap-2"
             [title]="!canSubmit() ? 'Please provide at least 10 characters in the description' : ''"
           >
             @if (isSubmitting) {
@@ -235,7 +247,7 @@
               <i class="bi bi-send-fill"></i>
               <span>Submit Report</span>
             }
-          </button>
+          </app-button>
         }
       </div>
     </div>

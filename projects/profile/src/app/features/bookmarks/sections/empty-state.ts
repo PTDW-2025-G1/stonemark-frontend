@@ -15,7 +15,7 @@ interface EmptyStateAction {
   imports: [CommonModule, RouterModule],
   template: `
     <div class="flex justify-center items-center min-h-[500px] py-12 px-4">
-      <div class="text-center">
+      <div class="text-center flex flex-col items-center">
         <!-- Icon Container -->
         <div class="relative inline-flex mb-8">
           <div class="absolute inset-0 bg-primary/10 rounded-full blur-2xl"></div>
@@ -38,15 +38,15 @@ interface EmptyStateAction {
         <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
           <a
             [href]="environment.baseUrl + '/search/monuments'"
-            class="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all duration-200 font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 w-full sm:w-auto justify-center">
-            <i class="bi bi-building"></i>
+            class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm">
             Explore Monuments
+            <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
           </a>
           <a
             [href]="environment.baseUrl + '/search/marks'"
-            class="inline-flex items-center gap-2 px-8 py-3.5 bg-white border-2 border-border text-text rounded-xl hover:border-primary hover:text-primary transition-all duration-200 font-semibold hover:-translate-y-0.5 w-full sm:w-auto justify-center">
-            <i class="bi bi-search"></i>
-            Browse Marks
+            class="px-8 py-4 text-sm font-bold tracking-wide bg-surface border border-border text-text rounded-xl hover:border-primary hover:text-primary hover:bg-black transition-all duration-200 group cursor-pointer">
+            <i class="bi bi-search text-base transition-colors duration-200 group-hover:text-white mr-2"></i>
+            <span class="transition-colors duration-200 group-hover:text-white">Browse Marks</span>
           </a>
         </div>
 

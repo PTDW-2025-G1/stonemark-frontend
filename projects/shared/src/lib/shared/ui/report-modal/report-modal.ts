@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReportRequestDto } from '@api/model/report-request-dto';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 export interface ReportModalConfig {
   targetId: number;
@@ -20,7 +21,7 @@ interface ReportReason {
 @Component({
   selector: 'app-report-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ButtonComponent],
   templateUrl: './report-modal.html',
   styleUrls: ['./report-modal.scss']
 })

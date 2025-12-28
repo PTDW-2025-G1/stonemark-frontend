@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { MarkDto } from '@api/model/mark-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
@@ -16,7 +16,7 @@ type SearchItem = MonumentResponseDto | MarkDto;
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './search-results.html'
 })
 export class SearchResultsComponent {
@@ -91,6 +91,7 @@ export class SearchResultsComponent {
   }
 
   toggleBookmark(event: Event, item: SearchItem): void {
+    event.preventDefault();
     event.stopPropagation();
 
     if (!this.isLoggedIn()) {

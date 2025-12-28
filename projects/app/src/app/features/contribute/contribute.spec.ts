@@ -65,18 +65,18 @@ class MockCallToActionComponent {}
     <app-call-to-action></app-call-to-action>
   `
 })
-class TestHelpComponent {}
+class TestContributeComponent {}
 
-describe('HelpComponent', () => {
-  let component: TestHelpComponent;
-  let fixture: ComponentFixture<TestHelpComponent>;
+describe('ContributeComponent', () => {
+  let component: TestContributeComponent;
+  let fixture: ComponentFixture<TestContributeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHelpComponent]
+      imports: [TestContributeComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TestHelpComponent);
+    fixture = TestBed.createComponent(TestContributeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

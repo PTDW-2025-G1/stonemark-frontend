@@ -1,16 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-entity-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
-    <div
+    <a
+      [routerLink]="['/', type, id]"
       class="group relative aspect-square overflow-hidden border-2 border-border cursor-pointer
-             transition-all duration-500"
-      (click)="open()"
+         transition-all duration-500 block"
     >
       <!-- Image -->
       <img
@@ -58,7 +58,7 @@ import { Router } from '@angular/router';
           <i class="bi bi-arrow-right text-primary text-lg"></i>
         </div>
       </div>
-    </div>
+    </a>
   `,
   styles: []
 })

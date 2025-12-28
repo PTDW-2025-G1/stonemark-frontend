@@ -8,11 +8,12 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { UserContactDto } from '@api/model/user-contact-dto';
 import { ContactDto } from '@api/model/contact-dto';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-account-contacts',
   standalone: true,
-  imports: [CommonModule, FormsModule, BreadcrumbProfileComponent],
+  imports: [CommonModule, FormsModule, BreadcrumbProfileComponent, ButtonComponent],
   templateUrl: './account-contacts.html'
 })
 export class AccountContactsComponent implements OnInit {

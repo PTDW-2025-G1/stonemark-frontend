@@ -57,19 +57,25 @@
           </div>
 
           <div class="flex gap-3">
-            <button
+            <app-button
+              type="button"
               (click)="confirmVerificationCode()"
               [disabled]="!verificationCode"
-              class="flex-1 border border-primary bg-primary text-primary-foreground px-4 py-2.5
-                     hover:bg-text transition-colors disabled:opacity-50 font-medium text-sm cursor-pointer">
+              [fullWidth]="true"
+              variant="primary"
+              size="lg"
+            >
               Confirm Code
-            </button>
-            <button
+            </app-button>
+            <app-button
+              type="button"
               (click)="cancelVerification()"
-              class="px-4 py-2.5 border border-border hover:border-text-muted transition-colors
-                     font-medium text-sm cursor-pointer">
+              [fullWidth]="true"
+              variant="secondary"
+              size="lg"
+            >
               Cancel
-            </button>
+            </app-button>
           </div>
         </div>
       </div>
@@ -134,12 +140,15 @@
             }
 
             <div class="space-y-3 pt-4">
-              <button
+              <app-button
+                type="button"
                 (click)="confirmReauthAndDelete()"
-                [disabled]="reauthLoading || (!reauthPassword && !reauthSuccess) || (reauthSuccess && !reauthOtp)"
-                class="w-full border border-error text-error px-4 py-2.5
-                       hover:bg-error hover:text-white transition-colors disabled:opacity-50
-                       font-medium text-sm cursor-pointer">
+                [disabled]="!!(reauthLoading || (!reauthPassword && !reauthSuccess) || (reauthSuccess && !reauthOtp))"
+                [loading]="reauthLoading"
+                [fullWidth]="true"
+                variant="danger"
+                size="lg"
+              >
                 @if (reauthLoading) {
                   <span>Processing...</span>
                 } @else if (!reauthSuccess) {
@@ -147,15 +156,18 @@
                 } @else {
                   <span>Confirm Deletion</span>
                 }
-              </button>
+              </app-button>
 
-              <button
+              <app-button
+                type="button"
                 (click)="closeReauthModal()"
                 [disabled]="reauthLoading"
-                class="w-full px-4 py-2.5 border border-border hover:border-text-muted
-                       transition-colors font-medium text-sm disabled:opacity-50 cursor-pointer">
+                [fullWidth]="true"
+                variant="secondary"
+                size="lg"
+              >
                 Cancel
-              </button>
+              </app-button>
             </div>
           </div>
         </div>
@@ -301,19 +313,16 @@
         </div>
 
         <!-- Add Button -->
-        <button
+        <app-button
+          type="button"
           (click)="addContact()"
           [disabled]="!isNewContactValid()"
-          class="w-full border px-4 py-2.5 font-medium text-sm transition-colors cursor-pointer"
-          [class.border-primary]="isNewContactValid()"
-          [class.bg-primary]="isNewContactValid()"
-          [class.text-primary-foreground]="isNewContactValid()"
-          [class.hover:bg-text]="isNewContactValid()"
-          [class.border-border]="!isNewContactValid()"
-          [class.text-text-muted]="!isNewContactValid()"
-          [class.cursor-not-allowed]="!isNewContactValid()">
+          [fullWidth]="true"
+          variant="primary"
+          size="lg"
+        >
           Add Contact
-        </button>
+        </app-button>
       </div>
     </section>
 

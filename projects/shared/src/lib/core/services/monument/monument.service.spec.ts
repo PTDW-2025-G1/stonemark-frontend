@@ -116,13 +116,13 @@ describe('MonumentService', () => {
 
     (httpMock.get as any).mockReturnValue(of(mockPage));
 
-    const result = await firstValueFrom(service.getPageMonuments(0, 9));
+    const result = await firstValueFrom(service.getListMonuments(0, 9));
 
     expect(result).toEqual(mockPage);
     expect(httpMock.get).toHaveBeenCalled();
 
     const [url, options] = (httpMock.get as any).mock.calls[0];
-    expect(url).toBe(baseUrl);
+    expect(url).toBe(`${baseUrl}/list`);
     expect(options.params.get('page')).toBe('0');
     expect(options.params.get('size')).toBe('9');
   });

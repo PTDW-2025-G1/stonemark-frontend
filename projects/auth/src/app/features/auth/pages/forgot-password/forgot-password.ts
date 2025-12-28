@@ -1,14 +1,26 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
+import { ButtonComponent } from '@shared/ui/button/button';
+
+function emailOrPhoneValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value as string;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^\+351\d{9}$/;
+  if (!value) return null;
+  if (emailRegex.test(value) || phoneRegex.test(value)) {
+    return null;
+  }
+  return { emailOrPhone: true };
+}
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ButtonComponent],
   templateUrl: './forgot-password.html'
 })
 export class ForgotPasswordComponent {
@@ -28,7 +40,7 @@ export class ForgotPasswordComponent {
     private router: Router
   ) {
     this.form = this.fb.group({
-      contact: ['', Validators.required]
+      contact: ['', [Validators.required, emailOrPhoneValidator]]
     });
 
     this.codeForm = this.fb.group({

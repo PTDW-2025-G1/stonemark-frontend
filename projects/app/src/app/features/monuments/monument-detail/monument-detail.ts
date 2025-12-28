@@ -18,11 +18,12 @@ import { ReportRequestDto } from '@api/model/report-request-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReportModalComponent, SafeHtmlPipe],
+  imports: [CommonModule, RouterModule, ReportModalComponent, SafeHtmlPipe, ButtonComponent],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {

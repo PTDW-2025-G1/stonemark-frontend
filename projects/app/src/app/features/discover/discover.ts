@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {ButtonComponent} from '@shared/ui/button/button';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent, RouterLink],
   templateUrl: './discover.html',
 })
 export class DiscoverPageComponent {

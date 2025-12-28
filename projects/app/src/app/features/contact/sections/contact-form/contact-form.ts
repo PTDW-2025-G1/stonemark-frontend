@@ -6,11 +6,12 @@ import {ProfileService} from '@core/services/profile/profile.service';
 import {AuthService} from '@core/services/auth/auth.service';
 import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
 import {ContactRequestDto} from '@api/model/contact-request-dto';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SharedSelectComponent],
+  imports: [CommonModule, ReactiveFormsModule, SharedSelectComponent, ButtonComponent],
   template: `
     <div class="bg-gradient-to-br from-surface-alt to-surface rounded-3xl border border-border p-6 sm:p-8 lg:p-10 shadow-xl">
       <div class="mb-8">
@@ -127,25 +128,26 @@ import {ContactRequestDto} from '@api/model/contact-request-dto';
 
         <!-- Submit Button -->
         <div class="flex flex-col sm:flex-row gap-4 pt-4">
-          <button
+          <app-button
             type="submit"
             [disabled]="contactForm.invalid || isSubmitting"
-            class="flex-1 group relative overflow-hidden bg-primary text-primary-foreground rounded-xl px-6 py-4 font-semibold text-lg hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+            variant="primary"
+            size="lg"
+            [fullWidth]="true"
           >
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            <span class="relative flex items-center justify-center gap-2">
-              @if (isSubmitting) {
-                <i class="bi bi-hourglass-split animate-spin"></i>
-                Sending...
-              } @else if (submitSuccess) {
-                <i class="bi bi-check-circle"></i>
-                Message Sent!
-              } @else {
-                <i class="bi bi-send"></i>
-                Send Message
-              }
-            </span>
-          </button>
+          <span class="relative flex items-center justify-center gap-2">
+            @if (isSubmitting) {
+              <i class="bi bi-hourglass-split animate-spin"></i>
+              Sending...
+            } @else if (submitSuccess) {
+              <i class="bi bi-check-circle"></i>
+              Message Sent!
+            } @else {
+              <i class="bi bi-send"></i>
+              Send Message
+            }
+          </span>
+          </app-button>
 
           @if (submitError) {
             <div class="flex items-center gap-2 px-4 py-3 bg-error/10 border border-error/30 rounded-xl text-error mt-3">

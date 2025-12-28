@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {RouterLink} from '@angular/router';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 export interface ProfileFormData {
   firstName: string;
@@ -10,7 +11,7 @@ export interface ProfileFormData {
 @Component({
   selector: 'app-edit-profile-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, ButtonComponent],
   templateUrl: './edit-profile-form.html'
 })
 export class EditProfileFormComponent implements OnInit, OnChanges {

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
+import { environment } from '@env/environment';
+
 
 interface BookmarkItem {
   bookmarkId: number;
@@ -22,16 +24,29 @@ interface BookmarkItem {
   template: `
     <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       @for (item of items; track item.id) {
-        <article class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer" (click)="viewDetails.emit(item)">
+
+        <a
+          [href]="getItemUrl(item)"
+          class="group relative bg-white rounded-2xl overflow-hidden shadow-md
+             hover:shadow-2xl border border-border hover:border-primary/30
+             transition-all duration-300 hover:-translate-y-1 block"
+        >
+
           <!-- Bookmark Button -->
           <button
-            (click)="remove.emit({ bookmarkId: item.bookmarkId, type: item.type }); $event.stopPropagation()"
-            class="absolute top-3 right-3 z-10 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-error hover:scale-110 transition-all duration-300 shadow-lg group/btn">
+            (click)="remove.emit({ bookmarkId: item.bookmarkId, type: item.type });
+                 $event.stopPropagation(); $event.preventDefault()"
+            class="absolute top-3 right-3 z-10 w-10 h-10 bg-surface/90 backdrop-blur-sm
+               rounded-full flex items-center justify-center hover:bg-error
+               hover:scale-110 transition-all duration-300 shadow-lg group/btn">
             <i class="bi bi-bookmark-check-fill text-primary group-hover/btn:text-white transition-colors"></i>
           </button>
 
           <!-- Type Badge -->
-          <div class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-sm rounded-full text-xs font-medium border border-border flex items-center">
+          <div
+            class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-sm
+               rounded-full text-xs font-medium border border-border flex items-center
+               pointer-events-none">
             <span class="mr-1" [innerHTML]="item.type === 'monument' ? monumentsIcon : marksIcon"></span>
             {{ item.type === 'monument' ? 'Monument' : 'Mark' }}
           </div>
@@ -43,12 +58,17 @@ interface BookmarkItem {
               [alt]="getItemName(item)"
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
           </div>
 
           <!-- Content -->
-          <div class="p-5">
-            <h3 class="text-lg font-serif font-semibold mb-1 group-hover:text-primary transition-colors line-clamp-2">
+          <div class="p-5 pointer-events-none">
+            <h3
+              class="text-lg font-serif font-semibold mb-1 group-hover:text-primary
+                 transition-colors line-clamp-2">
               {{ getItemName(item) }}
             </h3>
             <p class="text-sm text-text-muted mb-4 flex items-center gap-1.5">
@@ -56,7 +76,8 @@ interface BookmarkItem {
               {{ getItemSubtitle(item) }}
             </p>
           </div>
-        </article>
+
+        </a>
       }
     </div>
   `
@@ -72,6 +93,12 @@ export class GridSectionComponent {
   constructor(private sanitizer: DomSanitizer) {
     this.monumentsIcon = this.sanitizer.bypassSecurityTrustHtml(MONUMENTS_ICON);
     this.marksIcon = this.sanitizer.bypassSecurityTrustHtml(MARKS_ICON);
+  }
+
+  getItemUrl(item: BookmarkItem): string {
+    const base = environment.baseUrl;
+    const typePath = item.type === 'monument' ? 'monuments' : 'marks';
+    return `${base}/${typePath}/${item.id}`;
   }
 
   getItemCover(item: BookmarkItem): string {

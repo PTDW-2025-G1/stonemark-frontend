@@ -13,7 +13,6 @@ export class SearchHeaderComponent {
   @Input() type: 'monuments' | 'marks' = 'monuments';
   @Input() title = '';
   @Input() locations: string[] = [];
-  @Input() monumentsList: { id: number; name: string }[] = [];
 
   @Output() search = new EventEmitter<string>();
   @Output() filterChange = new EventEmitter<string>();
@@ -21,9 +20,7 @@ export class SearchHeaderComponent {
   selectedValue: string | number = '';
 
   get selectOptions(): { id: string | number; name: string }[] {
-    return this.type === 'monuments'
-      ? this.locations.map(loc => ({ id: loc, name: loc })) // Use o nome da cidade como id
-      : this.monumentsList;
+    return this.locations.map(loc => ({ id: loc, name: loc }));
   }
 
   onSearchInput(event: Event): void {
@@ -33,11 +30,6 @@ export class SearchHeaderComponent {
 
   selectOption(value: string | number): void {
     this.selectedValue = value;
-
-    if (this.type === 'monuments') {
-      this.filterChange.emit(value.toString());
-    } else {
-      this.filterChange.emit(value.toString());
-    }
+    this.filterChange.emit(value.toString());
   }
 }

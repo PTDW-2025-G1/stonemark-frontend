@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink} from '@angular/router';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-call-to-action',
@@ -16,19 +17,24 @@ import {RouterLink} from '@angular/router';
         </p>
 
         <div class="flex flex-col md:flex-row gap-4 justify-center mb-16">
-          <a
-            routerLink="/submit"
-            class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm"
+          <app-button
+            variant="primary"
+            size="normal"
+            [routerLink]="'/submit'"
+            class="min-w-[220px]"
           >
             Submit Your First Mark
-          </a>
-          <a
-            href="/search/monuments"
-            class="px-8 py-4 text-sm font-bold tracking-wide border border-border bg-surface text-text rounded-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors duration-200 ease-soft shadow-sm"
+          </app-button>
+          <app-button
+            variant="secondary"
+            size="normal"
+            [routerLink]="'/search/monuments'"
+            class="min-w-[220px]"
           >
             Explore Database
-          </a>
+          </app-button>
         </div>
+
 
         <p class="text-text-muted italic">
           Secure • Private • Free Forever
@@ -37,7 +43,8 @@ import {RouterLink} from '@angular/router';
     </section>
   `,
   imports: [
-    RouterLink
+    RouterLink,
+    ButtonComponent
   ]
 })
 export class CallToActionComponent {}

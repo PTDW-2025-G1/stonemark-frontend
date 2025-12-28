@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { CookieService } from '@core/services/cookie/cookie.service'; // AJUSTA O PATH
+import { CookieService } from '@core/services/cookie/cookie.service';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 interface AccessibilitySetting {
   id: string;
@@ -16,7 +17,7 @@ interface AccessibilitySetting {
 @Component({
   selector: 'app-accessibility',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ButtonComponent],
   templateUrl: './accessibility.html',
   styles: [`
     :host {
@@ -76,10 +77,6 @@ export class AccessibilityComponent implements OnInit {
     }
   }
 
-  // ============================================
-  // COOKIE HANDLING
-  // ============================================
-
   private saveSettingsToCookies(): void {
     const settingsState = this.settings.reduce((acc, setting) => {
       acc[setting.id] = setting.enabled;
@@ -100,10 +97,6 @@ export class AccessibilityComponent implements OnInit {
       });
     }
   }
-
-  // ============================================
-  // DOM CLASS APPLIERS
-  // ============================================
 
   private applySettings(): void {
     this.settings.forEach(setting => this.applySetting(setting));

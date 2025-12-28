@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-tfa-verification',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './tfa-verification.html',
 })
 export class TfaVerificationComponent implements OnInit {

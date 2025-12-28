@@ -6,11 +6,12 @@ import { ProfileService } from '@core/services/profile/profile.service';
 import { UserDto } from '@api/model/user-dto';
 import { Subscription } from 'rxjs';
 import {environment} from '@env/environment';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ButtonComponent],
   templateUrl: './header.html',
   styleUrls: ['./header.scss']
 })
@@ -19,7 +20,7 @@ export class Header implements OnInit, OnDestroy {
   isDropdownOpen = false;
   user: UserDto | null = null;
   isHeaderVisible = true;
-  isAuthLoading = true; // Prevent flash while checking auth state
+  isAuthLoading = true;
   private lastScrollY = 0;
   private scrollThreshold = 100;
   private authSubscription?: Subscription;
@@ -27,6 +28,7 @@ export class Header implements OnInit, OnDestroy {
   menuItems = [
     { label: 'Monuments', route: `${environment.baseUrl}/search/monuments` },
     { label: 'Marks', route: `${environment.baseUrl}/search/marks` },
+    { label: 'Contribute', route: `${environment.baseUrl}/contribute` },
     { label: 'Discover', route: `${environment.baseUrl}/discover` },
     { label: 'About', route: `${environment.baseUrl}/about` },
   ];
@@ -39,7 +41,6 @@ export class Header implements OnInit, OnDestroy {
     if (hasToken) {
       this.loadUser();
     } else {
-      // No token, not loading anymore
       this.isAuthLoading = false;
     }
 
@@ -52,7 +53,6 @@ export class Header implements OnInit, OnDestroy {
       }
     });
 
-    // Add scroll listener
     window.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
@@ -120,24 +120,19 @@ export class Header implements OnInit, OnDestroy {
   private handleScroll(): void {
     const currentScrollY = window.scrollY;
 
-    // Always show header at the top of the page
     if (currentScrollY < this.scrollThreshold) {
       this.isHeaderVisible = true;
       this.lastScrollY = currentScrollY;
       return;
     }
 
-    // Hide header when scrolling down, show when scrolling up
     if (currentScrollY > this.lastScrollY) {
-      // Scrolling down
       this.isHeaderVisible = false;
-      this.closeMenu(); // Close mobile menu if open
-      this.isDropdownOpen = false; // Close dropdown if open
+      this.closeMenu();
+      this.isDropdownOpen = false;
     } else if (currentScrollY < this.lastScrollY) {
-      // Scrolling up
       this.isHeaderVisible = true;
     }
-
     this.lastScrollY = currentScrollY;
   }
 }

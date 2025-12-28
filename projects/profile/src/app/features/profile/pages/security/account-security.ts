@@ -6,11 +6,12 @@ import { AccountSecurityService } from '@core/services/account/account-security/
 import { AccountContactService } from '@core/services/account/account-contact/account-contact.service';
 import { UserContactDto } from '@api/model/user-contact-dto';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-account-security',
   standalone: true,
-  imports: [CommonModule, FormsModule, BreadcrumbProfileComponent],
+  imports: [CommonModule, FormsModule, BreadcrumbProfileComponent, ButtonComponent],
   templateUrl: './account-security.html'
 })
 export class AccountSecurityComponent implements OnInit {

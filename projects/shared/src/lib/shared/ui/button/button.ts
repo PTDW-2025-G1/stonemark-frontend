@@ -13,10 +13,6 @@ import { CommonModule } from '@angular/common';
       [ngClass]="classes"
       class="group relative inline-flex items-center justify-center font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none overflow-hidden cursor-pointer"
     >
-      @if (variant === 'primary') {
-        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      }
-
       @if (loading) {
         <span class="absolute flex items-center justify-center">
           <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -40,9 +36,10 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class ButtonComponent {
+  @Input() routerLink?: string;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() variant: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' = 'primary';
-  @Input() size: 'sm' | 'md' | 'lg' = 'md';
+  @Input() size: 'normal' | 'sm' | 'md' | 'lg' = 'md';
   @Input() disabled = false;
   @Input() loading = false;
   @Input() fullWidth = false;
@@ -57,28 +54,29 @@ export class ButtonComponent {
 
   private getSizeClasses(): string {
     switch (this.size) {
+      case 'normal': return 'px-8 py-4 text-sm rounded-lg font-bold tracking-wide';
       case 'sm': return 'h-9 px-4 text-xs rounded-lg';
       case 'lg': return 'h-12 px-8 text-base rounded-xl';
-      default:   return 'h-11 px-6 text-sm rounded-xl'; // md
+      default:   return 'h-11 px-6 text-sm rounded-xl';
     }
   }
 
   private getVariantClasses(): string {
     switch (this.variant) {
       case 'primary':
-        return 'bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 border border-transparent';
+        return 'bg-black text-white border border-black hover:bg-white hover:text-black hover:border-black';
 
       case 'secondary':
-        return 'bg-surface text-text border border-border hover:bg-surface-alt hover:border-primary/30 shadow-sm hover:shadow-md';
+        return 'bg-white text-black border border-black hover:bg-black hover:text-white hover:border-black';
 
       case 'outline':
-        return 'bg-transparent text-primary border-2 border-primary hover:bg-primary/5';
+        return 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-white';
 
       case 'ghost':
-        return 'bg-transparent text-text-muted hover:text-primary hover:bg-primary/10 border border-transparent';
+        return 'bg-transparent text-text-muted hover:text-black hover:bg-black/10 border border-transparent';
 
       case 'danger':
-        return 'bg-red-500 text-white shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:-translate-y-0.5 border border-transparent';
+        return 'bg-red-700 text-white shadow-lg shadow-red-500/10 hover:shadow-red-500/40 hover:-translate-y-0.5 border border-transparent';
 
       default:
         return '';

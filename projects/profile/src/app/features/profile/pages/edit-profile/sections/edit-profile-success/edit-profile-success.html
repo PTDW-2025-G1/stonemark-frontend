@@ -58,20 +58,27 @@
 
 <!-- Action Buttons -->
 <div class="space-y-3">
-  <button
+  <app-button
+    type="button"
     (click)="onEditAgain()"
-    class="w-full group relative overflow-hidden px-6 py-3.5 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
-    <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-info/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-    <span class="relative flex items-center justify-center gap-2">
+    [fullWidth]="true"
+    variant="primary"
+    size="lg"
+    class="group relative overflow-hidden"
+  >
       <i class="bi bi-pencil"></i>
       Edit Again
-    </span>
-  </button>
+  </app-button>
 
-  <button
+  <app-button
+    type="button"
     (click)="onBackToProfile()"
-    class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all duration-300">
+    [fullWidth]="true"
+    variant="secondary"
+    size="lg"
+    class="flex items-center justify-center gap-2"
+  >
     <i class="bi bi-person"></i>
     Back to Profile
-  </button>
+  </app-button>
 </div>

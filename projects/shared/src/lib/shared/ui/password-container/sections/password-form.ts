@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {ButtonComponent} from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-password-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   template: `
     <div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
       <form [formGroup]="passwordForm" (ngSubmit)="onSubmit.emit()">
@@ -172,11 +173,15 @@ import { CommonModule } from '@angular/common';
         </div>
 
         <!-- Submit -->
-        <button
+        <app-button
           type="submit"
           [disabled]="passwordForm.invalid || isSubmitting"
-          class="w-full px-6 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold
-                 hover:shadow-lg transition-all duration-300 disabled:opacity-50 cursor-pointer">
+          [loading]="isSubmitting"
+          [fullWidth]="true"
+          variant="primary"
+          size="lg"
+          class="mb-0"
+        >
           <span class="flex items-center justify-center gap-2">
             @if (isSubmitting) {
               <i class="bi bi-hourglass-split animate-spin"></i>
@@ -199,18 +204,20 @@ import { CommonModule } from '@angular/common';
               }}
             }
           </span>
-        </button>
+        </app-button>
 
         @if (mode === 'change') {
-          <button
+          <app-button
             type="button"
             (click)="goBack.emit()"
-            class="w-full mt-3 px-6 py-3 bg-surface-alt border-2 border-border
-                   text-text rounded-xl font-semibold hover:border-primary transition-all cursor-pointer">
+            [fullWidth]="true"
+            variant="secondary"
+            size="lg"
+            class="mt-3"
+          >
             Cancel
-          </button>
+          </app-button>
         }
-
       </form>
     </div>
   `

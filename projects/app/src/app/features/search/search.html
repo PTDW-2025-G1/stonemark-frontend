@@ -4,11 +4,6 @@
     [type]="type"
     [title]="title"
     [locations]="['Aveiro', 'Coimbra', 'Lisboa', 'Porto']"
-    [monumentsList]="[
-    { id: 1, name: 'Castelo de Guimarães' },
-    { id: 2, name: 'Mosteiro de Alcobaça' },
-    { id: 3, name: 'Torre de Belém' }
-  ]"
     (search)="onSearch($event)"
     (filterChange)="onFilterChange($event)">
   </app-search-header>

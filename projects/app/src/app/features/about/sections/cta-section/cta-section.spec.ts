@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CtaSectionComponent } from './cta-section';
 import { By } from '@angular/platform-browser';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('CtaSectionComponent', () => {
   let component: CtaSectionComponent;
@@ -9,9 +10,8 @@ describe('CtaSectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CtaSectionComponent]
+      imports: [CtaSectionComponent, RouterTestingModule]
     }).compileComponents();
-
     fixture = TestBed.createComponent(CtaSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -33,34 +33,57 @@ describe('CtaSectionComponent', () => {
   });
 
   it('should have a link to search monuments', () => {
-    const link = fixture.debugElement.query(By.css('a[href="/search/monuments"]'));
-    expect(link).toBeTruthy();
-    expect(link.nativeElement.textContent.trim()).toBe('Start Exploring');
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
+    const startExploringBtn = buttons.find(
+      btn => btn.componentInstance.routerLink === '/search/monuments'
+    );
+    expect(startExploringBtn).toBeTruthy();
+    const innerEl = startExploringBtn!.nativeElement.querySelector('a,button');
+    expect(innerEl).toBeTruthy();
+    expect(innerEl.textContent.trim()).toBe('Start Exploring');
   });
 
   it('should have a link to contact page', () => {
-    const link = fixture.debugElement.query(By.css('a[href="/contact"]'));
-    expect(link).toBeTruthy();
-    expect(link.nativeElement.textContent.trim()).toBe('Get in Touch');
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
+    const getInTouchBtn = buttons.find(
+      btn => btn.componentInstance.routerLink === '/contact'
+    );
+    expect(getInTouchBtn).toBeTruthy();
+    const innerEl = getInTouchBtn!.nativeElement.querySelector('a,button');
+    expect(innerEl).toBeTruthy();
+    expect(innerEl.textContent.trim()).toBe('Get in Touch');
   });
 
   it('should apply primary button styles to Start Exploring link', () => {
-    const link = fixture.debugElement.query(By.css('a[href="/search/monuments"]'));
-    const classes = link.nativeElement.className;
-    expect(classes).toContain('bg-primary');
-    expect(classes).toContain('text-primary-foreground');
-    expect(classes).toContain('border-primary');
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
+    const startExploringBtn = buttons.find(
+      btn => btn.componentInstance.routerLink === '/search/monuments'
+    );
+    expect(startExploringBtn).toBeTruthy();
+    const innerEl = startExploringBtn!.nativeElement.querySelector('a,button');
+    expect(innerEl).toBeTruthy();
+    const classes = innerEl.className;
+    expect(classes).toContain('bg-black');
+    expect(classes).toContain('text-white');
+    expect(classes).toContain('border-black');
   });
 
   it('should apply secondary button styles to Get in Touch link', () => {
-    const link = fixture.debugElement.query(By.css('a[href="/contact"]'));
-    const classes = link.nativeElement.className;
-    expect(classes).toContain('bg-surface');
-    expect(classes).toContain('border-border');
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
+    const getInTouchBtn = buttons.find(
+      btn => btn.componentInstance.routerLink === '/contact'
+    );
+    expect(getInTouchBtn).toBeTruthy();
+    const innerEl = getInTouchBtn!.nativeElement.querySelector('a,button');
+    expect(innerEl).toBeTruthy();
+    const classes = innerEl.className;
+    expect(classes).toContain('bg-white');
+    expect(classes).toContain('text-black');
+    expect(classes).toContain('border-black');
   });
 
   it('should render both action buttons', () => {
-    const buttons = fixture.debugElement.queryAll(By.css('a'));
+    const buttons = fixture.debugElement.queryAll(By.css('app-button'));
     expect(buttons.length).toBe(2);
   });
 

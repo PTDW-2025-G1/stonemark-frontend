@@ -26,13 +26,13 @@
         StoneMark uses AI to document, group, and preserve these fading symbols for future generations.
       </p>
       <div class="flex flex-wrap gap-4">
-        <a
-          href="/search/monuments"
-          role="button"
-          class="px-8 py-4 text-sm font-bold tracking-wide border border-primary bg-primary text-primary-foreground rounded-lg hover:bg-surface hover:text-primary hover:border-primary transition-colors duration-200 ease-soft shadow-sm"
+        <app-button
+          variant="primary"
+          size="normal"
+          [routerLink]="'/search/monuments'"
         >
           Explore the Database
-        </a>
+        </app-button>
       </div>
     </div>
   </div>
@@ -262,48 +262,6 @@
   </div>
 </section>
 
-<!-- How to Contribute Section -->
-<section id="contribute" class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
-  <div class="text-center mb-16">
-    <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Get Involved</div>
-    <h2 class="text-4xl md:text-5xl font-serif">How to Contribute</h2>
-    <p class="max-w-3xl mx-auto mt-4 text-text-muted">
-      StoneMark is a collaborative effort. Anyone visiting monuments or studying architecture can help expand and refine our knowledge base.
-    </p>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-    <div class="relative pl-8">
-      <div class="absolute left-0 top-1 text-primary font-serif text-xl">01</div>
-      <h3 class="text-2xl font-serif mb-3">Photograph Marks</h3>
-      <p class="text-text-muted leading-relaxed">
-        A clear photograph is invaluable. Capture the mark, its surrounding texture, and any contextual clues. Small details often reveal large insights.
-      </p>
-    </div>
-    <div class="relative pl-8">
-      <div class="absolute left-0 top-1 text-primary font-serif text-xl">02</div>
-      <h3 class="text-2xl font-serif mb-3">Record Basic Information</h3>
-      <p class="text-text-muted leading-relaxed">
-        Note the location, stone type, and condition of the mark. Context transforms an isolated symbol into meaningful data for interpretation.
-      </p>
-    </div>
-    <div class="relative pl-8">
-      <div class="absolute left-0 top-1 text-primary font-serif text-xl">03</div>
-      <h3 class="text-2xl font-serif mb-3">Share Observations</h3>
-      <p class="text-text-muted leading-relaxed">
-        Discussing marks with heritage communities helps identify recurring patterns, regional styles, and possible workshop connections.
-      </p>
-    </div>
-    <div class="relative pl-8">
-      <div class="absolute left-0 top-1 text-primary font-serif text-xl">04</div>
-      <h3 class="text-2xl font-serif mb-3">Support the Archive</h3>
-      <p class="text-text-muted leading-relaxed">
-        Every submitted mark contributes to a long-term digital memory, supports comparative research, and can fill a gap in the historical record.
-      </p>
-    </div>
-  </div>
-</section>
-
 <!-- Open Source Contribution Section -->
 <section id="opensource-contribution" class="py-24 px-6 bg-surface border-t border-border">
   <div class="max-w-5xl mx-auto text-center">
@@ -315,12 +273,20 @@
     </p>
 
     <div class="flex flex-col md:flex-row gap-4 justify-center mb-16">
-      <a href="https://github.com/PTDW-2025-Group-1/stonemark-frontend" target="_blank" rel="noopener noreferrer" class="px-6 py-3 text-sm font-bold tracking-wide border border-border bg-surface text-text rounded-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors duration-200 ease-soft shadow-sm">
-        Frontend Repository
-      </a>
-      <a href="https://github.com/PTDW-2025-Group-1/stonemark-api" target="_blank" rel="noopener noreferrer" class="px-6 py-3 text-sm font-bold tracking-wide border border-border bg-surface text-text rounded-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors duration-200 ease-soft shadow-sm">
+      <app-button
+        variant="primary"
+        size="normal"
+        [routerLink]="'repo/frontend'"
+      >
+        Front-end Repository
+      </app-button>
+      <app-button
+        variant="secondary"
+        size="normal"
+        [routerLink]="'repo/backend'"
+      >
         API & Backend Repository
-      </a>
+      </app-button>
     </div>
 
     <p class="text-text-muted italic">

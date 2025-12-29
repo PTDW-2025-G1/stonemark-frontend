@@ -210,6 +210,11 @@ export class AuthService {
     return this.cookieService.get('role');
   }
 
+  isStaff(): boolean {
+    const role = this.getRole();
+    return role === 'ADMIN' || role === 'MODERATOR';
+  }
+
   refreshToken(token: string): Observable<AuthenticationResponseDto> {
     const payload: RefreshTokenRequestDto = {
       refreshToken: token

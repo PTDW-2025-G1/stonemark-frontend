@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, inject} from '@angular/core';
+import {AuthService} from '@core/services/auth/auth.service';
 
 @Component({
   selector: 'app-profile-header',
@@ -13,8 +14,11 @@ export class ProfileHeaderComponent {
   @Output() openSecurity = new EventEmitter<void>();
   @Output() openContacts = new EventEmitter<void>();
   @Output() openSocial = new EventEmitter<void>();
+  @Output() goToStaff = new EventEmitter<void>();
 
   @Output() logout = new EventEmitter<void>();
+
+  private authService = inject(AuthService);
 
   getInitials(): string {
     if (!this.user?.name) return '';
@@ -26,5 +30,9 @@ export class ProfileHeaderComponent {
     const lastInitial = names.length > 1 ? names[names.length - 1][0]?.toUpperCase() || '' : '';
 
     return firstInitial + lastInitial;
+  }
+
+  isStaff(): boolean {
+    return this.authService.isStaff();
   }
 }

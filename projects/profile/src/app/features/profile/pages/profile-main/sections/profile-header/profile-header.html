@@ -66,6 +66,13 @@
 
       <!-- Action Buttons -->
       <div class="flex md:flex-col gap-2 flex-shrink-0">
+        @if(isStaff()) {
+          <button class="px-4 py-2 bg-accent text-white rounded-lg font-semibold hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2 text-sm cursor-pointer"
+                  (click)="goToStaff.emit()">
+            <i class="bi bi-shield-check text-xs"></i>
+            <span class="hidden sm:inline">Staff</span>
+          </button>
+        }
         <button class="px-4 py-2 bg-white text-primary rounded-lg font-semibold hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2 text-sm cursor-pointer"
                 (click)="editProfile.emit()">
           <i class="bi bi-pencil text-xs"></i>

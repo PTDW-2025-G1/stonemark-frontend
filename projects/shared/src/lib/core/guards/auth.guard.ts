@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
-import { environment } from '@core/environments/environment';
+import { environment } from '@env/environment';
 
 export const authGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
@@ -21,18 +21,14 @@ export const authGuard: CanActivateFn = () => {
 export const loginGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
 
-  const token = auth.getAccessToken();
-  const role = auth.getRole();
-
-  if (token) {
-    if (role === 'ADMIN' || role === 'MODERATOR') {
+  if (auth.getAccessToken()) {
+    if (auth.isStaff()) {
       window.location.href = environment.staffUrl;
     } else {
-      window.location.href = environment.baseUrl;
+      window.location.href = environment.profileUrl;
     }
     return false;
   }
 
   return true;
 };
-

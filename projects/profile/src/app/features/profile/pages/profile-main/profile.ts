@@ -65,6 +65,7 @@ export class ProfileComponent implements OnInit {
           contact: contactValue,
           contactType: contactType,
           memberSince: memberSinceString,
+          role: data.role,
           stats: {
             totalMarks: 0,
             pendings: 0,
@@ -186,6 +187,10 @@ export class ProfileComponent implements OnInit {
 
   openSocial(): void {
     this.router.navigate(['/profile/social']);
+  }
+
+  goToStaff(): void {
+    window.location.href = environment.staffUrl;
   }
 
   onLogout(): void {

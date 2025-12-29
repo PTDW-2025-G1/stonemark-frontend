@@ -14,11 +14,11 @@ export class MarksSubmissionService {
     private data: MarksSubmission[] = [
         { id: '1', markName: 'Mark Alpha', submitter: 'Gustavo Giãozinho', description: 'Descrição A', status: 'PENDING' },
         { id: '2', markName: 'Mark Beta', submitter: 'Ratmiroso', description: 'Descrição B', status: 'PENDING' },
-        { id: '3', markName: 'Mark Gamma', submitter: 'Pedro Sampaio', description: 'Descrição C', status: 'APPROVED' },
+        { id: '3', markName: 'Mark Gamma', submitter: 'Pedro Sempai', description: 'Descrição C', status: 'APPROVED' },
         { id: '4', markName: 'Mark Alpha', submitter: 'Gustavo Giãozinho', description: 'Descrição A', status: 'PENDING' },
         { id: '5', markName: 'Mark Beta', submitter: 'Ratmiroso', description: 'Descrição B', status: 'PENDING' },
         { id: '6', markName: 'Mark Gamma', submitter: 'Pedro Sampaio', description: 'Descrição C', status: 'APPROVED' },
-        { id: '7', markName: 'Mark Alpha', submitter: 'Gustavo Giãozinho', description: 'Descrição A', status: 'PENDING' },
+        { id: '7', markName: 'Mark Alpha', submitter: 'Gustavo Geizinho', description: 'Descrição A', status: 'PENDING' },
         { id: '8', markName: 'Mark Beta', submitter: 'Ratmiroso', description: 'Descrição B', status: 'PENDING' },
         { id: '9', markName: 'Mark Gamma', submitter: 'Pedro Sampaio', description: 'Descrição C', status: 'APPROVED' },
         { id: '10', markName: 'Mark Alpha', submitter: 'Gustavo Giãozinho', description: 'Descrição A', status: 'PENDING' },

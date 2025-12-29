@@ -13,11 +13,10 @@ export class SearchHeaderComponent {
   @Input() type: 'monuments' | 'marks' = 'monuments';
   @Input() title = '';
   @Input() locations: string[] = [];
+  @Input() selectedValue: string | number = '';
 
   @Output() search = new EventEmitter<string>();
   @Output() filterChange = new EventEmitter<string>();
-
-  selectedValue: string | number = '';
 
   get selectOptions(): { id: string | number; name: string }[] {
     return this.locations.map(loc => ({ id: loc, name: loc }));

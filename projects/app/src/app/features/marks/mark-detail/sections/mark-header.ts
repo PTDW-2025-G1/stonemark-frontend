@@ -13,7 +13,7 @@ import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
     <div class="mb-8">
       <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
         <!-- Mark Preview -->
-        <div class="w-full lg:w-48 lg:flex-shrink-0">
+        <div class="w-full lg:w-48 lg:shrink-0">
           <div class="w-full h-64 sm:h-72 lg:h-48 rounded-2xl overflow-hidden border-2 border-border shadow-lg">
             <img
               [src]="getImageUrl()"
@@ -26,16 +26,16 @@ import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
         <!-- Mark Info -->
         <div class="flex-1">
           <div class="flex flex-wrap items-center gap-3 mb-3">
-            <span
-              class="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-bold flex items-center gap-2 border border-primary/20">
-              <i class="bi bi-collection-fill"></i>
-              {{ occurrencesCount }} Occurrences
-            </span>
+           <span
+             class="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-bold flex items-center gap-2 border border-primary/20">
+            <i class="bi bi-collection-fill"></i>
+             {{ occurrencesCount }} {{ occurrencesCount === 1 ? 'Occurrence' : 'Occurrences' }}
+          </span>
 
             <span
               class="px-4 py-1.5 bg-accent/10 text-accent rounded-full text-sm font-bold flex items-center gap-2 border border-accent/20">
               <span class="flex items-center" [innerHTML]="monumentsIcon | safeHtml"></span>
-              {{ monumentsCount }} Monuments
+              {{ monumentsCount }} {{ monumentsCount === 1 ? 'Monument' : 'Monuments' }}
             </span>
 
             <button

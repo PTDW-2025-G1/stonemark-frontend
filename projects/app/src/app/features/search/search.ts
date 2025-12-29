@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
   items$ = new BehaviorSubject<any[]>([]);
 
   searchQuery = '';
+  selectedCity = '';
 
   currentPage = 1;
   totalPages = 1;
@@ -46,7 +47,15 @@ export class SearchComponent implements OnInit {
 
       this.route.queryParamMap.subscribe(queryParams => {
         this.currentPage = +(queryParams.get('page') || 1);
-        this.loadData();
+        const city = queryParams.get('city') || '';
+        this.searchQuery = queryParams.get('query') || '';
+
+        if (city && this.type === 'monuments') {
+          this.onFilterChange(city);
+          this.selectedCity = city;
+        } else {
+          this.loadData();
+        }
       });
     });
   }
@@ -86,12 +95,13 @@ export class SearchComponent implements OnInit {
   }
 
   onFilterChange(city: string): void {
-    if (!city?.trim()) {
-      this.loadData();
-      return;
-    }
-
     this.currentPage = 1;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { city, page: 1 },
+      queryParamsHandling: 'merge'
+    });
 
     this.monumentService.filterByCity(city, 0, this.pageSize)
       .subscribe({
@@ -100,7 +110,7 @@ export class SearchComponent implements OnInit {
           this.totalPages = response.totalPages ?? 0;
           this.totalElements = response.totalElements ?? 0;
         },
-        error: (error) => {
+        error: () => {
           this.items$.next([]);
         }
       });

@@ -80,6 +80,8 @@ export class MarkDetailComponent implements OnInit {
 
         this.route.queryParamMap.subscribe(queryParams => {
           this.currentPage = +(queryParams.get('page') || 1);
+          this.selectedMonumentId = queryParams.get('monumentId') ? Number(queryParams.get('monumentId')) : '';
+          this.selectedSort = queryParams.get('sort') || 'desc';
           this.loadOccurrences(markId, this.currentPage - 1);
         });
 
@@ -87,6 +89,10 @@ export class MarkDetailComponent implements OnInit {
 
         this.markOccurrenceService.countByMarkId(markId).subscribe(count => {
           this.occurrencesCount = count;
+        });
+
+        this.markOccurrenceService.countMonumentsByMarkId(markId).subscribe(count => {
+          this.uniqueMonumentsCount = count;
         });
 
         if (this.authService.getAccessToken()) {
@@ -145,9 +151,6 @@ export class MarkDetailComponent implements OnInit {
         this.occurrences = pageData.content ?? [];
         this.totalPages = pageData.totalPages ?? 1;
         this.currentPage = (pageData.number ?? 0) + 1;
-        this.uniqueMonumentsCount = new Set(
-          pageData.content?.map((o: any) => o.monument?.id).filter(Boolean)
-        ).size;
         this.loading = false;
       },
       error: (err: any) => {
@@ -173,15 +176,23 @@ export class MarkDetailComponent implements OnInit {
     this.selectedSort = String(sort);
     this.currentPage = 1;
     if (this.currentMarkId != null) {
-      this.loadOccurrences(this.currentMarkId, 0);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { sort: this.selectedSort, page: 1 },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 
   onMonumentFilterChange(monumentId: string | number): void {
-    this.selectedMonumentId = monumentId;
+    this.selectedMonumentId = monumentId ? Number(monumentId) : '';
     this.currentPage = 1;
     if (this.currentMarkId != null) {
-      this.loadOccurrences(this.currentMarkId, 0);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { monumentId, page: 1 },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 

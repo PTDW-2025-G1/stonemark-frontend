@@ -67,8 +67,10 @@ export class MonumentMarksComponent implements OnInit {
 
         this.route.queryParamMap.subscribe(queryParams => {
           this.currentPage = +(queryParams.get('page') || 1);
+          this.selectedMarkId = queryParams.get('markId') ? Number(queryParams.get('markId')) : '';
+          this.selectedSort = queryParams.get('sort') || 'desc';
           this.loadOccurrences(monumentId, this.currentPage - 1);
-        })
+        });
 
         this.markOccurrenceService.countByMonumentId(monumentId).subscribe(count => {
           this.occurrencesCount = count;
@@ -139,15 +141,24 @@ export class MonumentMarksComponent implements OnInit {
     this.selectedSort = sort;
     this.currentPage = 1;
     if (this.currentMonumentId != null) {
-      this.loadOccurrences(this.currentMonumentId, 0);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { sort, page: 1 },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 
+
   onMarkFilterChange(markId: string | number): void {
-    this.selectedMarkId = markId;
+    this.selectedMarkId = markId ? Number(markId) : '';
     this.currentPage = 1;
     if (this.currentMonumentId != null) {
-      this.loadOccurrences(this.currentMonumentId, 0);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { markId, page: 1 },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 

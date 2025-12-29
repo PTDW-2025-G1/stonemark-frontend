@@ -22,6 +22,8 @@ interface MenuChangeEvent {
     routeEvent?: boolean;
 }
 
+const USER_SETTINGS_KEY = 'user_settings';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -79,6 +81,9 @@ export class LayoutService {
     private initialized = false;
 
     constructor() {
+        this._config = { ...this._config, ...this.getStoredConfig() };
+        this.layoutConfig.set(this._config);
+
         effect(() => {
             const config = this.layoutConfig();
             if (config) {
@@ -165,6 +170,7 @@ export class LayoutService {
 
     onConfigUpdate() {
         this._config = { ...this.layoutConfig() };
+        this.saveConfig(this._config);
         this.configUpdate.next(this.layoutConfig());
     }
 
@@ -174,5 +180,14 @@ export class LayoutService {
 
     reset() {
         this.resetSource.next(true);
+    }
+
+    getStoredConfig(): layoutConfig {
+        const storedConfig = localStorage.getItem(USER_SETTINGS_KEY);
+        return storedConfig ? JSON.parse(storedConfig) : {};
+    }
+
+    private saveConfig(config: layoutConfig) {
+        localStorage.setItem(USER_SETTINGS_KEY, JSON.stringify(config));
     }
 }

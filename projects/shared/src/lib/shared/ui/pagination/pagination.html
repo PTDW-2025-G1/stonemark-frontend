@@ -6,7 +6,7 @@
   <button
     (click)="onPageChange(currentPage - 1)"
     [disabled]="currentPage === 1"
-    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 border border-border rounded-lg transition-colors text-sm font-medium"
+    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 border border-border rounded-lg transition-colors text-sm font-medium cursor-pointer"
     [class.opacity-60]="currentPage === 1"
     [class.cursor-not-allowed]="currentPage === 1"
     [class.hover\:bg-surface-alt]="currentPage > 1"
@@ -20,7 +20,7 @@
     <!-- First page -->
     <button
       (click)="onPageChange(1)"
-      class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg font-medium text-sm transition-colors"
+      class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg font-medium text-sm transition-colors cursor-pointer"
       [class.bg-primary]="currentPage === 1"
       [class.text-primary-foreground]="currentPage === 1"
       [class.border]="currentPage !== 1"
@@ -40,7 +40,7 @@
       @if (page > 1 && page < totalPages) {
         <button
           (click)="onPageChange(page)"
-          class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg font-medium text-sm transition-colors"
+          class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg font-medium text-sm transition-colors cursor-pointer"
           [class.bg-primary]="currentPage === page"
           [class.text-primary-foreground]="currentPage === page"
           [class.border]="currentPage !== page"
@@ -61,7 +61,7 @@
     @if (totalPages > 1) {
       <button
         (click)="onPageChange(totalPages)"
-        class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg font-medium text-sm transition-colors"
+        class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg font-medium text-sm transition-colors cursor-pointer"
         [class.bg-primary]="currentPage === totalPages"
         [class.text-primary-foreground]="currentPage === totalPages"
         [class.border]="currentPage !== totalPages"

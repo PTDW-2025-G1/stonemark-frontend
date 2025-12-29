@@ -64,7 +64,11 @@ export class MonumentMarksComponent implements OnInit {
         const monumentId = Number(params.get('id'));
         this.currentMonumentId = monumentId;
         this.loadMarks(monumentId);
-        this.loadOccurrences(monumentId);
+
+        this.route.queryParamMap.subscribe(queryParams => {
+          this.currentPage = +(queryParams.get('page') || 1);
+          this.loadOccurrences(monumentId, this.currentPage - 1);
+        })
 
         this.markOccurrenceService.countByMonumentId(monumentId).subscribe(count => {
           this.occurrencesCount = count;
@@ -123,8 +127,11 @@ export class MonumentMarksComponent implements OnInit {
 
   onPageChange(page: number): void {
     if (this.currentMonumentId != null) {
-      this.loadOccurrences(this.currentMonumentId, page - 1); // Convert to 0-based for backend
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { page },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 

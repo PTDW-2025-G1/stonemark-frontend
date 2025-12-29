@@ -21,7 +21,6 @@ import { BookmarkService } from '@core/services/bookmark/bookmark.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
-import { MonumentService } from '@core/services/monument/monument.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
 import { ReportService } from '@core/services/report/report.service';
@@ -49,10 +48,6 @@ export class MarkDetailComponent implements OnInit {
   totalPages = 1;
   pageSize = 6;
 
-  sortOptions = [
-    { label: 'Recent', value: 'desc' },
-    { label: 'Older', value: 'asc' }
-  ];
   selectedSort = 'desc';
 
   monuments: MonumentResponseDto[] = [];
@@ -73,7 +68,6 @@ export class MarkDetailComponent implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     private bookmarkService: BookmarkService,
     private authService: AuthService,
-    private monumentService: MonumentService,
     private reportService: ReportService,
     private notificationService: NotificationService
   ) { }
@@ -84,9 +78,12 @@ export class MarkDetailComponent implements OnInit {
         const markId = Number(params.get('id'));
         this.currentMarkId = markId;
 
-        this.loadMonuments(markId);
+        this.route.queryParamMap.subscribe(queryParams => {
+          this.currentPage = +(queryParams.get('page') || 1);
+          this.loadOccurrences(markId, this.currentPage - 1);
+        });
 
-        this.loadOccurrences(markId, 0);
+        this.loadMonuments(markId);
 
         this.markOccurrenceService.countByMarkId(markId).subscribe(count => {
           this.occurrencesCount = count;
@@ -163,8 +160,12 @@ export class MarkDetailComponent implements OnInit {
 
   onPageChange(page: number): void {
     if (this.currentMarkId != null) {
-      this.loadOccurrences(this.currentMarkId, page - 1); // Convert to 0-based for backend
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { page },
+        queryParamsHandling: 'merge'
+      });
+      this.loadOccurrences(this.currentMarkId, page - 1);
     }
   }
 

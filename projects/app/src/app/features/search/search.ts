@@ -44,8 +44,10 @@ export class SearchComponent implements OnInit {
       this.title = this.getTitle(type);
       this.titleService.setTitle(`${this.title} - StoneMark`);
 
-      this.currentPage = 1;
-      this.loadData();
+      this.route.queryParamMap.subscribe(queryParams => {
+        this.currentPage = +(queryParams.get('page') || 1);
+        this.loadData();
+      });
     });
   }
 

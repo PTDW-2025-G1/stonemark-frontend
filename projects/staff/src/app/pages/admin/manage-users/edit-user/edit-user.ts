@@ -14,6 +14,7 @@ import { Select } from 'primeng/select';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { DividerModule } from 'primeng/divider';
 import { UserContactsComponent } from './user-contacts/user-contacts.component';
+import {AppToolbarComponent} from '../../../../components/toolbar/toolbar.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -29,7 +30,8 @@ import { UserContactsComponent } from './user-contacts/user-contacts.component';
     Select,
     ToggleSwitch,
     DividerModule,
-    UserContactsComponent
+    UserContactsComponent,
+    AppToolbarComponent
   ],
   templateUrl: './edit-user.html',
   styleUrls: ['./edit-user.scss'],
@@ -40,6 +42,7 @@ export class EditUserComponent implements OnInit {
   userId: number | null = null;
   selectedRole: any = null;
   filteredRoles: any[] = [];
+  isSystemUser: boolean = false;
 
   roleOptions = Object.entries(UserDto.RoleEnum).map(([label, value]) => ({ label, value }));
   tfaMethodOptions = Object.entries(UserDto.TfaMethodEnum).map(([label, value]) => ({ label, value }));
@@ -53,6 +56,10 @@ export class EditUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = +this.route.snapshot.paramMap.get('id')!;
+    if (this.userId === 0) {
+      this.isSystemUser = true;
+      return;
+    }
     if (this.userId) {
       this.loadUser();
     }

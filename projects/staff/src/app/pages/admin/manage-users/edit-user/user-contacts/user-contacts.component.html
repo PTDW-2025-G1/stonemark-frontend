@@ -2,29 +2,29 @@
 <p-confirmDialog></p-confirmDialog>
 <p-card>
   <ng-template pTemplate="title">
-    Contacts
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span>Contacts</span>
+      <button pButton type="button" label="Add Contact" icon="pi pi-plus" (click)="showAddDialog()" style="min-width: 160px; height: 2.5rem; font-size: 1.1rem;"></button>
+    </div>
   </ng-template>
-  <ng-template pTemplate="subtitle">
-    <button pButton type="button" label="Add Contact" icon="pi pi-plus" (click)="showAddDialog()"></button>
-  </ng-template>
-  <p-table [value]="contacts" responsiveLayout="scroll">
+  <p-table [value]="contacts" responsiveLayout="scroll" style="margin-top: 1.5rem;">
     <ng-template pTemplate="header">
       <tr>
-        <th>Type</th>
-        <th>Value</th>
-        <th>Primary</th>
-        <th>Verified</th>
-        <th>Actions</th>
+        <th style="padding: 0.75rem 1rem;">Type</th>
+        <th style="padding: 0.75rem 1rem;">Value</th>
+        <th style="padding: 0.75rem 1rem;">Primary</th>
+        <th style="padding: 0.75rem 1rem;">Verified</th>
+        <th style="padding: 0.75rem 1rem;">Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-contact>
       <tr>
-        <td>{{contact.type}}</td>
-        <td>{{contact.value}}</td>
-        <td><i class="pi" [ngClass]="{'pi-check-circle text-green-500': contact.primary, 'pi-times-circle text-red-500': !contact.primary}"></i></td>
-        <td><i class="pi" [ngClass]="{'pi-check-circle text-green-500': contact.verified, 'pi-times-circle text-red-500': !contact.verified}"></i></td>
-        <td>
-          <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="showEditDialog(contact)"></button>
+        <td style="padding: 0.75rem 1rem;">{{contact.type}}</td>
+        <td style="padding: 0.75rem 1rem;">{{contact.value}}</td>
+        <td style="padding: 0.75rem 1rem;"><i class="pi" [ngClass]="{'pi-check-circle text-green-500': contact.primary, 'pi-times-circle text-red-500': !contact.primary}"></i></td>
+        <td style="padding: 0.75rem 1rem;"><i class="pi" [ngClass]="{'pi-check-circle text-green-500': contact.verified, 'pi-times-circle text-red-500': !contact.verified}"></i></td>
+        <td style="padding: 0.75rem 1rem;">
+          <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success" style="margin-right: 1rem;" (click)="showEditDialog(contact)"></button>
           <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteContact(contact)"></button>
         </td>
       </tr>
@@ -34,21 +34,21 @@
 
 <p-dialog header="Contact Details" [(visible)]="displayDialog" [modal]="true" [style]="{width: '50vw'}">
   <div class="p-fluid">
-    <div class="p-field mb-2">
-      <label for="type">Type</label>
-      <p-select id="type" [options]="contactTypes" [(ngModel)]="selectedContact.type" optionLabel="label" optionValue="value"></p-select>
+    <div class="p-field mb-2" style="display: flex; align-items: center; gap: 2rem; max-width: 400px; margin-bottom: 1.5rem;">
+      <label for="type" style="font-weight: 500; min-width: 120px;">Type</label>
+      <p-select id="type" [options]="contactTypes" [(ngModel)]="selectedContact.type" optionLabel="label" optionValue="value" style="width: 220px;"></p-select>
     </div>
-    <div class="p-field mb-2">
-      <label for="value">Value</label>
-      <input id="value" type="text" pInputText [(ngModel)]="selectedContact.value">
+    <div class="p-field mb-2" style="display: flex; align-items: center; gap: 2rem; max-width: 400px; margin-bottom: 1.5rem;">
+      <label for="value" style="font-weight: 500; min-width: 120px;">Value</label>
+      <input id="value" type="text" pInputText [(ngModel)]="selectedContact.value" style="width: 220px;">
     </div>
-    <div class="p-field-checkbox mb-4">
+    <div class="p-field-checkbox mb-4" style="display: flex; align-items: center; gap: 2rem; max-width: 400px; margin-bottom: 1.5rem;">
+      <label for="primary" style="margin-bottom: 0; font-weight: 500; min-width: 120px;">Primary</label>
       <p-toggleSwitch [(ngModel)]="selectedContact.primary"></p-toggleSwitch>
-      <label for="primary">Primary</label>
     </div>
-    <div class="p-field-checkbox">
+    <div class="p-field-checkbox" style="display: flex; align-items: center; gap: 2rem; max-width: 400px; margin-bottom: 1.5rem;">
+      <label for="verified" style="margin-bottom: 0; font-weight: 500; min-width: 120px;">Verified</label>
       <p-toggleSwitch [(ngModel)]="selectedContact.verified"></p-toggleSwitch>
-      <label for="verified">Verified</label>
     </div>
   </div>
   <ng-template pTemplate="footer">

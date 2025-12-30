@@ -1,35 +1,58 @@
+<app-toolbar
+  *ngIf="!isSystemUser"
+  title="Edit User"
+  [subtitle]="user ? (user.firstName + ' ' + user.lastName) : 'Loading...'"
+  [showBackButton]="true"
+  (back)="cancel()"
+></app-toolbar>
 <p-toast></p-toast>
-<p-card *ngIf="user">
+
+<p-card *ngIf="isSystemUser" [style]="{ margin: '2rem auto', maxWidth: '500px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', borderRadius: '12px' }">
   <ng-template pTemplate="title">
-    Edit User: {{ user.firstName }} {{ user.lastName }}
+    <div style="display: flex; align-items: center; justify-content: flex-start;">
+      <button pButton type="button" label="Back" icon="pi pi-arrow-left" class="p-button-secondary" (click)="cancel()" style="min-width: 110px; margin-right: 1.5rem;"></button>
+      <span style="font-size: 1.2rem; font-weight: 600; color: var(--primary-color);">System Account</span>
+    </div>
   </ng-template>
-  <div class="p-fluid">
-    <div class="p-field">
-      <label for="firstName">First Name</label>
-      <input id="firstName" type="text" pInputText [(ngModel)]="user.firstName">
+  <div style="padding: 2rem; text-align: center;">
+    <i class="pi pi-lock" style="font-size: 2.5rem; color: #d32f2f; margin-bottom: 1rem;"></i>
+    <p style="font-size: 1.1rem; color: #d32f2f; font-weight: 500;">It is not possible to edit the <b>system</b> account.<br>This account is reserved for internal system operations.</p>
+  </div>
+</p-card>
+
+<p-card *ngIf="user && !isSystemUser">
+  <ng-template pTemplate="title">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span style="font-size: 1.4rem; font-weight: 600; color: var(--primary-color);">Edit User Details</span>
     </div>
-    <div class="p-field">
-      <label for="lastName">Last Name</label>
-      <input id="lastName" type="text" pInputText [(ngModel)]="user.lastName">
+  </ng-template>
+  <div class="p-fluid" style="padding: 1.5rem 0 0 0;">
+    <div class="p-field" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="firstName" style="font-weight: 500; min-width: 120px;">First Name</label>
+      <input id="firstName" type="text" pInputText [(ngModel)]="user.firstName" style="margin-top: 0.5rem; width: 220px;">
     </div>
-    <div class="p-field">
-      <label for="username">Username</label>
-      <input id="username" type="text" pInputText [(ngModel)]="user.username">
+    <div class="p-field" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="lastName" style="font-weight: 500; min-width: 120px;">Last Name</label>
+      <input id="lastName" type="text" pInputText [(ngModel)]="user.lastName" style="margin-top: 0.5rem; width: 220px;">
     </div>
-    <div class="p-field">
-      <label for="role">Role</label>
+    <div class="p-field" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="username" style="font-weight: 500; min-width: 120px;">Username</label>
+      <input id="username" type="text" pInputText [(ngModel)]="user.username" style="margin-top: 0.5rem; width: 220px;">
+    </div>
+    <div class="p-field" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="role" style="font-weight: 500; min-width: 120px;">Role</label>
       <p-autoComplete
         [(ngModel)]="selectedRole"
         [suggestions]="filteredRoles"
         (completeMethod)="filterRoles($event)"
-        field="label"
         [dropdown]="true"
         placeholder="Select a role"
         appendTo="body"
+        style="margin-top: 0.5rem; width: 220px;"
       ></p-autoComplete>
     </div>
-    <div class="p-field">
-      <label for="tfaMethod">TFA Method</label>
+    <div class="p-field" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="tfaMethod" style="font-weight: 500; min-width: 120px;">TFA Method</label>
       <p-select
         id="tfaMethod"
         [options]="tfaMethodOptions"
@@ -38,22 +61,26 @@
         optionLabel="label"
         optionValue="value"
         appendTo="body"
+        style="margin-top: 0.5rem; width: 220px;"
       ></p-select>
     </div>
-    <div class="p-field-checkbox mb-4">
+    <div class="p-field-checkbox mb-4" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="locked" style="margin-bottom: 0; font-weight: 500; min-width: 120px;">Locked</label>
       <p-toggleSwitch [(ngModel)]="user.accountLocked"></p-toggleSwitch>
-      <label for="locked">Locked</label>
     </div>
-    <div class="p-field-checkbox">
+    <div class="p-field-checkbox" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; max-width: 400px;">
+      <label for="enabled" style="margin-bottom: 0; font-weight: 500; min-width: 120px;">Enabled</label>
       <p-toggleSwitch [(ngModel)]="user.enabled"></p-toggleSwitch>
-      <label for="enabled">Enabled</label>
     </div>
     <p-divider></p-divider>
   </div>
 
   <ng-template pTemplate="footer">
-    <button pButton type="button" label="Save All" icon="pi pi-check" (click)="saveUser(); saveRole()"></button>
-    <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="cancel()" class="p-button-secondary"></button>
+    <div style="display: flex; justify-content: flex-end; gap: 1rem; padding: 1rem 0 0 0;">
+      <button pButton type="button" label="Save All" icon="pi pi-check" (click)="saveUser(); saveRole()"></button>
+      <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="cancel()" class="p-button-secondary"></button>
+    </div>
   </ng-template>
 </p-card>
-<app-user-contacts [userId]="userId" *ngIf="userId"></app-user-contacts>
+
+<div *ngIf="userId && !isSystemUser" style="margin-top: 2.5rem;"><app-user-contacts [userId]="userId"></app-user-contacts></div>

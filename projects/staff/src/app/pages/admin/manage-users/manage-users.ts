@@ -50,7 +50,6 @@ import { Router } from '@angular/router';
       <ng-template #actions let-user>
         <p-button icon="pi pi-eye" class="mr-2" (click)="viewUser(user)"></p-button>
         <p-button icon="pi pi-pencil" class="mr-2" (click)="editUser(user)"></p-button>
-        <p-button icon="pi pi-book" class="mr-2" (click)="editUser(user)"></p-button>
       </ng-template>
     </app-table>
 

@@ -8,9 +8,7 @@
  * Do not edit the class manually.
  */
 import { MediaFileDto } from './media-file-dto';
-import { ProposedMarkDto } from './proposed-mark-dto';
 import { MarkDto } from './mark-dto';
-import { ProposedMonumentDto } from './proposed-monument-dto';
 import { MonumentResponseDto } from './monument-response-dto';
 
 
@@ -19,9 +17,12 @@ export interface MarkOccurrenceProposalDto {
     priority?: number;
     originalMediaFile?: MediaFileDto;
     existingMonument?: MonumentResponseDto;
-    proposedMonument?: ProposedMonumentDto;
+    monumentName?: string;
+    latitude?: number;
+    longitude?: number;
     existingMark?: MarkDto;
-    proposedMark?: ProposedMarkDto;
+    newMark?: boolean;
+    userNotes?: string;
     isSubmitted?: boolean;
 }
 

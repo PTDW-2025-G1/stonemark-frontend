@@ -201,7 +201,7 @@
                     <div class="flex items-center gap-2 mb-1">
                       <p class="font-medium text-text truncate">{{ contact.value }}</p>
 
-                      @if (contact.primaryContact) {
+                      @if (contact.primary) {
                         <span class="text-xs text-amber-700">Primary</span>
                       }
 
@@ -231,7 +231,7 @@
                     </button>
                   }
 
-                  @if (contact.verified && !contact.primaryContact) {
+                  @if (contact.verified && !contact.primary) {
                     <button
                       (click)="setPrimary(contact)"
                       class="text-sm font-medium border-b border-text-muted pb-0.5 hover:opacity-70 transition-opacity cursor-pointer">

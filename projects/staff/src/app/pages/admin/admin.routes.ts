@@ -4,6 +4,7 @@ import {CreateMonument} from './manage-monuments/create-monument/create-monument
 import {EditMonument} from './manage-monuments/edit-monument/edit-monument';
 import {ManageUsers} from './manage-users/manage-users';
 import {adminGuard} from '@core/guards/admin.guard';
+import { EditUserComponent } from './manage-users/edit-user/edit-user';
 
 export const adminRoutes: Routes = [
   {
@@ -31,6 +32,10 @@ export const adminRoutes: Routes = [
       {
         path: '',
         component: ManageUsers
+      },
+      {
+        path: 'edit/:id',
+        component: EditUserComponent
       }
     ]
   }

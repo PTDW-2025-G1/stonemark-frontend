@@ -36,6 +36,7 @@ describe('ProfileService', () => {
       id: 1,
       firstName: 'João',
       lastName: 'Silva',
+      // Todo: update test
       email: 'joao@example.com',
       telephone: '+351912345678',
       role: 'USER',

@@ -184,7 +184,7 @@ export abstract class BaseAuthComponent {
       return;
     }
 
-    window.location.href = environment.baseUrl;
+    window.location.href = environment.profileUrl + '/profile';
   }
 
   /* ----------------------------

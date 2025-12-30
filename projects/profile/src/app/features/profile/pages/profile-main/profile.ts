@@ -48,22 +48,9 @@ export class ProfileComponent implements OnInit {
           ? data.createdAt.split('T')[0]
           : null;
 
-        let contactValue: string | undefined = undefined;
-        let contactType: 'EMAIL' | 'TELEPHONE' | undefined = undefined;
-
-        if (data.contacts && data.contacts.length > 0) {
-          const primaryContact = data.contacts.find(c => c.primaryContact && c.verified);
-          if (primaryContact) {
-            contactValue = primaryContact.value;
-            contactType = primaryContact.type;
-          }
-        }
-
         this.user = {
           name: `${data.firstName} ${data.lastName}`,
           username: data.username ? `@${data.username}` : undefined,
-          contact: contactValue,
-          contactType: contactType,
           memberSince: memberSinceString,
           role: data.role,
           stats: {

@@ -18,11 +18,11 @@ export interface PageMarkOccurrenceListDto {
     size?: number;
     content?: Array<MarkOccurrenceListDto>;
     number?: number;
-    sort?: SortObject;
+    pageable?: PageableObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
-    pageable?: PageableObject;
+    sort?: SortObject;
     empty?: boolean;
 }
 

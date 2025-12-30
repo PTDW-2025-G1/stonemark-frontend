@@ -8,7 +8,7 @@ import {Router, RouterLink} from '@angular/router';
   imports: [CommonModule, RouterLink],
   template: `
     <a
-      [routerLink]="['/', type, id]"
+      [routerLink]="getRouterLink()"
       class="group relative aspect-square overflow-hidden border-2 border-border cursor-pointer
          transition-all duration-500 block"
     >
@@ -69,6 +69,14 @@ export class EntityCardComponent {
   @Input() id!: number;
   @Input() type: 'marks/occurrence' | 'monuments' = 'marks/occurrence';
   @Input() iconType: 'city' | 'time' = 'time';
+
+  getRouterLink(): any[] {
+    if (this.type.includes('/')) {
+      const [parent, child] = this.type.split('/');
+      return ['/', parent, child, this.id];
+    }
+    return ['/', this.type, this.id];
+  }
 
   constructor(private router: Router) {}
 

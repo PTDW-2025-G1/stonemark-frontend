@@ -40,7 +40,7 @@
         appendTo="body"
       ></p-select>
     </div>
-    <div class="p-field-checkbox" style="margin-bottom: 1rem;">
+    <div class="p-field-checkbox mb-4">
       <p-toggleSwitch [(ngModel)]="user.accountLocked"></p-toggleSwitch>
       <label for="locked">Locked</label>
     </div>
@@ -56,3 +56,4 @@
     <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="cancel()" class="p-button-secondary"></button>
   </ng-template>
 </p-card>
+<app-user-contacts [userId]="userId" *ngIf="userId"></app-user-contacts>

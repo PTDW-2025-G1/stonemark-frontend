@@ -1,0 +1,58 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<p-card>
+  <ng-template pTemplate="title">
+    Contacts
+  </ng-template>
+  <ng-template pTemplate="subtitle">
+    <button pButton type="button" label="Add Contact" icon="pi pi-plus" (click)="showAddDialog()"></button>
+  </ng-template>
+  <p-table [value]="contacts" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Primary</th>
+        <th>Verified</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-contact>
+      <tr>
+        <td>{{contact.type}}</td>
+        <td>{{contact.value}}</td>
+        <td><i class="pi" [ngClass]="{'pi-check-circle text-green-500': contact.primary, 'pi-times-circle text-red-500': !contact.primary}"></i></td>
+        <td><i class="pi" [ngClass]="{'pi-check-circle text-green-500': contact.verified, 'pi-times-circle text-red-500': !contact.verified}"></i></td>
+        <td>
+          <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="showEditDialog(contact)"></button>
+          <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteContact(contact)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog header="Contact Details" [(visible)]="displayDialog" [modal]="true" [style]="{width: '50vw'}">
+  <div class="p-fluid">
+    <div class="p-field mb-2">
+      <label for="type">Type</label>
+      <p-select id="type" [options]="contactTypes" [(ngModel)]="selectedContact.type" optionLabel="label" optionValue="value"></p-select>
+    </div>
+    <div class="p-field mb-2">
+      <label for="value">Value</label>
+      <input id="value" type="text" pInputText [(ngModel)]="selectedContact.value">
+    </div>
+    <div class="p-field-checkbox mb-4">
+      <p-toggleSwitch [(ngModel)]="selectedContact.primary"></p-toggleSwitch>
+      <label for="primary">Primary</label>
+    </div>
+    <div class="p-field-checkbox">
+      <p-toggleSwitch [(ngModel)]="selectedContact.verified"></p-toggleSwitch>
+      <label for="verified">Verified</label>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="displayDialog=false" class="p-button-text"></button>
+    <button pButton type="button" label="Save" icon="pi pi-check" (click)="saveContact()"></button>
+  </ng-template>
+</p-dialog>

@@ -61,8 +61,8 @@ export class AccountContactsComponent implements OnInit {
 
   private sortContacts(): void {
     this.contacts.sort((a, b) => {
-      if (a.primaryContact && !b.primaryContact) return -1;
-      if (!a.primaryContact && b.primaryContact) return 1;
+      if (a.primary && !b.primary) return -1;
+      if (!a.primary && b.primary) return 1;
       if (a.verified && !b.verified) return -1;
       if (!a.verified && b.verified) return 1;
       return (a.value || '').localeCompare(b.value || '');

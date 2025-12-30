@@ -13,6 +13,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { Select } from 'primeng/select';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { DividerModule } from 'primeng/divider';
+import { UserContactsComponent } from './user-contacts/user-contacts.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -27,7 +28,8 @@ import { DividerModule } from 'primeng/divider';
     AutoCompleteModule,
     Select,
     ToggleSwitch,
-    DividerModule
+    DividerModule,
+    UserContactsComponent
   ],
   templateUrl: './edit-user.html',
   styleUrls: ['./edit-user.scss'],

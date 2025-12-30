@@ -16,6 +16,7 @@ import { BaseAuthComponent } from '@shared/directives/base-auth';
         [loading]="loading"
         [errorMsg]="errorMsg"
         (submit)="onSubmit($event)"
+        [fieldErrors]="fieldErrors"
         (toggleMode)="onToggleMode()"
         (googleAuth)="onGoogleAuth()"
       />

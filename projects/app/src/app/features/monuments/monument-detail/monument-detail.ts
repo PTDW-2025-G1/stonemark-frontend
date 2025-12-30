@@ -34,6 +34,7 @@ export class MonumentDetailComponent implements OnInit {
   occurrencesCount = 0;
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
+  reportModalFieldErrors: Record<string, string> = {};
 
   private currentMonumentId?: number;
 
@@ -192,16 +193,25 @@ export class MonumentDetailComponent implements OnInit {
   handleReportSubmit(report: ReportRequestDto): void {
     this.reportService.createReport(report).subscribe({
       next: () => {
-        this.notificationService.showSuccess('Report submitted successfully. Thank you for helping improve StoneMark!');
+        this.notificationService.showSuccess(
+          'Report submitted successfully. Thank you for helping improve StoneMark!'
+        );
         this.reportModalVisible = false;
       },
       error: (err) => {
         console.error('Error submitting report:', err);
-        this.notificationService.showError('Failed to submit report. Please try again.');
-        this.reportModalVisible = false;
+
+        if (err.status === 400 && err.error && typeof err.error === 'object') {
+          this.reportModalFieldErrors = err.error;
+          return;
+        }
+        this.notificationService.showError(
+          'Failed to submit report. Please try again.'
+        );
       }
     });
   }
+
 
   getImageUrl(monument: MonumentResponseDto): string {
     return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');

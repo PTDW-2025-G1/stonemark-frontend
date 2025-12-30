@@ -57,5 +57,6 @@
 <app-report-modal
   [(visible)]="reportModalVisible"
   [config]="reportModalConfig"
+  [fieldErrors]="reportModalFieldErrors"
   (reportSubmit)="handleReportSubmit($event)"
 ></app-report-modal>

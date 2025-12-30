@@ -50,8 +50,8 @@
           @if (profileForm.get('firstName')?.errors?.['required']) {
             First name is required
           }
-          @if (profileForm.get('firstName')?.errors?.['minlength']) {
-            First name must be at least 2 characters
+          @if (profileForm.get('firstName')?.errors?.['maxlength']) {
+            First name must be at most 50 characters
           }
         </p>
       }
@@ -81,8 +81,8 @@
           @if (profileForm.get('lastName')?.errors?.['required']) {
             Last name is required
           }
-          @if (profileForm.get('lastName')?.errors?.['minlength']) {
-            Last name must be at least 2 characters
+          @if (profileForm.get('lastName')?.errors?.['maxlength']) {
+            Last name must be at most 50 characters
           }
         </p>
       }

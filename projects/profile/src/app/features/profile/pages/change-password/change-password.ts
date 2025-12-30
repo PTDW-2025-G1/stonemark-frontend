@@ -21,6 +21,8 @@ export class ChangePasswordComponent implements OnInit {
   showNewPassword = false;
   showConfirmPassword = false;
   isSubmitting = false;
+  submitError = false;
+  errorMessage = '';
 
   passwordStrength: 'weak' | 'medium' | 'strong' = 'weak';
   hasMinLength = false;
@@ -45,6 +47,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitError = false;
+    this.errorMessage = '';
     if (this.passwordForm.invalid) {
       this.passwordForm.markAllAsTouched();
       return;
@@ -59,9 +63,21 @@ export class ChangePasswordComponent implements OnInit {
         this.passwordService.showSuccessToast('Password changed successfully!');
         setTimeout(() => this.router.navigate(['/profile']), 2500);
       },
-      error: err => {
+      error: (err) => {
         this.isSubmitting = false;
-        this.passwordService.showErrorToast('Current password is incorrect');
+        if (err.status === 400 && err.error && typeof err.error === 'object') {
+          const messages = Object.values(err.error);
+          this.errorMessage = messages.join(' ');
+          this.submitError = true;
+          return;
+        }
+        if (err.status === 401 && err.error?.message) {
+          this.errorMessage = err.error.message;
+          this.submitError = true;
+          return;
+        }
+        this.errorMessage = 'Something went wrong. Please try again later.';
+        this.submitError = true;
       }
     });
   }

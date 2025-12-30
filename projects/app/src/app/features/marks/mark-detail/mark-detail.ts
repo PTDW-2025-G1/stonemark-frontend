@@ -55,6 +55,7 @@ export class MarkDetailComponent implements OnInit {
 
   reportModalVisible = false;
   reportModalConfig: ReportModalConfig | null = null;
+  reportModalFieldErrors: Record<string, string> = {};
 
   monumentsIcon = MONUMENTS_ICON;
 
@@ -255,13 +256,21 @@ export class MarkDetailComponent implements OnInit {
   handleReportSubmit(report: ReportRequestDto): void {
     this.reportService.createReport(report).subscribe({
       next: () => {
-        this.notificationService.showSuccess('Report submitted successfully. Thank you for your feedback!');
+        this.notificationService.showSuccess(
+          'Report submitted successfully. Thank you for helping improve StoneMark!'
+        );
         this.reportModalVisible = false;
       },
       error: (err) => {
         console.error('Error submitting report:', err);
-        this.notificationService.showError('Failed to submit report. Please try again.');
-        this.reportModalVisible = false;
+
+        if (err.status === 400 && err.error && typeof err.error === 'object') {
+          this.reportModalFieldErrors = err.error;
+          return;
+        }
+        this.notificationService.showError(
+          'Failed to submit report. Please try again.'
+        );
       }
     });
   }

@@ -41,8 +41,8 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
 
   private initializeForm(): void {
     this.profileForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.maxLength(50)]]
     });
   }
 

@@ -28,13 +28,15 @@ interface ReportReason {
 export class ReportModalComponent {
   @Input() visible = false;
   @Input() config: ReportModalConfig | null = null;
+  @Input() fieldErrors: Record<string, string> = {};
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() reportSubmit = new EventEmitter<ReportRequestDto>();
 
   selectedReason: ReportRequestDto.ReasonEnum | null = null;
   description = '';
   isSubmitting = false;
-  currentStep: 1 | 2 = 1; // Step 1: Select reason, Step 2: Write description
+  currentStep: 1 | 2 = 1;
+  submitError: string | null = null;
 
   private readonly allReasons: ReportReason[] = [
     {
@@ -60,7 +62,6 @@ export class ReportModalComponent {
       label: 'Damaged Mark',
       description: 'The mark is damaged, unclear, or no longer visible',
       icon: 'bi-shield-x',
-      // Only show for MARK and MARK_OCCURRENCE
       applicableTo: [
         ReportRequestDto.TargetTypeEnum.Mark,
         ReportRequestDto.TargetTypeEnum.MarkOccurrence
@@ -99,10 +100,11 @@ export class ReportModalComponent {
 
   selectReason(reason: ReportRequestDto.ReasonEnum): void {
     this.selectedReason = reason;
-    // Automatically advance to step 2 after selecting reason
+    this.fieldErrors = {};
+    this.submitError = null;
     setTimeout(() => {
       this.currentStep = 2;
-    }, 300); // Small delay for smooth transition
+    }, 300);
   }
 
   goToStep1(): void {
@@ -163,4 +165,3 @@ export class ReportModalComponent {
     return labels[this.config.targetType] || 'Content';
   }
 }
-

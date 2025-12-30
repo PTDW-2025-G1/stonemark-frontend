@@ -145,6 +145,7 @@ export class AuthFormComponent implements OnInit, OnChanges {
   @Input() loading = false;
   @Input() showSocialAuth = true;
   @Input() errorMsg: string | null = null;
+  @Input() fieldErrors: Record<string, string> = {};
 
   @Output() submit = new EventEmitter<AuthenticationRequestDto | RegisterRequestDto>();
   @Output() toggleMode = new EventEmitter<void>();
@@ -227,12 +228,18 @@ export class AuthFormComponent implements OnInit, OnChanges {
   }
 
   getError(fieldName: string): string | null {
+
+    if (this.fieldErrors[fieldName]) {
+      return this.fieldErrors[fieldName];
+    }
+
     const control = this.form.get(fieldName);
     if (!control || !control.touched || !control.errors) return null;
 
     if (control.errors['required']) return 'This field is required';
     if (control.errors['minlength'])
       return `Must be at least ${control.errors['minlength'].requiredLength} characters`;
+
     return null;
   }
 

@@ -45,10 +45,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
                 [class.border-error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
               />
             </div>
-            @if (contactForm.get('name')?.invalid && contactForm.get('name')?.touched) {
+            @if (
+              (contactForm.get('name')?.invalid && contactForm.get('name')?.touched)
+              || fieldErrors['name']
+              ) {
               <p class="mt-2 text-sm text-error flex items-center gap-1">
                 <i class="bi bi-exclamation-circle"></i>
-                Name is required
+                {{ fieldErrors['name'] || 'Name is required' }}
               </p>
             }
           </div>
@@ -71,10 +74,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
                 [class.border-error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
               />
             </div>
-            @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
+            @if (
+              (contactForm.get('email')?.invalid && contactForm.get('email')?.touched)
+              || fieldErrors['email']
+              ) {
               <p class="mt-2 text-sm text-error flex items-center gap-1">
                 <i class="bi bi-exclamation-circle"></i>
-                Valid email is required
+                {{ fieldErrors['email'] || 'Valid email is required' }}
               </p>
             }
           </div>
@@ -97,10 +103,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
               [class.border-error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
             ></app-shared-select>
           </div>
-          @if (contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched) {
+          @if (
+            (contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched)
+            || fieldErrors['subject']
+            ) {
             <p class="mt-2 text-sm text-error flex items-center gap-1">
               <i class="bi bi-exclamation-circle"></i>
-              Please select a subject
+              {{ fieldErrors['subject'] || 'Please select a subject' }}
             </p>
           }
         </div>
@@ -118,10 +127,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
             class="w-full px-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 resize-none"
             [class.border-error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
           ></textarea>
-          @if (contactForm.get('message')?.invalid && contactForm.get('message')?.touched) {
+          @if (
+            (contactForm.get('message')?.invalid && contactForm.get('message')?.touched)
+            || fieldErrors['message']
+            ) {
             <p class="mt-2 text-sm text-error flex items-center gap-1">
               <i class="bi bi-exclamation-circle"></i>
-              Message must be at least 10 characters
+              {{ fieldErrors['message'] || 'Message must be at least 10 characters' }}
             </p>
           }
         </div>
@@ -173,6 +185,7 @@ export class ContactFormComponent implements OnInit{
   isSubmitting = false;
   submitSuccess = false;
   submitError = false;
+  fieldErrors: Record<string, string> = {};
   user: any = null;
 
   subjectOptions = [
@@ -223,8 +236,9 @@ export class ContactFormComponent implements OnInit{
     }
 
     this.isSubmitting = true;
-    this.submitSuccess = false;
+    this.fieldErrors = {};
     this.submitError = false;
+    this.submitSuccess = false;
 
     const requestPayload: ContactRequestDto = {
       name: this.contactForm.getRawValue().name ?? '',
@@ -237,9 +251,17 @@ export class ContactFormComponent implements OnInit{
       next: () => {
         this.isSubmitting = false;
         this.submitSuccess = true;
+        this.contactForm.reset();
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting = false;
+        if (err.status === 400 && err.error && typeof err.error === 'object') {
+          this.fieldErrors = err.error;
+          Object.keys(this.fieldErrors).forEach(field => {
+            this.contactForm.get(field)?.markAsTouched();
+          });
+          return;
+        }
         this.submitError = true;
       }
     });

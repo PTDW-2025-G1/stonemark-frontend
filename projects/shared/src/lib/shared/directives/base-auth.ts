@@ -13,9 +13,10 @@ export abstract class BaseAuthComponent {
   loading = false;
   errorMsg: string | null = null;
 
-  // 🔐 2FA state
   tfaRequired = false;
   tfaCodeSent = false;
+
+  fieldErrors: Record<string, string> = {};
 
   protected pendingLoginData: {
     username: string;
@@ -30,11 +31,9 @@ export abstract class BaseAuthComponent {
   abstract mode: 'login' | 'register';
   abstract navigateTo: string;
 
-  /* ----------------------------
-   * FORM SUBMIT (LOGIN / REGISTER)
-   * ---------------------------- */
   onSubmit(data: any): void {
     this.errorMsg = null;
+    this.fieldErrors = {};
 
     if (this.mode === 'login') {
       this.pendingLoginData = {
@@ -64,9 +63,6 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(auth$);
   }
 
-  /* ----------------------------
-   * SUBMIT 2FA CODE
-   * ---------------------------- */
   onTfaSubmit(code: string): void {
     if (!this.pendingLoginData) {
       this.errorMsg = 'Authentication session expired. Please login again.';
@@ -82,9 +78,6 @@ export abstract class BaseAuthComponent {
     );
   }
 
-  /* ----------------------------
-   * UI ACTIONS
-   * ---------------------------- */
   onForgotPassword(): void {
     this.router.navigate(['/forgot-password']);
   }
@@ -97,12 +90,6 @@ export abstract class BaseAuthComponent {
     this._handleAuthRequest(this.authService.googleAuth());
   }
 
-  /* ----------------------------
-   * AUTH HANDLER (CORE LOGIC)
-   * ---------------------------- */
-  /* ----------------------------
- * AUTH HANDLER (CORE LOGIC)
- * ---------------------------- */
   private _handleAuthRequest(
     auth$: Observable<HttpResponse<AuthenticationResponseDto>>
   ): void {
@@ -112,7 +99,6 @@ export abstract class BaseAuthComponent {
     auth$
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        // ✅ SUCCESS PATH (2xx)
         next: (response) => {
           const body = response.body;
 
@@ -121,7 +107,6 @@ export abstract class BaseAuthComponent {
             return;
           }
 
-          // 🔐 2FA REQUIRED (backend returned 200 + flag)
           if (body.tfaRequired === true) {
             this.tfaRequired = true;
             this.tfaCodeSent = !!body.tfaCodeSent;
@@ -129,7 +114,6 @@ export abstract class BaseAuthComponent {
             return;
           }
 
-          // ✅ LOGIN COMPLETE
           if (body.accessToken) {
             this.authService.saveTokens(
               body.accessToken,
@@ -142,38 +126,35 @@ export abstract class BaseAuthComponent {
             return;
           }
 
-          // ❌ FALLBACK
           this.errorMsg = 'Authentication failed.';
         },
 
         error: (err) => {
+
+          if (err.status === 400 && err.error && typeof err.error === 'object') {
+            this.fieldErrors = err.error;
+            this.errorMsg = null;
+            return;
+          }
+
           const message = err?.error?.message;
 
-          // 2FA required
           if (
             err.status === 401 &&
             typeof message === 'string' &&
             message.includes('Two-Factor Authentication')
           ) {
             this.tfaRequired = true;
-            this.tfaCodeSent = false; // TOTP → código vem do authenticator
+            this.tfaCodeSent = false;
             this.errorMsg = null;
             return;
           }
 
-          // ❌ REAL ERROR
-          if (message) {
-            this.errorMsg = message;
-          } else {
-            this.errorMsg = 'Occorred an error. Please try again later.';
-          }
+          this.errorMsg = message ?? 'Occorred an error. Please try again later.';
         },
       });
   }
 
-  /* ----------------------------
-   * POST LOGIN REDIRECT
-   * ---------------------------- */
   private _postLoginRedirect(role?: string | null): void {
     const redirect = localStorage.getItem('redirectAfterLogin');
 
@@ -187,9 +168,6 @@ export abstract class BaseAuthComponent {
     window.location.href = environment.profileUrl + '/profile';
   }
 
-  /* ----------------------------
-   * VALIDATE REDIRECT URL
-   * ---------------------------- */
   private _isValidRedirectUrl(url: string): boolean {
     try {
       const validOrigins = [
@@ -199,16 +177,12 @@ export abstract class BaseAuthComponent {
         environment.staffUrl
       ];
 
-      // Check if the URL starts with any of our valid origins
       return validOrigins.some(origin => url.startsWith(origin));
     } catch {
       return false;
     }
   }
 
-  /* ----------------------------
-   * RESET 2FA STATE
-   * ---------------------------- */
   private resetTfaState(): void {
     this.tfaRequired = false;
     this.tfaCodeSent = false;

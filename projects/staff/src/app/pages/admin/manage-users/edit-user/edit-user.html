@@ -1,0 +1,58 @@
+<p-toast></p-toast>
+<p-card *ngIf="user">
+  <ng-template pTemplate="title">
+    Edit User: {{ user.firstName }} {{ user.lastName }}
+  </ng-template>
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="firstName">First Name</label>
+      <input id="firstName" type="text" pInputText [(ngModel)]="user.firstName">
+    </div>
+    <div class="p-field">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" type="text" pInputText [(ngModel)]="user.lastName">
+    </div>
+    <div class="p-field">
+      <label for="username">Username</label>
+      <input id="username" type="text" pInputText [(ngModel)]="user.username">
+    </div>
+    <div class="p-field">
+      <label for="role">Role</label>
+      <p-autoComplete
+        [(ngModel)]="selectedRole"
+        [suggestions]="filteredRoles"
+        (completeMethod)="filterRoles($event)"
+        field="label"
+        [dropdown]="true"
+        placeholder="Select a role"
+        appendTo="body"
+      ></p-autoComplete>
+    </div>
+    <div class="p-field">
+      <label for="tfaMethod">TFA Method</label>
+      <p-select
+        id="tfaMethod"
+        [options]="tfaMethodOptions"
+        [(ngModel)]="user.tfaMethod"
+        placeholder="Select a TFA method"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body"
+      ></p-select>
+    </div>
+    <div class="p-field-checkbox" style="margin-bottom: 1rem;">
+      <p-toggleSwitch [(ngModel)]="user.accountLocked"></p-toggleSwitch>
+      <label for="locked">Locked</label>
+    </div>
+    <div class="p-field-checkbox">
+      <p-toggleSwitch [(ngModel)]="user.enabled"></p-toggleSwitch>
+      <label for="enabled">Enabled</label>
+    </div>
+    <p-divider></p-divider>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Save All" icon="pi pi-check" (click)="saveUser(); saveRole()"></button>
+    <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="cancel()" class="p-button-secondary"></button>
+  </ng-template>
+</p-card>

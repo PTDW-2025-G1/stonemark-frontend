@@ -14,13 +14,20 @@ export interface UserDto {
     firstName?: string;
     lastName?: string;
     username?: string;
-    role?: string;
+    role?: UserDto.RoleEnum;
     createdAt?: string;
     tfaMethod?: UserDto.TfaMethodEnum;
     accountLocked?: boolean;
     enabled?: boolean;
 }
 export namespace UserDto {
+    export const RoleEnum = {
+        User: 'USER',
+        Reviewer: 'REVIEWER',
+        Moderator: 'MODERATOR',
+        Admin: 'ADMIN'
+    } as const;
+    export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
     export const TfaMethodEnum = {
         None: 'NONE',
         Totp: 'TOTP',

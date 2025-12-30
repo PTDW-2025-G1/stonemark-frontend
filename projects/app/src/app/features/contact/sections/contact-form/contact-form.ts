@@ -205,12 +205,7 @@ export class ContactFormComponent implements OnInit{
           this.user = user;
 
           let email = '';
-          if (user.contacts && user.contacts.length > 0) {
-            const emailContact = user.contacts.find(c => c.type === 'EMAIL' && c.primaryContact);
-            if (emailContact) {
-              email = emailContact.value || '';
-            }
-          }
+          // Todo: make call to API or get rid of email autofill
 
           this.contactForm.patchValue({
             name: `${user.firstName} ${user.lastName}`,

@@ -18,11 +18,11 @@ export interface PageMarkListDto {
     size?: number;
     content?: Array<MarkListDto>;
     number?: number;
-    sort?: SortObject;
+    pageable?: PageableObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
-    pageable?: PageableObject;
+    sort?: SortObject;
     empty?: boolean;
 }
 

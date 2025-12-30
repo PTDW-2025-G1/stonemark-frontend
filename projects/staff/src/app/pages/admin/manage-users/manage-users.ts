@@ -10,6 +10,7 @@ import { AppToolbarComponent } from '../../../components/toolbar/toolbar.compone
 import { AppTableComponent } from '../../../components/table/table.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { AppDialogComponent } from '../../../components/dialog/dialog.component';
 
 @Component({
   selector: 'app-manage-users',
@@ -22,7 +23,9 @@ import { FormsModule } from '@angular/forms';
     ButtonModule,
     FormsModule,
     AppToolbarComponent,
-    AppTableComponent
+    AppTableComponent,
+    AppDialogComponent,
+    AutoCompleteModule
   ],
   template: `
     <app-toolbar
@@ -42,11 +45,11 @@ import { FormsModule } from '@angular/forms';
         'firstName',
         'lastName',
         'username',
-        'primaryContact',
         'role'
       ]"
     >
       <ng-template #actions let-user>
+        <p-button icon="pi pi-eye" class="mr-2" (click)="viewUser(user)"></p-button>
         <p-button
           label="Change Role"
           icon="pi pi-user-edit"
@@ -55,6 +58,24 @@ import { FormsModule } from '@angular/forms';
         ></p-button>
       </ng-template>
     </app-table>
+
+    <app-dialog
+      title="User Details"
+      [visible]="detailsDialogVisible"
+      [data]="currentUser"
+      [fields]="[
+                { key: 'id', label: 'ID' },
+                { key: 'firstName', label: 'First Name' },
+                { key: 'lastName', label: 'Last Name' },
+                { key: 'username', label: 'Username' },
+                { key: 'role', label: 'Role' },
+                { key: 'accountLocked', label: 'Account Locked' },
+                { key: 'enabled', label: 'Enabled' },
+                { key: 'tfaMethod', label: 'TFA Method' },
+                { key: 'createdAt', label: 'Created At' }
+            ]"
+      (close)="detailsDialogVisible = false"
+    ></app-dialog>
 
     <p-dialog
       [(visible)]="displayDialog"
@@ -100,7 +121,9 @@ export class ManageUsers implements OnInit {
   @ViewChild('table') tableComp!: AppTableComponent;
 
   displayDialog = false;
+  detailsDialogVisible = false;
   selectedUser: UserDto | null = null;
+  currentUser: UserDto | null = null;
   selectedRole: any = null;
   filteredRoles: any[] = [];
 
@@ -115,7 +138,6 @@ export class ManageUsers implements OnInit {
     { field: 'firstName', header: 'First Name' },
     { field: 'lastName', header: 'Last Name' },
     { field: 'username', header: 'Username' },
-    { field: 'primaryContact', header: 'Primary Contact' },
     { field: 'role', header: 'Role' },
     { field: 'createdAt', header: 'Created At' }
   ];
@@ -129,22 +151,17 @@ export class ManageUsers implements OnInit {
     this.loadUsers();
   }
 
+  viewUser(user: UserDto) {
+    this.currentUser = user;
+    this.detailsDialogVisible = true;
+  }
+
   loadUsers() {
     this.userManagementService.getAll(0, 100).subscribe({
       next: (page) => {
         const formattedUsers = (page.content || []).map(user => {
-          let primaryContact = '';
-
-          if (user.contacts?.length) {
-            const primary = user.contacts.find(
-              c => c.primaryContact && c.verified
-            );
-            primaryContact = primary?.value ?? '';
-          }
-
           return {
             ...user,
-            primaryContact,
             createdAt: user.createdAt
               ? new Date(user.createdAt).toLocaleString('pt-PT')
               : ''

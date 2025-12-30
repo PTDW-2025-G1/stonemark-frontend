@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserContactDto } from './user-contact-dto';
 
 
 export interface UserDto { 
@@ -15,10 +14,20 @@ export interface UserDto {
     firstName?: string;
     lastName?: string;
     username?: string;
-    contacts?: Array<UserContactDto>;
     role?: string;
     createdAt?: string;
+    tfaMethod?: UserDto.TfaMethodEnum;
     accountLocked?: boolean;
     enabled?: boolean;
 }
+export namespace UserDto {
+    export const TfaMethodEnum = {
+        None: 'NONE',
+        Totp: 'TOTP',
+        Sms: 'SMS',
+        Email: 'EMAIL'
+    } as const;
+    export type TfaMethodEnum = typeof TfaMethodEnum[keyof typeof TfaMethodEnum];
+}
+
 

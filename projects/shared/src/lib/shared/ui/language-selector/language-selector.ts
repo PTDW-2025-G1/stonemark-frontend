@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '@core/services/language/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-language-selector',
@@ -32,8 +33,9 @@ import { LanguageService } from '@core/services/language/language.service';
   `,
   styles: []
 })
-export class LanguageSelectorComponent {
+export class LanguageSelectorComponent implements OnDestroy {
   private languageService = inject(LanguageService);
+  private langChangeSubscription?: Subscription;
 
   languages = [
     {
@@ -53,9 +55,13 @@ export class LanguageSelectorComponent {
   constructor() {
     this.currentLang = this.languageService.getCurrentLanguage();
 
-    this.languageService.onLangChange.subscribe((event) => {
+    this.langChangeSubscription = this.languageService.onLangChange.subscribe((event) => {
       this.currentLang = event.lang;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.langChangeSubscription?.unsubscribe();
   }
 
   changeLanguage(lang: string): void {

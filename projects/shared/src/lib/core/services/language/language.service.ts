@@ -8,7 +8,7 @@ import { CookieService } from '@core/services/cookie/cookie.service';
 export class LanguageService {
   private readonly COOKIE_KEY = 'preferredLanguage';
   private readonly COOKIE_EXPIRY_DAYS = 365;
-  private readonly DEFAULT_LANG = 'pt';
+  private readonly DEFAULT_LANG = 'en';
   private readonly AVAILABLE_LANGS = ['en', 'pt'];
 
   constructor(

@@ -90,7 +90,7 @@ export class ManageMonuments implements OnInit {
   }
 
   loadMonuments(): void {
-    this.monumentService.getMonuments()
+    this.monumentService.getDetailedMonuments()
       .pipe(take(1))
       .subscribe({
         next: (data) => {

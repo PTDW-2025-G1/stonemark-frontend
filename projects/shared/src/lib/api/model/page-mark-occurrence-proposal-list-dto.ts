@@ -9,14 +9,14 @@
  */
 import { PageableObject } from './pageable-object';
 import { SortObject } from './sort-object';
-import { MonumentResponseDto } from './monument-response-dto';
+import { MarkOccurrenceProposalListDto } from './mark-occurrence-proposal-list-dto';
 
 
-export interface PageMonumentResponseDto { 
+export interface PageMarkOccurrenceProposalListDto { 
     totalPages?: number;
     totalElements?: number;
     size?: number;
-    content?: Array<MonumentResponseDto>;
+    content?: Array<MarkOccurrenceProposalListDto>;
     number?: number;
     sort?: SortObject;
     first?: boolean;

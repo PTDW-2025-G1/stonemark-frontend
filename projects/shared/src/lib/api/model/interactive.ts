@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ButtonReply } from './button-reply';
 
 
-export interface RegisterRequestDto { 
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+export interface Interactive { 
+    type?: string;
+    button_reply?: ButtonReply;
 }
 

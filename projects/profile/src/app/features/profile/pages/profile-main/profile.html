@@ -17,9 +17,6 @@
     <app-profile-marks
       [occurrences]="occurrences"
       (addOccurrence)="onAddMark()"
-      (editOccurrence)="onEditMark($event)"
-      (removeOccurrence)="onRemoveMark($event)"
-      (viewOccurrence)="onViewMark($event)"
     ></app-profile-marks>
   }
   @if (activeTab === 'suggestions') {

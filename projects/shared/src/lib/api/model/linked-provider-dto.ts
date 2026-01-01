@@ -15,7 +15,8 @@ export interface LinkedProviderDto {
 export namespace LinkedProviderDto {
     export const ProviderEnum = {
         Google: 'GOOGLE',
-        Telegram: 'TELEGRAM'
+        Telegram: 'TELEGRAM',
+        Whatsapp: 'WHATSAPP'
     } as const;
     export type ProviderEnum = typeof ProviderEnum[keyof typeof ProviderEnum];
 }

@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Change } from './change';
 
 
-export interface RegisterRequestDto { 
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+export interface Entry { 
+    id?: string;
+    changes?: Array<Change>;
 }
 

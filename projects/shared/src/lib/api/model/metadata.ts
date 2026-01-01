@@ -9,10 +9,8 @@
  */
 
 
-export interface RegisterRequestDto { 
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+export interface Metadata { 
+    display_phone_number?: string;
+    phone_number_id?: string;
 }
 

@@ -208,6 +208,7 @@ export class MonumentDetailComponent implements OnInit {
         this.notificationService.showError(
           'Failed to submit report. Please try again.'
         );
+        this.reportModalVisible = false;
       }
     });
   }

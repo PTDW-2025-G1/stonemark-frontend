@@ -66,7 +66,7 @@ export class SearchComponent implements OnInit {
     if (this.type === 'marks') {
       const source = this.searchQuery.trim()
         ? this.markService.searchMarks(this.searchQuery, pageIndex, this.pageSize)
-        : this.markService.getListMarks(pageIndex, this.pageSize);
+        : this.markService.getMarks(pageIndex, this.pageSize);
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);

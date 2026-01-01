@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Entry } from './entry';
 
 
-export interface RegisterRequestDto { 
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+export interface WhatsAppWebhookPayload { 
+    object?: string;
+    entry?: Array<Entry>;
 }
 

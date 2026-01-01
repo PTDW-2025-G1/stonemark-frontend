@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 import {ProfileHeaderComponent} from './sections/profile-header/profile-header';
 import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
@@ -11,7 +10,8 @@ import {ProfileService} from '@core/services/profile/profile.service';
 import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth/auth.service';
-import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
+import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence-proposal.service';
+import { MarkOccurrenceProposalListDto } from '@api/model/mark-occurrence-proposal-list-dto';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
   user: any = null;
   loading = true;
 
-  occurrences: MarkOccurrenceDto[] = [];
+  occurrences: MarkOccurrenceProposalListDto[] = [];
   suggestions: Suggestion[] = [];
 
   activeTab: 'marks' | 'suggestions' = 'marks';
@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private router: Router,
               private profileService: ProfileService,
-              private markOccurrenceService: MarkOccurrenceService,
+              private markOccurrenceProposalService: MarkOccurrenceProposalService,
               private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -69,8 +69,16 @@ export class ProfileComponent implements OnInit {
   }
 
   loadMarks(): void {
-    this.markOccurrenceService.getAll().subscribe(occurrences => {
-      this.occurrences = occurrences.content ?? [];
+    this.profileService.getCurrentUser().subscribe({
+      next: (data: UserDto) => {
+        if (typeof data.id === 'number') {
+          this.markOccurrenceProposalService.findByUser(data.id).subscribe((page) => {
+            this.occurrences = page.content ?? [];
+          });
+        } else {
+          this.occurrences = [];
+        }
+      }
     });
   }
 
@@ -117,18 +125,6 @@ export class ProfileComponent implements OnInit {
 
   onAddMark() {
     // lógica para adicionar um novo mark
-  }
-
-  onEditMark(occurrence: MarkOccurrenceDto) {
-    // lógica para editar o mark recebido
-  }
-
-  onRemoveMark(occurrence: MarkOccurrenceDto) {
-    // lógica para remover o mark recebido
-  }
-
-  onViewMark(occurrence: MarkOccurrenceDto) {
-    // lógica para ver detalhes do mark recebido
   }
 
   onCreateSuggestion() {

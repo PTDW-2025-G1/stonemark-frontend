@@ -7,13 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Profile } from './profile';
 
 
 export interface Contact { 
-    phone_number?: string;
-    first_name?: string;
-    last_name?: string;
-    user_id?: number;
-    vcard?: string;
+    profile?: Profile;
+    wa_id?: string;
 }
 

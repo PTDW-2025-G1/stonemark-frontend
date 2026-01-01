@@ -30,8 +30,15 @@ export class MonumentService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  getMonuments(): Observable<MonumentResponseDto[]> {
-    return this.http.get<PageMonumentDto>(`${this.baseUrl}?size=10000`).pipe(
+  getMonuments(page: number = 0, size: number = 9): Observable<PageMonumentDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageMonumentDto>(`${this.baseUrl}`, { params });
+  }
+
+  getDetailedMonuments(): Observable<MonumentResponseDto[]> {
+    return this.http.get<PageMonumentDto>(`${this.baseUrl}/details?size=10000`).pipe(
       map(page => page.content || [])
     );
   }
@@ -47,7 +54,7 @@ export class MonumentService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<PageMonumentListDto>(`${this.baseUrl}/list`, { params });
+    return this.http.get<PageMonumentListDto>(`${this.baseUrl}`, { params });
   }
 
   searchMonuments(query: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentListDto> {

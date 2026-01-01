@@ -7,25 +7,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkDto } from './mark-dto';
-import { MonumentResponseDto } from './monument-response-dto';
+import { ActiveDecisionViewDto } from './active-decision-view-dto';
 
 
-export interface MarkOccurrenceProposalDto { 
+export interface ProposalModeratorViewDto { 
     id?: number;
+    status?: ProposalModeratorViewDto.StatusEnum;
     priority?: number;
-    coverId?: number;
-    existingMonument?: MonumentResponseDto;
+    submissionSource?: ProposalModeratorViewDto.SubmissionSourceEnum;
+    submittedById?: number;
+    submittedAt?: string;
     monumentName?: string;
     latitude?: number;
     longitude?: number;
-    existingMark?: MarkDto;
-    newMark?: boolean;
     userNotes?: string;
-    isSubmitted?: boolean;
-    status?: MarkOccurrenceProposalDto.StatusEnum;
+    activeDecision?: ActiveDecisionViewDto;
 }
-export namespace MarkOccurrenceProposalDto {
+export namespace ProposalModeratorViewDto {
     export const StatusEnum = {
         Submitted: 'SUBMITTED',
         UnderReview: 'UNDER_REVIEW',
@@ -35,6 +33,15 @@ export namespace MarkOccurrenceProposalDto {
         ManuallyRejected: 'MANUALLY_REJECTED'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
+    export const SubmissionSourceEnum = {
+        WebApp: 'WEB_APP',
+        StaffApp: 'STAFF_APP',
+        Whatsapp: 'WHATSAPP',
+        Api: 'API',
+        TelegramBot: 'TELEGRAM_BOT',
+        Other: 'OTHER'
+    } as const;
+    export type SubmissionSourceEnum = typeof SubmissionSourceEnum[keyof typeof SubmissionSourceEnum];
 }
 
 

@@ -101,10 +101,10 @@ describe('MonumentService', () => {
 
     (httpMock.get as any).mockReturnValue(of(mockPage));
 
-    const result = await firstValueFrom(service.getMonuments());
+    const result = await firstValueFrom(service.getDetailedMonuments());
 
     expect(result).toEqual(mockMonuments);
-    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}?size=10000`);
+    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/details?size=10000`);
   });
 
   it('should fetch paginated monuments', async () => {
@@ -116,13 +116,13 @@ describe('MonumentService', () => {
 
     (httpMock.get as any).mockReturnValue(of(mockPage));
 
-    const result = await firstValueFrom(service.getListMonuments(0, 9));
+    const result = await firstValueFrom(service.getMonuments(0, 9));
 
     expect(result).toEqual(mockPage);
     expect(httpMock.get).toHaveBeenCalled();
 
     const [url, options] = (httpMock.get as any).mock.calls[0];
-    expect(url).toBe(`${baseUrl}/list`);
+    expect(url).toBe(`${baseUrl}`);
     expect(options.params.get('page')).toBe('0');
     expect(options.params.get('size')).toBe('9');
   });

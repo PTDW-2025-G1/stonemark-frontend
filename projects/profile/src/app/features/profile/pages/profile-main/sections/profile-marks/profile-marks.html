@@ -1,12 +1,12 @@
 <!-- Section Header -->
 <div class="flex items-center justify-between mb-8">
   <div>
-    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-text mb-2">My Discoveries</h2>
-    <p class="text-text-muted">Historical marks you've discovered and documented</p>
+    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-text mb-2">My Mark Proposals</h2>
+    <p class="text-text-muted">Your submitted proposals for new historical marks</p>
   </div>
   <button (click)="addOccurrence.emit()" class="px-4 py-2 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2">
     <i class="bi bi-plus-circle"></i>
-    <span class="hidden sm:inline">Add Mark</span>
+    <span class="hidden sm:inline">Add a Proposal</span>
   </button>
 </div>
 
@@ -16,71 +16,65 @@
     <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
       <i class="bi bi-star text-primary text-4xl"></i>
     </div>
-    <h3 class="text-xl font-bold text-text mb-2">No marks yet</h3>
-    <p class="text-text-muted mb-6">Start documenting historical mason marks</p>
+    <h3 class="text-xl font-bold text-text mb-2">No proposals yet</h3>
+    <p class="text-text-muted mb-6">Start submitting new mason mark proposals</p>
     <button (click)="addOccurrence.emit()" class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all">
-      Discover Marks
+      Add Proposal
     </button>
   </div>
 }
 
-<!-- Marks Grid -->
+<!-- Proposals Grid -->
 @if (occurrences.length > 0) {
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (occurrence of occurrences; track occurrence.id) {
-      <div class="group bg-surface rounded-2xl border border-border overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+      <div class="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer aspect-square"
+           (click)="viewOccurrence.emit(occurrence.id)">
         <!-- Image -->
-        <div class="relative h-48 overflow-hidden bg-surface-muted">
+        <div class="relative w-full h-full overflow-hidden bg-surface-muted">
           <img
             [src]="getImageUrl(occurrence)"
-            [alt]="'Occurrence'"
+            alt="Mark Proposal"
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
-          <!-- Quick Actions -->
-          <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button (click)="editOccurrence.emit(occurrence)" class="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white transition-colors shadow-lg">
-              <i class="bi bi-pencil text-primary text-sm"></i>
-            </button>
-            <button (click)="removeOccurrence.emit(occurrence)" class="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white transition-colors shadow-lg">
-              <i class="bi bi-trash text-error text-sm"></i>
-            </button>
-          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
 
           <!-- Status Badge -->
-          <div class="absolute top-3 left-3">
-            <span class="px-3 py-1 bg-success/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-success/20">
-              <i class="bi bi-check-circle-fill"></i> Validated
+          <div class="absolute top-3 left-3 flex gap-2">
+            <span
+              [ngClass]="{
+                'bg-warning/90 border-warning/20': occurrence.status === 'UNDER_REVIEW',
+                'bg-success/90 border-success/20': occurrence.status === 'AUTO_ACCEPTED' || occurrence.status === 'MANUALLY_ACCEPTED' || occurrence.status === 'SUBMITTED',
+                'bg-error/90 border-error/20': occurrence.status === 'AUTO_REJECTED' || occurrence.status === 'MANUALLY_REJECTED',
+              }"
+              class="px-3 py-1 backdrop-blur-sm text-white text-xs font-semibold rounded-full border"
+            >
+              <i
+                [ngClass]="{
+                  'bi-hourglass-split': occurrence.status === 'SUBMITTED' || occurrence.status === 'UNDER_REVIEW',
+                  'bi-check-circle': occurrence.status === 'AUTO_ACCEPTED' || occurrence.status === 'MANUALLY_ACCEPTED',
+                  'bi-x-circle': occurrence.status === 'AUTO_REJECTED' || occurrence.status === 'MANUALLY_REJECTED'
+                }"
+                class="bi"
+              ></i>
+              {{ occurrence.status ? (statusLabel(occurrence.status)) : 'Unknown' }}
             </span>
           </div>
-        </div>
 
-        <!-- Content -->
-        <div class="p-5">
-          <h3 class="text-lg font-bold text-text mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-            Mark Occurrence
-          </h3>
-          <div class="flex items-center gap-2 text-text-muted text-sm mb-4">
-            <i class="bi bi-geo-alt-fill text-primary"></i>
-            <span class="line-clamp-1">Portugal</span>
+          <!-- Quick View Icon -->
+          <div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+              <i class="bi bi-eye text-primary text-sm"></i>
+            </div>
           </div>
 
-          <!-- Stats -->
-          <div class="flex items-center gap-4 pt-4 border-t border-border">
-            <div class="flex items-center gap-1.5 text-sm">
-              <i class="bi bi-eye text-info"></i>
-              <span class="text-text-muted font-semibold">245</span>
-            </div>
-            <div class="flex items-center gap-1.5 text-sm">
-              <i class="bi bi-heart text-error"></i>
-              <span class="text-text-muted font-semibold">18</span>
-            </div>
-            <div class="ml-auto">
-              <button (click)="viewOccurrence.emit(occurrence)" class="text-primary hover:text-primary/80 transition-colors font-semibold text-sm flex items-center gap-1">
-                View
-                <i class="bi bi-arrow-right"></i>
-              </button>
+          <!-- Info on hover - Bottom -->
+          <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
+            <div class="flex items-center justify-between text-white">
+              <div class="flex items-center gap-2">
+                <i class="bi bi-calendar-event"></i>
+                <span class="text-sm">{{ formatDate(occurrence.submittedAt) }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -93,7 +87,7 @@
 @if (occurrences.length >= 6) {
   <div class="text-center mt-8">
     <button class="px-8 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all">
-      Load More Marks
+      Load More Proposals
     </button>
   </div>
 }

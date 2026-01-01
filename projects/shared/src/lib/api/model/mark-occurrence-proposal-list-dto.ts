@@ -7,25 +7,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkDto } from './mark-dto';
-import { MonumentResponseDto } from './monument-response-dto';
 
 
-export interface MarkOccurrenceProposalDto { 
+export interface MarkOccurrenceProposalListDto { 
     id?: number;
-    priority?: number;
     coverId?: number;
-    existingMonument?: MonumentResponseDto;
-    monumentName?: string;
-    latitude?: number;
-    longitude?: number;
-    existingMark?: MarkDto;
-    newMark?: boolean;
-    userNotes?: string;
     isSubmitted?: boolean;
-    status?: MarkOccurrenceProposalDto.StatusEnum;
+    status?: MarkOccurrenceProposalListDto.StatusEnum;
+    submittedAt?: string;
 }
-export namespace MarkOccurrenceProposalDto {
+export namespace MarkOccurrenceProposalListDto {
     export const StatusEnum = {
         Submitted: 'SUBMITTED',
         UnderReview: 'UNDER_REVIEW',

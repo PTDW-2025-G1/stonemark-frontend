@@ -9,10 +9,7 @@
  */
 
 
-export interface RegisterRequestDto { 
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+export interface Text { 
+    body?: string;
 }
 

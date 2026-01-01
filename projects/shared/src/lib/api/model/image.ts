@@ -9,10 +9,10 @@
  */
 
 
-export interface RegisterRequestDto { 
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+export interface Image { 
+    id?: string;
+    sha256?: string;
+    caption?: string;
+    mime_type?: string;
 }
 

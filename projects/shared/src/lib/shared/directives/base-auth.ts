@@ -42,23 +42,18 @@ export abstract class BaseAuthComponent {
       };
     }
 
-    const payload =
+    const auth$ =
       this.mode === 'login'
-        ? {
+        ? this.authService.login({
           username: data.username,
           password: data.password,
-        }
-        : {
+        })
+        : this.authService.register({
           firstName: data.firstName,
           lastName: data.lastName,
           username: data.username,
           password: data.password,
-        };
-
-    const auth$ =
-      this.mode === 'login'
-        ? this.authService.login(payload)
-        : this.authService.register(payload);
+        });
 
     this._handleAuthRequest(auth$);
   }
@@ -122,7 +117,7 @@ export abstract class BaseAuthComponent {
             );
 
             this.resetTfaState();
-            this._postLoginRedirect(body.role);
+            this._postLoginRedirect();
             return;
           }
 
@@ -155,7 +150,7 @@ export abstract class BaseAuthComponent {
       });
   }
 
-  private _postLoginRedirect(role?: string | null): void {
+  private _postLoginRedirect(): void {
     const redirect = localStorage.getItem('redirectAfterLogin');
 
     // Check if there's a valid redirect URL from one of our apps

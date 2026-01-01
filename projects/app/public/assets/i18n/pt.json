@@ -1,0 +1,80 @@
+{
+  "mission": {
+    "label": "A Nossa Missão",
+    "title": "Unir Passado e Presente",
+    "p1": "O projeto combina <strong>património cultural</strong>, <strong>recolha de dados no terreno</strong> e <strong>tecnologia digital</strong> para preservar os vestígios invisíveis da tradição arquitetónica.",
+    "p2": "Cada marca de canteiro conta uma história — do artesão que a esculpiu, da guilda a que pertenceu e do monumento que ajudou a construir. O Stone Mark dá vida a estas histórias."
+  },
+  "cta": {
+    "title": "Junta-te a Nós na Preservação da História",
+    "desc": "Faz parte de um movimento global para documentar e proteger as tradições artesanais que moldaram o nosso mundo",
+    "explore": "Começar a Explorar",
+    "contact": "Entrar em Contacto",
+    "footer": "A colaboração aberta garante que o projeto se mantenha transparente, fiável e útil tanto para o público como para a comunidade académica."
+  },
+  "partner": {
+    "institutional": "Parceiro Institucional",
+    "title": "O Nosso Parceiro Institucional",
+    "aprupp": "APRUPP",
+    "subtitle": "Associação Portuguesa para a Reabilitação Urbana e Proteção do Património",
+    "desc": "A APRUPP é uma associação sem fins lucrativos dedicada ao estudo, proteção e promoção do património urbano, com especial enfoque na preservação das técnicas construtivas tradicionais e da memória do ambiente edificado.",
+    "founded": "Fundação",
+    "headquarters": "Sede",
+    "reach": "Âmbito",
+    "heritage": "Património",
+    "heritage_desc": "Promoção da salvaguarda e valorização do património arquitetónico e cultural.",
+    "urban": "Reabilitação Urbana",
+    "urban_desc": "Apoio à reabilitação urbana sustentável e à revitalização dos centros históricos.",
+    "civic": "Cidadania Ativa",
+    "civic_desc": "Incentivo à participação da comunidade na proteção do património.",
+    "knowledge": "Partilha de Conhecimento",
+    "knowledge_desc": "Disseminação de investigação e boas práticas em conservação do património."
+  },
+  "hero": {
+    "label": "Sobre o Projeto",
+    "title": "A Preservar a <span class='italic'>História</span>,<br/>Marca a Marca.",
+    "desc": "O Stone Mark é uma aplicação web dedicada à documentação e exploração das marcas de canteiro — os símbolos únicos gravados por antigos artesãos em monumentos ao longo da história."
+  },
+  "features": {
+    "label": "Funcionalidades-Chave",
+    "title": "Ferramentas para Exploradores do Património",
+    "desc": "Pensado para tornar a tua viagem pela história simples, envolvente e inesquecível",
+    "1": {
+      "title": "Captura e Submissão de Marcas",
+      "desc": "Fotografa e submete marcas de canteiro autênticas diretamente na app, contribuindo para um arquivo digital crescente do património artesanal."
+    },
+    "2": {
+      "title": "Pesquisa de Monumentos",
+      "desc": "Descobre monumentos e símbolos de canteiro através de uma experiência de pesquisa rápida e intuitiva."
+    },
+    "3": {
+      "title": "Filtragem Avançada",
+      "desc": "Filtra marcas por monumento, para explorar padrões culturais detalhados."
+    },
+    "4": {
+      "title": "Favoritos e Coleções",
+      "desc": "Guarda os teus monumentos ou marcas favoritas em coleções personalizadas - perfeito para investigação, ensino ou exploração."
+    },
+    "5": {
+      "title": "Geolocalização no Mapa",
+      "desc": "Explora marcas de canteiro e monumentos próximos em tempo real usando um mapa interativo com geolocalização precisa."
+    },
+    "6": {
+      "title": "Preservação Cultural",
+      "desc": "Apoia a documentação e preservação do património dos canteiros através da participação da comunidade e dados históricos abertos."
+    }
+  },
+  "unesco": {
+    "label": "Iniciativa Global",
+    "title": "Parceria com a UNESCO",
+    "desc": "O Stone Mark está a ser desenvolvido em colaboração com a UNESCO para preservar e promover sítios de património mundial. Com tecnologia comprovada e arquitetura escalável, preparamo-nos para a expansão internacional.",
+    "partnership": "Parceria UNESCO",
+    "partnership_desc": "Colaboração oficial para a preservação do património",
+    "expansion": "Expansão Global",
+    "expansion_desc": "Implementação em vários países",
+    "impact": "Impacto Cultural",
+    "impact_desc": "Aproximar milhões de pessoas ao património",
+    "growth": "Crescimento Sustentável",
+    "growth_desc": "Construído para escalar com arquitetura comprovada"
+  }
+}

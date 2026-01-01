@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unesco-section',
   standalone: true,
+  imports: [TranslateModule],
   template: `
     <section class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
       <div class="text-center mb-16">
-        <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Global Initiative</div>
-        <h2 class="text-4xl md:text-5xl font-serif">Partnering with UNESCO</h2>
+        <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">{{ 'unesco.label' | translate }}</div>
+        <h2 class="text-4xl md:text-5xl font-serif">{{ 'unesco.title' | translate }}</h2>
         <p class="max-w-3xl mx-auto mt-4 text-text-muted">
-          Stone Mark is being developed in collaboration with UNESCO to preserve and promote world heritage sites.
-          With proven technology and a scalable architecture, we're preparing for international expansion.
+          {{ 'unesco.desc' | translate }}
         </p>
       </div>
 
@@ -19,36 +20,36 @@ import { Component } from '@angular/core';
           <div class="text-2xl mb-4 text-primary">
             <i class="bi bi-award"></i>
           </div>
-          <h4 class="font-serif text-lg font-bold mb-3">UNESCO Partnership</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'unesco.partnership' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Official collaboration for heritage preservation
+            {{ 'unesco.partnership_desc' | translate }}
           </p>
         </div>
         <div class="border-t border-primary pt-6">
           <div class="text-2xl mb-4 text-primary">
             <i class="bi bi-globe2"></i>
           </div>
-          <h4 class="font-serif text-lg font-bold mb-3">Global Expansion</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'unesco.expansion' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Deployment across multiple countries
+            {{ 'unesco.expansion_desc' | translate }}
           </p>
         </div>
         <div class="border-t border-primary pt-6">
           <div class="text-2xl mb-4 text-primary">
             <i class="bi bi-people"></i>
           </div>
-          <h4 class="font-serif text-lg font-bold mb-3">Cultural Impact</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'unesco.impact' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Empowering millions to connect with heritage
+            {{ 'unesco.impact_desc' | translate }}
           </p>
         </div>
         <div class="border-t border-primary pt-6">
           <div class="text-2xl mb-4 text-primary">
             <i class="bi bi-graph-up"></i>
           </div>
-          <h4 class="font-serif text-lg font-bold mb-3">Sustainable Growth</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'unesco.growth' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Built for scale with proven architecture
+            {{ 'unesco.growth_desc' | translate }}
           </p>
         </div>
       </div>

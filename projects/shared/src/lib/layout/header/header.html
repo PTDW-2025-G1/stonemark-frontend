@@ -36,6 +36,9 @@
 
         <!-- User Section -->
         <div class="hidden lg:flex items-center gap-3 shrink-0">
+          <!-- Language Selector -->
+          <app-language-selector></app-language-selector>
+
           @if (!isAuthLoading) {
             @if (user) {
               <div class="relative">
@@ -141,6 +144,11 @@
           </a>
         }
       </nav>
+
+      <!-- Language Selector -->
+      <div class="flex justify-center mb-6">
+        <app-language-selector></app-language-selector>
+      </div>
 
       @if (!isAuthLoading) {
         @if (user) {

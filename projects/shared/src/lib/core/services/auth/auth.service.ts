@@ -220,7 +220,7 @@ export class AuthService {
       refreshToken: token
     };
 
-    return this.http.post<AuthenticationResponseDto>(`${this.baseUrl}/refresh-token`, payload).pipe(
+    return this.http.post<AuthenticationResponseDto>(`${this.baseUrl}/refresh`, payload).pipe(
       tap((response: AuthenticationResponseDto) => {
 
         const newAccessToken = response.accessToken;

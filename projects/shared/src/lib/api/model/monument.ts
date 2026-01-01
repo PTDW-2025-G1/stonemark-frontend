@@ -8,22 +8,23 @@
  * Do not edit the class manually.
  */
 import { MediaFile } from './media-file';
+import { AuditActor } from './audit-actor';
 
 
 export interface Monument { 
     createdAt?: string;
-    createdById?: number;
+    createdBy?: AuditActor;
     lastModifiedAt?: string;
-    modifiedById?: number;
+    modifiedBy?: AuditActor;
     id?: number;
     name?: string;
     description?: string;
-    cover?: MediaFile;
     latitude?: number;
     longitude?: number;
     website?: string;
     protectionTitle?: string;
     address?: string;
     city?: string;
+    cover?: MediaFile;
 }
 

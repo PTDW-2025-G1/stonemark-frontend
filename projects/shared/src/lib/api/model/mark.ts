@@ -8,13 +8,14 @@
  * Do not edit the class manually.
  */
 import { MediaFile } from './media-file';
+import { AuditActor } from './audit-actor';
 
 
 export interface Mark { 
     createdAt?: string;
-    createdById?: number;
+    createdBy?: AuditActor;
     lastModifiedAt?: string;
-    modifiedById?: number;
+    modifiedBy?: AuditActor;
     id?: number;
     description?: string;
     cover?: MediaFile;

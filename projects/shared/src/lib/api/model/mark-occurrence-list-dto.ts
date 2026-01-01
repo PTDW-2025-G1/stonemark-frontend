@@ -12,6 +12,6 @@
 export interface MarkOccurrenceListDto { 
     id?: number;
     coverId?: number;
-    createdAt?: string;
+    publishedAt?: string;
 }
 

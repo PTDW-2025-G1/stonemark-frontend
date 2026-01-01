@@ -15,7 +15,8 @@ export interface MarkOccurrenceDetailedDto {
     markId?: number;
     monument?: MonumentDto;
     coverId?: number;
-    proposerId?: number;
-    createdAt?: string;
+    authorId?: number;
+    authorName?: string;
+    publishedAt?: string;
 }
 

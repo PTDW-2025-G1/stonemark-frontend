@@ -129,9 +129,9 @@
 
   <!-- Discovered By -->
   <div class="border-t border-border">
-    <div class="max-w-7xl mx-auto grid grid-cols-1" [class.md:grid-cols-2]="occurrence.proposerId">
+    <div class="max-w-7xl mx-auto grid grid-cols-1" [class.md:grid-cols-2]="occurrence.authorId">
 
-      @if (occurrence.proposerId) {
+      @if (occurrence.authorId) {
       <div class="order-2 md:order-1 border-r-0 md:border-r border-border bg-surface-alt relative min-h-[300px] flex items-center justify-center perspective-1000">
 
         @if (!proposerLoaded) {
@@ -171,7 +171,7 @@
         <h3 class="text-3xl md:text-4xl font-serif mb-6">Documented On</h3>
         <div class="flex items-center gap-3 mb-8">
           <i class="bi bi-calendar-event text-primary text-2xl"></i>
-          <p class="text-xl font-medium">{{ getFormattedDate(occurrence.createdAt) }}</p>
+          <p class="text-xl font-medium">{{ getFormattedDate(occurrence.publishedAt) }}</p>
         </div>
         <p class="text-text-muted leading-relaxed">
           This occurrence was documented and contributed to the StoneMark database, helping preserve historical mason marks for future generations.

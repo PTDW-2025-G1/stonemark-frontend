@@ -27,7 +27,7 @@ import {DateUtils} from '@shared/utils/date.utils';
             <app-entity-card
               [iconType]="'time'"
               [cover]="getImageUrl(occurrence)"
-              [subtitle]="formatDate(occurrence.createdAt)"
+              [subtitle]="formatDate(occurrence.publishedAt)"
               [id]="occurrence.id ?? 0"
               [type]="'marks/occurrence'"
             />

@@ -72,10 +72,10 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   loadProposer(): void {
-    if (this.proposerLoaded || this.proposerLoading || !this.occurrence.proposerId) return;
+    if (this.proposerLoaded || this.proposerLoading || !this.occurrence.authorId) return;
 
     this.proposerLoading = true;
-    this.userManagementService.publicGetById(this.occurrence.proposerId)
+    this.userManagementService.publicGetById(this.occurrence.authorId)
       .pipe(finalize(() => this.proposerLoading = false))
       .subscribe({
         next: (user) => {

@@ -35,7 +35,7 @@ import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
               <div class="flex items-center justify-between text-white">
                 <div class="flex items-center gap-2">
                   <i class="bi bi-calendar-event"></i>
-                  <span class="text-sm">{{ formatDate(occurrence.createdAt) }}</span>
+                  <span class="text-sm">{{ formatDate(occurrence.publishedAt) }}</span>
                 </div>
               </div>
             </div>

@@ -1,0 +1,80 @@
+{
+  "mission": {
+    "label": "Our Mission",
+    "title": "Bridging Past & Present",
+    "p1": "The project combines <strong>cultural heritage</strong>, <strong>field data collection</strong>, and <strong>digital technology</strong> to preserve the invisible traces of architectural tradition.",
+    "p2": "Every stonemason mark tells a story - of the craftsman who carved it, the guild they belonged to, and the monument they helped build. Stone Mark brings these stories to light."
+  },
+  "cta": {
+    "title": "Join Us in Preserving History",
+    "desc": "Be part of a global movement to document and protect the craft traditions that shaped our world",
+    "explore": "Start Exploring",
+    "contact": "Get in Touch",
+    "footer": "Open collaboration ensures the project remains transparent, reliable, and useful to both the public and the academic community."
+  },
+  "partner": {
+    "institutional": "Institutional Partner",
+    "title": "Our Institutional Partner",
+    "aprupp": "APRUPP",
+    "subtitle": "Portuguese Association for the Urban Rehabilitation and Protection of Heritage",
+    "desc": "APRUPP is a non-profit association dedicated to the study, protection, and promotion of urban heritage, with a special focus on the preservation of traditional construction techniques and the memory of the built environment.",
+    "founded": "Founded",
+    "headquarters": "Headquarters",
+    "reach": "Reach",
+    "heritage": "Heritage",
+    "heritage_desc": "Promoting the safeguarding and appreciation of architectural and cultural heritage.",
+    "urban": "Urban Rehabilitation",
+    "urban_desc": "Supporting sustainable urban rehabilitation and the revitalization of historic centers.",
+    "civic": "Civic Engagement",
+    "civic_desc": "Encouraging community participation in the protection of heritage.",
+    "knowledge": "Knowledge Sharing",
+    "knowledge_desc": "Disseminating research and best practices in heritage conservation."
+  },
+  "hero": {
+    "label": "About the Project",
+    "title": "Preserving <span class='italic'>History</span>,<br/>One Mark at a Time.",
+    "desc": "Stone Mark is a web application dedicated to the documentation and exploration of stonemason marks — the unique symbols engraved by ancient craftsmen on monuments across history."
+  },
+  "features": {
+    "label": "Key Features",
+    "title": "Tools for Heritage Explorers",
+    "desc": "Designed to make your journey through history seamless, engaging, and unforgettable",
+    "1": {
+      "title": "Capture & Submit Marks",
+      "desc": "Photograph and submit authentic stonemason marks directly from the app, contributing to a growing digital archive of craftsmanship heritage."
+    },
+    "2": {
+      "title": "Search Monuments",
+      "desc": "Discover monuments and stonemason symbols through a fast and intuitive search experience."
+    },
+    "3": {
+      "title": "Advanced Filtering",
+      "desc": "Filter marks by monument to explore detailed cultural patterns and associations."
+    },
+    "4": {
+      "title": "Bookmarks & Collections",
+      "desc": "Save your favourite monuments or marks to personalized collections — perfect for research, teaching, or exploration."
+    },
+    "5": {
+      "title": "Geolocation on Map",
+      "desc": "Explore nearby stonemason marks and monuments in real-time using an interactive map with precise geolocation features."
+    },
+    "6": {
+      "title": "Cultural Preservation",
+      "desc": "Support the documentation and preservation of stonemason heritage through community participation and open historical data."
+    }
+  },
+  "unesco": {
+    "label": "Global Initiative",
+    "title": "Partnering with UNESCO",
+    "desc": "Stone Mark is being developed in collaboration with UNESCO to preserve and promote world heritage sites. With proven technology and a scalable architecture, we're preparing for international expansion.",
+    "partnership": "UNESCO Partnership",
+    "partnership_desc": "Official collaboration for heritage preservation",
+    "expansion": "Global Expansion",
+    "expansion_desc": "Deployment across multiple countries",
+    "impact": "Cultural Impact",
+    "impact_desc": "Empowering millions to connect with heritage",
+    "growth": "Sustainable Growth",
+    "growth_desc": "Built for scale with proven architecture"
+  }
+}

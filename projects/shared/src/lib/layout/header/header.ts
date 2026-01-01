@@ -7,11 +7,12 @@ import { UserDto } from '@api/model/user-dto';
 import { Subscription } from 'rxjs';
 import {environment} from '@env/environment';
 import {ButtonComponent} from '@shared/ui/button/button';
+import {LanguageSelectorComponent} from '@shared/ui/language-selector/language-selector';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonComponent],
+  imports: [CommonModule, RouterModule, ButtonComponent, LanguageSelectorComponent],
   templateUrl: './header.html',
   styleUrls: ['./header.scss']
 })

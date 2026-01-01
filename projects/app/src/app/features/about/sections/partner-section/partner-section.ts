@@ -1,39 +1,39 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partner-section',
   standalone: true,
+  imports: [TranslateModule],
   template: `
     <section class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
       <div class="text-center mb-16">
-        <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Institutional Partner</div>
-        <h2 class="text-4xl md:text-5xl font-serif">Working with APRUPP</h2>
+        <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">{{ 'partner.institutional' | translate }}</div>
+        <h2 class="text-4xl md:text-5xl font-serif">{{ 'partner.title' | translate }}</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
         <div class="order-2 md:order-1">
-          <h3 class="text-3xl font-serif mb-4">APRUPP</h3>
+          <h3 class="text-3xl font-serif mb-4">{{ 'partner.aprupp' | translate }}</h3>
           <p class="text-lg text-primary font-semibold mb-6">
-            Portuguese Association for Urban Rehabilitation and Heritage Protection
+            {{ 'partner.subtitle' | translate }}
           </p>
           <p class="text-text-muted mb-8 leading-relaxed">
-            Founded in 2012, APRUPP is a non-profit association dedicated to promoting urban rehabilitation
-            as a key driver for safeguarding cultural identity, reducing social asymmetries, and encouraging
-            citizen participation.
+            {{ 'partner.desc' | translate }}
           </p>
 
           <div class="grid grid-cols-3 gap-6 mb-8 border-t border-border pt-8">
             <div>
               <p class="text-3xl font-serif font-bold text-text mb-1">2012</p>
-              <p class="text-sm text-text-muted">Founded</p>
+              <p class="text-sm text-text-muted">{{ 'partner.founded' | translate }}</p>
             </div>
             <div>
               <p class="text-3xl font-serif font-bold text-text mb-1">Porto</p>
-              <p class="text-sm text-text-muted">Headquarters</p>
+              <p class="text-sm text-text-muted">{{ 'partner.headquarters' | translate }}</p>
             </div>
             <div>
               <p class="text-3xl font-serif font-bold text-text mb-1">Global</p>
-              <p class="text-sm text-text-muted">Reach</p>
+              <p class="text-sm text-text-muted">{{ 'partner.reach' | translate }}</p>
             </div>
           </div>
         </div>
@@ -49,27 +49,27 @@ import { Component } from '@angular/core';
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div class="border-t border-primary pt-6">
-          <h4 class="font-serif text-lg font-bold mb-3">Heritage Protection</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'partner.heritage' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Safeguarding built heritage as cultural identity
+            {{ 'partner.heritage_desc' | translate }}
           </p>
         </div>
         <div class="border-t border-primary pt-6">
-          <h4 class="font-serif text-lg font-bold mb-3">Urban Rehabilitation</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'partner.urban' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Revitalizing historic urban centers
+            {{ 'partner.urban_desc' | translate }}
           </p>
         </div>
         <div class="border-t border-primary pt-6">
-          <h4 class="font-serif text-lg font-bold mb-3">Civic Participation</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'partner.civic' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Encouraging collaborative initiatives
+            {{ 'partner.civic_desc' | translate }}
           </p>
         </div>
         <div class="border-t border-primary pt-6">
-          <h4 class="font-serif text-lg font-bold mb-3">Knowledge & Innovation</h4>
+          <h4 class="font-serif text-lg font-bold mb-3">{{ 'partner.knowledge' | translate }}</h4>
           <p class="text-text-muted text-sm leading-relaxed">
-            Bridging tradition with technology
+            {{ 'partner.knowledge_desc' | translate }}
           </p>
         </div>
       </div>

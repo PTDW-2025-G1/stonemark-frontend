@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, tap, switchMap, map } from 'rxjs';
+import { Observable, tap, switchMap, map, distinctUntilChanged } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { MARKS_ICON, MONUMENTS_ICON } from '@core/constants/content-icons';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
@@ -22,7 +21,7 @@ import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { ReportFacade } from '@shared/facades/report.facade';
 import { ReportRequestDto } from '@api/model/report-request-dto';
 import { FiltersComponent } from '@shared/ui/filters/filters';
-import { PaginationFacade } from '@shared/facades/pagination.facade';
+import { MarkOccurrencesFacade } from '@shared/facades/mark-occurrences.facade';
 
 
 @Component({
@@ -33,17 +32,10 @@ import { PaginationFacade } from '@shared/facades/pagination.facade';
 })
 export class MarkDetailComponent implements OnInit {
   mark$!: Observable<MarkDto>;
-  occurrences: MarkOccurrenceDto[] = [];
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
-  loading = true;
   occurrencesCount = 0;
   uniqueMonumentsCount = 0;
-
-  pageSize = 6;
-  selectedSort = 'desc';
   monuments: MonumentResponseDto[] = [];
-  selectedMonumentId: number | string = '';
-
   monumentsIcon = MONUMENTS_ICON;
 
   private currentMarkId?: number;
@@ -56,39 +48,50 @@ export class MarkDetailComponent implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     public bookmarkFacade: BookmarkFacade,
     public reportFacade: ReportFacade,
-    public pagination: PaginationFacade<MarkOccurrenceDto>
+    public occurrencesFacade: MarkOccurrencesFacade
   ) { }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const markId = Number(params.get('id'));
+      this.currentMarkId = markId;
+
+      this.occurrencesFacade.reset();
+      this.bookmarkFacade.init(BookmarkDto.TypeEnum.Mark, markId);
+      this.loadMonuments(markId);
+
+      this.markOccurrenceService.countByMarkId(markId)
+        .subscribe(count => this.occurrencesCount = count);
+
+      this.markOccurrenceService.countMonumentsByMarkId(markId)
+        .subscribe(count => this.uniqueMonumentsCount = count);
+    });
+
+    this.route.queryParamMap.pipe(
+      map(queryParams => ({
+        page: +(queryParams.get('page') || 1),
+        monumentId: queryParams.get('monumentId') ? Number(queryParams.get('monumentId')) : null,
+        sort: (queryParams.get('sort') || 'desc') as 'asc' | 'desc'
+      })),
+      distinctUntilChanged((prev, curr) =>
+        prev.page === curr.page &&
+        prev.monumentId === curr.monumentId &&
+        prev.sort === curr.sort
+      )
+    ).subscribe(params => {
+      if (!this.currentMarkId) return;
+
+      this.occurrencesFacade.pagination.currentPage = params.page;
+      this.occurrencesFacade.setMonumentFilter(params.monumentId);
+      this.occurrencesFacade.setSort(params.sort);
+
+      this.occurrencesFacade.loadByMark(this.currentMarkId);
+    });
+
     this.mark$ = this.route.paramMap.pipe(
       switchMap(params => {
         const markId = Number(params.get('id'));
-        this.currentMarkId = markId;
-
-        this.bookmarkFacade.init(BookmarkDto.TypeEnum.Mark, markId);
-        this.loadMonuments(markId);
-
-        this.markOccurrenceService.countByMarkId(markId)
-          .subscribe(count => this.occurrencesCount = count);
-
-        this.markOccurrenceService.countMonumentsByMarkId(markId)
-          .subscribe(count => this.uniqueMonumentsCount = count);
-
-        return this.route.queryParamMap.pipe(
-          tap(queryParams => {
-            const page = +(queryParams.get('page') || 1);
-            this.pagination.currentPage = page;
-
-            this.selectedMonumentId = queryParams.get('monumentId')
-              ? Number(queryParams.get('monumentId'))
-              : '';
-
-            this.selectedSort = queryParams.get('sort') || 'desc';
-
-            this.loadOccurrences(markId, page - 1);
-          }),
-          switchMap(() => this.markService.getMark(markId))
-        );
+        return this.markService.getMark(markId);
       }),
       tap(mark => {
         if (mark?.description) {
@@ -107,7 +110,6 @@ export class MarkDetailComponent implements OnInit {
     );
   }
 
-
   private loadMonuments(markId: number): void {
     this.markOccurrenceService.getAvailableMonumentsByMark(markId).subscribe({
       next: monuments => {
@@ -120,50 +122,8 @@ export class MarkDetailComponent implements OnInit {
     });
   }
 
-  private loadOccurrences(markId: number, page: number = 0): void {
-    this.loading = true;
-
-    const request$ = this.selectedMonumentId
-      ? this.markOccurrenceService.filterByMarkAndMonument(
-        markId,
-        Number(this.selectedMonumentId),
-        page,
-        this.pageSize,
-        this.selectedSort
-      )
-      : this.markOccurrenceService.getByMarkId(
-        markId,
-        page,
-        this.pageSize,
-        this.selectedSort
-      );
-
-    request$.subscribe({
-      next: pageData => {
-        const items = pageData.content ?? [];
-
-        this.occurrences = items;
-
-        this.pagination.setServerPage(
-          (pageData.number ?? 0) + 1,
-          pageData.totalPages ?? 1
-        );
-
-        this.loading = false;
-      },
-      error: err => {
-        console.error('Error loading occurrences:', err);
-        this.occurrences = [];
-        this.pagination.setServerPage(1, 1);
-        this.loading = false;
-      }
-    });
-  }
-
   onPageChange(page: number): void {
     if (!this.currentMarkId) return;
-
-    this.pagination.goToPage(page);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -173,27 +133,21 @@ export class MarkDetailComponent implements OnInit {
   }
 
   onSortChange(sort: string | number): void {
-    this.selectedSort = String(sort);
-    this.pagination.currentPage = 1;
-
     if (!this.currentMarkId) return;
 
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { sort: this.selectedSort, page: 1 },
+      queryParams: { sort: String(sort), page: 1 },
       queryParamsHandling: 'merge'
     });
   }
 
   onMonumentFilterChange(monumentId: string | number): void {
-    this.selectedMonumentId = monumentId ? Number(monumentId) : '';
-    this.pagination.currentPage = 1;
-
     if (!this.currentMarkId) return;
 
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { monumentId, page: 1 },
+      queryParams: { monumentId: monumentId || null, page: 1 },
       queryParamsHandling: 'merge'
     });
   }

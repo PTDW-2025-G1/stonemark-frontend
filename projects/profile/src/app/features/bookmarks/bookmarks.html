@@ -40,14 +40,11 @@
 
     <!-- Pagination -->
     @if (facade.pagination.totalPages > 1) {
-      <app-bookmarks-pagination-section
+      <app-pagination
         [currentPage]="facade.pagination.currentPage"
         [totalPages]="facade.pagination.totalPages"
-        [pageNumbers]="facade.pagination.getPageNumbers()"
-        (goToPage)="facade.pagination.goToPage($event)"
-        (previousPage)="facade.pagination.previous()"
-        (nextPage)="facade.pagination.next()">
-      </app-bookmarks-pagination-section>
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
     }
 
   </div>

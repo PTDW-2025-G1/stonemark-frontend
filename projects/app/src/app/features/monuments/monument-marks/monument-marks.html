@@ -49,7 +49,7 @@
       </div>
 
       <!-- Loading State -->
-      @if (loading) {
+      @if (occurrencesFacade.loading) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
           @for (item of [1,2,3,4,5,6]; track item) {
             <div class="bg-surface-alt border border-border rounded-xl p-4 animate-pulse">
@@ -63,9 +63,9 @@
 
       <!-- Filters Section -->
       <app-filters
-        [sortOrder]="selectedSort === 'asc' ? 'asc' : 'desc'"
+        [sortOrder]="occurrencesFacade.selectedSort === 'asc' ? 'asc' : 'desc'"
         [filterOptions]="formattedMarks"
-        [selectedFilterValue]="selectedMarkId"
+        [selectedFilterValue]="occurrencesFacade.selectedMarkId"
         [filterLabel]="'Filter by Mark (' + marks.length + ')'"
         [filterIconHtml]="marksIcon"
         [filterPlaceholder]="'All Marks'"
@@ -76,19 +76,19 @@
       </app-filters>
 
       <!-- Occurrences Grid -->
-      @if (!loading) {
-        @if (occurrences.length > 0) {
+      @if (!occurrencesFacade.loading) {
+        @if (occurrencesFacade.occurrences.length > 0) {
           <app-occurrences-grid
-            [occurrences]="occurrences"
+            [occurrences]="occurrencesFacade.occurrences"
             [showMarkBadge]="true"
             (viewOccurrence)="viewOccurrence($event)"
             (viewMark)="viewMark($event)">
           </app-occurrences-grid>
 
-          @if (pagination.totalPages > 1) {
+          @if (occurrencesFacade.pagination.totalPages > 1) {
             <app-pagination
-              [currentPage]="pagination.currentPage"
-              [totalPages]="pagination.totalPages"
+              [currentPage]="occurrencesFacade.pagination.currentPage"
+              [totalPages]="occurrencesFacade.pagination.totalPages"
               (pageChange)="onPageChange($event)">
             </app-pagination>
           }

@@ -1,6 +1,6 @@
 <app-breadcrumb [items]="(breadcrumbItems$ | async) ?? []"></app-breadcrumb>
 
-@if (loading) {
+@if (occurrencesFacade.loading) {
   <app-mark-detail-loading-state></app-mark-detail-loading-state>
 }
 
@@ -18,9 +18,9 @@
     </app-mark-detail-header>
 
     <app-filters
-      [sortOrder]="selectedSort === 'asc' ? 'asc' : 'desc'"
+      [sortOrder]="occurrencesFacade.selectedSort === 'asc' ? 'asc' : 'desc'"
       [filterOptions]="monuments"
-      [selectedFilterValue]="selectedMonumentId"
+      [selectedFilterValue]="occurrencesFacade.selectedMonumentId"
       [filterLabel]="'Filter by Monument (' + monuments.length + ')'"
       [filterIconHtml]="monumentsIcon"
       [filterPlaceholder]="'All Monuments'"
@@ -31,19 +31,19 @@
     </app-filters>
 
     <app-occurrences-grid
-      [occurrences]="occurrences"
+      [occurrences]="occurrencesFacade.occurrences"
       (viewOccurrence)="viewOccurrence($event)"
       (viewMonument)="viewMonument($event)">
     </app-occurrences-grid>
 
-    @if (!loading && occurrences.length === 0) {
+    @if (!occurrencesFacade.loading && occurrencesFacade.occurrences.length === 0) {
       <app-mark-detail-empty-state></app-mark-detail-empty-state>
     }
 
-    @if (!loading && occurrences.length > 0 && pagination.totalPages > 1) {
+    @if (!occurrencesFacade.loading && occurrencesFacade.occurrences.length > 0 && occurrencesFacade.pagination.totalPages > 1) {
       <app-pagination
-        [currentPage]="pagination.currentPage"
-        [totalPages]="pagination.totalPages"
+        [currentPage]="occurrencesFacade.pagination.currentPage"
+        [totalPages]="occurrencesFacade.pagination.totalPages"
         (pageChange)="onPageChange($event)">
       </app-pagination>
     }

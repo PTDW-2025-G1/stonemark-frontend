@@ -11,13 +11,12 @@
       [mark]="mark"
       [occurrencesCount]="occurrencesCount"
       [monumentsCount]="uniqueMonumentsCount"
-      [bookmarksCount]="bookmarksCount"
-      [isBookmarked]="isBookmarked"
+      [bookmarksCount]="bookmarkFacade.count"
+      [isBookmarked]="bookmarkFacade.isBookmarked"
       (bookmarkToggled)="toggleBookmark()"
       (reportClicked)="openReportModal()">
     </app-mark-detail-header>
 
-    <!-- Filters Section -->
     <app-filters
       [sortOrder]="selectedSort === 'asc' ? 'asc' : 'desc'"
       [filterOptions]="monuments"
@@ -41,10 +40,10 @@
       <app-mark-detail-empty-state></app-mark-detail-empty-state>
     }
 
-    @if (!loading && occurrences.length > 0 && totalPages > 1) {
+    @if (!loading && occurrences.length > 0 && pagination.totalPages > 1) {
       <app-pagination
-        [currentPage]="currentPage"
-        [totalPages]="totalPages"
+        [currentPage]="pagination.currentPage"
+        [totalPages]="pagination.totalPages"
         (pageChange)="onPageChange($event)">
       </app-pagination>
     }
@@ -53,10 +52,10 @@
   </div>
 }
 
-<!-- Report Modal -->
 <app-report-modal
-  [(visible)]="reportModalVisible"
-  [config]="reportModalConfig"
-  [fieldErrors]="reportModalFieldErrors"
+  [visible]="reportFacade.visible"
+  [config]="reportFacade.config"
+  [fieldErrors]="reportFacade.fieldErrors"
   (reportSubmit)="handleReportSubmit($event)"
-></app-report-modal>
+  (close)="reportFacade.close()">
+</app-report-modal>

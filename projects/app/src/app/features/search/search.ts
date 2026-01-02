@@ -8,6 +8,8 @@ import { SearchPaginationComponent } from '@features/search/sections/search-pagi
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
+import {PaginationFacade} from '@shared/facades/pagination.facade';
+
 
 @Component({
   selector: 'app-search',
@@ -25,8 +27,6 @@ export class SearchComponent implements OnInit {
   searchQuery = '';
   selectedCity = '';
 
-  currentPage = 1;
-  totalPages = 1;
   totalElements = 0;
   pageSize = 9;
 
@@ -35,7 +35,8 @@ export class SearchComponent implements OnInit {
     private monumentService: MonumentService,
     private markService: MarkService,
     private titleService: Title,
-    private router: Router
+    private router: Router,
+    public pagination: PaginationFacade
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +47,9 @@ export class SearchComponent implements OnInit {
       this.titleService.setTitle(`${this.title} - StoneMark`);
 
       this.route.queryParamMap.subscribe(queryParams => {
-        this.currentPage = +(queryParams.get('page') || 1);
+        const page = +(queryParams.get('page') || 1);
+        this.pagination.setServerPage(page, this.pagination.totalPages);
+
         const city = queryParams.get('city') || '';
         this.searchQuery = queryParams.get('query') || '';
 
@@ -61,7 +64,7 @@ export class SearchComponent implements OnInit {
   }
 
   private loadData(): void {
-    const pageIndex = this.currentPage - 1;
+    const pageIndex = this.pagination.currentPage - 1;
 
     if (this.type === 'marks') {
       const source = this.searchQuery.trim()
@@ -70,8 +73,11 @@ export class SearchComponent implements OnInit {
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);
-        this.totalElements = page.totalElements ?? 0;
-        this.totalPages = page.totalPages ?? 1;
+
+        this.pagination.setServerPage(
+          (page.number ?? 0) + 1,
+          page.totalPages ?? 1
+        );
       });
     } else {
       const source = this.searchQuery.trim()
@@ -80,8 +86,10 @@ export class SearchComponent implements OnInit {
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);
-        this.totalElements = page.totalElements ?? 0;
-        this.totalPages = page.totalPages ?? 1;
+        this.pagination.setServerPage(
+          (page.number ?? 0) + 1,
+          page.totalPages ?? 1
+        );
       });
     }
   }
@@ -95,7 +103,7 @@ export class SearchComponent implements OnInit {
   }
 
   onFilterChange(city: string): void {
-    this.currentPage = 1;
+    this.pagination.setServerPage(1, this.pagination.totalPages);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -107,7 +115,7 @@ export class SearchComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.items$.next(response.content ?? []);
-          this.totalPages = response.totalPages ?? 0;
+          this.pagination.setServerPage(1, response.totalPages ?? 1);
           this.totalElements = response.totalElements ?? 0;
         },
         error: () => {
@@ -118,7 +126,7 @@ export class SearchComponent implements OnInit {
 
   onSearch(query: string): void {
     this.searchQuery = query;
-    this.currentPage = 1;
+    this.pagination.currentPage = 1;
     this.loadData();
 
     this.router.navigate([], {
@@ -129,17 +137,15 @@ export class SearchComponent implements OnInit {
   }
 
   onPageChange(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.loadData();
+    if (page < 1 || page > this.pagination.totalPages) return;
 
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { page },
-        queryParamsHandling: 'merge'
-      });
+    this.pagination.goToPage(page);
+    this.loadData();
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page },
+      queryParamsHandling: 'merge'
+    });
   }
 }

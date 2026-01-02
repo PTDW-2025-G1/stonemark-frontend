@@ -38,10 +38,17 @@
           </div>
 
           <div class="absolute top-4 right-4 z-10">
-            <button (click)="toggleBookmark()" [class.text-primary]="isBookmarked"
-              [class.text-text-muted]="!isBookmarked"
-              class="w-10 h-10 sm:w-12 sm:h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg text-xl sm:text-2xl cursor-pointer">
-              <i [class.bi-bookmark-check-fill]="isBookmarked" [class.bi-bookmark]="!isBookmarked"></i>
+            <button
+              (click)="toggleBookmark()"
+              [class.text-primary]="bookmarkFacade.isBookmarked"
+              [class.text-text-muted]="!bookmarkFacade.isBookmarked"
+              class="w-10 h-10 sm:w-12 sm:h-12 bg-white/95 backdrop-blur-sm rounded-full
+              flex items-center justify-center hover:bg-white hover:scale-110
+              transition-all shadow-lg text-xl sm:text-2xl cursor-pointer">
+              <i
+                [class.bi-bookmark-check-fill]="bookmarkFacade.isBookmarked"
+                [class.bi-bookmark]="!bookmarkFacade.isBookmarked">
+              </i>
             </button>
           </div>
         </div>
@@ -207,5 +214,10 @@
   }
 </div>
 
-<app-report-modal [(visible)]="reportModalVisible" [config]="reportModalConfig" [fieldErrors]="reportModalFieldErrors"
-  (reportSubmit)="handleReportSubmit($event)"></app-report-modal>
+<app-report-modal
+  [visible]="reportFacade.visible"
+  [config]="reportFacade.config"
+  [fieldErrors]="reportFacade.fieldErrors"
+  (reportSubmit)="handleReportSubmit($event)"
+  (close)="reportFacade.close()">
+</app-report-modal>

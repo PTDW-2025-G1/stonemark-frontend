@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ProfileService } from '@core/services/profile/profile.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
-import { PasswordService } from '@shared/helpers/password.service';
+import { PasswordFacade } from '@shared/facades/password.facade';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 
 @Component({
@@ -32,15 +32,15 @@ export class ChangePasswordComponent implements OnInit {
   hasSpecialChar = false;
 
   constructor(
-    private passwordService: PasswordService,
+    private passwordFacade: PasswordFacade,
     private profileService: ProfileService,
     private router: Router,
     private location: Location
   ) {}
 
   ngOnInit(): void {
-    this.passwordForm = this.passwordService.createForm('change');
-    this.passwordService.setupValidationListener(this.passwordForm, (reqs, strength) => {
+    this.passwordForm = this.passwordFacade.createForm('change');
+    this.passwordFacade.setupValidationListener(this.passwordForm, (reqs, strength) => {
       Object.assign(this, reqs);
       this.passwordStrength = strength;
     });
@@ -60,7 +60,7 @@ export class ChangePasswordComponent implements OnInit {
     this.profileService.changePassword(currentPassword, newPassword).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.passwordService.showSuccessToast('Password changed successfully!');
+        this.passwordFacade.showSuccessToast('Password changed successfully!');
         setTimeout(() => this.router.navigate(['/profile']), 2500);
       },
       error: (err) => {

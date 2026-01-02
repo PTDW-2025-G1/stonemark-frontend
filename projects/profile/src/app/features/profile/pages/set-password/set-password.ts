@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { ProfileService } from '@core/services/profile/profile.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
-import { PasswordService } from '@shared/helpers/password.service';
+import { PasswordFacade } from '@shared/facades/password.facade';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 
 @Component({
@@ -35,16 +35,16 @@ export class SetPasswordComponent implements OnInit {
   hasSpecialChar = false;
 
   constructor(
-    private passwordService: PasswordService,
+    private passwordFacade: PasswordFacade,
     private profileService: ProfileService,
     private router: Router,
     private location: Location
   ) {}
 
   ngOnInit(): void {
-    this.passwordForm = this.passwordService.createForm('set');
+    this.passwordForm = this.passwordFacade.createForm('set');
 
-    this.passwordService.setupValidationListener(
+    this.passwordFacade.setupValidationListener(
       this.passwordForm,
       (reqs, strength) => {
         Object.assign(this, reqs);
@@ -65,14 +65,14 @@ export class SetPasswordComponent implements OnInit {
     this.profileService.setPassword({ newPassword }).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.passwordService.showSuccessToast('Password set successfully!');
+        this.passwordFacade.showSuccessToast('Password set successfully!');
         setTimeout(() => {
           this.router.navigate(['/profile/security']);
         }, 2000);
       },
       error: () => {
         this.isSubmitting = false;
-        this.passwordService.showErrorToast('Failed to set password');
+        this.passwordFacade.showErrorToast('Failed to set password');
       }
     });
 

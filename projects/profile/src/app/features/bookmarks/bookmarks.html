@@ -1,44 +1,52 @@
 <div class="min-h-screen bg-surface">
 
+  <!-- Header -->
   <app-bookmarks-header-section
-    [rangeStart]="(currentPage - 1) * itemsPerPage + 1"
-    [rangeEnd]="Math.min(currentPage * itemsPerPage, filteredItems.length)"
-    [total]="filteredItems.length"
+    [rangeStart]="(facade.pagination.currentPage - 1) * facade.pagination.itemsPerPage + 1"
+    [rangeEnd]="Math.min(
+      facade.pagination.currentPage * facade.pagination.itemsPerPage,
+      facade.filteredItems.length
+    )"
+    [total]="facade.filteredItems.length"
     title="Bookmarks">
   </app-bookmarks-header-section>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
 
+    <!-- Tabs -->
     <app-bookmarks-tabs-section
-      [activeTab]="activeTab"
+      [activeTab]="facade.activeTab"
       [tabs]="[
-        { type: 'all', label: 'All', count: monuments.length + marks.length },
-        { type: 'monuments', label: 'Monuments', count: monuments.length },
-        { type: 'marks', label: 'Marks', count: marks.length }
+        { type: 'all', label: 'All', count: facade.monuments.length + facade.marks.length },
+        { type: 'monuments', label: 'Monuments', count: facade.monuments.length },
+        { type: 'marks', label: 'Marks', count: facade.marks.length }
       ]"
       (tabChange)="changeTab($event)">
     </app-bookmarks-tabs-section>
 
-    @if (filteredItems.length === 0) {
+    <!-- Empty -->
+    @if (facade.filteredItems.length === 0) {
       <app-bookmarks-empty-state-section></app-bookmarks-empty-state-section>
     }
 
-    @if (paginatedItems.length > 0) {
+    <!-- Grid -->
+    @if (facade.pagination.paginatedItems.length > 0) {
       <app-bookmarks-grid-section
-        [items]="paginatedItems"
-        (remove)="removeBookmark($event.bookmarkId, $event.type)"
+        [items]="facade.pagination.paginatedItems"
+        (remove)="removeBookmark($event)"
         (viewDetails)="viewDetails($event)">
       </app-bookmarks-grid-section>
     }
 
-    @if (totalPages > 1) {
+    <!-- Pagination -->
+    @if (facade.pagination.totalPages > 1) {
       <app-bookmarks-pagination-section
-        [currentPage]="currentPage"
-        [totalPages]="totalPages"
-        [pageNumbers]="getPageNumbers()"
-        (goToPage)="goToPage($event)"
-        (previousPage)="previousPage()"
-        (nextPage)="nextPage()">
+        [currentPage]="facade.pagination.currentPage"
+        [totalPages]="facade.pagination.totalPages"
+        [pageNumbers]="facade.pagination.getPageNumbers()"
+        (goToPage)="facade.pagination.goToPage($event)"
+        (previousPage)="facade.pagination.previous()"
+        (nextPage)="facade.pagination.next()">
       </app-bookmarks-pagination-section>
     }
 

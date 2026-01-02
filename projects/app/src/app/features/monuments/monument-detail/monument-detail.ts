@@ -8,12 +8,10 @@ import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser'
 import { NotificationService } from '@core/services/notification.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
-import { BookmarkService } from '@core/services/bookmark/bookmark.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
-import { AuthService } from '@core/services/auth/auth.service';
-import { environment } from '@env/environment';
-import { ReportModalComponent, ReportModalConfig } from '@shared/ui/report-modal/report-modal';
-import { ReportService } from '@core/services/report/report.service';
+import { BookmarkFacade } from '@shared/facades/bookmark.facade';
+import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
+import { ReportFacade } from '@shared/facades/report.facade';
 import { ReportRequestDto } from '@api/model/report-request-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON } from '@core/constants/content-icons';
@@ -29,12 +27,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
 export class MonumentDetailComponent implements OnInit {
   monument$!: Observable<MonumentResponseDto | undefined>;
   mapUrl: SafeResourceUrl | null = null;
-  isBookmarked = false;
-  bookmarksCount = 0;
   occurrencesCount = 0;
-  reportModalVisible = false;
-  reportModalConfig: ReportModalConfig | null = null;
-  reportModalFieldErrors: Record<string, string> = {};
 
   private currentMonumentId?: number;
 
@@ -46,9 +39,8 @@ export class MonumentDetailComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private titleService: Title,
     private notificationService: NotificationService,
-    private bookmarkService: BookmarkService,
-    private authService: AuthService,
-    private reportService: ReportService
+    public bookmarkFacade: BookmarkFacade,
+    public reportFacade: ReportFacade
   ) { }
 
   monumentsIcon = MONUMENTS_ICON;
@@ -62,6 +54,8 @@ export class MonumentDetailComponent implements OnInit {
       switchMap(params => {
         const id = Number(params.get('id'));
         this.currentMonumentId = id;
+
+        this.bookmarkFacade.init(BookmarkDto.TypeEnum.Monument, id);
 
         this.markOccurrenceService.countByMonumentId(id).subscribe(count => {
           this.occurrencesCount = count;
@@ -78,50 +72,14 @@ export class MonumentDetailComponent implements OnInit {
         }
       })
     );
-
-
-    monumentId$.subscribe(id => {
-      if (id != null && this.authService.getAccessToken()) {
-        this.loadBookmarkState(id);
-      }
-    });
   }
-
-  private loadBookmarkState(monumentId: number): void {
-    this.bookmarkService.isBookmarked(BookmarkDto.TypeEnum.Monument, monumentId).subscribe(isBookmarked => {
-      this.isBookmarked = isBookmarked;
-    });
-    this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
-      this.bookmarksCount = bookmarks.filter(b => b.type === BookmarkDto.TypeEnum.Monument && b.targetId === monumentId).length;
-    });
-  }
-
 
   toggleBookmark(): void {
-    if (!this.authService.getAccessToken()) {
-      window.location.href = `${environment.authUrl}/login`;
-      return;
-    }
-
-    const monumentId = Number(this.route.snapshot.paramMap.get('id'));
-    if (!monumentId) return;
-
-    if (this.isBookmarked) {
-      this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
-        const bookmark = bookmarks.find(b => b.type === BookmarkDto.TypeEnum.Monument && b.targetId === monumentId);
-        if (bookmark && bookmark.id != null) {
-          this.bookmarkService.deleteBookmark(bookmark.id).subscribe(() => {
-            this.isBookmarked = false;
-            this.bookmarksCount = Math.max(0, this.bookmarksCount - 1);
-          });
-        }
-      });
-    } else {
-      this.bookmarkService.createBookmark(BookmarkDto.TypeEnum.Monument, monumentId).subscribe(() => {
-        this.isBookmarked = true;
-        this.bookmarksCount += 1;
-      });
-    }
+    if (!this.currentMonumentId) return;
+    this.bookmarkFacade.toggle(
+      BookmarkDto.TypeEnum.Monument,
+      this.currentMonumentId
+    );
   }
 
   captureMark(): void {
@@ -170,49 +128,22 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   openReportModal(): void {
-    if (!this.authService.getAccessToken()) {
-      window.location.href = `${environment.authUrl}/login`;
-      return;
-    }
+    if (!this.currentMonumentId) return;
 
-    const monumentId = this.route.snapshot.paramMap.get('id');
-    if (!monumentId) return;
+    this.monumentService.getMonumentById(this.currentMonumentId).subscribe(monument => {
+      if (!monument) return;
 
-    this.monumentService.getMonumentById(Number(monumentId)).subscribe(monument => {
-      if (monument && monument.id) {
-        this.reportModalConfig = {
-          targetId: monument.id,
-          targetType: 'MONUMENT' as ReportRequestDto.TargetTypeEnum,
-          targetName: monument.name
-        };
-        this.reportModalVisible = true;
-      }
+      this.reportFacade.open({
+        targetId: monument.id!,
+        targetType: 'MONUMENT',
+        targetName: monument.name
+      });
     });
   }
 
   handleReportSubmit(report: ReportRequestDto): void {
-    this.reportService.createReport(report).subscribe({
-      next: () => {
-        this.notificationService.showSuccess(
-          'Report submitted successfully. Thank you for helping improve StoneMark!'
-        );
-        this.reportModalVisible = false;
-      },
-      error: (err) => {
-        console.error('Error submitting report:', err);
-
-        if (err.status === 400 && err.error && typeof err.error === 'object') {
-          this.reportModalFieldErrors = err.error;
-          return;
-        }
-        this.notificationService.showError(
-          'Failed to submit report. Please try again.'
-        );
-        this.reportModalVisible = false;
-      }
-    });
+    this.reportFacade.submit(report);
   }
-
 
   getImageUrl(monument: MonumentResponseDto): string {
     return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');

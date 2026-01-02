@@ -4,12 +4,9 @@ import {Router, RouterLink} from '@angular/router';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { MarkDto } from '@api/model/mark-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
-import { BookmarkService } from '@core/services/bookmark/bookmark.service';
-import { AuthService } from '@core/services/auth/auth.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
-import { finalize } from 'rxjs/operators';
-import { environment } from '@env/environment';
 import { ImageUtils } from '@shared/utils/image.utils';
+import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 
 type SearchItem = MonumentResponseDto | MarkDto;
 
@@ -23,49 +20,23 @@ export class SearchResultsComponent {
   @Input() items: SearchItem[] = [];
   @Input() type: 'monuments' | 'marks' = 'monuments';
   occurrenceCount: Record<string | number, number> = {};
-  bookmarkedItems = new Set<number>();
-  bookmarkIds = new Map<number, number>();
 
   constructor(
     private router: Router,
     private markOccurrenceService: MarkOccurrenceService,
-    private bookmarkService: BookmarkService,
-    private authService: AuthService
+    public bookmarkFacade: BookmarkFacade
   ) {}
 
   ngOnChanges(): void {
-    if (this.items.length) {
-      if (this.isLoggedIn()) {
-        this.loadBookmarks();
-      }
-      this.loadOccurrenceCounts();
-    }
-  }
+    if (!this.items.length) return;
 
-  private isLoggedIn(): boolean {
-    return this.authService.getAccessToken() !== null;
-  }
-
-  private loadBookmarks(): void {
-    this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
-      this.bookmarkedItems.clear();
-      this.bookmarkIds.clear();
-
-      const targetType = this.type === 'monuments'
+    const targetType =
+      this.type === 'monuments'
         ? BookmarkDto.TypeEnum.Monument
         : BookmarkDto.TypeEnum.Mark;
 
-      bookmarks
-        .filter(b => b.type === targetType)
-        .forEach(b => {
-          if (b.targetId != null) {
-            this.bookmarkedItems.add(b.targetId);
-            if (b.id != null) {
-              this.bookmarkIds.set(b.targetId, b.id);
-            }
-          }
-        });
-    });
+    this.bookmarkFacade.loadForList(targetType);
+    this.loadOccurrenceCounts();
   }
 
   private loadOccurrenceCounts(): void {
@@ -94,48 +65,18 @@ export class SearchResultsComponent {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!this.isLoggedIn()) {
-      window.location.href = `${environment.authUrl}/login`;
-      return;
-    }
+    if (!item.id) return;
 
-    const itemId = item.id;
-    if (!itemId) return;
-
-    if (this.isBookmarked(item)) {
-      const bookmarkId = this.bookmarkIds.get(itemId);
-      if (bookmarkId) {
-        this.bookmarkService.deleteBookmark(bookmarkId)
-          .pipe(finalize(() => {}))
-          .subscribe({
-            next: () => {
-              this.bookmarkedItems.delete(itemId);
-              this.bookmarkIds.delete(itemId);
-            },
-            error: (error) => console.error('Erro ao remover bookmark:', error)
-          });
-      }
-    } else {
-      const type = this.type === 'monuments'
+    const targetType =
+      this.type === 'monuments'
         ? BookmarkDto.TypeEnum.Monument
         : BookmarkDto.TypeEnum.Mark;
 
-      this.bookmarkService.createBookmark(type, itemId)
-        .pipe(finalize(() => {}))
-        .subscribe({
-          next: (bookmark) => {
-            this.bookmarkedItems.add(itemId);
-            if (bookmark.id) {
-              this.bookmarkIds.set(itemId, bookmark.id);
-            }
-          },
-          error: (error) => console.error('Erro ao criar bookmark:', error)
-        });
-    }
+    this.bookmarkFacade.toggleForItem(targetType, item.id);
   }
 
   isBookmarked(item: SearchItem): boolean {
-    return item.id !== undefined && this.bookmarkedItems.has(item.id);
+    return item.id !== undefined && this.bookmarkFacade.isItemBookmarked(item.id);
   }
 
   getItemCover(item: SearchItem): string {

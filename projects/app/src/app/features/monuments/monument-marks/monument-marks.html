@@ -85,10 +85,10 @@
             (viewMark)="viewMark($event)">
           </app-occurrences-grid>
 
-          @if (totalPages > 1) {
+          @if (pagination.totalPages > 1) {
             <app-pagination
-              [currentPage]="currentPage"
-              [totalPages]="totalPages"
+              [currentPage]="pagination.currentPage"
+              [totalPages]="pagination.totalPages"
               (pageChange)="onPageChange($event)">
             </app-pagination>
           }

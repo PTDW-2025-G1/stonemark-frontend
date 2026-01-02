@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { AuthService } from '@core/services/auth/auth.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
-import { PasswordService } from '@shared/helpers/password.service';
+import { PasswordFacade } from '@shared/facades/password.facade';
 
 @Component({
   selector: 'app-reset-password',
@@ -28,16 +28,16 @@ export class ResetPasswordComponent implements OnInit {
   hasSpecialChar = false;
 
   constructor(
-    private passwordService: PasswordService,
+    private passwordFacade: PasswordFacade,
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.passwordForm = this.passwordService.createForm('reset');
+    this.passwordForm = this.passwordFacade.createForm('reset');
     this.token = this.route.snapshot.queryParamMap.get('token');
-    this.passwordService.setupValidationListener(this.passwordForm, (reqs, strength) => {
+    this.passwordFacade.setupValidationListener(this.passwordForm, (reqs, strength) => {
       Object.assign(this, reqs);
       this.passwordStrength = strength;
     });
@@ -55,12 +55,12 @@ export class ResetPasswordComponent implements OnInit {
     this.auth.resetPassword(this.token, newPassword).subscribe({
       next: () => {
         this.loading = false;
-        this.passwordService.showSuccessToast('Password reset successfully!');
+        this.passwordFacade.showSuccessToast('Password reset successfully!');
         setTimeout(() => this.router.navigate(['/login']), 2500);
       },
       error: () => {
         this.loading = false;
-        this.passwordService.showErrorToast('Something went wrong. Try again.');
+        this.passwordFacade.showErrorToast('Something went wrong. Try again.');
       }
     });
   }

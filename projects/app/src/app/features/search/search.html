@@ -15,8 +15,8 @@
       <div class="flex flex-col items-center w-full">
         <app-search-results [items]="(items$ | async) ?? []" [type]="type"></app-search-results>
         <app-search-pagination
-          [currentPage]="currentPage"
-          [totalPages]="totalPages"
+          [currentPage]="pagination.currentPage"
+          [totalPages]="pagination.totalPages"
           (pageChange)="onPageChange($event)">
         </app-search-pagination>
       </div>

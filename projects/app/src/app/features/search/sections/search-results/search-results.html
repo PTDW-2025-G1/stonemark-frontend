@@ -11,14 +11,13 @@
                  transition-all duration-300 hover:-translate-y-1 block"
         >
 
-          <!-- Bookmark -->
           <button
             (click)="toggleBookmark($event, item)"
             class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full
                    bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white
                    transition-all duration-200 flex items-center justify-center
                    hover:scale-110 active:scale-95"
-            [attr.aria-label]="isBookmarked(item) ? 'Remover bookmark' : 'Adicionar bookmark'">
+            [attr.aria-label]="isBookmarked(item) ? 'Remove Bookmark' : 'Add Bookmark'">
 
             <i
               [class]="isBookmarked(item)
@@ -28,7 +27,6 @@
             </i>
           </button>
 
-          <!-- Image -->
           <div class="relative aspect-4/3 overflow-hidden">
             <img
               [src]="getItemCover(item)"
@@ -49,7 +47,6 @@
             }
           </div>
 
-          <!-- Content -->
           <div class="p-4 sm:p-5 space-y-2 pointer-events-none">
             <h3
               class="text-base sm:text-lg font-serif font-semibold text-text

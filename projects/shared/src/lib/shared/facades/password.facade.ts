@@ -4,7 +4,7 @@ import { PasswordUtils } from '@shared/utils/password.utils';
 import {NotificationService} from '@core/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
-export class PasswordService {
+export class PasswordFacade {
   constructor(private fb: FormBuilder, private notificationService: NotificationService) {}
 
   createForm(mode: 'change' | 'reset' | 'set'): FormGroup {
@@ -24,8 +24,7 @@ export class PasswordService {
       controls.currentPassword = ['', Validators.required];
     }
 
-    const form = this.fb.group(controls, { validators: this.passwordMatchValidator });
-    return form;
+    return this.fb.group(controls, { validators: this.passwordMatchValidator });
   }
 
   private passwordMatchValidator(group: FormGroup): { passwordMismatch: boolean } | null {

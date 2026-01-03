@@ -36,7 +36,7 @@
           Stone Mason Mark
         </div>
 
-        <h1 class="text-5xl md:text-6xl font-serif font-medium leading-[1.1] mb-8">
+        <h1 class="text-5xl md:text-6xl font-serif font-medium leading-[1.1] mb-8 flex items-center gap-3">
           Mark Occurrence
         </h1>
 
@@ -69,7 +69,6 @@
         @if (occurrence.monument) {
           <div class="space-y-4 mb-8">
             <div class="flex items-start gap-3">
-              <i class="bi bi-building text-primary text-xl mt-1"></i>
               <div>
                 <p class="font-bold text-lg">{{ occurrence.monument.name }}</p>
                 @if (occurrence.monument.description) {
@@ -96,7 +95,7 @@
                   @if (shareFacade.copiedCoordinates) {
                     <span class="text-xs">Copied</span>
                   } @else {
-                    <i class="bi bi-clipboard"></i>
+                    <i class="bi bi-clipboard cursor-pointer"></i>
                   }
                 </button>
               </div>

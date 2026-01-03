@@ -1,6 +1,6 @@
 <section class="border-b border-border">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-    <div class="flex flex-col gap-4 mb-6">
+    <div class="flex flex-col gap-4">
       <div>
         <p class="text-xs sm:text-sm text-text-muted mb-1 flex items-center gap-2">
           <i class="bi bi-geo-alt-fill text-primary"></i>
@@ -10,7 +10,7 @@
           {{ title }}
         </h1>
         @if (type === 'marks') {
-          <p class="text-base sm:text-lg text-text-muted mt-3 max-w-3xl">
+          <p class="text-base sm:text-lg text-text-muted mt-1 max-w-3xl leading-snug">
             Explore our collection of historic mason marks found across monuments. Each mark tells a unique story of the craftsmen who left their signature in stone.
           </p>
         }
@@ -18,7 +18,7 @@
     </div>
 
     @if (type === 'monuments') {
-      <div class="flex flex-col sm:flex-row gap-4">
+      <div class="flex flex-col sm:flex-row gap-4 mt-6">
         <!-- Search Input -->
         <div class="relative group flex-1">
           <div class="absolute inset-y-0 left-3 sm:left-4 flex items-center pointer-events-none text-text-muted group-focus-within:text-primary transition-colors">

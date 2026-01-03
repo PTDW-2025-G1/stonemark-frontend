@@ -6,7 +6,7 @@
       [class.text-white]="activeTab === 'marks'"
       [class.text-text-muted]="activeTab !== 'marks'"
       class="px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 text-sm">
-      <i class="bi bi-star-fill"></i>
+      <span [innerHTML]="marksIcon | safeHtml" class="w-4 h-4"></span>
       My Marks
     </button>
     <button

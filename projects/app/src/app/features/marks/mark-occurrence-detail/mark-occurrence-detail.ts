@@ -161,4 +161,3 @@ export class MarkOccurrenceDetail implements OnInit {
     return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/placeholder.png');
   }
 }
-

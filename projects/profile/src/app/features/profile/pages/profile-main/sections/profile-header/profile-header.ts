@@ -1,9 +1,12 @@
 import {Component, Input, Output, EventEmitter, inject} from '@angular/core';
 import {AuthService} from '@core/services/auth/auth.service';
+import { MARKS_ICON } from '@core/constants/content-icons';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-profile-header',
   standalone: true,
+  imports: [SafeHtmlPipe],
   templateUrl: './profile-header.html'
 })
 export class ProfileHeaderComponent {
@@ -19,6 +22,8 @@ export class ProfileHeaderComponent {
   @Output() logout = new EventEmitter<void>();
 
   private authService = inject(AuthService);
+
+  marksIcon = MARKS_ICON;
 
   getInitials(): string {
     if (!this.user?.name) return '';

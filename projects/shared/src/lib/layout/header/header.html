@@ -44,11 +44,12 @@
               <div class="relative">
                 <button
                   (click)="toggleDropdown()"
-                  class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-text
-                         hover:bg-surface-alt rounded-full transition-colors"
+                  class="p-1 hover:bg-surface-alt/50 rounded-full transition-all duration-200"
                 >
-                  <span>{{ user.firstName }}</span>
-                  <i class="bi text-xs" [ngClass]="isDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                  <div class="w-9 h-9 rounded-full bg-surface-alt border border-border/50 flex items-center justify-center
+                              hover:border-primary/30 transition-all duration-200 group">
+                    <i class="bi bi-person text-text-muted group-hover:text-primary text-base transition-colors"></i>
+                  </div>
                 </button>
 
                 <!-- Dropdown -->
@@ -58,7 +59,7 @@
                     <button
                       (click)="goToProfile()"
                       class="w-full text-left px-4 py-2.5 text-sm text-text-muted hover:text-text
-                             hover:bg-surface-alt transition-colors flex items-center gap-3"
+                             hover:bg-surface-alt transition-colors flex items-center gap-3 cursor-pointer"
                     >
                       <i class="bi bi-person-circle"></i>
                       <span>Profile</span>
@@ -66,7 +67,7 @@
                     <button
                       (click)="goToBookmarks()"
                       class="w-full text-left px-4 py-2.5 text-sm text-text-muted hover:text-text
-                             hover:bg-surface-alt transition-colors flex items-center gap-3"
+                             hover:bg-surface-alt transition-colors flex items-center gap-3 cursor-pointer"
                     >
                       <i class="bi bi-bookmark"></i>
                       <span>Bookmarks</span>

@@ -30,7 +30,6 @@ export class BookmarksComponent implements OnInit {
 
   changeTab(tab: TabType): void {
     this.facade.changeTab(tab);
-    // Reset to page 1 when changing tabs
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { page: 1 },

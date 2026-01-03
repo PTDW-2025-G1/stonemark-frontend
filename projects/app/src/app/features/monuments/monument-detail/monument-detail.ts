@@ -2,26 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, tap } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
-import { NotificationService } from '@core/services/notification.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { ReportFacade } from '@shared/facades/report.facade';
-import { ReportRequestDto } from '@api/model/report-request-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import {ButtonComponent} from '@shared/ui/button/button';
+import {ShareFacade} from '@shared/facades/share.facade';
+import {ShareSectionComponent} from '@shared/ui/share-section/share-section';
 
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReportModalComponent, SafeHtmlPipe, ButtonComponent],
+  imports: [CommonModule, RouterModule, ReportModalComponent, SafeHtmlPipe, ButtonComponent, ShareSectionComponent],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
@@ -38,18 +38,14 @@ export class MonumentDetailComponent implements OnInit {
     private markOccurrenceService: MarkOccurrenceService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
-    private notificationService: NotificationService,
     public bookmarkFacade: BookmarkFacade,
-    public reportFacade: ReportFacade
+    public reportFacade: ReportFacade,
+    public shareFacade: ShareFacade
   ) { }
 
   monumentsIcon = MONUMENTS_ICON;
 
   ngOnInit(): void {
-    const monumentId$ = this.route.paramMap.pipe(
-      map(params => Number(params.get('id'))),
-    );
-
     this.monument$ = this.route.paramMap.pipe(
       switchMap(params => {
         const id = Number(params.get('id'));
@@ -102,29 +98,9 @@ export class MonumentDetailComponent implements OnInit {
     this.router.navigate(['/suggestions/new'], { queryParams: { monumentId } });
   }
 
-
   setMapUrl(latitude: number, longitude: number) {
     const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
     this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  openDirections(latitude: number, longitude: number) {
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`, '_blank');
-  }
-
-  copyLink() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      this.notificationService.showSuccess('Link copied to clipboard!');
-    });
-  }
-
-  shareOnFacebook() {
-    const url = encodeURIComponent(window.location.href);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-  }
-
-  shareOnInstagram() {
-    window.open('https://www.instagram.com/', '_blank');
   }
 
   openReportModal(): void {
@@ -139,10 +115,6 @@ export class MonumentDetailComponent implements OnInit {
         targetName: monument.name
       });
     });
-  }
-
-  handleReportSubmit(report: ReportRequestDto): void {
-    this.reportFacade.submit(report);
   }
 
   getImageUrl(monument: MonumentResponseDto): string {

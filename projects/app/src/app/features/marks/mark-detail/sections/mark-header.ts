@@ -4,11 +4,12 @@ import { MarkDto } from '@api/model/mark-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
+import { ShareSectionComponent } from '@shared/ui/share-section/share-section';
 
 @Component({
   selector: 'app-mark-detail-header',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe],
+  imports: [CommonModule, SafeHtmlPipe, ShareSectionComponent],
   template: `
     <div class="mb-8">
       <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
@@ -64,6 +65,13 @@ import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
               Report Issue
             </button>
           </div>
+
+          <!-- Share Section -->
+          <app-share-section
+            shareText="Check out this stone mason mark!"
+            layout="vertical"
+            containerClass="mt-4">
+          </app-share-section>
         </div>
       </div>
     </div>
@@ -81,6 +89,7 @@ export class MarkHeaderComponent {
   @Output() reportClicked = new EventEmitter<void>();
 
   monumentsIcon = MONUMENTS_ICON;
+
 
   toggleBookmark(): void {
     this.bookmarkToggled.emit();

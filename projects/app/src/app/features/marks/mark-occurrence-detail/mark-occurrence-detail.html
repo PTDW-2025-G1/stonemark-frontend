@@ -40,12 +40,6 @@
           Mark Occurrence
         </h1>
 
-<!--        @if (occurrence.mark?.description) {-->
-<!--          <p class="text-lg text-text-muted mb-8 leading-relaxed">-->
-<!--            {{ occurrence.mark?.description }}-->
-<!--          </p>-->
-<!--        }-->
-
         <div class="flex flex-col sm:flex-row gap-4">
           <button
             (click)="viewMark()"
@@ -93,10 +87,17 @@
                   {{ occurrence.monument.latitude | number:'1.6-6' }}, {{ occurrence.monument.longitude | number:'1.6-6' }}
                 </p>
                 <button
-                  (click)="copyLocation()"
-                  class="text-primary hover:text-text transition-colors text-sm"
+                  (click)="shareFacade.copyCoordinates(
+                    occurrence.monument.latitude,
+                    occurrence.monument.longitude
+                  )"
+                  class="text-primary hover:text-text transition-colors text-sm min-w-[60px]"
                   title="Copy coordinates">
-                  <i class="bi bi-clipboard"></i>
+                  @if (shareFacade.copiedCoordinates) {
+                    <span class="text-xs">Copied</span>
+                  } @else {
+                    <i class="bi bi-clipboard"></i>
+                  }
                 </button>
               </div>
             }
@@ -109,7 +110,10 @@
               Monument Details
             </button>
             <button
-              (click)="openInMaps()"
+              (click)="shareFacade.openInMaps(
+                occurrence.monument.latitude,
+                occurrence.monument.longitude
+              )"
               class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer rounded-sm">
               Open in Maps
             </button>
@@ -190,17 +194,20 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 max-w-5xl mx-auto">
+
       <!-- Facebook -->
       <button
-        (click)="shareFacebook()"
+        (click)="shareFacade.shareFacebook()"
         class="flex flex-col border-t border-primary pt-6 group cursor-pointer"
       >
         <div class="flex justify-between items-start mb-6">
           <span class="text-sm font-bold font-serif">01</span>
           <i class="bi bi-facebook text-text-muted group-hover:text-blue-600 transition-colors text-2xl"></i>
         </div>
-        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">Facebook</h3>
+        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">
+          Facebook
+        </h3>
         <p class="text-text-muted leading-relaxed text-sm">
           Share on Facebook with your network
         </p>
@@ -208,43 +215,70 @@
 
       <!-- Twitter -->
       <button
-        (click)="shareTwitter()"
+        (click)="shareFacade.shareTwitter('Check out this stone mason mark occurrence!')"
         class="flex flex-col border-t border-primary pt-6 group cursor-pointer"
       >
         <div class="flex justify-between items-start mb-6">
           <span class="text-sm font-bold font-serif">02</span>
           <i class="bi bi-twitter-x text-text-muted group-hover:text-sky-500 transition-colors text-2xl"></i>
         </div>
-        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">Twitter</h3>
+        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">
+          X
+        </h3>
         <p class="text-text-muted leading-relaxed text-sm">
           Post on Twitter / X platform
         </p>
       </button>
 
-      <!-- Copy Link -->
+      <!-- WhatsApp -->
       <button
-        (click)="copyShareLink()"
+        (click)="shareFacade.shareWhatsApp('Check out this stone mason mark occurrence!')"
         class="flex flex-col border-t border-primary pt-6 group cursor-pointer"
       >
         <div class="flex justify-between items-start mb-6">
           <span class="text-sm font-bold font-serif">03</span>
+          <i class="bi bi-whatsapp text-text-muted group-hover:text-green-600 transition-colors text-2xl"></i>
+        </div>
+        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">
+          WhatsApp
+        </h3>
+        <p class="text-text-muted leading-relaxed text-sm">
+          Share privately or in groups
+        </p>
+      </button>
+
+      <!-- Copy Link -->
+      <button
+        (click)="shareFacade.copyCurrentUrl()"
+        class="flex flex-col border-t border-primary pt-6 group cursor-pointer"
+      >
+        <div class="flex justify-between items-start mb-6">
+          <span class="text-sm font-bold font-serif">04</span>
           <i class="bi bi-link-45deg text-text-muted group-hover:text-primary transition-colors text-2xl"></i>
         </div>
-        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">Copy Link</h3>
+        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">
+          @if (shareFacade.copiedLink) {
+            Copied
+          } @else {
+            Copy Link
+          }
+        </h3>
         <p class="text-text-muted leading-relaxed text-sm">
           Copy direct link to clipboard
         </p>
       </button>
+
     </div>
   </section>
 }
 
-<!-- Report Modal -->
 <app-report-modal
-  [(visible)]="reportModalVisible"
-  [config]="reportModalConfig"
-  (reportSubmit)="handleReportSubmit($event)"
-></app-report-modal>
+  [visible]="reportFacade.visible"
+  [config]="reportFacade.config"
+  [fieldErrors]="reportFacade.fieldErrors"
+  (reportSubmit)="reportFacade.submit($event)"
+  (close)="reportFacade.close()">
+</app-report-modal>
 
 <style>
   .perspective-1000 {

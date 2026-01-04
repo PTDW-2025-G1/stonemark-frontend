@@ -1,4 +1,18 @@
 {
+  "header": {
+    "logo_alt": "StoneMark",
+    "profile": "Perfil",
+    "bookmarks": "Marcadores",
+    "logout": "Sair",
+    "sign_in": "Entrar",
+    "nav": {
+      "monuments": "Monumentos",
+      "marks": "Marcas",
+      "contribute": "Contribuir",
+      "discover": "Descobrir",
+      "about": "Sobre"
+    }
+  },
   "mission": {
     "label": "A Nossa Missão",
     "title": "Unir Passado e Presente",
@@ -191,5 +205,86 @@
     "challenges_desc": "O contexto é tudo. O mesmo símbolo simples pode ser usado por vários canteiros, e a erosão pode alterar a forma original, tornando a interpretação um verdadeiro puzzle.",
     "human_title": "Uma História Humana",
     "human_desc": "Interpretar estas marcas transforma paredes de pedra em documentos de história vivida. Revelam identidades, movimentos e técnicas de artesãos cujos nomes nunca foram registados, aproximando-nos da história humana por trás dos grandes monumentos."
+  },
+  "contribute-hero-section": {
+    "label": "Ajuda & Guia",
+    "title": "Descobrir. <span class='italic'>Capturar</span>.<br/>Preservar.",
+    "desc": "Cada marca conta uma história. Junta-te a milhares de exploradores a preservar o património cultural, uma marca de pedra de cada vez."
+  },
+  "contribute-trust-indicators": {
+    "gdpr_title": "Conformidade RGPD",
+    "gdpr_desc": "Os teus dados estão protegidos com padrões de segurança líderes de mercado",
+    "community_title": "Movido pela Comunidade",
+    "community_desc": "Junta-te a uma rede global de entusiastas e historiadores do património",
+    "ai_title": "Potenciado por IA",
+    "ai_desc": "Análise automática com moderação humana para garantir precisão"
+  },
+  "contribute-how-it-works": {
+    "header_label": "Contribuição Simples",
+    "header_title": "A História no Teu Bolso",
+    "header_desc": "Sem formulários complexos. Basta conversar com o nosso bot para preservar marcas de canteiro em segundos.",
+    "step1_title": "Ligar",
+    "step1_desc": "Inicia o chat e verifica o teu número. Rápido, seguro e ligado a ti.",
+    "step2_title": "Fotografar & Enviar",
+    "step2_desc": "Envia uma foto da marca. A nossa IA analisa instantaneamente para encontrar correspondências.",
+    "step3_title": "Partilhar Localização",
+    "step3_desc": "Partilha a tua localização no chat. Encontramos o monumento mais próximo automaticamente.",
+    "step4_title": "Confirmar",
+    "step4_desc": "Revê os detalhes, adiciona uma nota se quiseres e confirma. História preservada!",
+    "desktop_img_alt": "Fluxo do ChatBot StoneMark",
+    "mobile_img1_alt": "ChatBot Passo 1",
+    "mobile_img2_alt": "ChatBot Passo 2",
+    "mobile_img3_alt": "ChatBot Passo 3",
+    "actual_interface": "Interface Real do Chat",
+    "guide_title": "A Jornada Completa",
+    "guide_desc": "Um olhar passo a passo sobre como a tua descoberta se torna história.",
+    "detailed1_title": "Autenticação Segura",
+    "detailed1_desc": "O bot pede o teu número para autenticar e associar cada interação ao teu perfil.",
+    "detailed2_title": "Iniciar Descoberta",
+    "detailed2_desc": "Após verificação, escolhe 'Propor Marca de Canteiro' para começar.",
+    "detailed3_title": "Evidência Visual",
+    "detailed3_desc": "Serás convidado a enviar uma foto clara da marca. Este registo visual é o núcleo da tua contribuição.",
+    "detailed4_title": "Processamento por IA",
+    "detailed4_desc": "A imagem é processada e tentamos identificar marcas semelhantes no arquivo.",
+    "detailed5_title": "Localização Precisa",
+    "detailed5_desc": "Partilha a localização da marca via WhatsApp ou Telegram.",
+    "detailed6_title": "Contexto do Monumento",
+    "detailed6_desc": "O bot procura monumentos próximos. Se não encontrar, podes inserir manualmente.",
+    "detailed7_title": "Rever & Refinar",
+    "detailed7_desc": "Podes rever e modificar as informações antes de confirmar.",
+    "detailed8_title": "Adicionar Detalhes",
+    "detailed8_desc": "Opcionalmente, adiciona notas descritivas sobre o contexto ou observações.",
+    "detailed9_title": "Confirmação",
+    "detailed9_desc": "O bot confirma a submissão e notifica que a marca foi proposta com sucesso."
+  },
+  "contribute-privacy-section": {
+    "label": "Privacidade & Segurança",
+    "title": "A Tua Privacidade Importa",
+    "desc": "Totalmente conforme com o RGPD — os teus dados estão seguros e sempre sob o teu controlo",
+    "what_we_store_title": "O Que Guardamos",
+    "photo_meta_title": "Metadados da Foto",
+    "photo_meta_desc": "Ficheiro da foto com metadados básicos (GPS, data/hora)",
+    "user_attr_title": "Atribuição de Utilizador",
+    "user_attr_desc": "ID do utilizador para atribuição de autoria",
+    "submission_title": "Histórico de Submissão",
+    "submission_desc": "Estado da submissão e histórico de revisão",
+    "your_rights_title": "Os Teus Direitos",
+    "full_control_title": "Controlo Total",
+    "full_control_desc": "Ao eliminares uma conta, as submissões são atualizadas como tendo sido enviadas anónimamente",
+    "data_removal_title": "Remoção de Dados",
+    "data_removal_desc": "Pede a remoção completa dos teus dados instantaneamente",
+    "no_sharing_title": "Sem Partilha",
+    "no_sharing_desc": "Nenhum dado pessoal é partilhado sem consentimento",
+    "promise_title": "Uma Promessa de Confiança",
+    "promise_p1": "A tua confiança é fundamental. Nunca vendemos, partilhamos ou utilizamos os teus dados para fins comerciais.",
+    "promise_p2": "A privacidade é um direito — e aqui é respeitada em todas as etapas."
+  },
+  "contribute-cta-section": {
+    "title": "Pronto para Fazer História?",
+    "desc": "Junta-te à nossa comunidade crescente de exploradores, historiadores e entusiastas do património. Cada contribuição ajuda a preservar histórias gravadas em pedra para as gerações futuras.",
+    "submit": "Submeter a Primeira Marca",
+    "explore": "Explorar Base de Dados",
+    "footer": "Seguro • Privado • Gratuito"
   }
 }
+

@@ -8,11 +8,12 @@ import { Subscription } from 'rxjs';
 import {environment} from '@env/environment';
 import {ButtonComponent} from '@shared/ui/button/button';
 import {LanguageSelectorComponent} from '@shared/ui/language-selector/language-selector';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonComponent, LanguageSelectorComponent],
+  imports: [CommonModule, RouterModule, ButtonComponent, LanguageSelectorComponent, TranslateModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss']
 })
@@ -27,11 +28,11 @@ export class Header implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
 
   menuItems = [
-    { label: 'Monuments', route: `${environment.baseUrl}/search/monuments` },
-    { label: 'Marks', route: `${environment.baseUrl}/search/marks` },
-    { label: 'Contribute', route: `${environment.baseUrl}/contribute` },
-    { label: 'Discover', route: `${environment.baseUrl}/discover` },
-    { label: 'About', route: `${environment.baseUrl}/about` },
+    { labelKey: 'header.nav.monuments', route: `${environment.baseUrl}/search/monuments` },
+    { labelKey: 'header.nav.marks', route: `${environment.baseUrl}/search/marks` },
+    { labelKey: 'header.nav.contribute', route: `${environment.baseUrl}/contribute` },
+    { labelKey: 'header.nav.discover', route: `${environment.baseUrl}/discover` },
+    { labelKey: 'header.nav.about', route: `${environment.baseUrl}/about` },
   ];
 
   constructor(protected authService: AuthService, private profileService: ProfileService) {}
@@ -114,8 +115,14 @@ export class Header implements OnInit, OnDestroy {
 
   isActiveRoute(route: string): boolean {
     const currentPath = window.location.pathname;
-    const routePath = route.replace(environment.baseUrl, '');
-    return currentPath.startsWith(routePath) || currentPath.includes(routePath);
+    try {
+      const url = new URL(route);
+      const routePath = url.pathname;
+      return currentPath.indexOf(routePath) === 0 || currentPath === routePath;
+    } catch {
+      const routePath = route.replace(environment.baseUrl, '');
+      return currentPath.indexOf(routePath) === 0 || currentPath === routePath;
+    }
   }
 
   private handleScroll(): void {

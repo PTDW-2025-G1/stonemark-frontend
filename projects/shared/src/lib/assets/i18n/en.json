@@ -1,4 +1,18 @@
 {
+  "header": {
+    "logo_alt": "StoneMark",
+    "profile": "Profile",
+    "bookmarks": "Bookmarks",
+    "logout": "Logout",
+    "sign_in": "Sign In",
+    "nav": {
+      "monuments": "Monuments",
+      "marks": "Marks",
+      "contribute": "Contribute",
+      "discover": "Discover",
+      "about": "About"
+    }
+  },
   "mission": {
     "label": "Our Mission",
     "title": "Bridging Past & Present",
@@ -191,5 +205,86 @@
     "challenges_desc": "Context is everything. The same simple symbol could be used by many masons, and weathering can alter the original shape, making interpretation a complex puzzle.",
     "human_title": "A Human Story",
     "human_desc": "Ultimately, interpreting these marks transforms stone walls into documents of lived history. They reveal the identities, movements, and techniques of artisans whose names were never recorded, bringing us closer to the human story behind our greatest monuments."
+  },
+  "contribute-hero-section": {
+    "label": "Help & Guide",
+    "title": "Discover. <span class='italic'>Capture</span>.<br/>Preserve.",
+    "desc": "Every mark tells a story. Join thousands of explorers preserving cultural heritage, one stone mark at a time."
+  },
+  "contribute-trust-indicators": {
+    "gdpr_title": "GDPR Compliant",
+    "gdpr_desc": "Your data is protected with industry-leading security standards",
+    "community_title": "Community Driven",
+    "community_desc": "Join a global network of heritage enthusiasts and historians",
+    "ai_title": "AI-Powered",
+    "ai_desc": "Automatic analysis with human moderation for accuracy"
+  },
+  "contribute-how-it-works": {
+    "header_label": "Simple Contribution",
+    "header_title": "History in Your Pocket",
+    "header_desc": "No complex forms. Just chat with our bot to preserve stonemason marks in seconds.",
+    "step1_title": "Connect",
+    "step1_desc": "Start a chat and verify your phone number. Quick, secure, and linked to you.",
+    "step2_title": "Snap & Share",
+    "step2_desc": "Send a photo of the mark. Our AI instantly analyzes it for matches.",
+    "step3_title": "Pin Location",
+    "step3_desc": "Share your location in chat. We find the nearest monument automatically.",
+    "step4_title": "Confirm",
+    "step4_desc": "Review details, add a note if needed, and confirm. History preserved!",
+    "desktop_img_alt": "StoneMark ChatBot Flow",
+    "mobile_img1_alt": "ChatBot Step 1",
+    "mobile_img2_alt": "ChatBot Step 2",
+    "mobile_img3_alt": "ChatBot Step 3",
+    "actual_interface": "Actual Chat Interface",
+    "guide_title": "The Complete Journey",
+    "guide_desc": "A step-by-step look at how your discovery becomes history.",
+    "detailed1_title": "Secure Authentication",
+    "detailed1_desc": "The bot requests your phone number to securely authenticate you and link every interaction to your registered user profile.",
+    "detailed2_title": "Initiate Discovery",
+    "detailed2_desc": "Once verified, the bot presents available actions. Simply choose to 'Propose a Stonemason's Mark' to start.",
+    "detailed3_title": "Visual Evidence",
+    "detailed3_desc": "You'll be asked to submit a clear photograph of the mark. This visual record is the core of your contribution.",
+    "detailed4_title": "AI Processing",
+    "detailed4_desc": "Upon receiving your image, our intelligent system processes it and attempts to identify similar existing marks in the archive.",
+    "detailed5_title": "Precise Location",
+    "detailed5_desc": "Share the geographic location of the mark directly via WhatsApp or Telegram's location-sharing feature.",
+    "detailed6_title": "Monument Context",
+    "detailed6_desc": "The bot automatically checks for nearby monuments. If none are found, you'll be asked to manually enter the monument's name.",
+    "detailed7_title": "Review & Refine",
+    "detailed7_desc": "You'll get a chance to review all the information. You can confirm it as is or make modifications if needed.",
+    "detailed8_title": "Add Details",
+    "detailed8_desc": "Optionally, add descriptive notes about the occurrence—context, condition, or any interesting observations.",
+    "detailed9_title": "Confirmation",
+    "detailed9_desc": "Finally, the bot confirms your submission and notifies you that the stonemason mark has been successfully proposed."
+  },
+  "contribute-privacy-section": {
+    "label": "Privacy & Security",
+    "title": "Your Privacy Matters",
+    "desc": "Fully GDPR compliant — your data is secure and always under your control",
+    "what_we_store_title": "What We Store",
+    "photo_meta_title": "Photo Metadata",
+    "photo_meta_desc": "Photo file with basic metadata (GPS, timestamp)",
+    "user_attr_title": "User Attribution",
+    "user_attr_desc": "User ID for proper authorship attribution",
+    "submission_title": "Submission History",
+    "submission_desc": "Submission status and review history",
+    "your_rights_title": "Your Rights",
+    "full_control_title": "Full Control",
+    "full_control_desc": "\nWhen you delete an account, submissions are updated as having been sent anonymously.",
+    "data_removal_title": "Data Removal",
+    "data_removal_desc": "Request complete data removal instantly",
+    "no_sharing_title": "No Sharing",
+    "no_sharing_desc": "No personal data shared without consent",
+    "promise_title": "A Promise of Trust",
+    "promise_p1": "Your trust is fundamental. We never sell, share, or use your data for commercial purposes.",
+    "promise_p2": "Privacy is a right — and here, it is respected at every step."
+  },
+  "contribute-cta-section": {
+    "title": "Ready to Make History?",
+    "desc": "Join our growing community of explorers, historians, and heritage enthusiasts. Every contribution helps preserve stories carved in stone for future generations.",
+    "submit": "Submit Your First Mark",
+    "explore": "Explore Database",
+    "footer": "Secure • Private • Free Forever"
   }
 }
+

@@ -1,0 +1,22 @@
+<section id="gallery" class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+    <h2 class="text-3xl font-serif">
+      {{ 'discover-gallery-loop-section.title' | translate }}
+    </h2>
+    <a href="/search/marks" class="text-sm border-b border-primary pb-1 hover:opacity-70 mt-4 md:mt-0">
+      {{ 'discover-gallery-loop-section.cta' | translate }}
+    </a>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    @for (src of images; track src) {
+      <div class="aspect-square bg-surface-muted overflow-hidden relative group">
+        <img
+          [src]="src"
+          alt="{{ 'discover-gallery-loop-section.img_alt' | translate }}"
+          class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-110"
+        />
+      </div>
+    }
+  </div>
+</section>

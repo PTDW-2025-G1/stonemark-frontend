@@ -76,5 +76,120 @@
     "impact_desc": "Aproximar milhões de pessoas ao património",
     "growth": "Crescimento Sustentável",
     "growth_desc": "Construído para escalar com arquitetura comprovada"
+  },
+  "discover-hero-section": {
+    "label": "O Verdadeiro Legado",
+    "title": "Decifrando o <span class='italic'>Código</span> da Pedra.",
+    "desc": "As marcas dos canteiros são as assinaturas esquecidas dos arquitetos do nosso passado. O StoneMark usa IA para documentar, agrupar e preservar estes símbolos em desaparecimento para as gerações futuras.",
+    "quote": "As assinaturas silenciosas da história.",
+    "img_alt": "Detalhe de escultura em pedra antiga",
+    "button": "Explorar a Base de Dados"
+  },
+  "discover-features-section": {
+    "1": {
+      "label": "Personalização",
+      "title": "A História nos Detalhes",
+      "desc": "Os canteiros eram pagos à peça. Para garantir o pagamento, gravavam um símbolo pessoal em cada bloco concluído. Estas marcas são pessoais, geométricas e infinitamente variadas.",
+      "img_alt": "Ilustração da funcionalidade de personalização"
+    },
+    "2": {
+      "label": "Preservação",
+      "title": "A Lutar Contra o Tempo",
+      "desc": "O tempo, a poluição e as renovações estão a apagar estas marcas. Ao criar um gémeo digital de cada marca encontrada, garantimos que, mesmo que a pedra desapareça, a assinatura do canteiro permanece.",
+      "img_alt": "Ilustração da funcionalidade de preservação"
+    }
+  },
+  "discover-why-it-matters-section": {
+    "label": "A Importância",
+    "title": "Porque as Marcas de Canteiro Importam",
+    "desc": "Estas simples gravações são uma ligação direta aos artesãos que construíram o nosso património, revelando história, cultura e mestria.",
+    "1": {
+      "title": "Assinaturas dos Construtores",
+      "desc": "As marcas funcionam como assinaturas pessoais, ajudando a identificar canteiros e a organização das obras, especialmente onde faltam registos escritos."
+    },
+    "2": {
+      "title": "Pistas de Construção",
+      "desc": "Símbolos diferentes revelam fases de construção e evolução da mestria, permitindo mapear a história de um monumento."
+    },
+    "3": {
+      "title": "Vestígios de Troca Cultural",
+      "desc": "Marcas semelhantes em locais distantes sugerem migração de canteiros e partilha de saber, atuando como impressões digitais arqueológicas."
+    },
+    "4": {
+      "title": "Um Património Frágil",
+      "desc": "A desaparecer devido à erosão e poluição, estas marcas são um património frágil. A documentação digital é crucial para as preservar."
+    }
+  },
+  "discover-process-loop-section": {
+    "label": "Como funciona",
+    "title": "Da Pedra à Nuvem",
+    "desc": "Uma jornada de preservação em 4 passos.",
+    "steps": {
+      "1": {
+        "title": "Encontrar uma Marca",
+        "desc": "Localiza uma marca de canteiro num monumento histórico, parede de catedral ou ponte antiga."
+      },
+      "2": {
+        "title": "Capturar",
+        "desc": "Tira uma foto de alto contraste com o teu telemóvel. Boa luz ajuda a revelar gravações ténues."
+      },
+      "3": {
+        "title": "Análise por IA",
+        "desc": "O nosso modelo analisa a geometria, agrupando marcas semelhantes em diferentes locais."
+      },
+      "4": {
+        "title": "Património",
+        "desc": "A marca é indexada na base de dados pública global, acessível a investigadores em todo o mundo."
+      }
+    }
+  },
+  "discover-gallery-loop-section": {
+    "title": "Exemplos de Marcas de Canteiro",
+    "cta": "Ver base de dados completa",
+    "img_alt": "Marca de canteiro em pedra"
+  },
+  "discover-contribution-section": {
+    "title": "Contribuir para o Projeto",
+    "desc": "O StoneMark é uma iniciativa aberta e académica. Se tens experiência técnica, de design ou investigação, são bem-vindas contribuições para a própria plataforma.",
+    "frontend": "Repositório Front-end",
+    "backend": "API & Repositório Backend",
+    "footer": "A colaboração aberta garante que o projeto se mantenha transparente, fiável e útil tanto para o público como para a comunidade académica."
+  },
+  "discover-inter-marks-section": {
+    "label": "Metodologia",
+    "title": "Interpretar Marcas de Canteiro",
+    "desc": "Uma visão geral de como especialistas compreendem e classificam estas marcas, oferecendo um olhar mais profundo sobre o seu significado.",
+    "types_title": "Tipos de Marcas",
+    "types": {
+      "personal_title": "Marcas Pessoais ou de Assinatura",
+      "personal_desc": "O tipo mais comum, usado para identificar o trabalho do canteiro para pagamento e controlo de qualidade.",
+      "assembly_title": "Marcas de Montagem e Orientação",
+      "assembly_desc": "Instruções práticas como 'este lado para cima' ou numeração para colocação sequencial.",
+      "symbolic_title": "Marcas Simbólicas ou Apotropaicas",
+      "symbolic_desc": "Marcas mais raras com função ritual, acreditando-se que afastam o mal ou marcam limites sagrados."
+    },
+    "types_img_alt": "Tipos de marcas de canteiro",
+    "carving_title": "Técnicas de Talhe",
+    "carving_desc": "A forma como a marca foi talhada dá pistas sobre a época e o autor. A profundidade, o ângulo e o ritmo dos golpes do cinzel são dados valiosos para análise.",
+    "carving": {
+      "point_title": "Cinzel de Ponta",
+      "point_desc": "Produz pequenas depressões circulares, comum no final da Idade Média.",
+      "flat_title": "Cinzel Plano",
+      "flat_desc": "Cria incisões lineares limpas, usado para assinaturas rápidas."
+    },
+    "carving_img_alt": "Ferramentas de talhe em pedra",
+    "arch_title": "Valor Arqueológico",
+    "arch_desc": "Estudadas em conjunto, as marcas de canteiro servem como micro-evidências históricas, permitindo reconstruir fases de construção e mapear o movimento dos artesãos.",
+    "arch": {
+      "phases_title": "Reconstruir Fases de Construção",
+      "phases_desc": "Agrupamentos de marcas idênticas podem indicar um período específico de trabalho ou reparações posteriores.",
+      "map_title": "Mapear o Movimento dos Artesãos",
+      "map_desc": "Símbolos semelhantes em locais distantes ajudam a traçar a mobilidade medieval e a transmissão de saber arquitetónico."
+    },
+    "arch_img_alt": "Mapa arqueológico com marcas de canteiro",
+    "challenges_title": "Desafios na Interpretação",
+    "challenges_desc": "O contexto é tudo. O mesmo símbolo simples pode ser usado por vários canteiros, e a erosão pode alterar a forma original, tornando a interpretação um verdadeiro puzzle.",
+    "human_title": "Uma História Humana",
+    "human_desc": "Interpretar estas marcas transforma paredes de pedra em documentos de história vivida. Revelam identidades, movimentos e técnicas de artesãos cujos nomes nunca foram registados, aproximando-nos da história humana por trás dos grandes monumentos."
   }
 }

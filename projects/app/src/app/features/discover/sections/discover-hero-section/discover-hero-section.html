@@ -1,0 +1,37 @@
+<section class="pt-32 pb-20 md:pt-30 md:pb-32 px-6 bg-surface text-text">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="order-2 lg:order-1 relative">
+      <div class="aspect-4/5 md:aspect-square bg-surface-muted overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-700">
+        <img
+          src="/assets/images/discover_image_1.jpg"
+          alt="{{ 'discover-hero-section.img_alt' | translate }}"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute bottom-6 left-6 bg-surface p-4 shadow-xl border border-border">
+          <p class="font-serif italic text-lg">
+            {{ 'discover-hero-section.quote' | translate }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <div class="inline-block border border-border px-3 py-1 text-xs uppercase tracking-widest font-bold mb-6 bg-surface-alt">
+        {{ 'discover-hero-section.label' | translate }}
+      </div>
+      <h1 class="text-5xl md:text-7xl font-serif font-medium leading-[1.1] mb-8" [innerHTML]="'discover-hero-section.title' | translate"></h1>
+      <p class="text-lg text-text-muted mb-8">
+        {{ 'discover-hero-section.desc' | translate }}
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <app-button
+          variant="primary"
+          size="normal"
+          [routerLink]="'/search/monuments'"
+        >
+          {{ 'discover-hero-section.button' | translate }}
+        </app-button>
+      </div>
+    </div>
+  </div>
+</section>

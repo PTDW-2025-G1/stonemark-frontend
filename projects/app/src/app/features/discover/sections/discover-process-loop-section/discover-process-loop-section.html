@@ -1,0 +1,41 @@
+<section id="process" class="py-24 px-6 max-w-7xl mx-auto border-t border-border">
+  <div class="flex flex-col md:flex-row justify-between md:items-end mb-16">
+    <div>
+      <div class="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">
+        {{ 'discover-process-loop-section.label' | translate }}
+      </div>
+      <h2 class="text-4xl md:text-5xl font-serif">
+        {{ 'discover-process-loop-section.title' | translate }}
+      </h2>
+    </div>
+    <div class="mt-6 md:mt-0 md:text-right">
+      <p class="text-text-muted italic">
+        {{ 'discover-process-loop-section.desc' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+    @for (step of processSteps; track step.number) {
+      <div class="flex flex-col border-t border-primary pt-6 group cursor-pointer">
+        <div class="flex justify-between items-start mb-6">
+          <span class="text-sm font-bold font-serif">{{ step.number }}</span>
+          <span class="text-text-muted group-hover:text-primary transition-colors text-2xl">
+            @switch (step.icon) {
+              @case ('search') { <i class="bi bi-search"></i> }
+              @case ('camera') { <i class="bi bi-camera"></i> }
+              @case ('scan') { <i class="bi bi-bounding-box-circles"></i> }
+              @case ('database') { <i class="bi bi-database"></i> }
+            }
+          </span>
+        </div>
+        <h3 class="text-2xl font-serif mb-4 group-hover:translate-x-2 transition-transform duration-300">
+          {{ 'discover-process-loop-section.steps.' + step.key + '.title' | translate }}
+        </h3>
+        <p class="text-text-muted leading-relaxed text-sm md:text-base pr-4">
+          {{ 'discover-process-loop-section.steps.' + step.key + '.desc' | translate }}
+        </p>
+      </div>
+    }
+  </div>
+</section>

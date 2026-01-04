@@ -76,5 +76,120 @@
     "impact_desc": "Empowering millions to connect with heritage",
     "growth": "Sustainable Growth",
     "growth_desc": "Built for scale with proven architecture"
+  },
+  "discover-hero-section": {
+    "label": "The Real Deal",
+    "title": "Deciphering the <span class='italic'>Stone</span> Code.",
+    "desc": "Masons' marks are the unsung autographs of the architects of our past. StoneMark uses AI to document, group, and preserve these fading symbols for future generations.",
+    "quote": "The silent signatures of history.",
+    "img_alt": "Ancient stone carving detail",
+    "button": "Explore the Database"
+  },
+  "discover-features-section": {
+    "1": {
+      "label": "Customization",
+      "title": "History in the Details",
+      "desc": "Stonecutters were paid by the piece. To ensure they got their due, they carved a personal symbol into every block they finished. These marks are personal, geometrical, and infinitely varied.",
+      "img_alt": "Feature illustration for customization"
+    },
+    "2": {
+      "label": "Preservation",
+      "title": "Fighting Time",
+      "desc": "Weather, pollution, and renovation are slowly erasing these marks. By creating a digital twin of every mark found, we ensure that even if the stone crumbles, the mason's signature remains.",
+      "img_alt": "Feature illustration for preservation"
+    }
+  },
+  "discover-why-it-matters-section": {
+    "label": "The Significance",
+    "title": "Why Mason's Marks Matter",
+    "desc": "These simple carvings are a direct link to the individual artisans who built our shared heritage, offering insights into history, culture, and craftsmanship.",
+    "1": {
+      "title": "Signatures of the Builders",
+      "desc": "Marks act as personal signatures, helping identify specific masons and how construction sites were organized, especially where written records are scarce."
+    },
+    "2": {
+      "title": "Construction Clues",
+      "desc": "Different symbols reveal distinct construction phases and the evolution of craftsmanship, allowing researchers to map a monument's history."
+    },
+    "3": {
+      "title": "Traces of Cultural Exchange",
+      "desc": "Similar marks found across vast distances suggest the migration of masons and the spread of shared knowledge, acting as archaeological fingerprints."
+    },
+    "4": {
+      "title": "A Fragile Heritage",
+      "desc": "Slowly disappearing due to erosion and pollution, these marks are a fragile heritage. Digital documentation is crucial to preserve them for future study."
+    }
+  },
+  "discover-process-loop-section": {
+    "label": "How it works",
+    "title": "From Stone to Cloud",
+    "desc": "A seamless 4-step preservation journey.",
+    "steps": {
+      "1": {
+        "title": "Find a Mark",
+        "desc": "Locate a mason's mark on a historical monument, cathedral wall, or ancient bridge structure."
+      },
+      "2": {
+        "title": "Capture",
+        "desc": "Take a high-contrast photo using your telephone camera. Good lighting helps reveal faint carvings."
+      },
+      "3": {
+        "title": "AI Analysis",
+        "desc": "Our embeddings model analyzes the geometry, grouping similar marks across different locations."
+      },
+      "4": {
+        "title": "Heritage",
+        "desc": "The mark is indexed into the global public database, accessible to researchers worldwide."
+      }
+    }
+  },
+  "discover-gallery-loop-section": {
+    "title": "Examples of Mason's Marks",
+    "cta": "View entire database",
+    "img_alt": "Stone mark"
+  },
+  "discover-contribution-section": {
+    "title": "Contributing to the Project",
+    "desc": "StoneMark is an open, academic-minded initiative. For those with technical, design, or research experience, contributions to the platform itself are welcome.",
+    "frontend": "Front-end Repository",
+    "backend": "API & Backend Repository",
+    "footer": "Open collaboration ensures the project remains transparent, reliable, and useful to both the public and the academic community."
+  },
+  "discover-inter-marks-section": {
+    "label": "Methodology",
+    "title": "Interpreting Mason’s Marks",
+    "desc": "An overview of how specialists understand and classify these marks, offering a deeper insight into their significance.",
+    "types_title": "Types of Marks",
+    "types": {
+      "personal_title": "Personal or Signature Marks",
+      "personal_desc": "The most common type, used to identify a mason's work for payment and quality control.",
+      "assembly_title": "Assembly & Orientation Marks",
+      "assembly_desc": "Practical instructions like 'this side up' or numbering for sequential placement.",
+      "symbolic_title": "Symbolic or Apotropaic Marks",
+      "symbolic_desc": "Rarer marks with ritual functions, believed to ward off evil or mark sacred boundaries."
+    },
+    "types_img_alt": "Types of mason's marks",
+    "carving_title": "Carving Techniques",
+    "carving_desc": "How a mark was carved provides clues about its period and maker. The depth, angle, and rhythm of the chisel strokes are all valuable data points for analysis.",
+    "carving": {
+      "point_title": "Point Chisel",
+      "point_desc": "Produces small circular depressions, common in late medieval periods.",
+      "flat_title": "Flat Chisel",
+      "flat_desc": "Creates clean linear incisions, used for quick tally signatures."
+    },
+    "carving_img_alt": "Stone carving tools",
+    "arch_title": "The Archaeological Value",
+    "arch_desc": "When studied collectively, mason's marks serve as micro-historical evidence, allowing researchers to reconstruct construction phases and map the movement of craftsmen.",
+    "arch": {
+      "phases_title": "Reconstruct Construction Phases",
+      "phases_desc": "Clusters of identical marks can indicate a specific period of work or later repairs using different teams.",
+      "map_title": "Map the Movement of Craftsmen",
+      "map_desc": "Similar symbols appearing across distant sites help trace medieval mobility and the transmission of architectural knowledge."
+    },
+    "arch_img_alt": "Archaeological map with mason's marks",
+    "challenges_title": "Challenges in Interpretation",
+    "challenges_desc": "Context is everything. The same simple symbol could be used by many masons, and weathering can alter the original shape, making interpretation a complex puzzle.",
+    "human_title": "A Human Story",
+    "human_desc": "Ultimately, interpreting these marks transforms stone walls into documents of lived history. They reveal the identities, movements, and techniques of artisans whose names were never recorded, bringing us closer to the human story behind our greatest monuments."
   }
 }

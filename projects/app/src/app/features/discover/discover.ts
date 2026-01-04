@@ -2,45 +2,22 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ButtonComponent} from '@shared/ui/button/button';
 import {RouterLink} from '@angular/router';
+import {DiscoverHeroSectionComponent} from '@features/discover/sections/discover-hero-section/discover-hero-section';
+import {DiscoverFeaturesSectionComponent} from '@features/discover/sections/discover-features-section/discover-features-section';
+import {DiscoverWhyItMattersSection} from '@features/discover/sections/discover-why-it-matters-section/discover-why-it-matters-section';
+import {DiscoverProcessLoopSectionComponent} from '@features/discover/sections/discover-process-loop-section/discover-process-loop-section';
+import {DiscoverGalleryLoopSectionComponent} from '@features/discover/sections/discover-gallery-loop-section/discover-gallery-loop-section';
+import {
+  DiscoverInterMarksSectionComponent
+} from '@features/discover/sections/discover-inter-marks-section/discover-inter-marks-section';
+import {
+  DiscoverContributionSectionComponent
+} from '@features/discover/sections/discover-contribution-section/discover-contribution-section';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, RouterLink],
+  imports: [CommonModule, ButtonComponent, RouterLink, DiscoverHeroSectionComponent, DiscoverFeaturesSectionComponent, DiscoverWhyItMattersSection, DiscoverProcessLoopSectionComponent, DiscoverGalleryLoopSectionComponent, DiscoverInterMarksSectionComponent, DiscoverContributionSectionComponent],
   templateUrl: './discover.html',
 })
-export class DiscoverPageComponent {
-  processSteps = [
-    {
-      number: '01',
-      title: 'Find a Mark',
-      desc: 'Locate a mason\'s mark on a historical monument, cathedral wall, or ancient bridge structure.',
-      icon: 'search'
-    },
-    {
-      number: '02',
-      title: 'Capture',
-      desc: 'Take a high-contrast photo using the StoneMark app. Good lighting helps reveal faint carvings.',
-      icon: 'camera'
-    },
-    {
-      number: '03',
-      title: 'AI Analysis',
-      desc: 'Our embeddings model analyzes the geometry, grouping similar marks across different locations.',
-      icon: 'scan'
-    },
-    {
-      number: '04',
-      title: 'Heritage',
-      desc: 'The mark is indexed into the global public database, accessible to researchers worldwide.',
-      icon: 'database'
-    }
-  ];
-
-  galleryImages = [
-    "/assets/images/galleryMarkImage1.jpg",
-    "/assets/images/galleryMarkImage2.jpg",
-    "/assets/images/galleryMarkImage3.jpg",
-    "/assets/images/galleryMarkImage4.jpg"
-  ];
-}
+export class DiscoverPageComponent {}

@@ -13,6 +13,30 @@
       "about": "About"
     }
   },
+  "footer": {
+    "brand_desc": "Preserving the Legacy Carved in Stone",
+    "partnerships": "Our Partnerships",
+    "explore": "Explore",
+    "support": "Support",
+    "copyright": "© {{year}} StoneMark. All rights reserved.",
+    "privacy_policy": "Privacy Policy",
+    "terms_service": "Terms of Service",
+    "cookie_policy": "Cookie Policy"
+  },
+  "shared-links": {
+    "monuments": "Monuments",
+    "marks": "Marks",
+    "discover": "Discover",
+    "about": "About",
+    "accessibility": "Accessibility",
+    "how_to_contribute": "How To Contribute",
+    "contact": "Contact",
+    "terms_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "cookie_policy": "Cookie Policy",
+    "marks_title": "Mason Marks"
+  },
+
   "mission": {
     "label": "Our Mission",
     "title": "Bridging Past & Present",
@@ -295,7 +319,6 @@
     "monuments_title": "Monuments",
     "monuments_desc": "Map of historic sites",
     "monuments_count": "2,547 Sites",
-    "marks_title": "Mason Marks",
     "marks_desc": "Symbol catalog",
     "marks_count": "12,483 Marks",
     "contribute_title": "Contribute",
@@ -332,6 +355,13 @@
     "error": "Failed to load news. Please try again later.",
     "view_more": "View More",
     "empty": "No news available at the moment."
+  },
+  "search-header": {
+    "displaying_marks": "Displaying Marks",
+    "displaying_monuments": "Displaying Monuments",
+    "marks_desc": "Explore our collection of historic mason marks found across monuments. Each mark tells a unique story of the craftsmen who left their signature in stone.",
+    "search_placeholder": "Search...",
+    "all_locations": "All Locations"
   }
 
 }

@@ -19,10 +19,10 @@ export interface PageMonumentListDto {
     content?: Array<MonumentListDto>;
     number?: number;
     sort?: SortObject;
-    pageable?: PageableObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
+    pageable?: PageableObject;
     empty?: boolean;
 }
 

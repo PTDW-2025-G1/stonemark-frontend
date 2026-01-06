@@ -67,8 +67,8 @@
               <span [innerHTML]="marksIcon | safeHtml" class="text-white text-xl"></span>
             </div>
             <div>
-              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user.stats.totalMarks }}</p>
-              <p class="text-xs text-text-muted leading-none">Total Marks Submitted</p>
+              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user?.stats?.accepted }}</p>
+              <p class="text-xs text-text-muted leading-none">Accepted</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@
               <i class="bi bi-clock text-white text-xl"></i>
             </div>
             <div>
-              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user.stats.pendings }}</p>
+              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user?.stats?.under_review }}</p>
               <p class="text-xs text-text-muted leading-none">Under Review</p>
             </div>
           </div>
@@ -87,7 +87,7 @@
               <i class="bi bi-x-circle text-white text-xl"></i>
             </div>
             <div>
-              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user.stats.rejected }}</p>
+              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user?.stats?.rejected }}</p>
               <p class="text-xs text-text-muted leading-none">Rejected</p>
             </div>
           </div>

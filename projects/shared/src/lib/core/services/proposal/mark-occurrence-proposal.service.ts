@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { MarkOccurrenceProposalDto } from '@api/model/mark-occurrence-proposal-dto';
 import { PageMarkOccurrenceProposalListDto } from '@api/model/page-mark-occurrence-proposal-list-dto';
 import { PageMarkOccurrenceProposalDto } from '@api/model/page-mark-occurrence-proposal-dto';
+import { MarkOccurrenceProposalStatsDto } from '@api/model/mark-occurrence-proposal-stats-dto';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -19,6 +20,10 @@ export class MarkOccurrenceProposalService {
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get<PageMarkOccurrenceProposalListDto>(`${this.baseUrl}/user/${userId}`, { params });
+  }
+
+  getUserStats(userId: number): Observable<MarkOccurrenceProposalStatsDto> {
+    return this.http.get<MarkOccurrenceProposalStatsDto>(`${this.baseUrl}/user/${userId}/stats`);
   }
 
   findDetailedByUser(userId: number, page: number = 0, size: number = 10): Observable<PageMarkOccurrenceProposalDto> {

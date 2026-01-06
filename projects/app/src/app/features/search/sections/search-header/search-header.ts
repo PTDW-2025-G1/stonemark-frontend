@@ -2,11 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-header',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedSelectComponent],
+  imports: [CommonModule, FormsModule, SharedSelectComponent, TranslatePipe],
   templateUrl: './search-header.html',
 })
 export class SearchHeaderComponent {

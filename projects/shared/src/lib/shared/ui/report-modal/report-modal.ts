@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReportRequestDto } from '@api/model/report-request-dto';
@@ -25,11 +25,12 @@ interface ReportReason {
   templateUrl: './report-modal.html',
   styleUrls: ['./report-modal.scss']
 })
-export class ReportModalComponent {
+export class ReportModalComponent implements OnChanges, OnDestroy {
   @Input() visible = false;
   @Input() config: ReportModalConfig | null = null;
   @Input() fieldErrors: Record<string, string> = {};
   @Output() visibleChange = new EventEmitter<boolean>();
+  @Output() close = new EventEmitter<void>();
   @Output() reportSubmit = new EventEmitter<ReportRequestDto>();
 
   selectedReason: ReportRequestDto.ReasonEnum | null = null;
@@ -92,10 +93,11 @@ export class ReportModalComponent {
     });
   }
 
-  close(): void {
+  closeModal(): void {
+    this.reset();
     this.visible = false;
     this.visibleChange.emit(false);
-    this.reset();
+    this.close.emit();
   }
 
   selectReason(reason: ReportRequestDto.ReasonEnum): void {
@@ -143,6 +145,8 @@ export class ReportModalComponent {
     this.description = '';
     this.isSubmitting = false;
     this.currentStep = 1;
+    this.submitError = null;
+    this.fieldErrors = {};
   }
 
   getSelectedReasonLabel(): string {
@@ -163,5 +167,22 @@ export class ReportModalComponent {
     };
 
     return labels[this.config.targetType] || 'Content';
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Resetar estado quando o modal fecha
+    if (changes['visible'] && !changes['visible'].currentValue && changes['visible'].previousValue) {
+      this.reset();
+    }
+
+    // Resetar estado quando o modal abre com nova configuração
+    if (changes['config'] && changes['config'].currentValue) {
+      this.reset();
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Limpar estado ao destruir o componente
+    this.reset();
   }
 }

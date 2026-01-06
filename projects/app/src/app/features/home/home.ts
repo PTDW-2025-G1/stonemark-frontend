@@ -6,9 +6,7 @@ import { LastMarkSectionComponent } from '@features/home/sections/last-marks-sec
 import { MapSectionComponent } from '@features/home/sections/map-section/map-section';
 import { LastNewsComponent } from '@features/home/sections/last-news-section/last-news-section';
 import {MonumentService} from '@core/services/monument/monument.service';
-import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
-import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
 import {MonumentListDto} from '@api/model/monument-list-dto';
 

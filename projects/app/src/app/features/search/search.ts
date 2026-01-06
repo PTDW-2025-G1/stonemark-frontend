@@ -95,9 +95,9 @@ export class SearchComponent implements OnInit {
 
   private getTitle(type: string): string {
     switch (type) {
-      case 'marks': return 'Mason Marks';
-      case 'monuments': return 'Historic Monuments';
-      default: return 'Search Results';
+      case 'marks': return 'shared-links.marks_title';
+      case 'monuments': return 'shared-links.monuments';
+      default: return 'shared-links.discover';
     }
   }
 

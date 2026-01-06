@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
-import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
 import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
 import { MarkOccurrenceListDto } from '@api/model/mark-occurrence-list-dto';
 import {PageMarkOccurrenceListDto} from '@api/model/page-mark-occurrence-list-dto'

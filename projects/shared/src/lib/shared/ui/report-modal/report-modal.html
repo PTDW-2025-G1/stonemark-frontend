@@ -21,7 +21,7 @@
             }
           </div>
           <button
-            (click)="close()"
+            (click)="closeModal()"
             [disabled]="isSubmitting"
             class="text-text-muted hover:text-text transition-colors p-2 rounded-lg hover:bg-surface-muted disabled:opacity-50"
             aria-label="Close"
@@ -195,7 +195,7 @@
         @if (currentStep === 1) {
           <app-button
             type="button"
-            (click)="close()"
+            (click)="closeModal()"
             [disabled]="isSubmitting"
             variant="outline"
             size="md"

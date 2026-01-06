@@ -13,6 +13,29 @@
       "about": "Sobre"
     }
   },
+  "footer": {
+    "brand_desc": "A preservar o legado gravado na pedra",
+    "partnerships": "Parcerias",
+    "explore": "Explorar",
+    "support": "Apoio",
+    "copyright": "© {{year}} StoneMark. Todos os direitos reservados.",
+    "privacy_policy": "Política de Privacidade",
+    "terms_service": "Termos de Serviço",
+    "cookie_policy": "Política de Cookies"
+  },
+  "shared-links": {
+    "monuments": "Monumentos",
+    "marks": "Marcas",
+    "discover": "Descobrir",
+    "about": "Sobre",
+    "accessibility": "Acessibilidade",
+    "how_to_contribute": "Como Contribuir",
+    "contact": "Contacto",
+    "terms_service": "Termos de Serviço",
+    "privacy_policy": "Política de Privacidade",
+    "cookie_policy": "Política de Cookies",
+    "marks_title": "Marcas de Canteiro"
+  },
   "mission": {
     "label": "A Nossa Missão",
     "title": "Unir Passado e Presente",
@@ -292,10 +315,8 @@
     "title_2": "gravada na pedra",
     "desc": "Junta-te a uma comunidade global que documenta marcas de canteiro. Dos mosteiros medievais às capelas escondidas, ajuda-nos a preservar as assinaturas do passado.",
     "explore": "Começar a Explorar",
-    "monuments_title": "Monumentos",
     "monuments_desc": "Mapa de sítios históricos",
     "monuments_count": "2.547 Sítios",
-    "marks_title": "Marcas de Canteiro",
     "marks_desc": "Catálogo de símbolos",
     "marks_count": "12.483 Marcas",
     "contribute_title": "Contribuir",
@@ -332,6 +353,13 @@
     "error": "Falha ao carregar notícias. Por favor tenta novamente mais tarde.",
     "view_more": "Ver Mais",
     "empty": "Não há notícias disponíveis de momento."
+  },
+  "search-header": {
+    "displaying_marks": "A mostrar Marcas",
+    "displaying_monuments": "A mostrar Monumentos",
+    "marks_desc": "Explora a nossa coleção de marcas históricas de canteiro encontradas em monumentos. Cada marca conta uma história única dos artesãos que deixaram a sua assinatura na pedra.",
+    "search_placeholder": "Pesquisar...",
+    "all_locations": "Todas as Localizações"
   }
 
 

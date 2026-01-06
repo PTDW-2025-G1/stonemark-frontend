@@ -9,12 +9,9 @@
  */
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    superGroupMessage?: boolean;
-    groupMessage?: boolean;
-    userMessage?: boolean;
+export interface MarkOccurrenceProposalStatsDto { 
+    accepted?: number;
+    underReview?: number;
+    rejected?: number;
 }
 

@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit {
     this.loadUserProfile();
     this.loadMarks();
     this.loadMockSuggestions();
+    this.loadUserStats();
   }
 
   loadUserProfile(): void {
@@ -54,8 +55,8 @@ export class ProfileComponent implements OnInit {
           memberSince: memberSinceString,
           role: data.role,
           stats: {
-            totalMarks: 0,
-            pendings: 0,
+            accepted: 0,
+            under_review: 0,
             rejected: 0
           }
         };
@@ -114,9 +115,22 @@ export class ProfileComponent implements OnInit {
         rejectionReason: 'Date already verified by official sources'
       }
     ];
+  }
 
-    this.user.stats.pendings = this.suggestions.filter(s => s.status === 'pending').length;
-    this.user.stats.rejected = this.suggestions.filter(s => s.status === 'rejected').length;
+  loadUserStats(): void {
+    this.profileService.getCurrentUser().subscribe({
+      next: (data: UserDto) => {
+        if (typeof data.id === 'number') {
+          this.markOccurrenceProposalService.getUserStats(data.id).subscribe(stats => {
+            this.user.stats = {
+              accepted: stats.accepted,
+              under_review: stats.underReview,
+              rejected: stats.rejected
+            };
+          });
+        }
+      }
+    });
   }
 
   setTab(tab: 'marks' | 'suggestions') {

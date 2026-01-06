@@ -57,7 +57,7 @@ import {TranslatePipe} from '@ngx-translate/core';
               <div class="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xl mb-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                 <span [innerHTML]="MONUMENTS_ICON"></span>
               </div>
-              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">{{ 'home-hero-section.monuments_title' | translate }}</h3>
+              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">{{ 'shared-links.monuments' | translate }}</h3>
               <p class="text-sm text-gray-200 mb-4 font-light">{{ 'home-hero-section.monuments_desc' | translate }}</p>
               <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-semibold text-white group-hover:bg-white group-hover:text-primary transition-colors duration-300">
             {{ 'home-hero-section.monuments_count' | translate }}
@@ -75,7 +75,7 @@ import {TranslatePipe} from '@ngx-translate/core';
               <div class="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xl mb-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                 <span [innerHTML]="MARKS_ICON"></span>
               </div>
-              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">{{ 'home-hero-section.marks_title' | translate }}</h3>
+              <h3 class="text-xl font-serif font-bold text-white mb-1 tracking-wide">{{ 'shared-links.marks_title' | translate }}</h3>
               <p class="text-sm text-gray-200 mb-4 font-light">{{ 'home-hero-section.marks_desc' | translate }}</p>
               <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-semibold text-white group-hover:bg-white group-hover:text-primary transition-colors duration-300">
                  {{ 'home-hero-section.marks_count' | translate }}

@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { environment } from '@env/environment';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss']
 })
@@ -20,19 +21,19 @@ export class Footer {
   ];
 
   exploreLinks = [
-    { label: 'Monuments', route: `${this.baseUrl}/search/monuments`, external: false },
-    { label: 'Marks', route: `${this.baseUrl}/search/marks`, external: false },
-    { label: 'Discover', route: `${this.baseUrl}/discover`, external: false },
-    { label: 'About', route: `${this.baseUrl}/about`, external: false },
-    { label: 'Accessibility', route: `${this.baseUrl}/accessibility`, external: false }
+    { label: 'shared-links.monuments', route: `${this.baseUrl}/search/monuments`, external: false },
+    { label: 'shared-links.marks', route: `${this.baseUrl}/search/marks`, external: false },
+    { label: 'shared-links.discover', route: `${this.baseUrl}/discover`, external: false },
+    { label: 'shared-links.about', route: `${this.baseUrl}/about`, external: false },
+    { label: 'shared-links.accessibility', route: `${this.baseUrl}/accessibility`, external: false }
   ];
 
   supportLinks = [
-    { label: 'How To Contribute', route: `${this.baseUrl}/contribute`, external: false },
-    { label: 'Contact', route: `${this.baseUrl}/contact`, external: false },
-    { label: 'Terms of Service', route: `${this.baseUrl}/terms-service`, external: false },
-    { label: 'Privacy Policy', route: `${this.baseUrl}/privacy-policy`, external: false },
-    { label: 'Cookie Policy', route: `${this.baseUrl}/cookies-policy`, external: false }
+    { label: 'shared-links.how_to_contribute', route: `${this.baseUrl}/contribute`, external: false },
+    { label: 'shared-links.contact', route: `${this.baseUrl}/contact`, external: false },
+    { label: 'shared-links.terms_service', route: `${this.baseUrl}/terms-service`, external: false },
+    { label: 'shared-links.privacy_policy', route: `${this.baseUrl}/privacy-policy`, external: false },
+    { label: 'shared-links.cookie_policy', route: `${this.baseUrl}/cookies-policy`, external: false }
   ];
 
   socialLinks = [

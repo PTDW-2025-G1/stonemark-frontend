@@ -14,21 +14,23 @@ import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
-import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
+import { HomeHeaderComponent } from '@shared/ui/home-header/home-header';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import {MonumentMapDto} from '@api/model/monument-map-dto';
 
 @Component({
   selector: 'app-map-section',
   standalone: true,
-  imports: [CommonModule, HomeHeaderComponent],
+  imports: [CommonModule, HomeHeaderComponent, TranslatePipe],
   encapsulation: ViewEncapsulation.None,
   template: `
     <section class="py-16 bg-surface-alt/30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <app-home-header
-          [badge]="'Explore'"
-          [title]="'Heritage in Maps'"
-          [subtitle]="'Browse monuments and their marks directly on the interactive map'"
+          [badge]="'home-map-section.badge' | translate"
+          [title]="'home-map-section.title' | translate"
+          [subtitle]="'home-map-section.subtitle' | translate"
         />
 
         <div class="relative rounded-2xl shadow-xl border border-border overflow-hidden group">
@@ -89,7 +91,8 @@ export class MapSectionComponent implements AfterViewInit {
   constructor(
     private monumentService: MonumentService,
     private markOccurrenceService: MarkOccurrenceService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngAfterViewInit(): void {
@@ -118,7 +121,7 @@ export class MapSectionComponent implements AfterViewInit {
     this.map.addOverlay(this.overlay);
 
     this.monumentService.getAllForMap().subscribe(monumentsArray => {
-      monumentsArray.forEach((monument: any) => {
+      monumentsArray.forEach((monument: MonumentMapDto) => {
         if (monument.id != null) {
           this.markOccurrenceService.countByMonumentId(monument.id).subscribe(count => {
             this.occurrenceCounts.set(String(monument.id), count);
@@ -195,10 +198,15 @@ export class MapSectionComponent implements AfterViewInit {
   }
 
   private generatePopupContent(props: any, occurrenceCount: number): string {
-    const name = props.name || 'Unknown Monument';
+    const name = props.name || this.translate.instant('home-map-section.unknown');
     const protection = props.protectionTitle;
     const website = props.website;
-    const city = props.city || 'Portugal';
+    const city = props.city || this.translate.instant('home-map-section.city');
+
+    const marksText = this.translate.instant('home-map-section.marks', {
+      count: occurrenceCount,
+      plural: occurrenceCount === 1 ? '' : 's'
+    });
 
     const badgeHtml = protection
       ? `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-100 text-amber-700 text-xs font-semibold border border-amber-200 mb-3">
@@ -209,7 +217,7 @@ export class MapSectionComponent implements AfterViewInit {
     const websiteHtml = website
       ? `<a href="${website}" target="_blank" rel="noopener noreferrer"
             class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-surface-alt hover:bg-primary hover:text-white text-text-muted text-sm font-medium rounded-lg transition-all border border-border hover:border-primary group">
-           <span>Visit Website</span>
+           <span>${this.translate.instant('home-map-section.visit_website')}</span>
            <i class="bi bi-box-arrow-up-right group-hover:translate-x-0.5 transition-transform"></i>
          </a>`
       : '';
@@ -231,13 +239,13 @@ export class MapSectionComponent implements AfterViewInit {
           </p>
           <p class="text-xs text-text-muted flex items-center gap-1">
             <i class="bi bi-bookmark-fill text-primary/70"></i>
-            ${occurrenceCount} mark occurrence${occurrenceCount === 1 ? '' : 's'}
+            ${marksText}
           </p>
         </div>
 
         <div class="mt-4 flex flex-col gap-2">
           <button class="view-details-btn w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-all group cursor-pointer">
-            <span>View Details</span>
+            <span>${this.translate.instant('home-map-section.view_details')}</span>
             <i class="bi bi-arrow-right group-hover:translate-x-0.5 transition-transform"></i>
           </button>
           ${websiteHtml}

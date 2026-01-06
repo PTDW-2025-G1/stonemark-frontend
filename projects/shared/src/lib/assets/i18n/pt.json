@@ -285,6 +285,55 @@
     "submit": "Submeter a Primeira Marca",
     "explore": "Explorar Base de Dados",
     "footer": "Seguro • Privado • Gratuito"
+  },
+  "home-hero-section": {
+    "label": "Arquivo Digital",
+    "title_1": "Descobre a história",
+    "title_2": "gravada na pedra",
+    "desc": "Junta-te a uma comunidade global que documenta marcas de canteiro. Dos mosteiros medievais às capelas escondidas, ajuda-nos a preservar as assinaturas do passado.",
+    "explore": "Começar a Explorar",
+    "monuments_title": "Monumentos",
+    "monuments_desc": "Mapa de sítios históricos",
+    "monuments_count": "2.547 Sítios",
+    "marks_title": "Marcas de Canteiro",
+    "marks_desc": "Catálogo de símbolos",
+    "marks_count": "12.483 Marcas",
+    "contribute_title": "Contribuir",
+    "contribute_desc": "Adiciona novas descobertas",
+    "contribute_count": "Junta-te a 850+ Curadores",
+    "scroll": "Descer"
+  },
+  "home-popular-section": {
+    "badge": "Em Destaque",
+    "title": "Monumentos Populares",
+    "subtitle": "Descobre os monumentos mais visitados e apreciados pela nossa comunidade",
+    "unknown": "Monumento Desconhecido"
+  },
+  "home-last-marks-section": {
+    "badge": "Recentemente Descobertas",
+    "title": "Últimas Marcas de Canteiro",
+    "subtitle": "Explora as marcas de canteiro mais recentes documentadas pela nossa comunidade"
+  },
+  "home-map-section": {
+    "badge": "Explorar",
+    "title": "Património no Mapa",
+    "subtitle": "Explora monumentos e marcas diretamente no mapa interativo",
+    "unknown": "Monumento Desconhecido",
+    "city": "Portugal",
+    "marks": "{{count}} ocorrência{{plural}} de marca",
+    "view_details": "Ver Detalhes",
+    "visit_website": "Visitar Website"
+  },
+  "home-last-news-section": {
+    "badge": "Notícias",
+    "title": "Últimas Notícias",
+    "subtitle": "Mantém-te atualizado com as notícias mais recentes da nossa comunidade",
+    "loading": "A carregar as últimas notícias...",
+    "error": "Falha ao carregar notícias. Por favor tenta novamente mais tarde.",
+    "view_more": "Ver Mais",
+    "empty": "Não há notícias disponíveis de momento."
   }
+
+
 }
 

@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
-import { MarkDto } from '@api/model/mark-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { ImageUtils } from '@shared/utils/image.utils';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
+import {MonumentListDto} from '@api/model/monument-list-dto';
+import {MarkListDto} from '@api/model/mark-list-dto';
 
-type SearchItem = MonumentResponseDto | MarkDto;
+type SearchItem = MonumentListDto | MarkListDto;
 
 @Component({
   selector: 'app-search-results',
@@ -42,7 +42,7 @@ export class SearchResultsComponent {
   private loadOccurrenceCounts(): void {
     if (this.type === 'marks') {
       this.items.forEach(item => {
-        const id = (item as MarkDto).id;
+        const id = (item as MarkListDto).id;
         if (id !== undefined) {
           this.markOccurrenceService.countByMarkId(id).subscribe(
             count => this.occurrenceCount[id] = count
@@ -51,7 +51,7 @@ export class SearchResultsComponent {
       });
     } else {
       this.items.forEach(item => {
-        const id = (item as MonumentResponseDto).id;
+        const id = (item as MonumentListDto).id;
         if (id !== undefined) {
           this.markOccurrenceService.countByMonumentId(id).subscribe(
             count => this.occurrenceCount[id] = count
@@ -85,13 +85,13 @@ export class SearchResultsComponent {
 
   getItemName(item: SearchItem): string {
     return this.type === 'monuments'
-      ? (item as MonumentResponseDto).name ?? ''
+      ? (item as MonumentListDto).name ?? ''
       : '';
   }
 
   getItemSubtitle(item: SearchItem): string {
     if (this.type === 'monuments') {
-      const monument = item as MonumentResponseDto;
+      const monument = item as MonumentListDto;
       return monument.city ? `${monument.city}, Portugal` : 'Portugal';
     }
     const id = item.id;

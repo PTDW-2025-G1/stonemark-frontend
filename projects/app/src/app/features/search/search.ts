@@ -10,7 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {PaginationFacade} from '@shared/facades/pagination.facade';
 
-
 @Component({
   selector: 'app-search',
   standalone: true,
@@ -82,7 +81,7 @@ export class SearchComponent implements OnInit {
     } else {
       const source = this.searchQuery.trim()
         ? this.monumentService.searchMonuments(this.searchQuery, pageIndex, this.pageSize)
-        : this.monumentService.getListMonuments(pageIndex, this.pageSize);
+        : this.monumentService.getMonuments(pageIndex, this.pageSize);
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);

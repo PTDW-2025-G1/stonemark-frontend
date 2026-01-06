@@ -1,23 +1,23 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
-import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {ImageUtils} from '@shared/utils/image.utils';
 import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
-
+import {MonumentListDto} from '@api/model/monument-list-dto';
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-popular-section',
   standalone: true,
-  imports: [CommonModule, EntityCardComponent, HomeHeaderComponent],
+  imports: [CommonModule, EntityCardComponent, HomeHeaderComponent, TranslateModule],
   template: `
     <section class="py-12 sm:py-16 lg:py-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <app-home-header
-          [badge]="'Featured'"
-          [title]="'Most Popular Monuments'"
-          [subtitle]="'Discover the most visited and appreciated monuments by our community'"
+          [badge]="'home-popular-section.badge' | translate"
+          [title]="'home-popular-section.title' | translate"
+          [subtitle]="'home-popular-section.subtitle' | translate"
         />
 
         <div class="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -25,7 +25,7 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
             <app-entity-card
               [iconType]="'city'"
               [cover]="getImageUrl(monument)"
-              [title]="monument.name || 'Unknown Monument'"
+              [title]="monument.name || ('home-popular-section.unknown' | translate)"
               [subtitle]="monument.city + ', Portugal'"
               [id]="monument.id || 0"
               [type]="'monuments'"
@@ -37,9 +37,9 @@ import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
   `
 })
 export class PopularSectionComponent {
-  @Input() monuments: MonumentResponseDto[] = [];
+  @Input() monuments: MonumentListDto[] = [];
 
-  getImageUrl(monument: MonumentResponseDto): string {
+  getImageUrl(monument: MonumentListDto): string {
     return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');
   }
 }

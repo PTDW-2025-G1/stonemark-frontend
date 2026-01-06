@@ -285,6 +285,54 @@
     "submit": "Submit Your First Mark",
     "explore": "Explore Database",
     "footer": "Secure • Private • Free Forever"
+  },
+  "home-hero-section": {
+    "label": "Digital Archive",
+    "title_1": "Uncover the history",
+    "title_2": "etched in stone.",
+    "desc": "Join a global community documenting stonemason marks. From medieval monasteries to hidden chapels, help us preserve the signatures of the past.",
+    "explore": "Start Exploring",
+    "monuments_title": "Monuments",
+    "monuments_desc": "Map of historic sites",
+    "monuments_count": "2,547 Sites",
+    "marks_title": "Mason Marks",
+    "marks_desc": "Symbol catalog",
+    "marks_count": "12,483 Marks",
+    "contribute_title": "Contribute",
+    "contribute_desc": "Add new discoveries",
+    "contribute_count": "Join 850+ Curators",
+    "scroll": "Scroll"
+  },
+  "home-popular-section": {
+    "badge": "Featured",
+    "title": "Most Popular Monuments",
+    "subtitle": "Discover the most visited and appreciated monuments by our community",
+    "unknown": "Unknown Monument"
+  },
+  "home-last-marks-section": {
+    "badge": "Recently Discovered",
+    "title": "Latest Mason Marks",
+    "subtitle": "Explore the most recent mason marks documented by our community"
+  },
+  "home-map-section": {
+    "badge": "Explore",
+    "title": "Heritage in Maps",
+    "subtitle": "Browse monuments and their marks directly on the interactive map",
+    "unknown": "Unknown Monument",
+    "city": "Portugal",
+    "marks": "{{count}} mark occurrence{{plural}}",
+    "view_details": "View Details",
+    "visit_website": "Visit Website"
+  },
+  "home-last-news-section": {
+    "badge": "News",
+    "title": "Latest News",
+    "subtitle": "Stay updated with the most recent news from our community",
+    "loading": "Loading latest news...",
+    "error": "Failed to load news. Please try again later.",
+    "view_more": "View More",
+    "empty": "No news available at the moment."
   }
+
 }
 

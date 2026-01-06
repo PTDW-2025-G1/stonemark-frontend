@@ -6,6 +6,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
 import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
 import { MarkOccurrenceListDto } from '@api/model/mark-occurrence-list-dto';
+import {PageMarkOccurrenceListDto} from '@api/model/page-mark-occurrence-list-dto'
 
 @Injectable({
   providedIn: 'root'
@@ -16,46 +17,46 @@ export class MarkOccurrenceService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(page: number = 0, size: number = 20): Observable<PageMarkOccurrenceDto> {
+  getAll(page: number = 0, size: number = 20): Observable<PageMarkOccurrenceListDto> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size);
 
-    return this.http.get<PageMarkOccurrenceDto>(this.baseUrl, { params });
+    return this.http.get<PageMarkOccurrenceListDto>(this.baseUrl, { params });
   }
 
   getById(id: number): Observable<MarkOccurrenceDetailedDto> {
     return this.http.get<MarkOccurrenceDetailedDto>(`${this.baseUrl}/${id}`);
   }
 
-  getByMarkId(markId: number, page: number = 0, size: number = 6, sort: string = 'desc'): Observable<PageMarkOccurrenceDto> {
+  getByMarkId(markId: number, page: number = 0, size: number = 6, sort: string = 'desc'): Observable<PageMarkOccurrenceListDto> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
       .set('sort', sort);
-    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-mark/${markId}`, { params });
+    return this.http.get<PageMarkOccurrenceListDto>(`${this.baseUrl}/by-mark/${markId}`, { params });
   }
 
-  getByMonumentId(monumentId: number, page: number = 0, size: number = 20, sort: string = 'desc'): Observable<PageMarkOccurrenceDto> {
+  getByMonumentId(monumentId: number, page: number = 0, size: number = 20, sort: string = 'desc'): Observable<PageMarkOccurrenceListDto> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
       .set('sort', sort);
-    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/by-monument/${monumentId}`, { params });
+    return this.http.get<PageMarkOccurrenceListDto>(`${this.baseUrl}/by-monument/${monumentId}`, { params });
   }
 
-  filterByMarkAndMonument(markId: number, monumentId: number, page: number = 0, size: number = 6, sort: string = 'desc'): Observable<PageMarkOccurrenceDto> {
+  filterByMarkAndMonument(markId: number, monumentId: number, page: number = 0, size: number = 6, sort: string = 'desc'): Observable<PageMarkOccurrenceListDto> {
     const params = new HttpParams()
       .set('markId', markId)
       .set('monumentId', monumentId)
       .set('page', page)
       .set('size', size)
       .set('sort', sort);
-    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/filter-by-mark-and-monument`, { params });
+    return this.http.get<PageMarkOccurrenceListDto>(`${this.baseUrl}/filter-by-mark-and-monument`, { params });
   }
 
   getLatestOccurrences(): Observable<MarkOccurrenceListDto[]> {
-    return this.http.get<MarkOccurrenceDto[]>(`${this.baseUrl}/latest`);
+    return this.http.get<MarkOccurrenceListDto[]>(`${this.baseUrl}/latest`);
   }
 
   countByMarkId(markId: number | undefined): Observable<number> {

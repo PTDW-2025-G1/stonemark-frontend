@@ -9,6 +9,8 @@ import {MonumentService} from '@core/services/monument/monument.service';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {MarkOccurrenceService} from '@core/services/mark/mark-occurrence.service';
 import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
+import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
+import {MonumentListDto} from '@api/model/monument-list-dto';
 
 
 @Component({
@@ -19,8 +21,8 @@ import {MarkOccurrenceDto} from '@api/model/mark-occurrence-dto';
 })
 export class HomeComponent implements OnInit{
 
-    popularMonuments: MonumentResponseDto[] = [];
-    lastOccurrences: MarkOccurrenceDto[] = [];
+    popularMonuments: MonumentListDto[] = [];
+    lastOccurrences: MarkOccurrenceListDto[] = [];
 
     constructor(private monumentService: MonumentService, private markOccurrenceService : MarkOccurrenceService) {}
 

@@ -4,6 +4,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { PaginationFacade } from '@shared/facades/pagination.facade';
 import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
+import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
 
 @Injectable({ providedIn: 'root' })
 export class MarkOccurrencesFacade {
@@ -19,7 +20,7 @@ export class MarkOccurrencesFacade {
 
   constructor(
     private service: MarkOccurrenceService,
-    public pagination: PaginationFacade<MarkOccurrenceDto>
+    public pagination: PaginationFacade<MarkOccurrenceListDto>
   ) {}
 
   loadByMark(markId: number): void {

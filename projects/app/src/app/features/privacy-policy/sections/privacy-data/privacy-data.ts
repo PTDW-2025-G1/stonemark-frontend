@@ -1,41 +1,37 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {LegalSectionBlockComponent} from '@shared/ui/legal-section-block/legal-section-block';
+import { LegalSectionBlockComponent } from '@shared/ui/legal-section-block/legal-section-block';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pp-data',
   standalone: true,
-  imports: [CommonModule, LegalSectionBlockComponent],
+  imports: [CommonModule, LegalSectionBlockComponent, TranslateModule],
   template: `
     <app-legal-section-block
-      title="1. What personal data do we collect?"
-      [paragraphs]="[
-        'In the context of using the application, we may collect and process the following categories of personal data:'
-      ]"
+      [title]="'privacy-policy.data.title' | translate"
+      [paragraphs]="['privacy-policy.data.personal.desc' | translate]"
       [hasInnerContent]="true"
     >
       <ul class="list-disc pl-5 space-y-2 text-text-muted mt-2">
         <li>
-          <span class="font-medium text-text">Identification data:</span>
-          name, email address, and, if applicable, profile photo.
+          <span class="font-medium text-text">{{ 'privacy-policy.data.personal.title' | translate }}:</span>
+          {{ 'privacy-policy.data.personal.items' | translate }}
         </li>
 
         <li>
-          <span class="font-medium text-text">Usage data:</span>
-          actions performed in the application (e.g., content creation, favorites, searches made).
+          <span class="font-medium text-text">{{ 'privacy-policy.data.content.title' | translate }}:</span>
+          {{ 'privacy-policy.data.content.items' | translate }}
         </li>
 
         <li>
-          <span class="font-medium text-text">Submitted content:</span>
-          photos, descriptions, and associated technical metadata (such as capture date/time and, if authorized, approximate location).
-        </li>
-
-        <li>
-          <span class="font-medium text-text">Technical data:</span>
-          basic device and browser information, necessary to ensure the platform's security and proper functioning.
+          <span class="font-medium text-text">{{ 'privacy-policy.data.technical.title' | translate }}:</span>
+          {{ 'privacy-policy.data.technical.items' | translate }}
         </li>
       </ul>
     </app-legal-section-block>
   `
 })
 export class PpDataComponent {}
+
+

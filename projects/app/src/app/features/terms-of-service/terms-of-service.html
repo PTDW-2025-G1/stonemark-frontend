@@ -1,11 +1,6 @@
 <section class="py-16 px-4">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-8 space-y-12">
-    <!-- Hero Header -->
-    <app-legal-hero-header
-      title="Terms of Service"
-      lastUpdated="November 17, 2025"
-    />
-    <!-- Sections Grid -->
+    <app-legal-hero-header [title]="'terms-of-service.hero.title'" [lastUpdated]="'shared-links.last_updated'"/>
     <app-terms-section-grid></app-terms-section-grid>
   </div>
 </section>

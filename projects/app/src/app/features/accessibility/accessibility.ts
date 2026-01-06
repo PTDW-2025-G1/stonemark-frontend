@@ -1,23 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { CookieService } from '@core/services/cookie/cookie.service';
-import {ButtonComponent} from '@shared/ui/button/button';
-
-interface AccessibilitySetting {
-  id: string;
-  category: string;
-  title: string;
-  description: string;
-  enabled: boolean;
-  icon: string;
-}
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AccessibilityHeaderSectionComponent } from './sections/accessibility-header-section';
+import { AccessibilityQuickResetSectionComponent } from './sections/accessibility-quick-reset-section';
+import { AccessibilitySettingsSectionComponent, AccessibilitySetting, SettingsCategory } from './sections/accessibility-settings-section';
+import { AccessibilitySupportSectionComponent } from './sections/accessibility-support-section';
 
 @Component({
   selector: 'app-accessibility',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonComponent],
+  imports: [CommonModule, TranslateModule, AccessibilityHeaderSectionComponent, AccessibilityQuickResetSectionComponent, AccessibilitySettingsSectionComponent, AccessibilitySupportSectionComponent],
   templateUrl: './accessibility.html',
   styles: [`
     :host {
@@ -47,7 +41,11 @@ export class AccessibilityComponent implements OnInit {
     { id: 'readingGuide', category: 'Content', title: 'Reading Guide', description: 'Highlights the line you\'re reading', enabled: false, icon: 'bi-text-center' }
   ];
 
-  constructor(private titleService: Title, private cookies: CookieService) {}
+  constructor(
+    private titleService: Title,
+    private cookies: CookieService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.titleService.setTitle('Accessibility Settings - StoneMark');
@@ -55,7 +53,7 @@ export class AccessibilityComponent implements OnInit {
     this.applySettings();
   }
 
-  get categorizedSettings() {
+  get categorizedSettings(): SettingsCategory[] {
     const categories = ['Visual', 'Motion', 'Content'];
     return categories.map(category => ({
       name: category,
@@ -70,7 +68,8 @@ export class AccessibilityComponent implements OnInit {
   }
 
   resetSettings(): void {
-    if (confirm('Are you sure you want to reset all accessibility settings?')) {
+    const confirmMessage = this.translate.instant('accessibility.quick_reset.confirm');
+    if (confirm(confirmMessage)) {
       this.settings.forEach(s => s.enabled = false);
       this.saveSettingsToCookies();
       this.applySettings();

@@ -34,7 +34,8 @@
     "terms_service": "Termos de Serviço",
     "privacy_policy": "Política de Privacidade",
     "cookie_policy": "Política de Cookies",
-    "marks_title": "Marcas de Canteiro"
+    "marks_title": "Marcas de Canteiro",
+    "last_updated": "Última atualização: 22 Dezembro 2025"
   },
   "mission": {
     "label": "A Nossa Missão",
@@ -360,8 +361,351 @@
     "marks_desc": "Explora a nossa coleção de marcas históricas de canteiro encontradas em monumentos. Cada marca conta uma história única dos artesãos que deixaram a sua assinatura na pedra.",
     "search_placeholder": "Pesquisar...",
     "all_locations": "Todas as Localizações"
+  },
+  "accessibility": {
+    "header": {
+      "title": "Definições de Acessibilidade",
+      "desc": "Personaliza a tua experiência para atender às tuas necessidades de acessibilidade. As alterações são guardadas automaticamente e aplicadas em todo o site."
+    },
+    "quick_reset": {
+      "title": "Reiniciar Rápido",
+      "desc": "Restaurar todas as definições para os valores padrão",
+      "button": "Reiniciar Tudo",
+      "confirm": "Tens a certeza que queres reiniciar todas as definições de acessibilidade?"
+    },
+    "categories": {
+      "visual": "Visual",
+      "motion": "Movimento",
+      "content": "Conteúdo"
+    },
+    "settings": {
+      "dark_mode": {
+        "title": "Modo Escuro",
+        "desc": "Reduz a fadiga ocular em ambientes com pouca luz"
+      },
+      "high_contrast": {
+        "title": "Alto Contraste",
+        "desc": "Aumenta o contraste entre texto e fundo"
+      },
+      "large_text": {
+        "title": "Texto Grande",
+        "desc": "Aumenta o tamanho da fonte em todo o site"
+      },
+      "dyslexia_font": {
+        "title": "Fonte para Dislexia",
+        "desc": "Usa fonte OpenDyslexic para melhor legibilidade"
+      },
+      "monochrome": {
+        "title": "Modo Monocromático",
+        "desc": "Remove cores e força visualização em tons de cinza para melhorar a perceção de contraste"
+      },
+      "text_spacing": {
+        "title": "Espaçamento de Texto",
+        "desc": "Melhora a legibilidade com maior espaçamento entre linhas de texto"
+      },
+      "reduce_motion": {
+        "title": "Reduzir Movimento",
+        "desc": "Minimiza animações e transições"
+      },
+      "no_autoplay": {
+        "title": "Desativar Reprodução Automática",
+        "desc": "Impede que vídeos e carrosséis reproduzam automaticamente"
+      },
+      "simplified_layout": {
+        "title": "Layout Simplificado",
+        "desc": "Remove elementos não essenciais para uma interface mais limpa"
+      },
+      "reading_guide": {
+        "title": "Guia de Leitura",
+        "desc": "Destaca a linha que estás a ler"
+      }
+    },
+    "status": {
+      "active": "Ativo"
+    },
+    "support": {
+      "title": "Precisas de Apoio Adicional?",
+      "desc": "Se precisas de funcionalidades de acessibilidade adicionais ou encontrares algum problema, não hesites em contactar a nossa equipa de apoio. Estamos comprometidos em tornar o StoneMark acessível a todos.",
+      "contact": "Contactar Apoio"
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Entrar em Contacto",
+      "title": "Adoraríamos Ouvir de Ti.",
+      "subtitle": "Tens questões sobre o Stone Mark? Queres colaborar ou reportar um problema? Estamos aqui para ajudar a preservar a história juntos."
+    },
+    "info": {
+      "title": "Informações de Contacto",
+      "email": {
+        "title": "Email",
+        "value": "contact@stonemark.org",
+        "desc": "Envia-nos uma mensagem a qualquer momento"
+      },
+      "location": {
+        "title": "Localização",
+        "value": "Lisboa, Portugal",
+        "desc": "A preservar o património europeu"
+      },
+      "response": {
+        "title": "Tempo de Resposta",
+        "value": "24-48 horas",
+        "desc": "Normalmente respondemos em",
+        "detail": "Normalmente respondemos em 24-48 horas em dias úteis."
+      }
+    },
+    "form": {
+      "title": "Envia-nos uma Mensagem",
+      "description": "Preenche o formulário abaixo e entraremos em contacto contigo o mais breve possível.",
+      "name": {
+        "label": "Nome",
+        "placeholder": "O teu nome",
+        "error": "Por favor insere o teu nome"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "o-teu@email.com",
+        "error": "Por favor insere um email válido"
+      },
+      "subject": {
+        "label": "Assunto",
+        "placeholder": "Sobre o que é?",
+        "error": "Por favor insere um assunto",
+        "options": {
+          "general": "Questão Geral",
+          "support": "Apoio Técnico",
+          "collaboration": "Parceria/Colaboração",
+          "bug": "Reportar um Erro",
+          "feature": "Pedido de Funcionalidade",
+          "other": "Outro"
+        }
+      },
+      "message": {
+        "label": "Mensagem",
+        "placeholder": "Conta-nos mais sobre a tua questão...",
+        "error": "Por favor insere a tua mensagem"
+      },
+      "submit": "Enviar Mensagem",
+      "submitting": "A enviar...",
+      "success": "Mensagem enviada com sucesso! Entraremos em contacto em breve.",
+      "error": "Falha ao enviar mensagem. Por favor tenta novamente ou contacta-nos diretamente."
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "subtitle": "Encontra respostas às questões mais comuns sobre o Stone Mark",
+      "questions": {
+        "what_is": {
+          "q": "O que é o Stone Mark?",
+          "a": "O Stone Mark é uma plataforma web colaborativa dedicada à documentação, estudo e preservação de marcas de canteiro — os símbolos distintivos gravados por artesãos medievais em monumentos, igrejas e edifícios históricos. O projeto combina património cultural com tecnologia geoespacial moderna para tornar estas marcas acessíveis em todo o mundo."
+        },
+        "who_can_participate": {
+          "q": "Quem pode participar?",
+          "a": "Qualquer pessoa interessada em património cultural pode contribuir! Quer sejas investigador, estudante ou explorador curioso, podes fazer upload de fotos de marcas, adicionar detalhes de monumentos ou ajudar a validar registos existentes. A participação da comunidade está no coração do Stone Mark."
+        },
+        "how_contribute": {
+          "q": "Como posso contribuir para o projeto?",
+          "a": "Podes contribuir fotografando e submetendo novas marcas de canteiro, partilhando informações sobre monumentos ou ajudando a verificar dados existentes. Basta criar uma conta, fazer login e começar a explorar a base de dados."
+        },
+        "is_free": {
+          "q": "O Stone Mark é gratuito?",
+          "a": "Sim. O Stone Mark é completamente gratuito e aberto a todos. A nossa missão é promover o acesso aberto ao conhecimento histórico e envolver o público na documentação do património cultural."
+        },
+        "use_data": {
+          "q": "Posso usar o Stone Mark para fins académicos ou de investigação?",
+          "a": "Absolutamente. O Stone Mark apoia historiadores, arqueólogos e estudantes na sua investigação. Todos os monumentos e marcas estão documentados com metadados que podem ser citados em trabalhos académicos. Se precisares de conjuntos de dados específicos ou oportunidades de colaboração, por favor contacta a nossa equipa."
+        },
+        "reliable": {
+          "q": "Quão fiável é a informação?",
+          "a": "Todos os dados submetidos passam por um processo de validação que envolve verificações automáticas e revisão manual pela nossa equipa de moderação e instituições parceiras. No entanto, como este é um projeto colaborativo, os utilizadores são encorajados a reportar quaisquer imprecisões que encontrem."
+        },
+        "correct_info": {
+          "q": "Como posso corrigir ou atualizar informações existentes?",
+          "a": "Se notares informações imprecisas ou incompletas numa página de monumento, marca ou guilda, podes clicar no botão 'Editar' para submeter correções diretamente através de um formulário editável. As tuas alterações serão revistas e validadas pela nossa equipa de moderação antes de serem publicadas para garantir a precisão e integridade dos dados."
+        },
+        "institutions": {
+          "q": "As instituições podem colaborar com o Stone Mark?",
+          "a": "Sim. Colaboramos ativamente com museus, universidades, associações de património e organizações culturais. As parcerias ajudam a expandir a base de dados, melhorar a precisão e promover iniciativas de preservação. Se a tua instituição estiver interessada, por favor contacta-nos."
+        },
+        "location_accuracy": {
+          "q": "Quão precisa é a informação de localização?",
+          "a": "Todas as localizações são georreferenciadas com cuidado usando dados GPS, registos oficiais e validação da comunidade. Atualizamos continuamente as coordenadas para garantir precisão. Se detetares uma incompatibilidade na localização de um monumento ou marca, podes reportá-la facilmente."
+        },
+        "data_protection": {
+          "q": "Como são protegidos os meus dados pessoais?",
+          "a": "Valorizamos a tua privacidade. Todas as informações dos utilizadores são encriptadas e armazenadas de forma segura. Cumprimos o RGPD e todas as regulamentações relevantes de proteção de dados. As contribuições são publicamente atribuídas ao teu nome de utilizador, mas nenhuma informação privada é partilhada a menos que escolhas torná-la visível."
+        }
+      }
+    }
+  },
+  "terms-of-service": {
+    "hero": {
+      "badge": "Legal",
+      "title": "Termos de Serviço",
+      "subtitle": "Por favor lê estes termos cuidadosamente antes de usar a nossa plataforma"
+    },
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceitação dos Termos",
+        "content": "Ao aceder e utilizar o StoneMark, aceitas e concordas em ficar vinculado aos termos e provisões deste acordo. Se não concordares em cumprir o acima exposto, por favor não uses este serviço."
+      },
+      "description": {
+        "title": "2. Descrição do Serviço",
+        "content": "O StoneMark é uma plataforma digital para documentar, estudar e preservar marcas de canteiro encontradas em monumentos históricos. Fornecemos ferramentas para os utilizadores contribuírem com fotografias, informações históricas e dados de investigação relacionados com o património arquitetónico."
+      },
+      "user_accounts": {
+        "title": "3. Contas de Utilizador",
+        "content": "Para aceder a determinadas funcionalidades, poderás ser obrigado a criar uma conta. És responsável por manter a confidencialidade das tuas credenciais de conta e por todas as atividades que ocorram sob a tua conta. Deves notificar-nos imediatamente de qualquer uso não autorizado da tua conta."
+      },
+      "user_content": {
+        "title": "4. Conteúdo Gerado pelo Utilizador",
+        "content": "Os utilizadores podem submeter fotografias, descrições e informações históricas. Ao submeter conteúdo, concedes ao StoneMark uma licença mundial, não exclusiva e isenta de royalties para usar, reproduzir e distribuir o teu conteúdo para fins de operação e promoção da plataforma. Declaras que possuis ou tens os direitos necessários para submeter o conteúdo."
+      },
+      "prohibited": {
+        "title": "5. Conduta Proibida",
+        "content": "Concordas em não: (a) carregar conteúdo falso, enganoso ou malicioso; (b) violar quaisquer leis ou regulamentos aplicáveis; (c) infringir direitos de propriedade intelectual; (d) tentar obter acesso não autorizado à plataforma; (e) assediar, abusar ou prejudicar outros utilizadores."
+      },
+      "intellectual_property": {
+        "title": "6. Propriedade Intelectual",
+        "content": "A plataforma e o seu conteúdo original (excluindo conteúdo gerado pelo utilizador) são propriedade do StoneMark e estão protegidos por leis internacionais de direitos de autor, marca registada e outras leis de propriedade intelectual. O conteúdo gerado pelo utilizador permanece propriedade dos respetivos contribuidores, sujeito à licença concedida ao StoneMark."
+      },
+      "disclaimer": {
+        "title": "7. Isenção de Garantias",
+        "content": "O StoneMark é fornecido 'como está' sem garantias de qualquer tipo, expressas ou implícitas. Não garantimos a precisão, completude ou fiabilidade de qualquer conteúdo na plataforma. O uso do serviço é por tua conta e risco."
+      },
+      "limitation": {
+        "title": "8. Limitação de Responsabilidade",
+        "content": "O StoneMark e os seus operadores não serão responsáveis por quaisquer danos indiretos, incidentais, especiais ou consequenciais decorrentes ou relacionados com o uso da plataforma, mesmo que avisados da possibilidade de tais danos."
+      },
+      "modifications": {
+        "title": "9. Modificações aos Termos",
+        "content": "Reservamo-nos o direito de modificar estes Termos de Serviço a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação. O teu uso contínuo da plataforma após as alterações constitui aceitação dos termos modificados."
+      },
+      "termination": {
+        "title": "10. Rescisão",
+        "content": "Reservamo-nos o direito de suspender ou encerrar a tua conta e acesso à plataforma a nosso exclusivo critério, sem aviso prévio, por conduta que acreditamos violar estes Termos de Serviço ou ser prejudicial a outros utilizadores, a nós ou a terceiros, ou por qualquer outro motivo."
+      },
+      "governing_law": {
+        "title": "11. Lei Aplicável",
+        "content": "Estes Termos de Serviço serão regidos e interpretados de acordo com as leis de Portugal, sem considerar as suas disposições sobre conflitos de leis. Quaisquer disputas decorrentes destes termos estarão sujeitas à jurisdição exclusiva dos tribunais de Portugal."
+      },
+      "contact": {
+        "title": "12. Informações de Contacto",
+        "content": "Se tiveres alguma questão sobre estes Termos de Serviço, por favor contacta-nos em legal@stonemark.org"
+      }
+    }
+  },
+  "privacy-policy": {
+    "header": {
+      "title": "Política de Privacidade",
+      "last_updated": "Última atualização: 22 de Janeiro 2025"
+    },
+    "info": {
+      "data": {
+        "title": "Dados Recolhidos",
+        "text": "Dados de conta, interações na plataforma e conteúdo submetido (por exemplo, fotos e respetivos metadados)."
+      },
+      "purposes": {
+        "title": "Finalidades",
+        "text": "Gestão de conta, prestação de serviço, melhoria da aplicação e cumprimento de obrigações legais."
+      },
+      "gdpr": {
+        "title": "RGPD & Direitos",
+        "text": "Processamento baseado no Artigo 6.º do RGPD. Garante acesso, retificação, apagamento e outras garantias legais para os titulares dos dados."
+      }
+    },
+    "intro": {
+      "p1": "No Stonemark, estamos comprometidos em proteger a tua privacidade e garantir a segurança das tuas informações pessoais. Esta Política de Privacidade explica como recolhemos, usamos, divulgamos e protegemos os teus dados quando usas a nossa plataforma.",
+      "p2": "Ao usar o Stonemark, concordas com a recolha e uso de informações de acordo com esta política. Se não concordares com as nossas políticas e práticas, por favor não uses os nossos serviços."
+    },
+    "data": {
+      "title": "1. Que dados pessoais recolhemos?",
+      "personal": {
+        "title": "Dados de identificação",
+        "desc": "No contexto do uso da aplicação, podemos recolher e processar as seguintes categorias de dados pessoais:",
+        "items": "nome, endereço de email e, se aplicável, fotografia de perfil."
+      },
+      "content": {
+        "title": "Conteúdo submetido",
+        "items": "fotografias, descrições e metadados técnicos associados (como data/hora de captura e, se autorizado, localização aproximada)."
+      },
+      "technical": {
+        "title": "Dados técnicos",
+        "items": "informações básicas do dispositivo e navegador, necessárias para garantir a segurança e o funcionamento adequado da plataforma."
+      }
+    },
+    "purposes": {
+      "title": "2. Finalidades do tratamento e base legal (RGPD)",
+      "desc": "Os dados pessoais são processados para finalidades específicas, explícitas e legítimas, em conformidade com o Artigo 5.º do RGPD. Em particular:",
+      "account": {
+        "title": "Gestão de conta e autenticação",
+        "desc": "para permitir o registo, login e uso contínuo da aplicação.",
+        "legal": "(Base legal: Artigo 6.º(1)(b) – execução de um contrato.)"
+      },
+      "management": {
+        "title": "Gestão de conteúdo submetido",
+        "desc": "para receber, armazenar e exibir fotos e informações associadas, bem como gerir o histórico de submissões.",
+        "legal": "(Base legal: Artigo 6.º(1)(b) – execução de um contrato.)"
+      },
+      "improvement": {
+        "title": "Melhoria da plataforma e segurança",
+        "desc": "para monitorizar o desempenho, prevenir abusos e melhorar funcionalidades.",
+        "legal": "(Base legal: Artigo 6.º(1)(f) – interesse legítimo.)"
+      },
+      "compliance": {
+        "title": "Cumprimento de obrigações legais",
+        "desc": "para responder a pedidos de autoridades competentes ou cumprir requisitos legais aplicáveis.",
+        "legal": "(Base legal: Artigo 6.º(1)(c) – cumprimento de uma obrigação legal.)"
+      }
+    },
+    "retention": {
+      "title": "3. Período de retenção de dados",
+      "desc": "Os dados pessoais são retidos apenas pelo período necessário para cumprir as finalidades para as quais foram recolhidos, em conformidade com o princípio da limitação da conservação (Artigo 5.º(1)(e) do RGPD):",
+      "account": "Dados de conta: mantidos enquanto a conta estiver ativa ou até que seja feito um pedido de eliminação.",
+      "content": "Conteúdo submetido: mantido enquanto for relevante para o uso da aplicação ou até pedido de eliminação pelo utilizador.",
+      "logs": "Registos técnicos e de segurança: retidos por períodos mais curtos, estritamente necessários para auditoria e segurança."
+    },
+    "sharing": {
+      "title": "4. Partilha de dados pessoais",
+      "desc": "Não vendemos nem comercializamos os teus dados pessoais. A partilha de dados limita-se aos seguintes casos:",
+      "providers": "Fornecedores de serviços estritamente necessários para a operação técnica da plataforma, sujeitos a obrigações de confidencialidade.",
+      "legal": "Quando exigido por lei ou por uma autoridade competente, ao abrigo da legislação da União Europeia ou do Estado-Membro.",
+      "consent": "Com o teu consentimento explícito, se aplicável, para finalidades adicionais claramente identificadas."
+    },
+    "rights": {
+      "title": "5. Direitos dos titulares dos dados",
+      "desc": "Ao abrigo dos Artigos 12.º a 22.º do RGPD, os utilizadores têm, entre outros, os seguintes direitos:",
+      "access": {
+        "title": "Direito de acesso",
+        "desc": "obter confirmação sobre se os teus dados estão a ser processados e aceder a essa informação."
+      },
+      "rectification": {
+        "title": "Direito de retificação",
+        "desc": "solicitar a correção de dados imprecisos ou incompletos."
+      },
+      "erasure": {
+        "title": "Direito ao apagamento",
+        "desc": "solicitar a eliminação de dados quando os requisitos legais forem cumpridos."
+      },
+      "restriction": {
+        "title": "Direito à limitação do tratamento",
+        "desc": "solicitar a suspensão temporária de certas operações de processamento."
+      },
+      "objection": {
+        "title": "Direito de oposição",
+        "desc": "opor-se ao processamento baseado em interesse legítimo, por razões relacionadas com a tua situação particular."
+      },
+      "portability": {
+        "title": "Direito à portabilidade dos dados",
+        "desc": "receber os dados que forneceste num formato estruturado, ou solicitar a sua transmissão a outro responsável."
+      },
+      "exercise": "Para exercer qualquer um destes direitos, podes contactar-nos através dos meios indicados na secção seguinte."
+    },
+    "security": {
+      "title": "6. Segurança de dados e contactos",
+      "desc1": "Implementamos medidas técnicas e organizacionais apropriadas para proteger os teus dados pessoais contra acesso não autorizado, perda, destruição ou alteração indevida.",
+      "desc2": "Sendo este um projeto académico, quaisquer questões adicionais sobre privacidade ou pedidos relativos aos teus dados podem ser dirigidos à equipa responsável pela aplicação.",
+      "last_updated": "Última atualização: 2026-01-06"
+    }
   }
-
-
 }
 

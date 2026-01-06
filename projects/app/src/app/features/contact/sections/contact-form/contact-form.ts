@@ -7,19 +7,20 @@ import {AuthService} from '@core/services/auth/auth.service';
 import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
 import {ContactRequestDto} from '@api/model/contact-request-dto';
 import {ButtonComponent} from '@shared/ui/button/button';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SharedSelectComponent, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, SharedSelectComponent, ButtonComponent, TranslateModule],
   template: `
     <div class="bg-gradient-to-br from-surface-alt to-surface rounded-3xl border border-border p-6 sm:p-8 lg:p-10 shadow-xl">
       <div class="mb-8">
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-text mb-3">
-          Send Us a Message
+          {{ 'contact.form.title' | translate }}
         </h2>
         <p class="text-text-muted">
-          Fill out the form below and we'll get back to you as soon as possible.
+          {{ 'contact.form.description' | translate }}
         </p>
       </div>
 
@@ -30,7 +31,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
           <!-- Name -->
           <div>
             <label for="name" class="block text-sm font-semibold text-text mb-2">
-              Your Name <span class="text-error">*</span>
+              {{ 'contact.form.name.label' | translate }} <span class="text-error">*</span>
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -40,7 +41,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
                 type="text"
                 id="name"
                 formControlName="name"
-                placeholder="John Doe"
+                [placeholder]="'contact.form.name.placeholder' | translate"
                 class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
                 [class.border-error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
               />
@@ -51,7 +52,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
               ) {
               <p class="mt-2 text-sm text-error flex items-center gap-1">
                 <i class="bi bi-exclamation-circle"></i>
-                {{ fieldErrors['name'] || 'Name is required' }}
+                {{ fieldErrors['name'] || ('contact.form.name.error' | translate) }}
               </p>
             }
           </div>
@@ -59,7 +60,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
           <!-- Email -->
           <div>
             <label for="email" class="block text-sm font-semibold text-text mb-2">
-              Email Address <span class="text-error">*</span>
+              {{ 'contact.form.email.label' | translate }} <span class="text-error">*</span>
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -69,7 +70,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
                 type="email"
                 id="email"
                 formControlName="email"
-                placeholder="john@example.com"
+                [placeholder]="'contact.form.email.placeholder' | translate"
                 class="w-full pl-11 pr-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
                 [class.border-error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
               />
@@ -80,7 +81,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
               ) {
               <p class="mt-2 text-sm text-error flex items-center gap-1">
                 <i class="bi bi-exclamation-circle"></i>
-                {{ fieldErrors['email'] || 'Valid email is required' }}
+                {{ fieldErrors['email'] || ('contact.form.email.error' | translate) }}
               </p>
             }
           </div>
@@ -89,13 +90,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
         <!-- Subject -->
         <div>
           <label for="subject" class="block text-sm font-semibold text-text mb-2">
-            Subject <span class="text-error">*</span>
+            {{ 'contact.form.subject.label' | translate }} <span class="text-error">*</span>
           </label>
           <div class="relative">
             <app-shared-select
               [options]="subjectOptions"
               [selected]="contactForm.get('subject')?.value"
-              label="Select a subject..."
+              [label]="'contact.form.subject.placeholder' | translate"
               optionLabelKey="name"
               optionValueKey="id"
               [searchable]="false"
@@ -109,7 +110,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
             ) {
             <p class="mt-2 text-sm text-error flex items-center gap-1">
               <i class="bi bi-exclamation-circle"></i>
-              {{ fieldErrors['subject'] || 'Please select a subject' }}
+              {{ fieldErrors['subject'] || ('contact.form.subject.error' | translate) }}
             </p>
           }
         </div>
@@ -117,13 +118,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
         <!-- Message -->
         <div>
           <label for="message" class="block text-sm font-semibold text-text mb-2">
-            Message <span class="text-error">*</span>
+            {{ 'contact.form.message.label' | translate }} <span class="text-error">*</span>
           </label>
           <textarea
             id="message"
             formControlName="message"
             rows="6"
-            placeholder="Tell us more about your inquiry..."
+            [placeholder]="'contact.form.message.placeholder' | translate"
             class="w-full px-4 py-3 bg-surface border-2 border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 resize-none"
             [class.border-error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
           ></textarea>
@@ -133,7 +134,7 @@ import {ButtonComponent} from '@shared/ui/button/button';
             ) {
             <p class="mt-2 text-sm text-error flex items-center gap-1">
               <i class="bi bi-exclamation-circle"></i>
-              {{ fieldErrors['message'] || 'Message must be at least 10 characters' }}
+              {{ fieldErrors['message'] || ('contact.form.message.error' | translate) }}
             </p>
           }
         </div>
@@ -150,13 +151,13 @@ import {ButtonComponent} from '@shared/ui/button/button';
           <span class="relative flex items-center justify-center gap-2">
             @if (isSubmitting) {
               <i class="bi bi-hourglass-split animate-spin"></i>
-              Sending...
+              {{ 'contact.form.submitting' | translate }}
             } @else if (submitSuccess) {
               <i class="bi bi-check-circle"></i>
               Message Sent!
             } @else {
               <i class="bi bi-send"></i>
-              Send Message
+              {{ 'contact.form.submit' | translate }}
             }
           </span>
           </app-button>
@@ -164,14 +165,14 @@ import {ButtonComponent} from '@shared/ui/button/button';
           @if (submitError) {
             <div class="flex items-center gap-2 px-4 py-3 bg-error/10 border border-error/30 rounded-xl text-error mt-3">
               <i class="bi bi-x-circle-fill"></i>
-              <span class="text-sm font-medium">Something went wrong. Please try again later.</span>
+              <span class="text-sm font-medium">{{ 'contact.form.error' | translate }}</span>
             </div>
           }
 
           @if (submitSuccess) {
             <div class="flex items-center gap-2 px-4 py-3 bg-success/10 border border-success/30 rounded-xl text-success">
               <i class="bi bi-check-circle-fill"></i>
-              <span class="text-sm font-medium">Thanks! We'll be in touch soon.</span>
+              <span class="text-sm font-medium">{{ 'contact.form.success' | translate }}</span>
             </div>
           }
         </div>
@@ -188,20 +189,14 @@ export class ContactFormComponent implements OnInit{
   fieldErrors: Record<string, string> = {};
   user: any = null;
 
-  subjectOptions = [
-    { id: 'General', name: 'General Inquiry' },
-    { id: 'Support', name: 'Technical Support' },
-    { id: 'Collaboration', name: 'Partnership/Collaboration' },
-    { id: 'Bug', name: 'Report a Bug' },
-    { id: 'Feature', name: 'Feature Request' },
-    { id: 'Other', name: 'Other' }
-  ];
+  subjectOptions: { id: string; name: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
     private contactService: ContactService,
     private profileService: ProfileService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translate: TranslateService
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -212,6 +207,12 @@ export class ContactFormComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.updateSubjectOptions();
+
+    this.translate.onLangChange.subscribe(() => {
+      this.updateSubjectOptions();
+    });
+
     if (this.authService.getAccessToken()) {
       this.profileService.getCurrentUser().subscribe({
         next: user => {
@@ -227,6 +228,17 @@ export class ContactFormComponent implements OnInit{
         }
       });
     }
+  }
+
+  private updateSubjectOptions(): void {
+    this.subjectOptions = [
+      { id: 'General', name: this.translate.instant('contact.form.subject.options.general') },
+      { id: 'Support', name: this.translate.instant('contact.form.subject.options.support') },
+      { id: 'Collaboration', name: this.translate.instant('contact.form.subject.options.collaboration') },
+      { id: 'Bug', name: this.translate.instant('contact.form.subject.options.bug') },
+      { id: 'Feature', name: this.translate.instant('contact.form.subject.options.feature') },
+      { id: 'Other', name: this.translate.instant('contact.form.subject.options.other') }
+    ];
   }
 
   onSubmit() {

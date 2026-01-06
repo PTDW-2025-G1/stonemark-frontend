@@ -34,7 +34,8 @@
     "terms_service": "Terms of Service",
     "privacy_policy": "Privacy Policy",
     "cookie_policy": "Cookie Policy",
-    "marks_title": "Mason Marks"
+    "marks_title": "Mason Marks",
+    "last_updated": "Last updated: 22 December 2025"
   },
 
   "mission": {
@@ -362,6 +363,352 @@
     "marks_desc": "Explore our collection of historic mason marks found across monuments. Each mark tells a unique story of the craftsmen who left their signature in stone.",
     "search_placeholder": "Search...",
     "all_locations": "All Locations"
+  },
+  "accessibility": {
+    "header": {
+      "title": "Accessibility Settings",
+      "desc": "Customize your experience to meet your accessibility needs. Changes are saved automatically and applied across the entire site."
+    },
+    "quick_reset": {
+      "title": "Quick Reset",
+      "desc": "Restore all settings to their default values",
+      "button": "Reset All",
+      "confirm": "Are you sure you want to reset all accessibility settings?"
+    },
+    "categories": {
+      "visual": "Visual",
+      "motion": "Motion",
+      "content": "Content"
+    },
+    "settings": {
+      "dark_mode": {
+        "title": "Dark Mode",
+        "desc": "Reduces eye strain in low-light environments"
+      },
+      "high_contrast": {
+        "title": "High Contrast",
+        "desc": "Increases contrast between text and background"
+      },
+      "large_text": {
+        "title": "Large Text",
+        "desc": "Increases font size across the site"
+      },
+      "dyslexia_font": {
+        "title": "Dyslexia-Friendly Font",
+        "desc": "Uses OpenDyslexic font for better readability"
+      },
+      "monochrome": {
+        "title": "Monochrome Mode",
+        "desc": "Removes colors and forces grayscale view for improved contrast perception"
+      },
+      "text_spacing": {
+        "title": "Text Spacing",
+        "desc": "Improves readability with increased spacing between lines of text"
+      },
+      "reduce_motion": {
+        "title": "Reduce Motion",
+        "desc": "Minimizes animations and transitions"
+      },
+      "no_autoplay": {
+        "title": "Disable Autoplay",
+        "desc": "Prevents videos and carousels from playing automatically"
+      },
+      "simplified_layout": {
+        "title": "Simplified Layout",
+        "desc": "Removes non-essential elements for cleaner interface"
+      },
+      "reading_guide": {
+        "title": "Reading Guide",
+        "desc": "Highlights the line you're reading"
+      }
+    },
+    "status": {
+      "active": "Active"
+    },
+    "support": {
+      "title": "Need Additional Support?",
+      "desc": "If you need additional accessibility features or encounter any issues, please don't hesitate to contact our support team. We're committed to making StoneMark accessible to everyone.",
+      "contact": "Contact Support"
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Get in Touch",
+      "title": "We Would Love to Hear from You.",
+      "subtitle": "Have questions about Stone Mark? Want to collaborate or report an issue? We are here to help preserve history together."
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "title": "Email",
+        "value": "contact@stonemark.org",
+        "desc": "Send us a message anytime"
+      },
+      "location": {
+        "title": "Location",
+        "value": "Lisbon, Portugal",
+        "desc": "Preserving European heritage"
+      },
+      "response": {
+        "title": "Response Time",
+        "value": "24-48 hours",
+        "desc": "We typically respond within",
+        "detail": "We typically respond within 24-48 hours on business days."
+      }
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "description": "Fill out the form below and we'll get back to you as soon as possible.",
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "error": "Please enter your name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "your@email.com",
+        "error": "Please enter a valid email"
+      },
+      "subject": {
+        "label": "Subject",
+        "placeholder": "What is this about?",
+        "error": "Please enter a subject",
+        "options": {
+          "general": "General Inquiry",
+          "support": "Technical Support",
+          "collaboration": "Partnership/Collaboration",
+          "bug": "Report a Bug",
+          "feature": "Feature Request",
+          "other": "Other"
+        }
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Tell us more about your inquiry...",
+        "error": "Please enter your message"
+      },
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Message sent successfully! We'll get back to you soon.",
+      "error": "Failed to send message. Please try again or contact us directly."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Find answers to common questions about Stone Mark",
+      "questions": {
+        "what_is": {
+          "q": "What is Stone Mark?",
+          "a": "Stone Mark is a collaborative web platform dedicated to the documentation, study, and preservation of stonemason marks — the distinctive symbols carved by medieval craftsmen on monuments, churches, and historic buildings. The project merges cultural heritage with modern geospatial technology to make these marks accessible worldwide."
+        },
+        "who_can_participate": {
+          "q": "Who can participate?",
+          "a": "Anyone interested in cultural heritage can contribute! Whether you are a researcher, student, or curious explorer, you can upload photos of marks, add monument details, or help validate existing records. Community participation is at the heart of Stone Mark."
+        },
+        "how_contribute": {
+          "q": "How can I contribute to the project?",
+          "a": "You can contribute by photographing and submitting new stonemason marks, sharing information about monuments or helping verify existing data. Simply create an account, log in, and start exploring the database."
+        },
+        "is_free": {
+          "q": "Is Stone Mark free to use?",
+          "a": "Yes. Stone Mark is completely free and open to everyone. Our mission is to promote open access to historical knowledge and engage the public in the documentation of cultural heritage."
+        },
+        "use_data": {
+          "q": "Can I use Stone Mark for academic or research purposes?",
+          "a": "Absolutely. Stone Mark supports historians, archaeologists, and students in their research. All monuments, marks are documented with metadata that can be cited in academic work. If you need specific datasets or collaboration opportunities, please contact our team."
+        },
+        "reliable": {
+          "q": "How reliable is the information?",
+          "a": "All submitted data goes through a validation process involving both automated checks and manual review by our moderation team and partner institutions. However, as this is a collaborative project, users are encouraged to report any inaccuracies they find."
+        },
+        "correct_info": {
+          "q": "How can I correct or update existing information?",
+          "a": "If you notice inaccurate or incomplete information on a monument, mark, or guild page, you can click the 'Edit' button to submit corrections directly through an editable form. Your changes will be reviewed and validated by our moderation team before being published to ensure data accuracy and integrity."
+        },
+        "institutions": {
+          "q": "Can institutions collaborate with Stone Mark?",
+          "a": "Yes. We actively collaborate with museums, universities, heritage associations, and cultural organizations. Partnerships help expand the database, improve accuracy, and promote preservation initiatives. If your institution is interested, please contact us."
+        },
+        "location_accuracy": {
+          "q": "How accurate is the location data?",
+          "a": "All locations are georeferenced with care using GPS data, official records, and community validation. We continuously update coordinates to ensure precision. If you detect a mismatch in the location of a monument or mark, you can easily report it."
+        },
+        "data_protection": {
+          "q": "How is my personal data protected?",
+          "a": "We value your privacy. All user information is encrypted and stored securely. We comply with GDPR and all relevant data protection regulations. Contributions are publicly attributed to your username, but no private information is shared unless you choose to make it visible."
+        }
+      }
+    }
+  },
+  "terms-of-service": {
+    "hero": {
+      "badge": "Legal",
+      "title": "Terms of Service",
+      "subtitle": "Please read these terms carefully before using our platform",
+      "last_updated": "Last updated: January 2025"
+    },
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing and using StoneMark, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service."
+      },
+      "description": {
+        "title": "2. Description of Service",
+        "content": "StoneMark is a digital platform for documenting, studying, and preserving stonemason marks found on historic monuments. We provide tools for users to contribute photographs, historical information, and research data related to architectural heritage."
+      },
+      "user_accounts": {
+        "title": "3. User Accounts",
+        "content": "To access certain features, you may be required to create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You must immediately notify us of any unauthorized use of your account."
+      },
+      "user_content": {
+        "title": "4. User-Generated Content",
+        "content": "Users may submit photographs, descriptions, and historical information. By submitting content, you grant StoneMark a worldwide, non-exclusive, royalty-free license to use, reproduce, and distribute your content for the purposes of operating and promoting the platform. You represent that you own or have the necessary rights to submit the content."
+      },
+      "prohibited": {
+        "title": "5. Prohibited Conduct",
+        "content": "You agree not to: (a) upload false, misleading, or malicious content; (b) violate any applicable laws or regulations; (c) infringe on intellectual property rights; (d) attempt to gain unauthorized access to the platform; (e) harass, abuse, or harm other users."
+      },
+      "intellectual_property": {
+        "title": "6. Intellectual Property",
+        "content": "The platform and its original content (excluding user-generated content) are the property of StoneMark and are protected by international copyright, trademark, and other intellectual property laws. User-generated content remains the property of the respective contributors, subject to the license granted to StoneMark."
+      },
+      "disclaimer": {
+        "title": "7. Disclaimer of Warranties",
+        "content": "StoneMark is provided 'as is' without warranties of any kind, either express or implied. We do not guarantee the accuracy, completeness, or reliability of any content on the platform. Use of the service is at your own risk."
+      },
+      "limitation": {
+        "title": "8. Limitation of Liability",
+        "content": "StoneMark and its operators shall not be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with your use of the platform, even if advised of the possibility of such damages."
+      },
+      "modifications": {
+        "title": "9. Modifications to Terms",
+        "content": "We reserve the right to modify these Terms of Service at any time. Changes will be effective immediately upon posting. Your continued use of the platform after changes constitutes acceptance of the modified terms."
+      },
+      "termination": {
+        "title": "10. Termination",
+        "content": "We reserve the right to suspend or terminate your account and access to the platform at our sole discretion, without notice, for conduct that we believe violates these Terms of Service or is harmful to other users, us, or third parties, or for any other reason."
+      },
+      "governing_law": {
+        "title": "11. Governing Law",
+        "content": "These Terms of Service shall be governed by and construed in accordance with the laws of Portugal, without regard to its conflict of law provisions. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the courts of Portugal."
+      },
+      "contact": {
+        "title": "12. Contact Information",
+        "content": "If you have any questions about these Terms of Service, please contact us at legal@stonemark.org"
+      }
+    }
+  },
+  "privacy-policy": {
+    "header": {
+      "title": "Privacy Policy",
+      "last_updated": "Last updated: January 2025"
+    },
+    "info": {
+      "data": {
+        "title": "Data Collected",
+        "text": "Account data, platform interactions, and submitted content (e.g., photos and respective metadata)."
+      },
+      "purposes": {
+        "title": "Purposes",
+        "text": "Account management, service provision, application improvement, and compliance with legal obligations."
+      },
+      "gdpr": {
+        "title": "GDPR & Rights",
+        "text": "Processing based on Article 6 of the GDPR. Ensures access, rectification, erasure, and other legal guarantees for data subjects."
+      }
+    },
+    "intro": {
+      "p1": "At Stonemark, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you use our platform.",
+      "p2": "By using Stonemark, you agree to the collection and use of information in accordance with this policy. If you do not agree with our policies and practices, please do not use our services."
+    },
+    "data": {
+      "title": "1. What personal data do we collect?",
+      "personal": {
+        "title": "Identification data",
+        "desc": "In the context of using the application, we may collect and process the following categories of personal data:",
+        "items": "name, email address, and, if applicable, profile photo."
+      },
+      "content": {
+        "title": "Submitted content",
+        "items": "photos, descriptions, and associated technical metadata (such as capture date/time and, if authorized, approximate location)."
+      },
+      "technical": {
+        "title": "Technical data",
+        "items": "basic device and browser information, necessary to ensure the platform's security and proper functioning."
+      }
+    },
+    "purposes": {
+      "title": "2. Purposes of processing and legal basis (GDPR)",
+      "desc": "Personal data is processed for specific, explicit, and legitimate purposes, in accordance with Article 5 of the GDPR. In particular:",
+      "account": {
+        "title": "Account management and authentication",
+        "desc": "to allow registration, login, and continuous use of the application.",
+        "legal": "(Legal basis: Article 6(1)(b) – performance of a contract.)"
+      },
+      "management": {
+        "title": "Management of submitted content",
+        "desc": "to receive, store, and display photos and associated information, as well as manage the submission history.",
+        "legal": "(Legal basis: Article 6(1)(b) – performance of a contract.)"
+      },
+      "improvement": {
+        "title": "Platform improvement and security",
+        "desc": "to monitor performance, prevent abuse, and improve features.",
+        "legal": "(Legal basis: Article 6(1)(f) – legitimate interest.)"
+      },
+      "compliance": {
+        "title": "Compliance with legal obligations",
+        "desc": "to respond to requests from competent authorities or comply with applicable legal requirements.",
+        "legal": "(Legal basis: Article 6(1)(c) – compliance with a legal obligation.)"
+      }
+    },
+    "retention": {
+      "title": "3. Data retention period",
+      "desc": "Personal data is retained only for the period necessary to fulfill the purposes for which it was collected, in accordance with the storage limitation principle (Article 5(1)(e) of the GDPR):",
+      "account": "Account data: kept while the account is active or until a deletion request is made.",
+      "content": "Submitted content: kept as long as it is relevant for the use of the application or until a deletion request by the user.",
+      "logs": "Technical and security logs: retained for shorter periods, strictly necessary for auditing and security."
+    },
+    "sharing": {
+      "title": "4. Sharing of personal data",
+      "desc": "We do not sell or commercialize your personal data. Data sharing is limited to the following cases:",
+      "providers": "Service providers strictly necessary for the technical operation of the platform, subject to confidentiality obligations.",
+      "legal": "When required by law or by a competent authority, under European Union or Member State law.",
+      "consent": "With your explicit consent, if applicable, for additional purposes clearly identified."
+    },
+    "rights": {
+      "title": "5. Data subject rights",
+      "desc": "Under Articles 12 to 22 of the GDPR, users have, among others, the following rights:",
+      "access": {
+        "title": "Right of access",
+        "desc": "to obtain confirmation as to whether your data is being processed and to access that information."
+      },
+      "rectification": {
+        "title": "Right to rectification",
+        "desc": "to request the correction of inaccurate or incomplete data."
+      },
+      "erasure": {
+        "title": "Right to erasure",
+        "desc": "to request the deletion of data when legal requirements are met."
+      },
+      "restriction": {
+        "title": "Right to restriction of processing",
+        "desc": "to request the temporary suspension of certain processing operations."
+      },
+      "objection": {
+        "title": "Right to object",
+        "desc": "to object to processing based on legitimate interest, for reasons related to your particular situation."
+      },
+      "portability": {
+        "title": "Right to data portability",
+        "desc": "to receive the data you have provided to us in a structured format, or request its transmission to another controller."
+      },
+      "exercise": "To exercise any of these rights, you may contact us through the means indicated in the following section."
+    },
+    "security": {
+      "title": "6. Data security and contacts",
+      "desc1": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, loss, destruction, or improper alteration.",
+      "desc2": "As this is an academic project, any additional questions about privacy or requests regarding your data can be addressed to the team responsible for the application.",
+      "last_updated": "Last updated: 2026-01-06"
+    }
   }
 
 }

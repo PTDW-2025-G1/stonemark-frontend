@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 import { SharedHeroSectionComponent } from '@shared/ui/hero-section/hero-section';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contact-hero-section',
   standalone: true,
   imports: [
-    SharedHeroSectionComponent
+    SharedHeroSectionComponent,
+    TranslateModule
   ],
   template: `
     <app-shared-hero
       [icon]="'bi bi-envelope'"
-      [badge]="'Get in Touch'"
-      [titleLines]="['We Would Love to Hear from You.']"
-      [subtitle]="'Have questions about Stone Mark? Want to collaborate or report an issue? We are here to help preserve history together.'"
+      [badge]="'contact.hero.badge' | translate"
+      [titleLines]="[('contact.hero.title' | translate)]"
+      [subtitle]="'contact.hero.subtitle' | translate"
     ></app-shared-hero>
   `
 })

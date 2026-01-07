@@ -13,8 +13,8 @@ import { MarkOccurrenceProposalDto } from './mark-occurrence-proposal-dto';
 
 
 export interface PageMarkOccurrenceProposalDto { 
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     size?: number;
     content?: Array<MarkOccurrenceProposalDto>;
     number?: number;

@@ -15,7 +15,7 @@ export class MarkOccurrenceProposalService {
 
   constructor(private http: HttpClient) {}
 
-  findByUser(userId: number, page: number = 0, size: number = 10): Observable<PageMarkOccurrenceProposalListDto> {
+  findByUser(userId: number, page: number = 0, size: number = 6): Observable<PageMarkOccurrenceProposalListDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());

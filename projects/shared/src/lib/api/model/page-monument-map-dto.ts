@@ -13,8 +13,8 @@ import { SortObject } from './sort-object';
 
 
 export interface PageMonumentMapDto { 
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     size?: number;
     content?: Array<MonumentMapDto>;
     number?: number;

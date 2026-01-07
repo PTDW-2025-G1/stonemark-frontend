@@ -1,0 +1,211 @@
+<div class="min-h-screen bg-surface">
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="flex items-center justify-center min-h-[60vh]">
+      <div class="text-center">
+        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-text-muted">Loading proposal...</p>
+      </div>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !loading) {
+    <div class="max-w-2xl mx-auto px-4 py-20">
+      <div class="bg-error/10 border-2 border-error/20 rounded-2xl p-8 text-center">
+        <div class="w-16 h-16 bg-error/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="bi bi-exclamation-triangle text-3xl text-error"></i>
+        </div>
+        <h2 class="text-xl font-bold text-text mb-2">Failed to load proposal</h2>
+        <p class="text-text-muted mb-6">The proposal you're looking for couldn't be found or an error occurred.</p>
+        <a
+          routerLink="/profile"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium cursor-pointer">
+          <i class="bi bi-arrow-left"></i>
+          <span>Back to Profile</span>
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Proposal Content -->
+  @if (proposal && !loading) {
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+      <!-- Header -->
+      <div class="mb-8">
+        <button
+          (click)="goBack()"
+          class="inline-flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-4 text-sm font-medium group cursor-pointer">
+          <i class="bi bi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+          <span>Back</span>
+        </button>
+
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+          <div>
+            <h1 class="text-3xl sm:text-4xl font-serif font-bold text-text mb-2">Proposal Details</h1>
+            <p class="text-text-muted">Review your submitted proposal information</p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <!-- Status Badge -->
+            <span
+              [ngClass]="{
+                'bg-warning/90 border-warning/20': proposal.status === 'UNDER_REVIEW' || proposal.status === 'SUBMITTED',
+                'bg-success/90 border-success/20': proposal.status === 'AUTO_ACCEPTED' || proposal.status === 'MANUALLY_ACCEPTED',
+                'bg-error/90 border-error/20': proposal.status === 'AUTO_REJECTED' || proposal.status === 'MANUALLY_REJECTED'
+              }"
+              class="px-3 py-1.5 backdrop-blur-sm text-white text-xs font-semibold rounded-full border inline-flex items-center gap-1.5"
+            >
+              <i
+                [ngClass]="{
+                  'bi-hourglass-split': proposal.status === 'SUBMITTED' || proposal.status === 'UNDER_REVIEW',
+                  'bi-check-circle': proposal.status === 'AUTO_ACCEPTED' || proposal.status === 'MANUALLY_ACCEPTED',
+                  'bi-x-circle': proposal.status === 'AUTO_REJECTED' || proposal.status === 'MANUALLY_REJECTED'
+                }"
+                class="bi"
+              ></i>
+              {{ getStatusLabel(proposal.status) }}
+            </span>
+
+            <!-- Submission Source Badge -->
+            @if (proposal.submissionSource) {
+              <span class="px-3 py-1.5 bg-primary/90 border-primary/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border inline-flex items-center gap-1.5">
+                <i [ngClass]="getSubmissionSourceIcon(proposal.submissionSource)" class="bi"></i>
+                {{ getSubmissionSourceLabel(proposal.submissionSource) }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- Left: Image -->
+        <div>
+          <div class="relative group rounded-2xl overflow-hidden border-2 border-border shadow-lg bg-surface-muted aspect-4/3">
+            <img
+              [src]="getImageUrl(proposal.coverId)"
+              alt="Proposal Cover"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- Right: Info -->
+        <div class="space-y-6">
+
+          <!-- Monument Info -->
+          @if (proposal.existingMonument || proposal.monumentName) {
+            <div class="border-b border-border pb-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span [innerHTML]="monumentsIcon | safeHtml" class="text-primary text-xl w-5 h-5"></span>
+                <h2 class="text-lg font-bold text-text">Monument</h2>
+              </div>
+
+              <p class="text-xl font-semibold text-text mb-2">
+                {{ proposal.existingMonument?.name || proposal.monumentName }}
+              </p>
+
+              @if (proposal.existingMonument?.city) {
+                <div class="flex items-center gap-2 text-sm text-text-muted mb-3">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>{{ proposal.existingMonument?.city }}, Portugal</span>
+                </div>
+              }
+
+              @if (proposal.latitude && proposal.longitude) {
+                <div class="flex items-center gap-2 text-sm text-text-muted mb-4">
+                  <i class="bi bi-pin-map"></i>
+                  <span class="font-mono text-xs">
+                    {{ proposal.latitude | number:'1.4-4' }}, {{ proposal.longitude | number:'1.4-4' }}
+                  </span>
+                </div>
+              }
+
+              @if (proposal.existingMonument?.description) {
+                <p class="text-sm text-text-muted leading-relaxed mb-4 border-l-2 border-primary/30 pl-3">
+                  {{ proposal.existingMonument?.description }}
+                </p>
+              }
+
+              @if (proposal.existingMonument?.id) {
+                <a
+                  [href]="getMonumentUrl(proposal.existingMonument?.id)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-block"
+                >
+                  <app-button variant="primary" size="md">
+                    <span>View Monument</span>
+                    <i class="bi bi-box-arrow-up-right text-xs"></i>
+                  </app-button>
+                </a>
+              }
+            </div>
+          }
+
+          <!-- Mark Info -->
+          <div class="border-b border-border pb-6">
+            <div class="flex items-center gap-2 mb-3">
+              <span [innerHTML]="marksIcon | safeHtml" class="text-primary text-xl w-5 h-5"></span>
+              <h2 class="text-lg font-bold text-text">Mason Mark</h2>
+            </div>
+
+            <div class="flex items-center gap-2 mb-3">
+              @if (proposal.newMark) {
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-success/10 border border-success/20 text-success rounded-lg text-sm font-semibold">
+                  <i class="bi bi-plus-circle"></i>
+                  <span>New Mark</span>
+                </span>
+              } @else if (proposal.existingMark) {
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-info/10 border border-info/20 text-info rounded-lg text-sm font-semibold">
+                  <i class="bi bi-check-circle"></i>
+                  <span>Existing Mark</span>
+                </span>
+              }
+            </div>
+
+            @if (proposal.existingMark?.description) {
+              <p class="text-sm text-text-muted leading-relaxed mb-4 border-l-2 border-primary/30 pl-3">
+                {{ proposal.existingMark?.description }}
+              </p>
+            }
+
+            @if (proposal.existingMark?.id) {
+              <a
+                [href]="getMarkUrl(proposal.existingMark?.id)"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block"
+              >
+                <app-button variant="primary" size="md">
+                  <span>View Mark</span>
+                  <i class="bi bi-box-arrow-up-right text-xs"></i>
+                </app-button>
+              </a>
+            }
+          </div>
+
+          <!-- User Notes -->
+          @if (proposal.userNotes) {
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <i class="bi bi-chat-left-text text-primary text-xl"></i>
+                <h2 class="text-lg font-bold text-text">Additional Notes</h2>
+              </div>
+              <div class="bg-surface-alt rounded-xl p-4 border border-border">
+                <p class="text-sm text-text-muted whitespace-pre-wrap leading-relaxed">{{ proposal.userNotes }}</p>
+              </div>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  }
+</div>

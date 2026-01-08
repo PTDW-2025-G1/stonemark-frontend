@@ -43,8 +43,8 @@
           <div class="absolute top-3 left-3 flex gap-2">
             <span
               [ngClass]="{
-                'bg-warning/90 border-warning/20': occurrence.status === 'UNDER_REVIEW',
-                'bg-success/90 border-success/20': occurrence.status === 'AUTO_ACCEPTED' || occurrence.status === 'MANUALLY_ACCEPTED' || occurrence.status === 'SUBMITTED',
+                'bg-warning/90 border-warning/20': occurrence.status === 'UNDER_REVIEW' || occurrence.status === 'SUBMITTED',
+                'bg-success/90 border-success/20': occurrence.status === 'AUTO_ACCEPTED' || occurrence.status === 'MANUALLY_ACCEPTED',
                 'bg-error/90 border-error/20': occurrence.status === 'AUTO_REJECTED' || occurrence.status === 'MANUALLY_REJECTED',
               }"
               class="px-3 py-1 backdrop-blur-sm text-white text-xs font-semibold rounded-full border"
@@ -81,13 +81,13 @@
       </div>
     }
   </div>
-}
 
-<!-- Load More -->
-@if (occurrences.length >= 6) {
-  <div class="text-center mt-8">
-    <button class="px-8 py-3 bg-surface-alt border-2 border-border text-text rounded-xl font-semibold hover:border-primary transition-all">
-      Load More Proposals
-    </button>
-  </div>
+  <!-- Pagination -->
+  @if (totalPages > 1) {
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (pageChange)="pageChange.emit($event)"
+    ></app-pagination>
+  }
 }

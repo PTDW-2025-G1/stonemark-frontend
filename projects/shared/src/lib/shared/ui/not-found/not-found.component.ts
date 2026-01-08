@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { ButtonComponent } from '../button/button';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-not-found',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ButtonComponent],
   template: `
     <div class="min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
       <div class="max-w-4xl w-full text-center">
@@ -41,19 +43,23 @@ import { Router, RouterModule } from '@angular/router';
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center pt-4 px-4">
-            <button
+            <app-button
+              variant="primary"
+              size="lg"
               (click)="goBack()"
-              class="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-xl font-bold hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-base sm:text-lg">
+              class="sm:w-auto">
               <i class="bi bi-arrow-left"></i>
-              Go Back
-            </button>
+              <span>Go Back</span>
+            </app-button>
 
-            <button
+            <app-button
+              variant="secondary"
+              size="lg"
               (click)="goHome()"
-              class="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-surface-alt border-2 border-border text-text rounded-xl font-bold hover:border-primary transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
+              class="sm:w-auto">
               <i class="bi bi-house-door"></i>
-              Home Page
-            </button>
+              <span>Home Page</span>
+            </app-button>
           </div>
 
           <!-- Help Text -->
@@ -127,7 +133,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class NotFoundComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
@@ -138,6 +144,6 @@ export class NotFoundComponent implements OnInit {
   }
 
   goHome(): void {
-    this.router.navigate(['/']);
+    window.location.href = environment.baseUrl;
   }
 }

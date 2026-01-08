@@ -13,8 +13,8 @@ import { MonumentListDto } from './monument-list-dto';
 
 
 export interface PageMonumentListDto { 
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     size?: number;
     content?: Array<MonumentListDto>;
     number?: number;

@@ -16,7 +16,11 @@
   @if (activeTab === 'marks') {
     <app-profile-marks
       [occurrences]="occurrences"
+      [currentPage]="marksPagination.currentPage"
+      [totalPages]="marksPagination.totalPages"
       (addOccurrence)="onAddMark()"
+      (viewOccurrence)="onViewOccurrence($event)"
+      (pageChange)="onMarksPageChange($event)"
     ></app-profile-marks>
   }
   @if (activeTab === 'suggestions') {

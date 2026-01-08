@@ -22,10 +22,20 @@ export interface MarkOccurrenceProposalDto {
     existingMark?: MarkDto;
     newMark?: boolean;
     userNotes?: string;
+    submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
     isSubmitted?: boolean;
     status?: MarkOccurrenceProposalDto.StatusEnum;
 }
 export namespace MarkOccurrenceProposalDto {
+    export const SubmissionSourceEnum = {
+        WebApp: 'WEB_APP',
+        StaffApp: 'STAFF_APP',
+        Whatsapp: 'WHATSAPP',
+        Api: 'API',
+        TelegramBot: 'TELEGRAM_BOT',
+        Other: 'OTHER'
+    } as const;
+    export type SubmissionSourceEnum = typeof SubmissionSourceEnum[keyof typeof SubmissionSourceEnum];
     export const StatusEnum = {
         Submitted: 'SUBMITTED',
         UnderReview: 'UNDER_REVIEW',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import {ProfileHeaderComponent} from './sections/profile-header/profile-header';
 import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
@@ -12,6 +12,7 @@ import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth/auth.service';
 import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence-proposal.service';
 import { MarkOccurrenceProposalListDto } from '@api/model/mark-occurrence-proposal-list-dto';
+import { PaginationFacade } from '@shared/facades/pagination.facade';
 
 @Component({
   selector: 'app-profile',
@@ -30,14 +31,19 @@ export class ProfileComponent implements OnInit {
   activeTab: 'marks' | 'suggestions' = 'marks';
   suggestionFilter: 'all' | 'validated' | 'pending' | 'rejected' = 'all';
 
+  marksPagination = new PaginationFacade<MarkOccurrenceProposalListDto>();
+
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private profileService: ProfileService,
               private markOccurrenceProposalService: MarkOccurrenceProposalService,
               private authService: AuthService) {}
 
   ngOnInit(): void {
+    const pageParam = this.route.snapshot.queryParamMap.get('page');
+    const page = pageParam ? parseInt(pageParam, 10) - 1 : 0;
     this.loadUserProfile();
-    this.loadMarks();
+    this.loadMarks(page);
     this.loadMockSuggestions();
     this.loadUserStats();
   }
@@ -69,12 +75,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  loadMarks(): void {
+  loadMarks(page: number = 0): void {
     this.profileService.getCurrentUser().subscribe({
       next: (data: UserDto) => {
         if (typeof data.id === 'number') {
-          this.markOccurrenceProposalService.findByUser(data.id).subscribe((page) => {
-            this.occurrences = page.content ?? [];
+          this.markOccurrenceProposalService.findByUser(data.id, page, 6).subscribe((pageResponse) => {
+            this.occurrences = pageResponse.content ?? [];
+            this.marksPagination.setServerPage(
+              (pageResponse.number ?? 0) + 1, // Convert 0-based to 1-based
+              pageResponse.totalPages ?? 1
+            );
           });
         } else {
           this.occurrences = [];
@@ -138,7 +148,21 @@ export class ProfileComponent implements OnInit {
   }
 
   onAddMark() {
-    // lógica para adicionar um novo mark
+    this.router.navigate(['/marks/create']);
+  }
+
+  onViewOccurrence(proposalId: number): void {
+    this.router.navigate(['/proposals', proposalId]);
+  }
+
+  onMarksPageChange(page: number): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page },
+      queryParamsHandling: 'merge'
+    });
+
+    this.loadMarks(page - 1);
   }
 
   onCreateSuggestion() {
@@ -200,5 +224,4 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
 }

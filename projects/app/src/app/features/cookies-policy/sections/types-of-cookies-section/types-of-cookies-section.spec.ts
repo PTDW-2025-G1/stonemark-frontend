@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TypesOfCookiesSection } from './types-of-cookies-section';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('TypesOfCookiesSection', () => {
   let component: TypesOfCookiesSection;
@@ -9,7 +11,15 @@ describe('TypesOfCookiesSection', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TypesOfCookiesSection]
+      imports: [
+        TypesOfCookiesSection,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TypesOfCookiesSection);
@@ -21,29 +31,50 @@ describe('TypesOfCookiesSection', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the main section title', () => {
-    const title = fixture.debugElement.query(By.css('h2')).nativeElement;
-    expect(title.textContent.trim()).toBe('Types of Cookies We Use');
+  it('should render the main section container', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    expect(section).toBeTruthy();
+    expect(section.nativeElement.className).toContain('bg-surface-alt');
+    expect(section.nativeElement.className).toContain('rounded-2xl');
   });
 
-  it('should render all 4 cookie category headings', () => {
-    const categoryHeadings = fixture.debugElement.queryAll(By.css('h3'));
-    const texts = categoryHeadings.map(h => h.nativeElement.textContent.trim());
-
-    expect(texts).toContain('1. Essential Cookies');
-    expect(texts).toContain('2. Functional Cookies');
-    expect(texts).toContain('3. Analytics Cookies');
-    expect(texts).toContain('4. Marketing Cookies');
+  it('should render the main title', () => {
+    const title = fixture.debugElement.query(By.css('h2'));
+    expect(title).toBeTruthy();
+    expect(title.nativeElement.className).toContain('font-serif');
   });
 
-  it('should render example lists for each cookie category', () => {
+  it('should render 4 cookie category headings', () => {
+    const headings = fixture.debugElement.queryAll(By.css('h3'));
+    expect(headings.length).toBe(4);
+  });
+
+  it('should render a description paragraph for each category', () => {
+    const descriptions = fixture.debugElement.queryAll(By.css('h3 + p'));
+    expect(descriptions.length).toBe(4);
+  });
+
+  it('should render example blocks for each category', () => {
+    const exampleBlocks = fixture.debugElement.queryAll(By.css('.bg-surface.rounded-xl'));
+    expect(exampleBlocks.length).toBe(4);
+  });
+
+  it('should render one list per cookie category', () => {
     const lists = fixture.debugElement.queryAll(By.css('ul'));
     expect(lists.length).toBe(4);
   });
 
-  it('should render the section container with proper styling classes', () => {
-    const section = fixture.debugElement.query(By.css('section')).nativeElement;
-    expect(section.className).toContain('bg-surface-alt');
-    expect(section.className).toContain('rounded-2xl');
+  it('should render check icons inside lists', () => {
+    const icons = fixture.debugElement.queryAll(By.css('.bi-check-circle-fill'));
+    expect(icons.length).toBeGreaterThan(0);
+
+    icons.forEach(icon => {
+      expect(icon.nativeElement.className).toContain('text-primary');
+    });
+  });
+
+  it('should render italic or small notes where applicable', () => {
+    const notes = fixture.debugElement.queryAll(By.css('p.text-xs'));
+    expect(notes.length).toBeGreaterThan(0);
   });
 });

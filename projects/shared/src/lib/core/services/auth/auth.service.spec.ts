@@ -183,7 +183,7 @@ describe('AuthService', () => {
     const result = await firstValueFrom(service.refreshToken(token));
 
     expect(result).toEqual(mockResponse);
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/refresh-token`, payload);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/refresh`, payload);
     expect(cookieMock.set).toHaveBeenCalledWith('accessToken', 'new-access-token', 1);
     expect(cookieMock.set).toHaveBeenCalledWith('refreshToken', 'new-refresh-token', 7);
   });
@@ -198,11 +198,11 @@ describe('AuthService', () => {
   });
 
   it('should get refresh token from cookies', () => {
-    (cookieMock.get as any).mockReturnValue('refresh-token');
+    (cookieMock.get as any).mockReturnValue('refresh');
 
     const token = service.getRefreshToken();
 
-    expect(token).toBe('refresh-token');
+    expect(token).toBe('refresh');
     expect(cookieMock.get).toHaveBeenCalledWith('refreshToken');
   });
 
@@ -224,10 +224,10 @@ describe('AuthService', () => {
   });
 
   it('should save tokens', () => {
-    service.saveTokens('access-token', 'refresh-token', 'USER');
+    service.saveTokens('access-token', 'refresh', 'USER');
 
     expect(cookieMock.set).toHaveBeenCalledWith('accessToken', 'access-token', 1);
-    expect(cookieMock.set).toHaveBeenCalledWith('refreshToken', 'refresh-token', 7);
+    expect(cookieMock.set).toHaveBeenCalledWith('refreshToken', 'refresh', 7);
     expect(cookieMock.set).toHaveBeenCalledWith('role', 'USER', 7);
   });
 });

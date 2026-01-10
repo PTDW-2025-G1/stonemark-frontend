@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ThirdPartyCookiesSection } from './third-party-cookies-section';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('ThirdPartyCookiesSection', () => {
   let component: ThirdPartyCookiesSection;
@@ -9,7 +11,15 @@ describe('ThirdPartyCookiesSection', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThirdPartyCookiesSection]
+      imports: [
+        ThirdPartyCookiesSection,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ThirdPartyCookiesSection);
@@ -21,14 +31,22 @@ describe('ThirdPartyCookiesSection', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the section title', () => {
-    const title = fixture.debugElement.query(By.css('h2')).nativeElement;
-    expect(title.textContent.trim()).toBe('Third-Party Cookies');
+  it('should render the main section container', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    expect(section).toBeTruthy();
+    expect(section.nativeElement.className).toContain('rounded-2xl');
+    expect(section.nativeElement.className).toContain('border');
   });
 
-  it('should render introduction text', () => {
-    const intro = fixture.debugElement.query(By.css('p')).nativeElement;
-    expect(intro.textContent).toContain('third-party services');
+  it('should render the section title', () => {
+    const title = fixture.debugElement.query(By.css('h2'));
+    expect(title).toBeTruthy();
+    expect(title.nativeElement.className).toContain('font-serif');
+  });
+
+  it('should render the introduction paragraph', () => {
+    const paragraph = fixture.debugElement.query(By.css('p.text-text-muted'));
+    expect(paragraph).toBeTruthy();
   });
 
   it('should render four third-party cookie blocks', () => {
@@ -36,19 +54,28 @@ describe('ThirdPartyCookiesSection', () => {
     expect(blocks.length).toBe(4);
   });
 
-  it('should render correct service titles', () => {
-    const titles = fixture.debugElement.queryAll(By.css('h4')).map(h =>
-      h.nativeElement.textContent.trim()
-    );
+  it('should render a title and description inside each block', () => {
+    const titles = fixture.debugElement.queryAll(By.css('h4'));
+    const descriptions = fixture.debugElement.queryAll(By.css('p.text-sm'));
 
-    expect(titles).toContain('Google Analytics');
-    expect(titles).toContain('Mapping Services');
-    expect(titles).toContain('Social Media Platforms');
-    expect(titles).toContain('Security Services');
+    expect(titles.length).toBe(4);
+    expect(descriptions.length).toBe(5);
   });
 
-  it('should display the disclaimer text', () => {
-    const italicText = fixture.debugElement.query(By.css('p.italic')).nativeElement;
-    expect(italicText.textContent).toContain('We recommend reviewing the privacy policies');
+  it('should render icons for all blocks', () => {
+    const icons = fixture.debugElement.queryAll(By.css('i.bi'));
+    expect(icons.length).toBe(4);
+
+    const classes = icons.map(i => i.nativeElement.className);
+    expect(classes.some(c => c.includes('bi-bar-chart'))).toBe(true);
+    expect(classes.some(c => c.includes('bi-map'))).toBe(true);
+    expect(classes.some(c => c.includes('bi-share'))).toBe(true);
+    expect(classes.some(c => c.includes('bi-shield-check'))).toBe(true);
+  });
+
+  it('should render an italic disclaimer note at the bottom', () => {
+    const note = fixture.debugElement.query(By.css('p.italic'));
+    expect(note).toBeTruthy();
+    expect(note.nativeElement.className).toContain('text-sm');
   });
 });

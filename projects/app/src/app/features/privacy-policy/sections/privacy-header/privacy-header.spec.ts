@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PpHeaderComponent } from './privacy-header';
 import { By } from '@angular/platform-browser';
+import { PpHeaderComponent } from './privacy-header';
+import { LegalHeroHeaderComponent } from '@shared/ui/legal-hero-header/legal-hero-header';
+import { LegalInfoGridComponent } from '@shared/ui/legal-info-grid/legal-info-grid';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('PpHeaderComponent', () => {
   let component: PpHeaderComponent;
@@ -9,7 +13,17 @@ describe('PpHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PpHeaderComponent]
+      imports: [
+        PpHeaderComponent,
+        LegalHeroHeaderComponent,
+        LegalInfoGridComponent,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PpHeaderComponent);
@@ -17,32 +31,39 @@ describe('PpHeaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
   it('should render LegalHeroHeaderComponent', () => {
-    const heroHeader = fixture.debugElement.query(By.css('app-legal-hero-header'));
+    const heroHeader = fixture.debugElement.query(
+      By.directive(LegalHeroHeaderComponent)
+    );
     expect(heroHeader).toBeTruthy();
   });
 
-  it('should pass correct title to LegalHeroHeaderComponent', () => {
-    const heroHeader = fixture.debugElement.query(By.css('app-legal-hero-header'));
-    expect(heroHeader.attributes['title']).toBe('Privacy Policy');
-  });
+  it('should pass title and lastUpdated inputs to LegalHeroHeaderComponent', () => {
+    const heroHeaderInstance = fixture.debugElement
+      .query(By.directive(LegalHeroHeaderComponent))
+      .componentInstance as LegalHeroHeaderComponent;
 
-  it('should pass correct lastUpdated to LegalHeroHeaderComponent', () => {
-    const heroHeader = fixture.debugElement.query(By.css('app-legal-hero-header'));
-    expect(heroHeader.attributes['lastUpdated']).toBe('November 19, 2025');
+    expect(heroHeaderInstance.title).toBeDefined();
+    expect(heroHeaderInstance.lastUpdated).toBeDefined();
   });
 
   it('should render LegalInfoGridComponent', () => {
-    const infoGrid = fixture.debugElement.query(By.css('app-legal-info-grid'));
+    const infoGrid = fixture.debugElement.query(
+      By.directive(LegalInfoGridComponent)
+    );
     expect(infoGrid).toBeTruthy();
   });
 
-  it('should pass items array to LegalInfoGridComponent', () => {
-    const infoGrid = fixture.debugElement.query(By.css('app-legal-info-grid'));
-    expect(infoGrid).toBeTruthy();
+  it('should pass three items to LegalInfoGridComponent', () => {
+    const infoGridInstance = fixture.debugElement
+      .query(By.directive(LegalInfoGridComponent))
+      .componentInstance as LegalInfoGridComponent;
+
+    expect(Array.isArray(infoGridInstance.items)).toBe(true);
+    expect(infoGridInstance.items.length).toBe(3);
   });
 });

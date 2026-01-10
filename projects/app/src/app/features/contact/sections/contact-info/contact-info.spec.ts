@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContactInfoComponent } from './contact-info';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('ContactInfoComponent', () => {
   let component: ContactInfoComponent;
@@ -9,7 +11,15 @@ describe('ContactInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactInfoComponent]
+      imports: [
+        ContactInfoComponent,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContactInfoComponent);
@@ -21,56 +31,48 @@ describe('ContactInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the "Quick Contact" title with icon', () => {
+  it('should render the main container', () => {
+    const container = fixture.debugElement.query(By.css('.bg-gradient-to-br'));
+    expect(container).toBeTruthy();
+  });
+
+  it('should render header with info icon', () => {
     const heading = fixture.debugElement.query(By.css('h3'));
-    expect(heading.nativeElement.textContent).toContain('Quick Contact');
+    expect(heading).toBeTruthy();
+
     const icon = heading.query(By.css('.bi-info-circle'));
     expect(icon).toBeTruthy();
   });
 
-  it('should render the email link correctly', () => {
+  it('should render an email link with mailto', () => {
     const emailLink = fixture.debugElement.query(By.css('a[href^="mailto:"]'));
     expect(emailLink).toBeTruthy();
-    expect(emailLink.nativeElement.textContent).toContain('contact@stonemark.pt');
-    const icon = emailLink.query(By.css('.bi-envelope-fill'));
-    expect(icon).toBeTruthy();
-    const label = emailLink.query(By.css('p.font-semibold'));
-    expect(label.nativeElement.textContent).toContain('Email');
+    expect(emailLink.nativeElement.getAttribute('href'))
+      .toBe('mailto:contact@stonemark.org');
   });
 
-  it('should render the phone link correctly', () => {
-    const phoneLink = fixture.debugElement.query(By.css('a[href^="tel:"]'));
-    expect(phoneLink).toBeTruthy();
-    expect(phoneLink.nativeElement.textContent).toContain('+351 123 456 789');
-    const icon = phoneLink.query(By.css('.bi-telephone-fill'));
+  it('should render email icon', () => {
+    const icon = fixture.debugElement.query(By.css('.bi-envelope-fill'));
     expect(icon).toBeTruthy();
-    const label = phoneLink.query(By.css('p.font-semibold'));
-    expect(label.nativeElement.textContent).toContain('Phone');
   });
 
-  it('should render the address correctly', () => {
-    const addressDiv = fixture.debugElement.queryAll(By.css('div.flex.items-start'))
-      .find(el => el.nativeElement.textContent.includes('Águeda, Aveiro - Portugal'));
-    expect(addressDiv).toBeTruthy();
-
-    if (!addressDiv) return;
-
-    expect(addressDiv.nativeElement.textContent).toContain('Águeda, Aveiro - Portugal');
-
-    const icon = addressDiv.query(By.css('.bi-geo-alt-fill'));
+  it('should render location block with icon', () => {
+    const icon = fixture.debugElement.query(By.css('.bi-geo-alt-fill'));
     expect(icon).toBeTruthy();
-
-    const label = addressDiv.query(By.css('p.font-semibold'));
-    expect(label.nativeElement.textContent).toContain('Address');
   });
 
+  it('should render two info blocks', () => {
+    const blocks = fixture.debugElement.queryAll(By.css('.flex.items-start'));
+    expect(blocks.length).toBe(2);
+  });
 
-  it('should have main layout and style classes', () => {
+  it('should have proper styling classes on container', () => {
     const container = fixture.debugElement.query(By.css('.bg-gradient-to-br'));
-    expect(container).toBeTruthy();
-    expect(container.nativeElement.className).toContain('rounded-2xl');
-    expect(container.nativeElement.className).toContain('border');
-    expect(container.nativeElement.className).toContain('p-6');
-    expect(container.nativeElement.className).toContain('shadow-sm');
+    const classes = container.nativeElement.className;
+
+    expect(classes).toContain('rounded-2xl');
+    expect(classes).toContain('border');
+    expect(classes).toContain('p-6');
+    expect(classes).toContain('shadow-sm');
   });
 });

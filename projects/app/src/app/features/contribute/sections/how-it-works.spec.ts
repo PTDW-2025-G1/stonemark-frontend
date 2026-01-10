@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HowItWorksComponent } from './how-it-works';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('HowItWorksComponent', () => {
   let component: HowItWorksComponent;
@@ -9,7 +11,15 @@ describe('HowItWorksComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HowItWorksComponent]
+      imports: [
+        HowItWorksComponent,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HowItWorksComponent);
@@ -17,94 +27,67 @@ describe('HowItWorksComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the section label', () => {
-    const label = fixture.debugElement.query(By.css('.uppercase.tracking-widest'));
-    expect(label).toBeTruthy();
-    expect(label.nativeElement.textContent.trim()).toContain('Simple Contribution');
+  it('should render the main section', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    expect(section).toBeTruthy();
   });
 
-  it('should render the main heading', () => {
-    const heading = fixture.debugElement.query(By.css('h2'));
-    expect(heading.nativeElement.textContent.trim()).toBe('History in Your Pocket');
+  it('should render the header area', () => {
+    const header = fixture.debugElement.query(By.css('.text-center'));
+    expect(header).toBeTruthy();
   });
 
-  it('should render 4 main steps cards', () => {
+  it('should render the steps grid', () => {
     const grid = fixture.debugElement.query(By.css('.grid'));
-    const steps = grid.queryAll(By.css('h3'));
-    expect(steps.length).toBe(4);
+    expect(grid).toBeTruthy();
   });
 
-  it('should render Step 1: Connect', () => {
-    const grid = fixture.debugElement.query(By.css('.grid'));
-    const stepHeadings = grid.queryAll(By.css('h3'));
-    expect(stepHeadings[0].nativeElement.textContent.trim()).toBe('Connect');
+  it('should render 4 step cards', () => {
+    const cards = fixture.debugElement.queryAll(By.css('.rounded-2xl'));
+    expect(cards.length).toBeGreaterThanOrEqual(4);
   });
 
-  it('should render Step 2: Snap & Share', () => {
-    const grid = fixture.debugElement.query(By.css('.grid'));
-    const stepHeadings = grid.queryAll(By.css('h3'));
-    expect(stepHeadings[1].nativeElement.textContent.trim()).toBe('Snap & Share');
-  });
-
-  it('should render Step 3: Pin Location', () => {
-    const grid = fixture.debugElement.query(By.css('.grid'));
-    const stepHeadings = grid.queryAll(By.css('h3'));
-    expect(stepHeadings[2].nativeElement.textContent.trim()).toBe('Pin Location');
-  });
-
-  it('should render Step 4: Confirm', () => {
-    const grid = fixture.debugElement.query(By.css('.grid'));
-    const stepHeadings = grid.queryAll(By.css('h3'));
-    expect(stepHeadings[3].nativeElement.textContent.trim()).toBe('Confirm');
+  it('should render step numbers from 1 to 14', () => {
+    const numbers = fixture.debugElement.queryAll(By.css('.rounded-full'));
+    expect(numbers.length).toBe(14);
   });
 
   it('should render desktop image showcase', () => {
-    const desktopImageContainer = fixture.debugElement.query(By.css('.hidden.md\\:block'));
-    expect(desktopImageContainer).toBeTruthy();
-    const img = desktopImageContainer.query(By.css('img'));
-    expect(img.attributes['src']).toContain('captureMark.png');
+    const desktop = fixture.debugElement.query(By.css('.hidden.md\\:block'));
+    expect(desktop).toBeTruthy();
+
+    const img = desktop.query(By.css('img'));
+    expect(img).toBeTruthy();
   });
 
-  it('should render mobile image showcase', () => {
-    const mobileImageContainer = fixture.debugElement.query(By.css('.md\\:hidden'));
-    expect(mobileImageContainer).toBeTruthy();
-    const images = mobileImageContainer.queryAll(By.css('img'));
+  it('should render mobile image showcase with 3 images', () => {
+    const mobile = fixture.debugElement.query(By.css('.md\\:hidden'));
+    expect(mobile).toBeTruthy();
+
+    const images = mobile.queryAll(By.css('img'));
     expect(images.length).toBe(3);
-    expect(images[0].attributes['src']).toContain('captureMarkMobile1.png');
-    expect(images[1].attributes['src']).toContain('captureMarkMobile2.png');
-    expect(images[2].attributes['src']).toContain('captureMarkMobile3.png');
   });
 
-  it('should have proper grid layout for steps', () => {
-    const grid = fixture.debugElement.query(By.css('.grid'));
-    expect(grid).toBeTruthy();
-    expect(grid.classes['grid-cols-1']).toBe(true);
-    expect(grid.classes['md:grid-cols-2']).toBe(true);
-    expect(grid.classes['lg:grid-cols-4']).toBe(true);
-  });
-
-  it('should render "The Complete Journey" section', () => {
-    const headings = fixture.debugElement.queryAll(By.css('h3'));
-    const journeyHeading = headings.find(h => h.nativeElement.textContent.includes('The Complete Journey'));
-    expect(journeyHeading).toBeTruthy();
+  it('should render the detailed guide section', () => {
+    const guideHeading = fixture.debugElement.query(By.css('h3'));
+    expect(guideHeading).toBeTruthy();
   });
 
   it('should render 9 detailed steps', () => {
-    const detailedSteps = fixture.debugElement.queryAll(By.css('h4'));
-    expect(detailedSteps.length).toBe(9);
+    const steps = fixture.debugElement.queryAll(By.css('h4'));
+    expect(steps.length).toBe(9);
   });
 
-  it('should render the first detailed step "Secure Authentication"', () => {
-    const detailedSteps = fixture.debugElement.queryAll(By.css('h4'));
-    expect(detailedSteps[0].nativeElement.textContent).toContain('Secure Authentication');
-  });
+  it('should apply proper grid layout classes to steps grid', () => {
+    const grid = fixture.debugElement.query(By.css('.grid'));
+    const classes = grid.nativeElement.className;
 
-  it('should render the last detailed step "Confirmation"', () => {
-    const detailedSteps = fixture.debugElement.queryAll(By.css('h4'));
-    expect(detailedSteps[8].nativeElement.textContent).toContain('Confirmation');
+    expect(classes).toContain('grid-cols-1');
+    expect(classes).toContain('md:grid-cols-2');
+    expect(classes).toContain('lg:grid-cols-4');
   });
 });

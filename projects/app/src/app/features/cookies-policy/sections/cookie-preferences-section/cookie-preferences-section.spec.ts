@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ManagingCookiePreferencesSection } from './cookie-preferences-section';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('ManagingCookiePreferencesSection', () => {
   let component: ManagingCookiePreferencesSection;
@@ -9,7 +11,15 @@ describe('ManagingCookiePreferencesSection', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ManagingCookiePreferencesSection]
+      imports: [
+        ManagingCookiePreferencesSection,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ManagingCookiePreferencesSection);
@@ -21,41 +31,33 @@ describe('ManagingCookiePreferencesSection', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the main title', () => {
-    const title = fixture.debugElement.query(By.css('h2')).nativeElement;
-    expect(title.textContent.trim()).toBe('Managing Your Cookie Preferences');
+  it('should render the main section container', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    expect(section).toBeTruthy();
+    expect(section.nativeElement.className).toContain('rounded-2xl');
+    expect(section.nativeElement.className).toContain('border');
   });
 
-  it('should contain introductory text', () => {
-    const intro = fixture.debugElement.query(By.css('p')).nativeElement;
-    expect(intro.textContent).toContain('You have the right to control');
+  it('should render the main header with icon', () => {
+    const header = fixture.debugElement.query(By.css('h2'));
+    expect(header).toBeTruthy();
+
+    const icon = fixture.debugElement.query(By.css('.bi-sliders'));
+    expect(icon).toBeTruthy();
   });
 
-  it('should render the three main preference blocks', () => {
+  it('should render three main preference blocks', () => {
     const blocks = fixture.debugElement.queryAll(By.css('.bg-surface.rounded-xl'));
     expect(blocks.length).toBe(3);
   });
 
-  it('should include Browser Settings section', () => {
-    const heading = fixture.debugElement.query(By.css('h4')).nativeElement;
-    expect(heading.textContent).toContain('Browser Settings');
+  it('should render section icons for each block', () => {
+    expect(fixture.debugElement.query(By.css('.bi-browser-chrome'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.bi-toggles'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.bi-box-arrow-right'))).toBeTruthy();
   });
 
-  it('should include Cookie Consent Banner section', () => {
-    const headings = fixture.debugElement.queryAll(By.css('h4')).map(h =>
-      h.nativeElement.textContent.trim()
-    );
-    expect(headings).toContain('Cookie Consent Banner');
-  });
-
-  it('should include Third-Party Opt-Out section', () => {
-    const headings = fixture.debugElement.queryAll(By.css('h4')).map(h =>
-      h.nativeElement.textContent.trim()
-    );
-    expect(headings).toContain('Third-Party Opt-Out');
-  });
-
-  it('should render opt-out links', () => {
+  it('should render opt-out links with correct URLs', () => {
     const links = fixture.debugElement.queryAll(By.css('a')).map(a =>
       a.nativeElement.getAttribute('href')
     );
@@ -65,8 +67,9 @@ describe('ManagingCookiePreferencesSection', () => {
     expect(links).toContain('https://optout.networkadvertising.org/');
   });
 
-  it('should display the important warning message', () => {
-    const warning = fixture.debugElement.query(By.css('.bg-warning\\/10 p')).nativeElement;
-    expect(warning.textContent).toContain('Blocking certain cookies may affect your experience');
+  it('should render the warning message container', () => {
+    const warning = fixture.debugElement.query(By.css('.bg-warning\\/10'));
+    expect(warning).toBeTruthy();
+    expect(warning.nativeElement.className).toContain('border-warning');
   });
 });

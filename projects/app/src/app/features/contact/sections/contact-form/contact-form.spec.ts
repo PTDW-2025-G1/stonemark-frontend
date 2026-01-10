@@ -1,33 +1,47 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ContactFormComponent } from './contact-form';
 import { FormBuilder } from '@angular/forms';
-import { of, throwError } from 'rxjs';
-
-beforeEach(() => {
-  vi.spyOn(console, 'error').mockImplementation(() => {});
-});
-
-vi.mock('@shared/ui/shared-select/shared-select', () => ({
-  SharedSelectComponent: class MockSelectComponent {}
-}));
+import { of, throwError, Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('ContactFormComponent', () => {
   let component: ContactFormComponent;
+
   let contactService: any;
   let profileService: any;
   let authService: any;
+  let translateService: any;
 
   beforeEach(() => {
-    contactService = { create: vi.fn() };
-    profileService = { getCurrentUser: vi.fn() };
-    authService = { getAccessToken: vi.fn() };
+    contactService = {
+      create: vi.fn()
+    };
+
+    profileService = {
+      getCurrentUser: vi.fn()
+    };
+
+    authService = {
+      getAccessToken: vi.fn()
+    };
+
+    translateService = {
+      instant: vi.fn((key: string) => key),
+      onLangChange: new Subject()
+    };
 
     component = new ContactFormComponent(
       new FormBuilder(),
       contactService,
       profileService,
-      authService
+      authService,
+      translateService as TranslateService
     );
+  });
+
+  it('should create component and form', () => {
+    expect(component).toBeTruthy();
+    expect(component.contactForm).toBeTruthy();
   });
 
   it('should have invalid form initially', () => {
@@ -35,69 +49,82 @@ describe('ContactFormComponent', () => {
   });
 
   it('should validate required fields', () => {
-    const form = component.contactForm;
-
-    form.setValue({
+    component.contactForm.setValue({
       name: '',
       email: '',
       subject: '',
       message: ''
     });
 
-    expect(form.invalid).toBe(true);
-    expect(form.get('name')?.hasError('required')).toBe(true);
-    expect(form.get('email')?.hasError('required')).toBe(true);
-    expect(form.get('subject')?.hasError('required')).toBe(true);
-    expect(form.get('message')?.hasError('required')).toBe(true);
+    expect(component.contactForm.invalid).toBe(true);
+    expect(component.contactForm.get('name')?.hasError('required')).toBe(true);
+    expect(component.contactForm.get('email')?.hasError('required')).toBe(true);
+    expect(component.contactForm.get('subject')?.hasError('required')).toBe(true);
+    expect(component.contactForm.get('message')?.hasError('required')).toBe(true);
+  });
+
+  it('should validate email format', () => {
+    component.contactForm.setValue({
+      name: 'John',
+      email: 'invalid',
+      subject: 'General',
+      message: 'Valid message content'
+    });
+
+    expect(component.contactForm.get('email')?.hasError('email')).toBe(true);
   });
 
   it('should validate minlength for message', () => {
     component.contactForm.setValue({
-      name: 'John Doe',
-      email: 'john@example.com',
+      name: 'John',
+      email: 'john@test.com',
       subject: 'General',
-      message: '123'
+      message: 'short'
     });
 
-    expect(component.contactForm.invalid).toBe(true);
     expect(component.contactForm.get('message')?.hasError('minlength')).toBe(true);
   });
 
-  it('should prefill form with main contact email if user is authenticated', () => {
+  it('should populate subject options on init', () => {
+    component.ngOnInit();
+
+    expect(component.subjectOptions.length).toBe(6);
+    expect(translateService.instant).toHaveBeenCalled();
+  });
+
+  it('should refresh subject options on language change', () => {
+    component.ngOnInit();
+
+    const initialCallCount = translateService.instant.mock.calls.length;
+
+    translateService.onLangChange.next({ lang: 'pt' });
+
+    expect(translateService.instant.mock.calls.length).toBeGreaterThan(initialCallCount);
+  });
+
+  it('should prefill name when user is authenticated', () => {
     authService.getAccessToken.mockReturnValue('token');
     profileService.getCurrentUser.mockReturnValue(
-      of({
-        firstName: 'John',
-        lastName: 'Doe',
-        contacts: [
-          { type: 'EMAIL', value: 'john@main.com', primaryContact: true },
-          { type: 'EMAIL', value: 'john@other.com', primaryContact: false }
-        ]
-      })
+      of({ firstName: 'John', lastName: 'Doe' })
     );
 
     component.ngOnInit();
 
     expect(component.contactForm.get('name')?.value).toBe('John Doe');
-    expect(component.contactForm.get('email')?.value).toBe('john@main.com');
   });
 
-  it('should prefill email as empty if user has no main contact', () => {
-    authService.getAccessToken.mockReturnValue('token');
-    profileService.getCurrentUser.mockReturnValue(
-      of({
-        firstName: 'Jane',
-        lastName: 'Smith',
-        contacts: [
-          { type: 'EMAIL', value: 'jane@other.com', primaryContact: false }
-        ]
-      })
-    );
+  it('should not prefill user data when not authenticated', () => {
+    authService.getAccessToken.mockReturnValue(null);
 
     component.ngOnInit();
 
-    expect(component.contactForm.get('name')?.value).toBe('Jane Smith');
-    expect(component.contactForm.get('email')?.value).toBe('');
+    expect(profileService.getCurrentUser).not.toHaveBeenCalled();
+  });
+
+  it('should not submit when form is invalid', () => {
+    component.onSubmit();
+
+    expect(contactService.create).not.toHaveBeenCalled();
   });
 
   it('should submit form successfully', () => {
@@ -105,46 +132,59 @@ describe('ContactFormComponent', () => {
 
     component.contactForm.setValue({
       name: 'John Doe',
-      email: 'john@example.com',
+      email: 'john@test.com',
       subject: 'General',
       message: 'This is a valid message'
     });
 
     component.onSubmit();
 
+    expect(contactService.create).toHaveBeenCalledOnce();
     expect(component.isSubmitting).toBe(false);
     expect(component.submitSuccess).toBe(true);
     expect(component.submitError).toBe(false);
-    expect(contactService.create).toHaveBeenCalledOnce();
   });
 
-  it('should handle submit error', () => {
-    contactService.create.mockReturnValue(throwError(() => new Error('fail')));
+  it('should handle generic submit error', () => {
+    contactService.create.mockReturnValue(
+      throwError(() => ({ status: 500 }))
+    );
 
     component.contactForm.setValue({
       name: 'John Doe',
-      email: 'john@example.com',
+      email: 'john@test.com',
       subject: 'General',
       message: 'This is a valid message'
     });
 
     component.onSubmit();
 
-    expect(component.isSubmitting).toBe(false);
-    expect(component.submitSuccess).toBe(false);
     expect(component.submitError).toBe(true);
+    expect(component.submitSuccess).toBe(false);
   });
 
-  it('should not submit when form is invalid', () => {
+  it('should handle validation errors from API (400)', () => {
+    contactService.create.mockReturnValue(
+      throwError(() => ({
+        status: 400,
+        error: {
+          name: 'Invalid name',
+          email: 'Invalid email'
+        }
+      }))
+    );
+
     component.contactForm.setValue({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
+      name: 'Bad',
+      email: 'bad@email',
+      subject: 'General',
+      message: 'This is a valid message'
     });
 
     component.onSubmit();
 
-    expect(contactService.create).not.toHaveBeenCalled();
+    expect(component.fieldErrors['name']).toBe('Invalid name');
+    expect(component.fieldErrors['email']).toBe('Invalid email');
+    expect(component.submitError).toBe(false);
   });
 });

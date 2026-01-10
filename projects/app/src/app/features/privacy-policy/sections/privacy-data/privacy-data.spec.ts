@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PpDataComponent } from './privacy-data';
 import { LegalSectionBlockComponent } from '@shared/ui/legal-section-block/legal-section-block';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('PpDataComponent', () => {
   let fixture: ComponentFixture<PpDataComponent>;
@@ -10,7 +12,16 @@ describe('PpDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PpDataComponent, LegalSectionBlockComponent]
+      imports: [
+        PpDataComponent,
+        LegalSectionBlockComponent,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PpDataComponent);
@@ -18,41 +29,45 @@ describe('PpDataComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the PpDataComponent', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the LegalSectionBlock with the correct title', () => {
-    const titleEl = fixture.debugElement.query(By.css('h2')).nativeElement;
-    expect(titleEl.textContent.trim()).toBe('1. What personal data do we collect?');
+  it('should render the LegalSectionBlock component', () => {
+    const block = fixture.debugElement.query(
+      By.directive(LegalSectionBlockComponent)
+    );
+    expect(block).toBeTruthy();
   });
 
-  it('should pass one paragraph to LegalSectionBlockComponent', () => {
+  it('should pass hasInnerContent as true', () => {
+    const blockInstance = fixture.debugElement
+      .query(By.directive(LegalSectionBlockComponent))
+      .componentInstance as LegalSectionBlockComponent;
+
+    expect(blockInstance.hasInnerContent).toBe(true);
+  });
+
+  it('should pass exactly one paragraph to the block', () => {
     const blockInstance = fixture.debugElement
       .query(By.directive(LegalSectionBlockComponent))
       .componentInstance as LegalSectionBlockComponent;
 
     expect(blockInstance.paragraphs.length).toBe(1);
-    expect(blockInstance.paragraphs[0]).toContain(
-      'we may collect and process the following categories'
-    );
   });
 
-  it('should project inner content (the list of data items)', () => {
+  it('should project inner content (unordered list)', () => {
     const ul = fixture.debugElement.query(By.css('ul'));
     expect(ul).toBeTruthy();
-
-    const liItems = ul.queryAll(By.css('li'));
-    expect(liItems.length).toBe(4);
   });
 
-  it('should contain the correct list items text', () => {
-    const listItems = fixture.debugElement.queryAll(By.css('ul li'));
-    const texts = listItems.map(li => li.nativeElement.textContent.trim());
+  it('should render three list items inside the projected content', () => {
+    const items = fixture.debugElement.queryAll(By.css('ul li'));
+    expect(items.length).toBe(3);
+  });
 
-    expect(texts.some(t => t.includes('Identification data'))).toBeTruthy();
-    expect(texts.some(t => t.includes('Usage data'))).toBeTruthy();
-    expect(texts.some(t => t.includes('Submitted content'))).toBeTruthy();
-    expect(texts.some(t => t.includes('Technical data'))).toBeTruthy();
+  it('should render list items with emphasized labels', () => {
+    const labels = fixture.debugElement.queryAll(By.css('ul li span.font-medium'));
+    expect(labels.length).toBe(3);
   });
 });

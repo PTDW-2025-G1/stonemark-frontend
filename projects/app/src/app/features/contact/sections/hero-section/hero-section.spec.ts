@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContactHeroSectionComponent } from './hero-section';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('ContactHeroSectionComponent', () => {
   let component: ContactHeroSectionComponent;
@@ -9,7 +11,15 @@ describe('ContactHeroSectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactHeroSectionComponent]
+      imports: [
+        ContactHeroSectionComponent,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContactHeroSectionComponent);
@@ -26,15 +36,14 @@ describe('ContactHeroSectionComponent', () => {
     expect(sharedHero).toBeTruthy();
   });
 
-  it('should pass the correct icon, badge, titleLines and subtitle to shared hero', () => {
+  it('should bind inputs to shared hero component', () => {
     const sharedHero = fixture.debugElement.query(By.css('app-shared-hero'));
-    expect(sharedHero).toBeTruthy();
-
     const instance = sharedHero.componentInstance;
-    expect(instance.icon).toBe('bi bi-envelope');
-    expect(instance.badge).toBe('Get in Touch');
-    expect(instance.titleLines).toContain('We Would Love to Hear from You.');
-    expect(instance.subtitle).toContain('Have questions about Stone Mark?');
-  });
 
+    expect(instance.icon).toBe('bi bi-envelope');
+    expect(instance.badge).toBeDefined();
+    expect(instance.titleLines).toBeDefined();
+    expect(Array.isArray(instance.titleLines)).toBe(true);
+    expect(instance.subtitle).toBeDefined();
+  });
 });

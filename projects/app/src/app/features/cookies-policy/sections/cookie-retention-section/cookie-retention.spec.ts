@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CookieRetentionSection } from './cookie-retention-section';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateFakeLoader } from '@test/translate-fake-loader';
 
 describe('CookieRetentionSection', () => {
   let component: CookieRetentionSection;
@@ -9,7 +11,15 @@ describe('CookieRetentionSection', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CookieRetentionSection]
+      imports: [
+        CookieRetentionSection,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CookieRetentionSection);
@@ -21,14 +31,23 @@ describe('CookieRetentionSection', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the main title', () => {
-    const title = fixture.debugElement.query(By.css('h2')).nativeElement;
-    expect(title.textContent.trim()).toBe('Cookie Retention Periods');
+  it('should render the main section container', () => {
+    const section = fixture.debugElement.query(By.css('section'));
+    expect(section).toBeTruthy();
+    expect(section.nativeElement.className).toContain('rounded-2xl');
+    expect(section.nativeElement.className).toContain('border');
   });
 
-  it('should contain the introductory text', () => {
-    const intro = fixture.debugElement.query(By.css('p')).nativeElement;
-    expect(intro.textContent).toContain('Different cookies are retained');
+  it('should render the main heading', () => {
+    const heading = fixture.debugElement.query(By.css('h2'));
+    expect(heading).toBeTruthy();
+    expect(heading.nativeElement.className).toContain('font-serif');
+  });
+
+  it('should render the introductory paragraph', () => {
+    const paragraph = fixture.debugElement.query(By.css('p'));
+    expect(paragraph).toBeTruthy();
+    expect(paragraph.nativeElement.className).toContain('text-text-muted');
   });
 
   it('should render four retention cards', () => {
@@ -36,24 +55,17 @@ describe('CookieRetentionSection', () => {
     expect(cards.length).toBe(4);
   });
 
-  it('should show correct headings for each cookie type', () => {
-    const headings = fixture.debugElement.queryAll(By.css('h4')).map(h =>
-      h.nativeElement.textContent.trim()
-    );
-
-    expect(headings).toContain('Session Cookies');
-    expect(headings).toContain('Persistent Cookies');
-    expect(headings).toContain('Authentication Cookies');
-    expect(headings).toContain('Analytics Cookies');
+  it('should render a grid layout for the cards', () => {
+    const grid = fixture.debugElement.query(By.css('.grid.grid-cols-1.md\\:grid-cols-2'));
+    expect(grid).toBeTruthy();
   });
 
-  it('should show correct descriptions for each cookie type', () => {
-    const descriptions = fixture.debugElement.queryAll(By.css('.text-sm.text-text-muted'))
-      .map(p => p.nativeElement.textContent.trim());
+  it('each card should have a title and description', () => {
+    const cards = fixture.debugElement.queryAll(By.css('.bg-surface.rounded-xl'));
 
-    expect(descriptions).toContain('Deleted when you close your browser');
-    expect(descriptions).toContain('Remain for 30 days to 2 years depending on type');
-    expect(descriptions).toContain('Retained for up to 30 days or until logout');
-    expect(descriptions).toContain('Typically retained for 24 months');
+    cards.forEach(card => {
+      expect(card.query(By.css('h4'))).toBeTruthy();
+      expect(card.query(By.css('p.text-sm'))).toBeTruthy();
+    });
   });
 });

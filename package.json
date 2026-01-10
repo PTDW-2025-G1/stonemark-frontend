@@ -74,6 +74,7 @@
     "@openapitools/openapi-generator-cli": "^2.25.2",
     "@types/ol": "^6.5.3",
     "@vitest/ui": "^3.2.4",
+    "baseline-browser-mapping": "^2.9.14",
     "concurrently": "^8.2.2",
     "cypress": "^15.7.0",
     "jsdom": "^22.1.0",

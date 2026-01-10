@@ -15,7 +15,7 @@ describe('HomeService (unit, without Angular TestBed)', () => {
 
   let service: HomeService;
 
-  const rssUrl = 'https://rss.app/feeds/v1.1/KrBjcr4pluRNwdjX.json';
+  const rssUrl = 'https://rss.app/feeds/v1.1/CPOjA1gZFvPrHlAj.json';
 
   beforeEach(() => {
     httpMock = {

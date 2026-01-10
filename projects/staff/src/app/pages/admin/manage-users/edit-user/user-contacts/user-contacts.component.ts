@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserContactService } from '@core/services/contact/user-contact.service';
 import { UserContactDto } from '@api/model/user-contact-dto';
 import { CommonModule } from '@angular/common';
@@ -17,24 +17,13 @@ import { CardModule } from 'primeng/card';
 @Component({
   selector: 'app-user-contacts',
   standalone: true,
-  imports: [
-    CommonModule,
-    ButtonModule,
-    TableModule,
-    DialogModule,
-    InputTextModule,
-    Select,
-    FormsModule,
-    ConfirmDialogModule,
-    ToastModule,
-    ToggleSwitch,
-    CardModule
-  ],
+  imports: [CommonModule, ButtonModule, TableModule, DialogModule, InputTextModule, Select, FormsModule, ConfirmDialogModule, ToastModule, ToggleSwitch, CardModule],
   templateUrl: './user-contacts.component.html',
   providers: [ConfirmationService, MessageService]
 })
 export class UserContactsComponent implements OnInit {
   @Input() userId!: number;
+  @Output() contactsChanged = new EventEmitter<void>();
   contacts: UserContactDto[] = [];
   displayDialog = false;
   selectedContact: UserContactDto = { type: 'EMAIL', value: '', primary: false, verified: false };
@@ -74,12 +63,14 @@ export class UserContactsComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact updated' });
         this.loadContacts();
         this.displayDialog = false;
+        this.contactsChanged.emit();
       });
     } else {
       this.userContactService.addContact(this.userId, this.selectedContact).subscribe(() => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact added' });
         this.loadContacts();
         this.displayDialog = false;
+        this.contactsChanged.emit();
       });
     }
   }
@@ -94,6 +85,7 @@ export class UserContactsComponent implements OnInit {
           this.userContactService.deleteContact(this.userId, contact.id).subscribe(() => {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contact deleted' });
             this.loadContacts();
+            this.contactsChanged.emit();
           });
         }
       }

@@ -55,7 +55,7 @@
       <label for="tfaMethod" style="font-weight: 500; min-width: 120px;">TFA Method</label>
       <p-select
         id="tfaMethod"
-        [options]="tfaMethodOptions"
+        [options]="filteredTfaMethodOptions"
         [(ngModel)]="user.tfaMethod"
         placeholder="Select a TFA method"
         optionLabel="label"
@@ -83,4 +83,4 @@
   </ng-template>
 </p-card>
 
-<div *ngIf="userId && !isSystemUser" style="margin-top: 2.5rem;"><app-user-contacts [userId]="userId"></app-user-contacts></div>
+<div *ngIf="userId && !isSystemUser" style="margin-top: 2.5rem;"><app-user-contacts [userId]="userId" (contactsChanged)="onContactsChanged()"></app-user-contacts></div>

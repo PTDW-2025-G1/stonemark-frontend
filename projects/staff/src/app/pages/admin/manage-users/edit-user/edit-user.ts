@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserManagementService } from '@core/services/user/user-management.service';
 import { UserDto } from '@api/model/user-dto';
+import { UserContactDto } from '@api/model/user-contact-dto';
+import { UserContactService } from '@core/services/contact/user-contact.service';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -43,6 +45,8 @@ export class EditUserComponent implements OnInit {
   selectedRole: any = null;
   filteredRoles: any[] = [];
   isSystemUser: boolean = false;
+  contacts: UserContactDto[] = [];
+  filteredTfaMethodOptions: any[] = [];
 
   roleOptions = Object.entries(UserDto.RoleEnum).map(([label, value]) => ({ label, value }));
   tfaMethodOptions = Object.entries(UserDto.TfaMethodEnum).map(([label, value]) => ({ label, value }));
@@ -51,6 +55,7 @@ export class EditUserComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userManagementService: UserManagementService,
+    private userContactService: UserContactService,
     private messageService: MessageService
   ) {}
 
@@ -62,6 +67,7 @@ export class EditUserComponent implements OnInit {
     }
     if (this.userId) {
       this.loadUser();
+      this.loadContacts();
     }
     this.filteredRoles = this.roleOptions;
   }
@@ -80,6 +86,44 @@ export class EditUserComponent implements OnInit {
         });
       }
     });
+  }
+
+  loadContacts(): void {
+    this.userContactService.getContacts(this.userId!).subscribe({
+      next: (contacts) => {
+        this.contacts = contacts;
+        this.filterTfaMethods();
+      },
+      error: () => {
+        this.filterTfaMethods();
+      }
+    });
+  }
+
+  filterTfaMethods(): void {
+    this.filteredTfaMethodOptions = this.tfaMethodOptions.filter(option =>
+      option.value === 'NONE' || option.value === 'TOTP'
+    );
+
+    const hasPrimaryVerifiedPhone = this.contacts.some(
+      contact => contact.type === 'TELEPHONE' && contact.primary && contact.verified // its necessary to have a primary contact and verified of that type
+    );
+    if (hasPrimaryVerifiedPhone) {
+      const smsOption = this.tfaMethodOptions.find(option => option.value === 'SMS');
+      if (smsOption) {
+        this.filteredTfaMethodOptions.push(smsOption);
+      }
+    }
+
+    const hasPrimaryVerifiedEmail = this.contacts.some(
+      contact => contact.type === 'EMAIL' && contact.primary && contact.verified
+    );
+    if (hasPrimaryVerifiedEmail) {
+      const emailOption = this.tfaMethodOptions.find(option => option.value === 'EMAIL');
+      if (emailOption) {
+        this.filteredTfaMethodOptions.push(emailOption);
+      }
+    }
   }
 
   saveUser(): void {
@@ -157,6 +201,11 @@ export class EditUserComponent implements OnInit {
     this.filteredRoles = this.roleOptions.filter(role =>
       role.label.toLowerCase().includes(query)
     );
+  }
+
+  onContactsChanged(): void {
+    // Reload contacts and re-filter TFA methods when contacts are updated
+    this.loadContacts();
   }
 
   cancel(): void {

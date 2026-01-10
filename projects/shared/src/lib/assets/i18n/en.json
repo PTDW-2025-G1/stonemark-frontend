@@ -38,6 +38,11 @@
     "last_updated": "Last updated: 22 December 2025"
   },
 
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+
   "mission": {
     "label": "Our Mission",
     "title": "Bridging Past & Present",
@@ -600,7 +605,7 @@
   "privacy-policy": {
     "header": {
       "title": "Privacy Policy",
-      "last_updated": "Last updated: January 2025"
+      "last_updated": "Last updated: 22 December 2025"
     },
     "info": {
       "data": {
@@ -708,6 +713,137 @@
       "desc1": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, loss, destruction, or improper alteration.",
       "desc2": "As this is an academic project, any additional questions about privacy or requests regarding your data can be addressed to the team responsible for the application.",
       "last_updated": "Last updated: 2026-01-06"
+    }
+  },
+
+  "cookies_policy": {
+    "title": "Cookie Policy",
+    "last_updated": "Last updated: 22 December 2025",
+    "introduction": {
+      "title": "Introduction",
+      "p1": "This Cookie Policy explains how Stonemark (we, us, or our) uses cookies and similar tracking technologies when you visit our website and use our services. This policy should be read alongside our Privacy Policy and Terms of Service.",
+      "p2": "By using Stonemark, you consent to the use of cookies in accordance with this policy. If you do not agree to our use of cookies, you should adjust your browser settings accordingly or refrain from using our platform."
+    },
+    "what_are_cookies": {
+      "title": "What Are Cookies?",
+      "p1": "Cookies are small text files that are placed on your device (computer, smartphone, or tablet) when you visit a website. They are widely used to make websites work more efficiently and provide information to website owners.",
+      "p2": "Cookies can be 'session cookies' (temporary, deleted when you close your browser) or 'persistent cookies' (remain on your device for a set period or until manually deleted)."
+    },
+    "types_of_cookies": {
+      "title": "Types of Cookies We Use",
+      "essential": {
+        "title": "1. Essential Cookies",
+        "desc": "These cookies are strictly necessary for the operation of our platform. They enable core functionality such as security, authentication, and accessibility features.",
+        "examples_title": "Examples:",
+        "example1": "Authentication tokens to keep you logged in",
+        "example2": "Session management and security verification",
+        "example3": "Load balancing to ensure platform stability",
+        "note": "These cookies cannot be disabled as they are essential for the platform to function properly."
+      },
+      "functional": {
+        "title": "2. Functional Cookies",
+        "desc": "These cookies allow us to remember your preferences and choices to provide you with a more personalized experience.",
+        "examples_title": "Examples:",
+        "example1": "Language and region preferences",
+        "example2": "Display settings and accessibility options",
+        "example3": "Recently viewed monuments and marks",
+        "example4": "Bookmarked content and saved searches"
+      },
+      "analytics": {
+        "title": "3. Analytics Cookies",
+        "desc": "These cookies help us understand how visitors interact with our platform by collecting anonymous information about usage patterns and performance.",
+        "examples_title": "Examples:",
+        "example1": "Page views, session duration, and bounce rates",
+        "example2": "Popular features and most-viewed content",
+        "example3": "Traffic sources and user journeys",
+        "example4": "Error tracking and performance monitoring",
+        "note": "We use services like Google Analytics to collect this data. All analytics data is anonymized and aggregated."
+      },
+      "marketing": {
+        "title": "4. Marketing Cookies",
+        "desc": "These cookies are used to deliver relevant advertisements and measure the effectiveness of marketing campaigns.",
+        "examples_title": "Examples:",
+        "example1": "Personalized content recommendations",
+        "example2": "Social media integration and sharing features",
+        "example3": "Advertisement performance tracking",
+        "note": "You can opt out of marketing cookies through your cookie preferences."
+      }
+    },
+    "third_party": {
+      "title": "Third-Party Cookies",
+      "desc": "In addition to our own cookies, we may use third-party services that set their own cookies. These include:",
+      "google_analytics": {
+        "title": "Google Analytics",
+        "desc": "For website analytics and performance monitoring"
+      },
+      "mapping": {
+        "title": "Mapping Services",
+        "desc": "For interactive maps and location features"
+      },
+      "social_media": {
+        "title": "Social Media Platforms",
+        "desc": "For social sharing and authentication"
+      },
+      "security": {
+        "title": "Security Services",
+        "desc": "For fraud prevention and security monitoring"
+      },
+      "note": "Please note that we do not control these third-party cookies. We recommend reviewing the privacy policies of these services for more information."
+    },
+    "managing_preferences": {
+      "title": "Managing Your Cookie Preferences",
+      "desc": "You have the right to control which cookies are set on your device. You can manage your preferences in several ways:",
+      "browser_settings": {
+        "title": "Browser Settings",
+        "desc": "Most browsers allow you to control cookies through their settings. You can typically:",
+        "item1": "View cookies stored on your device",
+        "item2": "Delete existing cookies",
+        "item3": "Block all cookies or specific types",
+        "item4": "Set preferences for specific websites"
+      },
+      "consent_banner": {
+        "title": "Cookie Consent Banner",
+        "desc": "When you first visit Stonemark, you'll see a cookie consent banner. You can accept all cookies, reject non-essential cookies, or customize your preferences. You can change these settings at any time through the cookie preferences link in the footer."
+      },
+      "third_party_opt_out": {
+        "title": "Third-Party Opt-Out",
+        "desc": "For third-party analytics and advertising cookies, you can opt out through:",
+        "google_analytics": "Google Analytics Opt-Out",
+        "online_choices": "Your Online Choices (EU)",
+        "nai": "Network Advertising Initiative"
+      },
+      "important": "Important:",
+      "important_note": "Blocking certain cookies may affect your experience on Stonemark. Some features may not work properly or may be unavailable if you disable essential or functional cookies."
+    },
+    "retention": {
+      "title": "Cookie Retention Periods",
+      "desc": "Different cookies are retained for different periods:",
+      "session": {
+        "title": "Session Cookies",
+        "desc": "Deleted when you close your browser"
+      },
+      "persistent": {
+        "title": "Persistent Cookies",
+        "desc": "Remain for 30 days to 2 years depending on type"
+      },
+      "authentication": {
+        "title": "Authentication Cookies",
+        "desc": "Retained for up to 30 days or until logout"
+      },
+      "analytics": {
+        "title": "Analytics Cookies",
+        "desc": "Typically retained for 24 months"
+      }
+    },
+    "updates": {
+      "title": "Updates to This Policy",
+      "desc": "We may update this Cookie Policy from time to time to reflect changes in technology, legislation, or our practices. We will notify you of any material changes by posting the updated policy on this page with a new Last updated date. We encourage you to review this policy periodically to stay informed about how we use cookies."
+    },
+    "questions": {
+      "title": "Questions About Cookies?",
+      "desc": "If you have questions about how we use cookies or would like more information about your privacy rights, please don't hesitate to contact us.",
+      "contact_us": "Contact Us",
+      "privacy_policy": "Privacy Policy"
     }
   }
 

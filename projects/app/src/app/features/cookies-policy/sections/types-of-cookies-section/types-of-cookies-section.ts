@@ -1,48 +1,49 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-types-of-cookies-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   template: `
     <section class="bg-surface-alt border border-border rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
 
       <div class="flex items-center gap-3 mb-4">
         <h2 class="font-serif text-2xl lg:text-3xl font-medium text-text">
-          Types of Cookies We Use
+          {{ 'cookies_policy.types_of_cookies.title' | translate }}
         </h2>
       </div>
 
       <!-- Essential Cookies -->
       <div class="mb-6">
         <h3 class="text-xl font-bold text-text mb-2 flex items-center gap-2">
-          1. Essential Cookies
+          {{ 'cookies_policy.types_of_cookies.essential.title' | translate }}
         </h3>
         <p class="text-text-muted leading-relaxed mb-3">
-          These cookies are strictly necessary for the operation of our platform. They enable core functionality such as security, authentication, and accessibility features.
+          {{ 'cookies_policy.types_of_cookies.essential.desc' | translate }}
         </p>
 
         <div class="bg-surface rounded-xl p-4 border border-border">
-          <p class="text-sm font-semibold text-text mb-2">Examples:</p>
+          <p class="text-sm font-semibold text-text mb-2">{{ 'cookies_policy.types_of_cookies.essential.examples_title' | translate }}</p>
 
           <ul class="text-sm text-text-muted space-y-1 pl-4">
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Authentication tokens to keep you logged in</span>
+              <span>{{ 'cookies_policy.types_of_cookies.essential.example1' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Session management and security verification</span>
+              <span>{{ 'cookies_policy.types_of_cookies.essential.example2' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Load balancing to ensure platform stability</span>
+              <span>{{ 'cookies_policy.types_of_cookies.essential.example3' | translate }}</span>
             </li>
           </ul>
 
           <p class="text-xs text-text-muted mt-3 italic">
-            These cookies cannot be disabled as they are essential for the platform to function properly.
+            {{ 'cookies_policy.types_of_cookies.essential.note' | translate }}
           </p>
         </div>
       </div>
@@ -50,31 +51,31 @@ import { CommonModule } from '@angular/common';
       <!-- Functional Cookies -->
       <div class="mb-6">
         <h3 class="text-xl font-bold text-text mb-2 flex items-center gap-2">
-          2. Functional Cookies
+          {{ 'cookies_policy.types_of_cookies.functional.title' | translate }}
         </h3>
         <p class="text-text-muted leading-relaxed mb-3">
-          These cookies allow us to remember your preferences and choices to provide you with a more personalized experience.
+          {{ 'cookies_policy.types_of_cookies.functional.desc' | translate }}
         </p>
 
         <div class="bg-surface rounded-xl p-4 border border-border">
-          <p class="text-sm font-semibold text-text mb-2">Examples:</p>
+          <p class="text-sm font-semibold text-text mb-2">{{ 'cookies_policy.types_of_cookies.functional.examples_title' | translate }}</p>
 
           <ul class="text-sm text-text-muted space-y-1 pl-4">
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Language and region preferences</span>
+              <span>{{ 'cookies_policy.types_of_cookies.functional.example1' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Display settings and accessibility options</span>
+              <span>{{ 'cookies_policy.types_of_cookies.functional.example2' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Recently viewed monuments and marks</span>
+              <span>{{ 'cookies_policy.types_of_cookies.functional.example3' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Bookmarked content and saved searches</span>
+              <span>{{ 'cookies_policy.types_of_cookies.functional.example4' | translate }}</span>
             </li>
           </ul>
         </div>
@@ -83,36 +84,36 @@ import { CommonModule } from '@angular/common';
       <!-- Analytics Cookies -->
       <div class="mb-6">
         <h3 class="text-xl font-bold text-text mb-2 flex items-center gap-2">
-          3. Analytics Cookies
+          {{ 'cookies_policy.types_of_cookies.analytics.title' | translate }}
         </h3>
         <p class="text-text-muted leading-relaxed mb-3">
-          These cookies help us understand how visitors interact with our platform by collecting anonymous information about usage patterns and performance.
+          {{ 'cookies_policy.types_of_cookies.analytics.desc' | translate }}
         </p>
 
         <div class="bg-surface rounded-xl p-4 border border-border">
-          <p class="text-sm font-semibold text-text mb-2">Examples:</p>
+          <p class="text-sm font-semibold text-text mb-2">{{ 'cookies_policy.types_of_cookies.analytics.examples_title' | translate }}</p>
 
           <ul class="text-sm text-text-muted space-y-1 pl-4">
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Page views, session duration, and bounce rates</span>
+              <span>{{ 'cookies_policy.types_of_cookies.analytics.example1' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Popular features and most-viewed content</span>
+              <span>{{ 'cookies_policy.types_of_cookies.analytics.example2' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Traffic sources and user journeys</span>
+              <span>{{ 'cookies_policy.types_of_cookies.analytics.example3' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Error tracking and performance monitoring</span>
+              <span>{{ 'cookies_policy.types_of_cookies.analytics.example4' | translate }}</span>
             </li>
           </ul>
 
           <p class="text-xs text-text-muted mt-3">
-            We use services like Google Analytics to collect this data. All analytics data is anonymized and aggregated.
+            {{ 'cookies_policy.types_of_cookies.analytics.note' | translate }}
           </p>
         </div>
       </div>
@@ -120,32 +121,32 @@ import { CommonModule } from '@angular/common';
       <!-- Marketing Cookies -->
       <div>
         <h3 class="text-xl font-bold text-text mb-2 flex items-center gap-2">
-          4. Marketing Cookies
+          {{ 'cookies_policy.types_of_cookies.marketing.title' | translate }}
         </h3>
         <p class="text-text-muted leading-relaxed mb-3">
-          These cookies are used to deliver relevant advertisements and measure the effectiveness of marketing campaigns.
+          {{ 'cookies_policy.types_of_cookies.marketing.desc' | translate }}
         </p>
 
         <div class="bg-surface rounded-xl p-4 border border-border">
-          <p class="text-sm font-semibold text-text mb-2">Examples:</p>
+          <p class="text-sm font-semibold text-text mb-2">{{ 'cookies_policy.types_of_cookies.marketing.examples_title' | translate }}</p>
 
           <ul class="text-sm text-text-muted space-y-1 pl-4">
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Personalized content recommendations</span>
+              <span>{{ 'cookies_policy.types_of_cookies.marketing.example1' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Social media integration and sharing features</span>
+              <span>{{ 'cookies_policy.types_of_cookies.marketing.example2' | translate }}</span>
             </li>
             <li class="flex items-start gap-2">
               <i class="bi bi-check-circle-fill text-primary text-xs mt-1"></i>
-              <span>Advertisement performance tracking</span>
+              <span>{{ 'cookies_policy.types_of_cookies.marketing.example3' | translate }}</span>
             </li>
           </ul>
 
           <p class="text-xs text-text-muted mt-3">
-            You can opt out of marketing cookies through your cookie preferences.
+            {{ 'cookies_policy.types_of_cookies.marketing.note' | translate }}
           </p>
         </div>
       </div>

@@ -37,6 +37,12 @@
     "marks_title": "Marcas de Canteiro",
     "last_updated": "Última atualização: 22 Dezembro 2025"
   },
+
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Seguinte"
+  },
+
   "mission": {
     "label": "A Nossa Missão",
     "title": "Unir Passado e Presente",
@@ -705,6 +711,137 @@
       "desc1": "Implementamos medidas técnicas e organizacionais apropriadas para proteger os teus dados pessoais contra acesso não autorizado, perda, destruição ou alteração indevida.",
       "desc2": "Sendo este um projeto académico, quaisquer questões adicionais sobre privacidade ou pedidos relativos aos teus dados podem ser dirigidos à equipa responsável pela aplicação.",
       "last_updated": "Última atualização: 2026-01-06"
+    }
+  },
+
+  "cookies_policy": {
+    "title": "Política de Cookies",
+    "last_updated": "Última atualização: 22 Dezembro 2025",
+    "introduction": {
+      "title": "Introdução",
+      "p1": "Esta Política de Cookies explica como o Stonemark (nós, nos, ou nosso) utiliza cookies e tecnologias de rastreamento semelhantes quando visitas o nosso website e utilizas os nossos serviços. Esta política deve ser lida em conjunto com a nossa Política de Privacidade e Termos de Serviço.",
+      "p2": "Ao utilizar o Stonemark, consentes o uso de cookies de acordo com esta política. Se não concordares com o nosso uso de cookies, deves ajustar as configurações do teu navegador em conformidade ou abster-te de utilizar a nossa plataforma."
+    },
+    "what_are_cookies": {
+      "title": "O Que São Cookies?",
+      "p1": "Cookies são pequenos ficheiros de texto que são colocados no teu dispositivo (computador, smartphone ou tablet) quando visitas um website. São amplamente utilizados para fazer os websites funcionarem de forma mais eficiente e fornecer informações aos proprietários do website.",
+      "p2": "Os cookies podem ser 'cookies de sessão' (temporários, eliminados quando fechas o navegador) ou 'cookies persistentes' (permanecem no teu dispositivo por um período definido ou até serem eliminados manualmente)."
+    },
+    "types_of_cookies": {
+      "title": "Tipos de Cookies Que Utilizamos",
+      "essential": {
+        "title": "1. Cookies Essenciais",
+        "desc": "Estes cookies são estritamente necessários para o funcionamento da nossa plataforma. Permitem funcionalidades essenciais como segurança, autenticação e recursos de acessibilidade.",
+        "examples_title": "Exemplos:",
+        "example1": "Tokens de autenticação para te manter conectado",
+        "example2": "Gestão de sessão e verificação de segurança",
+        "example3": "Balanceamento de carga para garantir a estabilidade da plataforma",
+        "note": "Estes cookies não podem ser desativados, pois são essenciais para o funcionamento adequado da plataforma."
+      },
+      "functional": {
+        "title": "2. Cookies Funcionais",
+        "desc": "Estes cookies permitem-nos lembrar as tuas preferências e escolhas para te proporcionar uma experiência mais personalizada.",
+        "examples_title": "Exemplos:",
+        "example1": "Preferências de idioma e região",
+        "example2": "Configurações de visualização e opções de acessibilidade",
+        "example3": "Monumentos e marcas visualizados recentemente",
+        "example4": "Conteúdo guardado e pesquisas salvas"
+      },
+      "analytics": {
+        "title": "3. Cookies de Análise",
+        "desc": "Estes cookies ajudam-nos a compreender como os visitantes interagem com a nossa plataforma, recolhendo informações anónimas sobre padrões de uso e desempenho.",
+        "examples_title": "Exemplos:",
+        "example1": "Visualizações de página, duração da sessão e taxas de rejeição",
+        "example2": "Funcionalidades populares e conteúdo mais visualizado",
+        "example3": "Fontes de tráfego e jornadas dos utilizadores",
+        "example4": "Rastreamento de erros e monitorização de desempenho",
+        "note": "Utilizamos serviços como o Google Analytics para recolher estes dados. Todos os dados de análise são anonimizados e agregados."
+      },
+      "marketing": {
+        "title": "4. Cookies de Marketing",
+        "desc": "Estes cookies são utilizados para fornecer anúncios relevantes e medir a eficácia das campanhas de marketing.",
+        "examples_title": "Exemplos:",
+        "example1": "Recomendações de conteúdo personalizadas",
+        "example2": "Integração de redes sociais e funcionalidades de partilha",
+        "example3": "Rastreamento de desempenho de anúncios",
+        "note": "Podes optar por não aceitar cookies de marketing através das tuas preferências de cookies."
+      }
+    },
+    "third_party": {
+      "title": "Cookies de Terceiros",
+      "desc": "Além dos nossos próprios cookies, podemos utilizar serviços de terceiros que definem os seus próprios cookies. Estes incluem:",
+      "google_analytics": {
+        "title": "Google Analytics",
+        "desc": "Para análise de websites e monitorização de desempenho"
+      },
+      "mapping": {
+        "title": "Serviços de Mapeamento",
+        "desc": "Para mapas interativos e funcionalidades de localização"
+      },
+      "social_media": {
+        "title": "Plataformas de Redes Sociais",
+        "desc": "Para partilha social e autenticação"
+      },
+      "security": {
+        "title": "Serviços de Segurança",
+        "desc": "Para prevenção de fraude e monitorização de segurança"
+      },
+      "note": "Por favor, nota que não controlamos estes cookies de terceiros. Recomendamos a leitura das políticas de privacidade destes serviços para mais informações."
+    },
+    "managing_preferences": {
+      "title": "Gerir as Tuas Preferências de Cookies",
+      "desc": "Tens o direito de controlar quais cookies são definidos no teu dispositivo. Podes gerir as tuas preferências de várias formas:",
+      "browser_settings": {
+        "title": "Configurações do Navegador",
+        "desc": "A maioria dos navegadores permite controlar os cookies através das suas configurações. Normalmente podes:",
+        "item1": "Ver cookies armazenados no teu dispositivo",
+        "item2": "Eliminar cookies existentes",
+        "item3": "Bloquear todos os cookies ou tipos específicos",
+        "item4": "Definir preferências para websites específicos"
+      },
+      "consent_banner": {
+        "title": "Banner de Consentimento de Cookies",
+        "desc": "Quando visitas o Stonemark pela primeira vez, verás um banner de consentimento de cookies. Podes aceitar todos os cookies, rejeitar cookies não essenciais ou personalizar as tuas preferências. Podes alterar estas configurações a qualquer momento através do link de preferências de cookies no rodapé."
+      },
+      "third_party_opt_out": {
+        "title": "Exclusão de Terceiros",
+        "desc": "Para cookies de análise e publicidade de terceiros, podes optar por não participar através de:",
+        "google_analytics": "Exclusão do Google Analytics",
+        "online_choices": "Your Online Choices (UE)",
+        "nai": "Network Advertising Initiative"
+      },
+      "important": "Importante:",
+      "important_note": "Bloquear certos cookies pode afetar a tua experiência no Stonemark. Algumas funcionalidades podem não funcionar corretamente ou podem não estar disponíveis se desativares cookies essenciais ou funcionais."
+    },
+    "retention": {
+      "title": "Períodos de Retenção de Cookies",
+      "desc": "Diferentes cookies são retidos por diferentes períodos:",
+      "session": {
+        "title": "Cookies de Sessão",
+        "desc": "Eliminados quando fechas o navegador"
+      },
+      "persistent": {
+        "title": "Cookies Persistentes",
+        "desc": "Permanecem por 30 dias a 2 anos dependendo do tipo"
+      },
+      "authentication": {
+        "title": "Cookies de Autenticação",
+        "desc": "Retidos até 30 dias ou até ao logout"
+      },
+      "analytics": {
+        "title": "Cookies de Análise",
+        "desc": "Normalmente retidos por 24 meses"
+      }
+    },
+    "updates": {
+      "title": "Atualizações a Esta Política",
+      "desc": "Podemos atualizar esta Política de Cookies periodicamente para refletir alterações na tecnologia, legislação ou nas nossas práticas. Notificar-te-emos de quaisquer alterações materiais publicando a política atualizada nesta página com uma nova data de Última atualização. Encorajamos-te a rever esta política periodicamente para te manteres informado sobre como utilizamos cookies."
+    },
+    "questions": {
+      "title": "Questões Sobre Cookies?",
+      "desc": "Se tens questões sobre como utilizamos cookies ou gostaríamos de mais informações sobre os teus direitos de privacidade, não hesites em contactar-nos.",
+      "contact_us": "Contacta-nos",
+      "privacy_policy": "Política de Privacidade"
     }
   }
 }

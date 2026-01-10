@@ -8,11 +8,12 @@ import {CookieRetentionSection} from '@features/cookies-policy/sections/cookie-r
 import {QuestionsAboutCookiesSection} from '@features/cookies-policy/sections/questions-about-cookies-section/questions-about-cookies-section';
 import {LegalHeroHeaderComponent} from '@shared/ui/legal-hero-header/legal-hero-header';
 import {LegalSectionBlockComponent} from '@shared/ui/legal-section-block/legal-section-block';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cookies-policy',
   standalone: true,
-  imports: [CommonModule, RouterModule, TypesOfCookiesSection, ThirdPartyCookiesSection, ManagingCookiePreferencesSection, CookieRetentionSection, QuestionsAboutCookiesSection, LegalHeroHeaderComponent, LegalSectionBlockComponent],
+  imports: [CommonModule, RouterModule, TypesOfCookiesSection, ThirdPartyCookiesSection, ManagingCookiePreferencesSection, CookieRetentionSection, QuestionsAboutCookiesSection, LegalHeroHeaderComponent, LegalSectionBlockComponent, TranslateModule],
   templateUrl: './cookies-policy.html'
 })
 export class CookiesPolicyComponent {}

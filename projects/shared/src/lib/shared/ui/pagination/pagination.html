@@ -12,7 +12,7 @@
     [class.hover\:bg-surface-alt]="currentPage > 1"
   >
     <i class="bi bi-arrow-left"></i>
-    <span>Previous</span>
+    <span>{{ 'pagination.previous' | translate }}</span>
   </button>
 
   <!-- Pages -->
@@ -82,7 +82,7 @@
     [class.cursor-not-allowed]="currentPage === totalPages"
     [class.hover\:bg-surface-alt]="currentPage < totalPages"
   >
-    <span>Next</span>
+    <span>{{ 'pagination.next' | translate }}</span>
     <i class="bi bi-arrow-right"></i>
   </button>
 </nav>

@@ -2,15 +2,27 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-8 space-y-12">
     <!-- Hero Header -->
     <app-legal-hero-header
-      title="Cookie Policy"
-      lastUpdated="November 19, 2025"
+      [title]="'cookies_policy.title' | translate"
+      [lastUpdated]="'cookies_policy.last_updated' | translate"
     />
     <!-- Sections Grid -->
     <article class="flex flex-col gap-6" aria-label="Cookie Policy sections">
       <!-- Introduction -->
-      <app-legal-section-block title="Introduction" [paragraphs]="[ 'This Cookie Policy explains how Stonemark (we, us, or our) uses cookies and similar tracking technologies when you visit our website and use our services. This policy should be read alongside our Privacy Policy and Terms of Service.', 'By using Stonemark, you consent to the use of cookies in accordance with this policy. If you do not agree to our use of cookies, you should adjust your browser settings accordingly or refrain from using our platform.' ]" />
+      <app-legal-section-block
+        [title]="'cookies_policy.introduction.title' | translate"
+        [paragraphs]="[
+          ('cookies_policy.introduction.p1' | translate),
+          ('cookies_policy.introduction.p2' | translate)
+        ]"
+      />
       <!-- What Are Cookies -->
-      <app-legal-section-block title="What Are Cookies?" [paragraphs]="[ 'Cookies are small text files that are placed on your device (computer, smartphone, or tablet) when you visit a website. They are widely used to make websites work more efficiently and provide information to website owners.', 'Cookies can be \'session cookies\' (temporary, deleted when you close your browser) or \'persistent cookies\' (remain on your device for a set period or until manually deleted).' ]" />
+      <app-legal-section-block
+        [title]="'cookies_policy.what_are_cookies.title' | translate"
+        [paragraphs]="[
+          ('cookies_policy.what_are_cookies.p1' | translate),
+          ('cookies_policy.what_are_cookies.p2' | translate)
+        ]"
+      />
       <!-- Types of Cookies We Use -->
       <app-types-of-cookies-section></app-types-of-cookies-section>
       <!-- Third-Party Cookies -->
@@ -20,7 +32,12 @@
       <!-- Cookie Retention -->
       <app-cookie-retention-section></app-cookie-retention-section>
       <!-- Updates to This Policy -->
-      <app-legal-section-block title="Updates to This Policy" [paragraphs]="[ 'We may update this Cookie Policy from time to time to reflect changes in technology, legislation, or our practices. We will notify you of any material changes by posting the updated policy on this page with a new Last updated date. We encourage you to review this policy periodically to stay informed about how we use cookies.' ]" />
+      <app-legal-section-block
+        [title]="'cookies_policy.updates.title' | translate"
+        [paragraphs]="[
+          ('cookies_policy.updates.desc' | translate)
+        ]"
+      />
       <!-- Contact -->
       <app-questions-about-cookies-section></app-questions-about-cookies-section>
     </article>

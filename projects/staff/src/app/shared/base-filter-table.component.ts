@@ -4,7 +4,7 @@ import type { StatusFilterValue } from '../components/status-filter/status-filte
 /**
  * Classe base para componentes que mostram listas filtráveis por estado (ALL, PENDING, APPROVED, REJECTED)
  */
-export abstract class BaseFilterTableComponent<T extends { id: string; status: string }> {
+export abstract class BaseFilterTableComponent<T extends { id?: string | number; status?: string }> {
     items = signal<T[]>([]);
     filteredItems = signal<T[]>([]);
     statusFilter = signal<StatusFilterValue>('ALL');

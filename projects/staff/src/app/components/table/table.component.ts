@@ -47,7 +47,7 @@ import { getSeverity } from '../../utils/severity.util';
                 </ng-template>
 
                 <ng-template pTemplate="body" let-item>
-                    <tr class="table-row">
+                    <tr class="table-row" (click)="onRowClick(item)" [style.cursor]="rowClick.observed ? 'pointer' : 'default'">
                         <td *ngFor="let col of columns">
                             <ng-container [ngSwitch]="col.type">
                                 <p-tag
@@ -78,6 +78,7 @@ export class AppTableComponent implements OnInit, OnDestroy {
 
     @ViewChild('dt') dt: any;
     @Output() export = new EventEmitter<void>();
+    @Output() rowClick = new EventEmitter<any>();
 
     searchStyle: any = {};
     subscription!: Subscription;
@@ -108,6 +109,10 @@ export class AppTableComponent implements OnInit, OnDestroy {
 
     onGlobalFilter(table: any, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
+
+    onRowClick(item: any) {
+        this.rowClick.emit(item);
     }
 
     protected readonly getSeverity = getSeverity;

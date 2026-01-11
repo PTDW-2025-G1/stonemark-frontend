@@ -27,7 +27,6 @@ export class AppMenu implements OnInit {
         label: 'StoneMark - Management Options',
         items: [
           { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-          { label: 'Marks Submissions', icon: 'pi pi-fw pi-tag', routerLink: ['/moderator/marks-submissions'] },
           { label: 'Content Proposals', icon: 'pi pi-fw pi-file-edit', routerLink: ['/moderator/content-proposals'] },
           { label: 'Contact Requests', icon: 'pi pi-envelope', routerLink: ['/moderator/contact-requests'] },
           { label: 'Manage Reports', icon: 'pi pi-flag', routerLink: ['/moderator/manage-reports'] },

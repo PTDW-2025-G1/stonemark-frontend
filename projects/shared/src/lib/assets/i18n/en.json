@@ -370,6 +370,7 @@
     "all_locations": "All Locations"
   },
   "accessibility": {
+    "consent_required": "You need to accept preference cookies to save accessibility settings. Please manage your cookie preferences in the footer.",
     "header": {
       "title": "Accessibility Settings",
       "desc": "Customize your experience to meet your accessibility needs. Changes are saved automatically and applied across the entire site."
@@ -845,6 +846,36 @@
       "contact_us": "Contact Us",
       "privacy_policy": "Privacy Policy"
     }
+  },
+  "cookie_consent": {
+    "title": "We Value Your Privacy",
+    "description": "We use cookies to improve your experience, analyze site traffic, and personalize content. You can choose which cookies you accept.",
+    "learn_more": "Learn more about cookies",
+    "accept_all": "Accept All",
+    "reject_all": "Reject All",
+    "customize": "Customize",
+    "save_preferences": "Save Preferences",
+    "required": "Required",
+    "necessary": {
+      "title": "Necessary Cookies",
+      "description": "These cookies are essential for the website to function and cannot be disabled. They include session, authentication, and security cookies."
+    },
+    "preferences": {
+      "title": "Preference Cookies",
+      "description": "These cookies allow the website to remember your choices (such as language, theme, accessibility options) to provide a more personalized experience."
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "These cookies help us understand how visitors interact with the website by collecting information anonymously to improve our service."
+    },
+    "marketing": {
+      "title": "Marketing Cookies",
+      "description": "These cookies are used to track visitors across websites to display relevant advertisements and marketing campaigns."
+    }
+  },
+  "cookie_settings": {
+    "button_text": "Manage Cookies",
+    "aria_label": "Manage cookie preferences"
   }
 
 }

@@ -5,10 +5,11 @@ import { Footer } from 'projects/shared/src/lib/layout/footer/footer';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScrollToTopComponent } from '@shared/ui/scroll-top/scroll-top';
 import { LanguageService } from '@core/services/language/language.service';
+import { CookieConsentBannerComponent } from '@shared/ui/cookie-consent-banner/cookie-consent-banner.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, MatSnackBarModule, ScrollToTopComponent],
+  imports: [RouterOutlet, Header, Footer, MatSnackBarModule, ScrollToTopComponent, CookieConsentBannerComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

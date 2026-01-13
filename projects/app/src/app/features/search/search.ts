@@ -9,6 +9,7 @@ import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {PaginationFacade} from '@shared/facades/pagination.facade';
+import { LanguageService } from '@core/services/language/language.service';
 
 @Component({
   selector: 'app-search',
@@ -35,7 +36,8 @@ export class SearchComponent implements OnInit {
     private markService: MarkService,
     private titleService: Title,
     private router: Router,
-    public pagination: PaginationFacade
+    public pagination: PaginationFacade,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +45,9 @@ export class SearchComponent implements OnInit {
       const type = (params.get('type') as 'monuments' | 'marks') || 'monuments';
       this.type = type;
       this.title = this.getTitle(type);
-      this.titleService.setTitle(`${this.title} - StoneMark`);
+
+      const translatedTitle = this.languageService.instant(this.title);
+      this.titleService.setTitle(`${translatedTitle} - StoneMark`);
 
       this.route.queryParamMap.subscribe(queryParams => {
         const page = +(queryParams.get('page') || 1);

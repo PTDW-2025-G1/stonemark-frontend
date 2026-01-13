@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { CookieService } from '@core/services/cookie/cookie.service';
+import { CookieConsentService } from '@core/services/cookie-consent/cookie-consent.service';
+import { AccessibilityService } from '@core/services/accessibility/accessibility.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AccessibilityHeaderSectionComponent } from './sections/accessibility-header-section';
 import { AccessibilityQuickResetSectionComponent } from './sections/accessibility-quick-reset-section';
@@ -44,7 +46,9 @@ export class AccessibilityComponent implements OnInit {
   constructor(
     private titleService: Title,
     private cookies: CookieService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cookieConsent: CookieConsentService,
+    private accessibilityService: AccessibilityService
   ) {}
 
   ngOnInit(): void {
@@ -77,15 +81,26 @@ export class AccessibilityComponent implements OnInit {
   }
 
   private saveSettingsToCookies(): void {
+    if (!this.cookieConsent.isAllowed('preferences')) {
+      const message = this.translate.instant('accessibility.consent_required') ||
+        'You need to accept preference cookies to save accessibility settings. Please manage your cookie preferences.';
+      alert(message);
+      return;
+    }
+
     const settingsState = this.settings.reduce((acc, setting) => {
       acc[setting.id] = setting.enabled;
       return acc;
     }, {} as Record<string, boolean>);
 
-    this.cookies.set(this.COOKIE_NAME, JSON.stringify(settingsState), 365);
+    this.accessibilityService.saveSettings(settingsState);
   }
 
   private loadSettingsFromCookies(): void {
+    if (!this.cookieConsent.isAllowed('preferences')) {
+      return;
+    }
+
     const saved = this.cookies.get(this.COOKIE_NAME);
     if (saved) {
       const settingsState = JSON.parse(saved);

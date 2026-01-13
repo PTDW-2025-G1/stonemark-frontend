@@ -86,16 +86,19 @@
       <p class="text-text-muted text-sm text-center md:text-left">
         {{ 'footer.copyright' | translate:{ year: currentYear } }}
       </p>
-      <div class="flex space-x-6 text-sm">
-        <a routerLink="/privacy-policy" class="text-text-muted hover:text-info transition">
-          {{ 'footer.privacy_policy' | translate }}
-        </a>
-        <a routerLink="/terms-service" class="text-text-muted hover:text-info transition">
-          {{ 'footer.terms_service' | translate }}
-        </a>
-        <a routerLink="/cookies-policy" class="text-text-muted hover:text-info transition">
-          {{ 'footer.cookie_policy' | translate }}
-        </a>
+      <div class="flex flex-col md:flex-row items-center gap-4">
+        <div class="flex space-x-6 text-sm">
+          <a routerLink="/privacy-policy" class="text-text-muted hover:text-info transition">
+            {{ 'footer.privacy_policy' | translate }}
+          </a>
+          <a routerLink="/terms-service" class="text-text-muted hover:text-info transition">
+            {{ 'footer.terms_service' | translate }}
+          </a>
+          <a routerLink="/cookies-policy" class="text-text-muted hover:text-info transition">
+            {{ 'footer.cookie_policy' | translate }}
+          </a>
+        </div>
+        <app-cookie-settings-button />
       </div>
     </div>
   </div>

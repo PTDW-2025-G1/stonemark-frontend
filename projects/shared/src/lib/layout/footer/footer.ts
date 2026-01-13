@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { environment } from '@env/environment';
 import {TranslatePipe} from '@ngx-translate/core';
+import { CookieSettingsButtonComponent } from '@shared/ui/cookie-settings-button/cookie-settings-button.component';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslatePipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, CookieSettingsButtonComponent],
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss']
 })

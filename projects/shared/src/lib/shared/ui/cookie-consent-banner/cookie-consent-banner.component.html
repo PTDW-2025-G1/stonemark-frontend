@@ -1,0 +1,180 @@
+<!-- Cookie Consent Banner - Modern Clean Design -->
+<div
+  *ngIf="showBanner()"
+  class="fixed inset-0 z-[9999] flex items-end justify-center animate-in fade-in duration-300"
+  role="dialog"
+  aria-labelledby="cookie-banner-title"
+  aria-describedby="cookie-banner-description"
+  aria-modal="true">
+
+  <!-- Overlay - Non-clickable -->
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-none"></div>
+
+  <!-- Content Card -->
+  <div class="relative w-full max-w-4xl mx-4 mb-0 sm:mb-4 bg-surface border-t-2 sm:border border-border sm:rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom duration-500 max-h-[90vh] overflow-hidden flex flex-col">
+
+    <!-- Header -->
+    <div class="px-6 py-5 border-b border-border bg-surface-alt">
+      <div class="flex items-start gap-4">
+        <!-- Cookie Icon -->
+        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+          <i class="bi bi-shield-lock text-primary text-2xl"></i>
+        </div>
+
+        <!-- Title & Description -->
+        <div class="flex-1">
+          <h2 id="cookie-banner-title" class="text-xl sm:text-2xl font-serif font-bold text-text mb-2">
+            {{ 'cookie_consent.title' | translate }}
+          </h2>
+          <p id="cookie-banner-description" class="text-sm text-text-muted leading-relaxed">
+            {{ 'cookie_consent.description' | translate }}
+            <a [routerLink]="['/cookies-policy']" (click)="acceptAll()" class="text-primary hover:underline font-medium transition-colors cursor-pointer">
+              {{ 'cookie_consent.learn_more' | translate }}
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Notice -->
+      <div class="mt-4 flex items-start gap-2 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg">
+        <i class="bi bi-info-circle text-warning text-sm mt-0.5 flex-shrink-0"></i>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Please select your cookie preferences to continue. This choice is required to use the website.
+        </p>
+      </div>
+    </div>
+
+    <!-- Cookie Preferences Details (Scrollable) -->
+    <div *ngIf="showDetails()" class="px-6 py-6 bg-surface overflow-y-auto flex-1">
+      <div class="space-y-4">
+
+        <!-- Necessary Cookies -->
+        <div class="bg-surface-alt rounded-xl p-4 border border-border">
+          <div class="flex items-start justify-between gap-4 mb-2">
+            <label class="flex items-start gap-3 cursor-not-allowed flex-1 opacity-60">
+              <input
+                type="checkbox"
+                [checked]="preferences().necessary"
+                disabled
+                class="mt-0.5 w-5 h-5 rounded border-2 border-border accent-primary cursor-not-allowed"
+              />
+              <div class="flex-1">
+                <span class="block text-base font-bold text-text">
+                  {{ 'cookie_consent.necessary.title' | translate }}
+                </span>
+                <p class="text-xs text-text-muted leading-relaxed mt-1">
+                  {{ 'cookie_consent.necessary.description' | translate }}
+                </p>
+              </div>
+            </label>
+            <span class="inline-flex items-center px-2.5 py-1 bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider rounded whitespace-nowrap">
+              {{ 'cookie_consent.required' | translate }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Preferences Cookies -->
+        <div class="bg-surface-alt rounded-xl p-4 border border-border hover:border-primary/30 transition-colors">
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              [checked]="preferences().preferences"
+              (change)="updatePreference('preferences', $any($event.target).checked)"
+              class="mt-0.5 w-5 h-5 rounded border-2 border-border accent-primary cursor-pointer"
+            />
+            <div class="flex-1">
+              <span class="block text-base font-bold text-text group-hover:text-primary transition-colors">
+                {{ 'cookie_consent.preferences.title' | translate }}
+              </span>
+              <p class="text-xs text-text-muted leading-relaxed mt-1">
+                {{ 'cookie_consent.preferences.description' | translate }}
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <!-- Analytics Cookies -->
+        <div class="bg-surface-alt rounded-xl p-4 border border-border hover:border-primary/30 transition-colors">
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              [checked]="preferences().analytics"
+              (change)="updatePreference('analytics', $any($event.target).checked)"
+              class="mt-0.5 w-5 h-5 rounded border-2 border-border accent-primary cursor-pointer"
+            />
+            <div class="flex-1">
+              <span class="block text-base font-bold text-text group-hover:text-primary transition-colors">
+                {{ 'cookie_consent.analytics.title' | translate }}
+              </span>
+              <p class="text-xs text-text-muted leading-relaxed mt-1">
+                {{ 'cookie_consent.analytics.description' | translate }}
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <!-- Marketing Cookies -->
+        <div class="bg-surface-alt rounded-xl p-4 border border-border hover:border-primary/30 transition-colors">
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              [checked]="preferences().marketing"
+              (change)="updatePreference('marketing', $any($event.target).checked)"
+              class="mt-0.5 w-5 h-5 rounded border-2 border-border accent-primary cursor-pointer"
+            />
+            <div class="flex-1">
+              <span class="block text-base font-bold text-text group-hover:text-primary transition-colors">
+                {{ 'cookie_consent.marketing.title' | translate }}
+              </span>
+              <p class="text-xs text-text-muted leading-relaxed mt-1">
+                {{ 'cookie_consent.marketing.description' | translate }}
+              </p>
+            </div>
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="px-6 py-4 border-t border-border bg-surface-alt">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+
+        <!-- Customize / Save Preferences Button -->
+        <button
+          *ngIf="!showDetails()"
+          (click)="toggleDetails()"
+          class="flex-1 sm:flex-none px-5 py-2.5 bg-surface-alt border border-border text-text rounded-lg font-semibold text-sm hover:border-primary hover:bg-primary/5 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer"
+          type="button">
+          {{ 'cookie_consent.customize' | translate }}
+        </button>
+
+        <button
+          *ngIf="showDetails()"
+          (click)="savePreferences()"
+          class="flex-1 sm:flex-none px-5 py-2.5 bg-surface-alt border border-border text-text rounded-lg font-semibold text-sm hover:border-primary hover:bg-primary/5 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer"
+          type="button">
+          {{ 'cookie_consent.save_preferences' | translate }}
+        </button>
+
+        <!-- Reject All Button -->
+        <button
+          (click)="rejectAll()"
+          class="flex-1 sm:flex-none px-5 py-2.5 bg-surface-alt border border-border text-text rounded-lg font-semibold text-sm hover:border-error hover:bg-error/5 hover:text-error transition-all focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 cursor-pointer"
+          type="button">
+          {{ 'cookie_consent.reject_all' | translate }}
+        </button>
+
+        <!-- Accept All Button -->
+        <button
+          (click)="acceptAll()"
+          class="flex-1 sm:flex-none px-6 py-2.5 bg-primary text-white rounded-lg font-semibold text-sm hover:bg-primary/90 hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer"
+          type="button">
+          {{ 'cookie_consent.accept_all' | translate }}
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

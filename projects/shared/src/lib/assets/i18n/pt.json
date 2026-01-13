@@ -369,6 +369,7 @@
     "all_locations": "Todas as Localizações"
   },
   "accessibility": {
+    "consent_required": "Precisas de aceitar cookies de preferências para guardar as definições de acessibilidade. Por favor, gere as tuas preferências de cookies no rodapé.",
     "header": {
       "title": "Definições de Acessibilidade",
       "desc": "Personaliza a tua experiência para atender às tuas necessidades de acessibilidade. As alterações são guardadas automaticamente e aplicadas em todo o site."
@@ -843,6 +844,36 @@
       "contact_us": "Contacta-nos",
       "privacy_policy": "Política de Privacidade"
     }
+  },
+  "cookie_consent": {
+    "title": "Valorizamos a Tua Privacidade",
+    "description": "Utilizamos cookies para melhorar a tua experiência, analisar o tráfego do site e personalizar o conteúdo. Podes escolher quais os cookies que aceitas.",
+    "learn_more": "Saber mais sobre cookies",
+    "accept_all": "Aceitar Todos",
+    "reject_all": "Rejeitar Todos",
+    "customize": "Personalizar",
+    "save_preferences": "Guardar Preferências",
+    "required": "Obrigatório",
+    "necessary": {
+      "title": "Cookies Necessários",
+      "description": "Estes cookies são essenciais para o funcionamento do site e não podem ser desativados. Incluem cookies de sessão, autenticação e segurança."
+    },
+    "preferences": {
+      "title": "Cookies de Preferências",
+      "description": "Estes cookies permitem que o site memorize as tuas escolhas (como idioma, tema ou opções de acessibilidade) para oferecer uma experiência mais personalizada."
+    },
+    "analytics": {
+      "title": "Cookies de Análise",
+      "description": "Estes cookies ajudam-nos a compreender como os visitantes interagem com o site, recolhendo informações de forma anónima para melhorar o nosso serviço."
+    },
+    "marketing": {
+      "title": "Cookies de Marketing",
+      "description": "Estes cookies são utilizados para rastrear visitantes em diferentes sites para apresentar anúncios relevantes e campanhas de marketing."
+    }
+  },
+  "cookie_settings": {
+    "button_text": "Gerir Cookies",
+    "aria_label": "Gerir preferências de cookies"
   }
 }
 

@@ -4,10 +4,11 @@ import {Header} from 'projects/shared/src/lib/layout/header/header';
 import {Footer} from 'projects/shared/src/lib/layout/footer/footer';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LanguageService } from '@core/services/language/language.service';
+import { CookieConsentBannerComponent } from '@shared/ui/cookie-consent-banner/cookie-consent-banner.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, MatSnackBarModule],
+  imports: [RouterOutlet, Header, Footer, MatSnackBarModule, CookieConsentBannerComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

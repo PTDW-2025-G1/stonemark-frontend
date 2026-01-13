@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from '@core/services/cookie/cookie.service';
+import { CookieConsentService } from '@core/services/cookie-consent/cookie-consent.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,23 +14,22 @@ export class LanguageService {
 
   constructor(
     private translate: TranslateService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private cookieConsent: CookieConsentService
   ) {}
 
   initialize(): void {
     this.translate.addLangs(this.AVAILABLE_LANGS);
-    this.translate.setDefaultLang(this.DEFAULT_LANG);
+    this.translate.setFallbackLang(this.DEFAULT_LANG);
 
-    const savedLang = this.getSavedLanguage();
-    const browserLang = this.translate.getBrowserLang();
-
-    if (savedLang && this.AVAILABLE_LANGS.includes(savedLang)) {
-      this.translate.use(savedLang);
-    } else if (browserLang?.match(/en|pt/)) {
-      this.translate.use(browserLang);
-    } else {
-      this.translate.use(this.DEFAULT_LANG);
+    if (this.cookieConsent.isAllowed('preferences')) {
+      const savedLang = this.getSavedLanguage();
+      if (savedLang && this.AVAILABLE_LANGS.includes(savedLang)) {
+        this.translate.use(savedLang);
+        return;
+      }
     }
+    this.translate.use(this.DEFAULT_LANG);
   }
 
   changeLanguage(lang: string): void {
@@ -39,15 +39,16 @@ export class LanguageService {
     }
 
     this.translate.use(lang);
-    this.saveLanguage(lang);
+
+    if (this.cookieConsent.isAllowed('preferences')) {
+      this.saveLanguage(lang);
+    } else {
+      console.info('Language changed but not saved: preference cookies not accepted');
+    }
   }
 
   getCurrentLanguage(): string {
-    return this.translate.currentLang || this.translate.defaultLang || this.DEFAULT_LANG;
-  }
-
-  getAvailableLanguages(): string[] {
-    return [...this.AVAILABLE_LANGS];
+    return this.translate.getCurrentLang() || this.translate.getFallbackLang() || this.DEFAULT_LANG;
   }
 
   get onLangChange() {
@@ -78,5 +79,6 @@ export class LanguageService {
   get(key: string | string[], interpolateParams?: Object) {
     return this.translate.get(key, interpolateParams);
   }
+
 }
 

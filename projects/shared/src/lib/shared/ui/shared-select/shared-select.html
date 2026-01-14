@@ -27,28 +27,31 @@
         </div>
       }
       <div class="max-h-64 overflow-y-auto custom-scrollbar">
-        <button
-          type="button"
-          (click)="selectOption('')"
-          [class.bg-primary]="selected === ''"
-          [class.text-white]="selected === ''"
-          class="w-full px-4 py-3 text-left text-sm flex items-center gap-3 group cursor-pointer">
-          <i
-            class="bi text-lg"
-            [class.bi-check-circle-fill]="selected === ''"
-            [class.bi-circle]="selected !== ''"
-            [class.text-white]="selected === ''"
-            [class.text-text-muted]="selected !== ''">
-          </i>
-          <span class="font-medium">{{ label }}</span>
-        </button>
+        @if (allowPlaceholderSelection) {
+          <button
+            type="button"
+            (click)="selectOption('')"
+            [class.bg-primary]="!selected || selected === ''"
+            [class.text-white]="!selected || selected === ''"
+            class="w-full px-4 py-3 text-left text-sm flex items-center gap-3 group cursor-pointer">
+            <i
+              class="bi text-lg"
+              [class.bi-check-circle-fill]="!selected || selected === ''"
+              [class.bi-circle]="selected && selected !== ''"
+              [class.text-white]="!selected || selected === ''"
+              [class.text-text-muted]="selected && selected !== ''">
+            </i>
+            <span class="font-medium">{{ label }}</span>
+          </button>
+        }
         @for (opt of getFilteredOptions(); track opt[optionValueKey]) {
           <button
             type="button"
             (click)="selectOption(opt[optionValueKey])"
             [class.bg-primary]="selected === opt[optionValueKey]"
             [class.text-white]="selected === opt[optionValueKey]"
-            class="w-full px-4 py-3 text-left text-sm flex items-center gap-3 border-t border-border group cursor-pointer">
+            [class.border-t]="allowPlaceholderSelection"
+            class="w-full px-4 py-3 text-left text-sm flex items-center gap-3 border-border group cursor-pointer">
             <i
               class="bi text-lg"
               [class.bi-check-circle-fill]="selected === opt[optionValueKey]"

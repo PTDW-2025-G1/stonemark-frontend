@@ -100,6 +100,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
               optionLabelKey="name"
               optionValueKey="id"
               [searchable]="false"
+              [allowPlaceholderSelection]="false"
               (selectionChange)="contactForm.get('subject')?.setValue($event)"
               [class.border-error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
             ></app-shared-select>

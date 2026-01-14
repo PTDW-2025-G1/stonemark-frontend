@@ -15,6 +15,7 @@ export class SharedSelectComponent {
   @Input() searchable: boolean = false;
   @Input() optionLabelKey: string = 'name';
   @Input() optionValueKey: string = 'id';
+  @Input() allowPlaceholderSelection: boolean = true;
 
   @Output() selectionChange = new EventEmitter<string | number>();
 
@@ -37,7 +38,7 @@ export class SharedSelectComponent {
   }
 
   getSelectedLabel(): string {
-    if (!this.selected) return this.label;
+    if (!this.selected && this.selected !== 0) return this.label;
     const found = this.options.find(opt => opt[this.optionValueKey].toString() === this.selected.toString());
     return found ? found[this.optionLabelKey] : this.label;
   }

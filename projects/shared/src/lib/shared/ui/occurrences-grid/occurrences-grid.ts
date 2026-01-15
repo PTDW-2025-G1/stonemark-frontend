@@ -1,16 +1,20 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { DateUtils } from '@shared/utils/date.utils';
 import {ImageUtils} from '@shared/utils/image.utils';
 import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
 
 @Component({
   selector: 'app-occurrences-grid',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   template: `
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       @for (occurrence of occurrences; track occurrence.id) {
-        <div
-          class="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer aspect-square"
-          (click)="viewOccurrence.emit(occurrence.id)">
+        <a
+          [routerLink]="['/marks/occurrence', occurrence.id]"
+          class="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer aspect-square block">
 
           <!-- Image -->
           <div class="relative w-full h-full overflow-hidden bg-surface-muted">
@@ -21,7 +25,7 @@ import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
             />
 
             <!-- Gradient overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
+            <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
 
             <!-- Quick View Icon -->
             <div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -40,7 +44,7 @@ import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
               </div>
             </div>
           </div>
-        </div>
+        </a>
       }
     </div>
   `,

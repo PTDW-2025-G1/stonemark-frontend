@@ -114,7 +114,6 @@ export class MarkDetailComponent implements OnInit {
     this.markOccurrenceService.getAvailableMonumentsByMark(markId).subscribe({
       next: monuments => {
         this.monuments = monuments;
-        console.log('Available monuments for mark:', monuments.length, monuments);
       },
       error: err => {
         console.error('Error loading monuments for filter:', err);

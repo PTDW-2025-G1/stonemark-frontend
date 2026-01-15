@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-entity-card',
@@ -20,7 +20,7 @@ import {Router, RouterLink} from '@angular/router';
       />
 
       <!-- Gradient Overlay -->
-      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent
+      <div class="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent
                   opacity-60 group-hover:opacity-80 transition-opacity duration-300">
       </div>
 
@@ -76,11 +76,5 @@ export class EntityCardComponent {
       return ['/', parent, child, this.id];
     }
     return ['/', this.type, this.id];
-  }
-
-  constructor(private router: Router) {}
-
-  open(): void {
-    this.router.navigate([`/${this.type}`, this.id]);
   }
 }

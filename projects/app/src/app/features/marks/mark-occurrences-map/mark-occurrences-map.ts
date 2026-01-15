@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, ViewEncapsulation, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import Map from 'ol/Map';
@@ -15,14 +15,15 @@ import { fromLonLat } from 'ol/proj';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { MarkService } from '@core/services/mark/mark.service';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
-import { MARKS_ICON } from '@core/constants/content-icons';
+import { MARKS_ICON, MONUMENTS_ICON } from '@core/constants/content-icons';
 import { MarkDto } from '@api/model/mark-dto';
 import { MarkOccurrenceMapDto } from '@api/model/mark-occurrence-map-dto';
+import { ButtonComponent } from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-mark-occurrences-map',
   standalone: true,
-  imports: [CommonModule, BreadcrumbComponent],
+  imports: [CommonModule, BreadcrumbComponent, ButtonComponent],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './mark-occurrences-map.html',
   styles: [`
@@ -68,6 +69,24 @@ import { MarkOccurrenceMapDto } from '@api/model/mark-occurrence-map-dto';
 
     .ol-control button:hover {
       background-color: var(--bg-surface-alt, #f9fafb) !important;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: var(--bg-surface-alt, #f9fafb);
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: var(--border-color, #e5e7eb);
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted, #9ca3af);
     }
   `]
 })
@@ -289,9 +308,10 @@ export class MarkOccurrencesMap implements OnInit {
     const occurrenceIds = props.occurrenceIds || [];
     const occurrenceCount = props.occurrenceCount || 1;
 
+    // Single occurrence
     if (occurrenceCount === 1) {
       return `
-        <div class="relative bg-surface text-left overflow-hidden">
+        <div class="relative bg-surface text-left overflow-hidden rounded-2xl">
           <button class="popup-close absolute top-3 right-3 z-10 p-1.5 text-text-muted hover:text-primary transition-colors rounded-full hover:bg-surface-alt/80">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -300,21 +320,26 @@ export class MarkOccurrencesMap implements OnInit {
 
           <div class="p-5">
             <div class="mb-4">
-              <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-primary/10 text-primary text-xs font-semibold border border-primary/20 mb-2">
-                ${MARKS_ICON} Mark Occurrence
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 text-primary text-xs font-semibold border border-primary/20 mb-3">
+                <span class="inline-block w-3.5 h-3.5">${MARKS_ICON}</span>
+                Mark Occurrence
               </span>
               <h3 class="font-serif text-lg font-bold text-text leading-tight">${monumentName}</h3>
             </div>
 
             <div class="flex flex-col gap-2">
-              <button class="view-occurrence-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-all group cursor-pointer" data-occurrence-id="${occurrenceIds[0]}">
-                <i class="bi bi-eye-fill"></i>
-                <span>View Occurrence</span>
-                <i class="bi bi-arrow-right group-hover:translate-x-0.5 transition-transform"></i>
+              <button class="view-occurrence-btn group relative inline-flex items-center justify-center font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none overflow-hidden cursor-pointer w-full gap-2 px-4 py-2.5 text-sm rounded-lg bg-primary text-white hover:bg-primary-hover active:scale-[0.98]" data-occurrence-id="${occurrenceIds[0]}">
+                <span class="flex items-center gap-2 relative z-10">
+                  <i class="bi bi-eye-fill"></i>
+                  <span>View Occurrence</span>
+                  <i class="bi bi-arrow-right group-hover:translate-x-0.5 transition-transform"></i>
+                </span>
               </button>
-              <button class="view-monument-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-surface-alt hover:bg-accent hover:text-white text-text text-sm font-medium rounded-lg transition-all border border-border hover:border-accent group cursor-pointer" data-monument-id="${props.monumentId}">
-                <i class="bi bi-building"></i>
-                <span>View Monument</span>
+              <button class="view-monument-btn group relative inline-flex items-center justify-center font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none overflow-hidden cursor-pointer w-full gap-2 px-4 py-2.5 text-sm rounded-lg bg-surface-alt text-text hover:bg-accent hover:text-white border border-border hover:border-accent active:scale-[0.98]" data-monument-id="${props.monumentId}">
+                <span class="flex items-center gap-2 relative z-10">
+                  <span class="inline-block">${MONUMENTS_ICON}</span>
+                  <span>View Monument</span>
+                </span>
               </button>
             </div>
           </div>
@@ -322,18 +347,19 @@ export class MarkOccurrencesMap implements OnInit {
       `;
     }
 
+    // Multiple occurrences
     const occurrenceListItems = occurrenceIds.map((occId: number, index: number) => `
-      <button class="view-occurrence-btn w-full flex items-center justify-between px-4 py-3 bg-surface-alt hover:bg-primary hover:text-white text-text text-sm font-medium rounded-lg transition-all border border-border hover:border-primary group cursor-pointer" data-occurrence-id="${occId}">
-        <div class="flex items-center gap-2">
-          <i class="bi bi-bookmark-fill text-primary group-hover:text-white"></i>
+      <button class="view-occurrence-btn group relative inline-flex items-center justify-between font-semibold transition-all duration-300 ease-out select-none overflow-hidden cursor-pointer w-full px-4 py-3 text-sm rounded-lg bg-surface-alt text-text hover:bg-primary hover:text-white border border-border hover:border-primary active:scale-[0.98]" data-occurrence-id="${occId}">
+        <span class="flex items-center gap-2 relative z-10">
+          <i class="bi bi-bookmark-fill"></i>
           <span>Occurrence #${index + 1}</span>
-        </div>
-        <i class="bi bi-arrow-right group-hover:translate-x-0.5 transition-transform"></i>
+        </span>
+        <i class="bi bi-arrow-right group-hover:translate-x-0.5 transition-transform relative z-10"></i>
       </button>
     `).join('');
 
     return `
-      <div class="relative bg-surface text-left overflow-hidden">
+      <div class="relative bg-surface text-left overflow-hidden rounded-2xl">
         <button class="popup-close absolute top-3 right-3 z-10 p-1.5 text-text-muted hover:text-primary transition-colors rounded-full hover:bg-surface-alt/80">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -342,21 +368,24 @@ export class MarkOccurrencesMap implements OnInit {
 
         <div class="p-5">
           <div class="mb-4">
-            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-100/80 text-amber-700 text-xs font-semibold border border-amber-200 mb-2">
-              <i class="bi bi-stack"></i> ${occurrenceCount} Occurrences
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-100/80 text-amber-700 text-xs font-semibold border border-amber-200 mb-3">
+              <i class="bi bi-stack"></i>
+              ${occurrenceCount} Occurrences
             </span>
             <h3 class="font-serif text-lg font-bold text-text leading-tight">${monumentName}</h3>
-            <p class="text-xs text-text-muted mt-1">Select an occurrence to view details</p>
+            <p class="text-xs text-text-muted mt-1.5">Select an occurrence to view details</p>
           </div>
 
-          <div class="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1">
+          <div class="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
             ${occurrenceListItems}
           </div>
 
           <div class="mt-4 pt-4 border-t border-border">
-            <button class="view-monument-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-surface-alt hover:bg-accent hover:text-white text-text text-sm font-medium rounded-lg transition-all border border-border hover:border-accent group cursor-pointer" data-monument-id="${props.monumentId}">
-              <i class="bi bi-building"></i>
-              <span>View Monument Details</span>
+            <button class="view-monument-btn group relative inline-flex items-center justify-center font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none overflow-hidden cursor-pointer w-full gap-2 px-4 py-2.5 text-sm rounded-lg bg-surface-alt text-text hover:bg-accent hover:text-white border border-border hover:border-accent active:scale-[0.98]" data-monument-id="${props.monumentId}">
+              <span class="flex items-center gap-2 relative z-10">
+                <span class="inline-block">${MONUMENTS_ICON}</span>
+                <span>View Monument Details</span>
+              </span>
             </button>
           </div>
         </div>

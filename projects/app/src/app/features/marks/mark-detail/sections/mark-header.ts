@@ -52,12 +52,14 @@ import { ShareSectionComponent } from '@shared/ui/share-section/share-section';
               }
             </button>
 
-            <button
-              (click)="viewMap()"
-              class="px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 border transition-colors cursor-pointer bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
-              <i class="bi bi-map-fill"></i>
-              View Map
-            </button>
+            @if (occurrencesCount > 0) {
+              <button
+                (click)="viewMap()"
+                class="px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 border transition-colors cursor-pointer bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                <i class="bi bi-map-fill"></i>
+                View Map
+              </button>
+            }
           </div>
 
           <p class="text-text-muted mb-4 leading-relaxed">

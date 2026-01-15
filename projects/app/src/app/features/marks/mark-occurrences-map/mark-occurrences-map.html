@@ -10,7 +10,7 @@
           <div class="flex items-center gap-3 mb-2">
             <button
               (click)="goBack()"
-              class="p-2 rounded-full hover:bg-surface transition-colors text-text-muted hover:text-primary">
+              class="p-2 rounded-full hover:bg-surface transition-colors text-text-muted hover:text-primary cursor-pointer">
               <i class="bi bi-arrow-left text-xl"></i>
             </button>
             <h1 class="text-3xl md:text-4xl font-serif text-text">
@@ -44,19 +44,20 @@
           </div>
         </div>
       } @else if (occurrences.length === 0) {
-        <div class="w-full h-[600px] flex items-center justify-center bg-surface-muted">
-          <div class="text-center max-w-md">
+        <div class="h-[600px] flex items-center justify-center bg-surface-muted">
+          <div class="text-center">
             <i class="bi bi-map text-6xl text-text-muted/30 mb-4"></i>
             <h3 class="text-xl font-serif text-text mb-2">No Occurrences Found</h3>
             <p class="text-text-muted mb-6">
               This mark doesn't have any occurrences with location data yet.
             </p>
-            <button
+            <app-button
               (click)="goBack()"
-              class="px-6 py-3 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition-colors">
+              variant="primary"
+              size="lg">
               <i class="bi bi-arrow-left mr-2"></i>
               Back to Mark Details
-            </button>
+            </app-button>
           </div>
         </div>
       } @else {

@@ -12,7 +12,7 @@ import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { ReportFacade } from '@shared/facades/report.facade';
 import { ImageUtils } from '@shared/utils/image.utils';
-import { MONUMENTS_ICON } from '@core/constants/content-icons';
+import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import {ButtonComponent} from '@shared/ui/button/button';
 import {ShareFacade} from '@shared/facades/share.facade';
@@ -44,6 +44,7 @@ export class MonumentDetailComponent implements OnInit {
   ) { }
 
   monumentsIcon = MONUMENTS_ICON;
+  marksIcon = MARKS_ICON;
 
   ngOnInit(): void {
     this.monument$ = this.route.paramMap.pipe(

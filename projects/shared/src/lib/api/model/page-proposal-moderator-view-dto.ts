@@ -8,15 +8,15 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageable-object';
-import { MonumentMapDto } from './monument-map-dto';
 import { SortObject } from './sort-object';
+import { ProposalModeratorViewDto } from './proposal-moderator-view-dto';
 
 
-export interface PageMonumentMapDto { 
+export interface PageProposalModeratorViewDto { 
     totalPages?: number;
     totalElements?: number;
     size?: number;
-    content?: Array<MonumentMapDto>;
+    content?: Array<ProposalModeratorViewDto>;
     number?: number;
     pageable?: PageableObject;
     first?: boolean;

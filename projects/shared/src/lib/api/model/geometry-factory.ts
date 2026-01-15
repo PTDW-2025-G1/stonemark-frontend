@@ -7,14 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PrecisionModel } from './precision-model';
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    groupMessage?: boolean;
-    userMessage?: boolean;
-    superGroupMessage?: boolean;
+export interface GeometryFactory { 
+    precisionModel?: PrecisionModel;
+    coordinateSequenceFactory?: any | null;
+    srid?: number;
 }
 

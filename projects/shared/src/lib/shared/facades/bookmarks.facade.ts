@@ -60,9 +60,9 @@ export class BookmarksFacade {
             id: m.id!,
             type: 'monument' as const,
             title: m.name ?? 'Unknown Monument',
-            subtitle: m.city ? `${m.city}, Portugal` : 'Portugal',
+            subtitle: m.parish ? `${m.parish.name}, Portugal` : 'Portugal',
             coverId: m.coverId,
-            city: m.city
+            city: m.parish?.name
           }))
         );
       }

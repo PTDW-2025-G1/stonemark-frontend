@@ -232,13 +232,13 @@ import { environment } from '@core/environments/environment';
                       <p class="notes">{{ proposal.activeDecision!.detectedMonument!.description }}</p>
                     </div>
                   }
-                  @if (proposal.activeDecision!.detectedMonument!.city) {
+                  @if (proposal.activeDecision!.detectedMonument!.parish) {
                     <div class="info-item">
                       <div class="info-label">
                         <i class="pi pi-map-marker"></i>
                         <label>City</label>
                       </div>
-                      <span class="info-value">{{ proposal.activeDecision!.detectedMonument!.city }}</span>
+                      <span class="info-value">{{ proposal.activeDecision!.detectedMonument!.parish }}</span>
                     </div>
                   }
                   @if (proposal.activeDecision!.detectedMonument!.protectionTitle) {
@@ -250,13 +250,13 @@ import { environment } from '@core/environments/environment';
                       <span class="info-value">{{ proposal.activeDecision!.detectedMonument!.protectionTitle }}</span>
                     </div>
                   }
-                  @if (proposal.activeDecision!.detectedMonument!.address) {
+                  @if (proposal.activeDecision!.detectedMonument!.street) {
                     <div class="info-item full-width">
                       <div class="info-label">
                         <i class="pi pi-map"></i>
                         <label>Address</label>
                       </div>
-                      <span class="info-value">{{ proposal.activeDecision!.detectedMonument!.address }}</span>
+                      <span class="info-value">{{ proposal.activeDecision!.detectedMonument!.street + ', ' + proposal.activeDecision!.detectedMonument!.houseNumber }}</span>
                     </div>
                   }
                   @if (proposal.activeDecision!.detectedMonument!.latitude && proposal.activeDecision!.detectedMonument!.longitude) {

@@ -7,18 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AdministrativeDivisionDto } from './administrative-division-dto';
 
 
-export interface MonumentDto { 
-    id?: number;
+export interface GeocodingResultDto { 
     name?: string;
+    address?: string;
+    city?: string;
     description?: string;
-    latitude?: number;
-    longitude?: number;
     street?: string;
     houseNumber?: string;
-    parish?: AdministrativeDivisionDto;
-    coverId?: number;
 }
 

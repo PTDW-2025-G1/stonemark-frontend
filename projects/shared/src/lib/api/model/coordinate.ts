@@ -9,12 +9,12 @@
  */
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    groupMessage?: boolean;
-    userMessage?: boolean;
-    superGroupMessage?: boolean;
+export interface Coordinate { 
+    x?: number;
+    y?: number;
+    z?: number;
+    valid?: boolean;
+    coordinate?: any | null;
+    m?: number;
 }
 

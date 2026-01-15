@@ -10,7 +10,7 @@ import { environment } from '@env/environment';
   providedIn: 'root'
 })
 export class MarkOccurrenceProposalModerationService {
-  private readonly baseUrl = `${environment.apiUrl}/proposals/mark-occurrences/moderation`;
+  private readonly baseUrl = `${environment.apiUrl}/proposals/mark-occurrences`;
 
   constructor(private http: HttpClient) {}
 

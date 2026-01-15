@@ -3,8 +3,8 @@
   <app-search-header
     [type]="type"
     [title]="title"
-    [locations]="['Aveiro', 'Coimbra', 'Lisboa', 'Porto']"
-    [selectedValue]="selectedCity"
+    [locations]="(districts$ | async) ?? []"
+    [selectedValue]="selectedDivisionId ?? ''"
     (search)="onSearch($event)"
     (filterChange)="onFilterChange($event)">
   </app-search-header>

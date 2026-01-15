@@ -16,7 +16,8 @@ export interface MonumentRequestDto {
     website?: string;
     latitude?: number;
     longitude?: number;
-    address?: string;
-    city?: string;
+    street?: string;
+    houseNumber?: string;
+    parishId?: number;
 }
 

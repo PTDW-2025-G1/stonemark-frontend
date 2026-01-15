@@ -14,6 +14,7 @@ import { MonumentResponseDto } from './monument-response-dto';
 export interface MarkOccurrenceProposalDto { 
     id?: number;
     priority?: number;
+    submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
     coverId?: number;
     existingMonument?: MonumentResponseDto;
     monumentName?: string;
@@ -22,14 +23,12 @@ export interface MarkOccurrenceProposalDto {
     existingMark?: MarkDto;
     newMark?: boolean;
     userNotes?: string;
-    submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
     isSubmitted?: boolean;
     status?: MarkOccurrenceProposalDto.StatusEnum;
 }
 export namespace MarkOccurrenceProposalDto {
     export const SubmissionSourceEnum = {
         WebApp: 'WEB_APP',
-        StaffApp: 'STAFF_APP',
         Whatsapp: 'WHATSAPP',
         Api: 'API',
         TelegramBot: 'TELEGRAM_BOT',
@@ -42,7 +41,8 @@ export namespace MarkOccurrenceProposalDto {
         AutoAccepted: 'AUTO_ACCEPTED',
         AutoRejected: 'AUTO_REJECTED',
         ManuallyAccepted: 'MANUALLY_ACCEPTED',
-        ManuallyRejected: 'MANUALLY_REJECTED'
+        ManuallyRejected: 'MANUALLY_REJECTED',
+        PendingMonumentCreation: 'PENDING_MONUMENT_CREATION'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }

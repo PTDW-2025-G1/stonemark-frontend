@@ -10,6 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {PaginationFacade} from '@shared/facades/pagination.facade';
 import { LanguageService } from '@core/services/language/language.service';
+import { AdministrativeDivisionService } from '@core/services/administrative-division.service';
+import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
 
 @Component({
   selector: 'app-search',
@@ -23,9 +25,10 @@ export class SearchComponent implements OnInit {
   title = '';
 
   items$ = new BehaviorSubject<any[]>([]);
+  districts$ = new BehaviorSubject<AdministrativeDivisionDto[]>([]);
 
   searchQuery = '';
-  selectedCity = '';
+  selectedDivisionId: number | null = null;
 
   totalElements = 0;
   pageSize = 9;
@@ -37,10 +40,13 @@ export class SearchComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     public pagination: PaginationFacade,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private divisionService: AdministrativeDivisionService
   ) {}
 
   ngOnInit(): void {
+    this.loadDistricts();
+
     this.route.paramMap.subscribe(params => {
       const type = (params.get('type') as 'monuments' | 'marks') || 'monuments';
       this.type = type;
@@ -51,18 +57,25 @@ export class SearchComponent implements OnInit {
 
       this.route.queryParamMap.subscribe(queryParams => {
         const page = +(queryParams.get('page') || 1);
-        this.pagination.setServerPage(page, this.pagination.totalPages);
+        this.pagination.currentPage = page;
 
-        const city = queryParams.get('city') || '';
+        const divisionId = queryParams.get('divisionId');
         this.searchQuery = queryParams.get('query') || '';
 
-        if (city && this.type === 'monuments') {
-          this.onFilterChange(city);
-          this.selectedCity = city;
-        } else {
-          this.loadData();
+        this.selectedDivisionId = null;
+
+        if (this.type === 'monuments' && divisionId) {
+            this.selectedDivisionId = +divisionId;
         }
+
+        this.loadData();
       });
+    });
+  }
+
+  private loadDistricts(): void {
+    this.divisionService.getDistricts().subscribe(districts => {
+      this.districts$.next(districts);
     });
   }
 
@@ -81,11 +94,17 @@ export class SearchComponent implements OnInit {
           (page.number ?? 0) + 1,
           page.totalPages ?? 1
         );
+        this.totalElements = page.totalElements ?? 0;
       });
     } else {
-      const source = this.searchQuery.trim()
-        ? this.monumentService.searchMonuments(this.searchQuery, pageIndex, this.pageSize)
-        : this.monumentService.getMonuments(pageIndex, this.pageSize);
+      let source;
+      if (this.selectedDivisionId) {
+          source = this.monumentService.filterByDivision(this.selectedDivisionId, pageIndex, this.pageSize);
+      } else if (this.searchQuery.trim()) {
+          source = this.monumentService.searchMonuments(this.searchQuery, pageIndex, this.pageSize);
+      } else {
+          source = this.monumentService.getMonuments(pageIndex, this.pageSize);
+      }
 
       source.subscribe(page => {
         this.items$.next(page.content ?? []);
@@ -93,6 +112,7 @@ export class SearchComponent implements OnInit {
           (page.number ?? 0) + 1,
           page.totalPages ?? 1
         );
+        this.totalElements = page.totalElements ?? 0;
       });
     }
   }
@@ -105,45 +125,24 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  onFilterChange(city: string): void {
-    this.pagination.setServerPage(1, this.pagination.totalPages);
-
+  onFilterChange(divisionId: number): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { city, page: 1 },
+      queryParams: { divisionId, page: 1, query: null },
       queryParamsHandling: 'merge'
     });
-
-    this.monumentService.filterByCity(city, 0, this.pageSize)
-      .subscribe({
-        next: (response) => {
-          this.items$.next(response.content ?? []);
-          this.pagination.setServerPage(1, response.totalPages ?? 1);
-          this.totalElements = response.totalElements ?? 0;
-        },
-        error: () => {
-          this.items$.next([]);
-        }
-      });
   }
 
   onSearch(query: string): void {
-    this.searchQuery = query;
-    this.pagination.currentPage = 1;
-    this.loadData();
-
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { query, page: 1 },
+      queryParams: { query, page: 1, divisionId: null },
       queryParamsHandling: 'merge'
     });
   }
 
   onPageChange(page: number): void {
     if (page < 1 || page > this.pagination.totalPages) return;
-
-    this.pagination.goToPage(page);
-    this.loadData();
 
     this.router.navigate([], {
       relativeTo: this.route,

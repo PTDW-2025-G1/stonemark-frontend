@@ -9,12 +9,12 @@
  */
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    groupMessage?: boolean;
-    userMessage?: boolean;
-    superGroupMessage?: boolean;
+export interface PrecisionModel { 
+    scale?: number;
+    type?: any | null;
+    floating?: boolean;
+    maximumSignificantDigits?: number;
+    offsetX?: number;
+    offsetY?: number;
 }
 

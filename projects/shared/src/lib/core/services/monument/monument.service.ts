@@ -69,6 +69,14 @@ export class MonumentService {
     return this.http.get<PageMonumentListDto>(`${this.baseUrl}/filter`, { params });
   }
 
+  filterByDivision(divisionId: number, page: number = 0, size: number = 9): Observable<PageMonumentListDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PageMonumentListDto>(`${this.baseUrl}/division/${divisionId}`, { params });
+  }
+
   getLatestMonuments(): Observable<MonumentListDto[]> {
     return this.http.get<MonumentListDto[]>(`${this.baseUrl}/latest`);
   }

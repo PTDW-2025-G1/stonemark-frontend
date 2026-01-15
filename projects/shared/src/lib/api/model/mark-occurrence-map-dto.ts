@@ -7,14 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MonumentDto } from './monument-dto';
 
 
-export interface MaybeInaccessibleMessage { 
-    date?: number;
-    chatId?: number;
-    messageId?: number;
-    superGroupMessage?: boolean;
-    userMessage?: boolean;
-    groupMessage?: boolean;
+export interface MarkOccurrenceMapDto { 
+    id?: number;
+    monument?: MonumentDto;
 }
 

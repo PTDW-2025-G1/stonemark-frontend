@@ -15,12 +15,12 @@ import { MonumentListDto } from './monument-list-dto';
 export interface PageMonumentListDto { 
     totalElements?: number;
     totalPages?: number;
+    first?: boolean;
+    last?: boolean;
     size?: number;
     content?: Array<MonumentListDto>;
     number?: number;
     sort?: SortObject;
-    first?: boolean;
-    last?: boolean;
     numberOfElements?: number;
     pageable?: PageableObject;
     empty?: boolean;

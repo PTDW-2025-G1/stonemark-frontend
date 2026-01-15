@@ -5,6 +5,7 @@ import { environment } from '@env/environment';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
 import { MarkOccurrenceListDto } from '@api/model/mark-occurrence-list-dto';
+import { MarkOccurrenceMapDto } from '@api/model/mark-occurrence-map-dto';
 import {PageMarkOccurrenceListDto} from '@api/model/page-mark-occurrence-list-dto'
 
 @Injectable({
@@ -34,6 +35,10 @@ export class MarkOccurrenceService {
       .set('size', size)
       .set('sort', sort);
     return this.http.get<PageMarkOccurrenceListDto>(`${this.baseUrl}/by-mark/${markId}`, { params });
+  }
+
+  getByMarkIdForMap(markId: number): Observable<MarkOccurrenceMapDto[]> {
+    return this.http.get<MarkOccurrenceMapDto[]>(`${this.baseUrl}/map/by-mark/${markId}`);
   }
 
   getByMonumentId(monumentId: number, page: number = 0, size: number = 20, sort: string = 'desc'): Observable<PageMarkOccurrenceListDto> {

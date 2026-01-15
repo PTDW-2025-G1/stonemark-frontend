@@ -14,7 +14,8 @@
       [bookmarksCount]="bookmarkFacade.count"
       [isBookmarked]="bookmarkFacade.isBookmarked"
       (bookmarkToggled)="toggleBookmark()"
-      (reportClicked)="openReportModal()">
+      (reportClicked)="openReportModal()"
+      (mapClicked)="viewMap()">
     </app-mark-detail-header>
 
     <app-filters

@@ -15,12 +15,12 @@ import { SortObject } from './sort-object';
 export interface PageMarkOccurrenceListDto { 
     totalElements?: number;
     totalPages?: number;
+    first?: boolean;
+    last?: boolean;
     size?: number;
     content?: Array<MarkOccurrenceListDto>;
     number?: number;
     sort?: SortObject;
-    first?: boolean;
-    last?: boolean;
     numberOfElements?: number;
     pageable?: PageableObject;
     empty?: boolean;

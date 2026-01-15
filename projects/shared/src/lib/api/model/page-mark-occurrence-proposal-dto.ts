@@ -15,12 +15,12 @@ import { MarkOccurrenceProposalDto } from './mark-occurrence-proposal-dto';
 export interface PageMarkOccurrenceProposalDto { 
     totalElements?: number;
     totalPages?: number;
+    first?: boolean;
+    last?: boolean;
     size?: number;
     content?: Array<MarkOccurrenceProposalDto>;
     number?: number;
     sort?: SortObject;
-    first?: boolean;
-    last?: boolean;
     numberOfElements?: number;
     pageable?: PageableObject;
     empty?: boolean;

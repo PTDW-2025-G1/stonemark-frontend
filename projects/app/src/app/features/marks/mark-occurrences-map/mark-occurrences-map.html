@@ -1,0 +1,111 @@
+<app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+<div class="min-h-screen bg-surface-alt/30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header Section -->
+    <div class="mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <button
+              (click)="goBack()"
+              class="p-2 rounded-full hover:bg-surface transition-colors text-text-muted hover:text-primary">
+              <i class="bi bi-arrow-left text-xl"></i>
+            </button>
+            <h1 class="text-3xl md:text-4xl font-serif text-text">
+              Occurrences Map
+            </h1>
+          </div>
+          @if (mark) {
+            <p class="text-text-muted ml-14">
+              Showing {{ occurrences.length }} occurrence{{ occurrences.length === 1 ? '' : 's' }} for
+              <span class="font-semibold text-text">{{ mark.description }}</span>
+            </p>
+          }
+        </div>
+
+        @if (!loading && occurrences.length > 0) {
+          <div class="flex items-center gap-2 text-sm text-text-muted ml-14 sm:ml-0">
+            <i class="bi bi-info-circle"></i>
+            <span>Click on markers to view details</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="relative rounded-2xl shadow-xl border border-border overflow-hidden bg-surface">
+      @if (loading) {
+        <div class="w-full h-[600px] flex items-center justify-center bg-surface-muted">
+          <div class="text-center">
+            <i class="bi bi-hourglass-split text-4xl text-primary animate-pulse mb-3"></i>
+            <p class="text-text-muted">Loading map...</p>
+          </div>
+        </div>
+      } @else if (occurrences.length === 0) {
+        <div class="w-full h-[600px] flex items-center justify-center bg-surface-muted">
+          <div class="text-center max-w-md">
+            <i class="bi bi-map text-6xl text-text-muted/30 mb-4"></i>
+            <h3 class="text-xl font-serif text-text mb-2">No Occurrences Found</h3>
+            <p class="text-text-muted mb-6">
+              This mark doesn't have any occurrences with location data yet.
+            </p>
+            <button
+              (click)="goBack()"
+              class="px-6 py-3 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition-colors">
+              <i class="bi bi-arrow-left mr-2"></i>
+              Back to Mark Details
+            </button>
+          </div>
+        </div>
+      } @else {
+        <div
+          id="map"
+          class="w-full h-[600px] md:h-[700px] bg-surface-muted"
+        ></div>
+
+        <div #popup id="popup-container" class="absolute z-50 transition-opacity duration-300"></div>
+
+        <!-- Map Stats Overlay - Moved to right side -->
+        <div class="absolute top-4 right-4 bg-surface/95 backdrop-blur-sm rounded-lg shadow-lg border border-border px-4 py-3 z-10">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+              <svg class="text-primary" width="20" height="20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                <path d="M352.75 39.47l-33.094 83.374 111.156 111.28 58.22-58.28L352.75 39.47zm-160.344 5.218c-98.25 66.974-166.87 161.246-169.47 288.906 62.25-119.817 162.457-225.092 255.22-269.75l-85.75-19.157zM97.75 60.156L68.187 89.72c7.276 6.96 14.53 13.893 21.813 20.843 8.887-10.39 18.37-20.35 28.313-29.907l-20.563-20.5zm353.813 0L425.688 86l28.718 28.75c8.91-8.36 17.822-16.728 26.72-25.094l-29.563-29.5zm-263.938 89.75c-9.44 8.552-18.824 17.596-28.063 27.063 25.263 24.13 50.526 48.323 75.688 72.75l26.188-26.126-73.813-73.688zm153.313 20.72L68 443.155l29.313 29.22c83.48-96.13 175.757-186.498 269.812-275.532l-26.188-26.22zm-28.25 104.155c-8.692 8.42-17.35 16.853-25.97 25.314 55.896 55.38 111.166 112.353 165.157 172.437l29.438-29.374L312.688 274.78z"></path>
+              </svg>
+              <div>
+                <p class="text-xs text-text-muted">Total Occurrences</p>
+                <p class="text-lg font-bold text-text">{{ occurrences.length }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Legend -->
+    @if (!loading && occurrences.length > 0) {
+      <div class="mt-6 bg-surface rounded-lg shadow border border-border p-4">
+        <div class="flex flex-wrap items-center gap-6">
+          <div class="flex items-center gap-2">
+            <svg class="text-primary" width="24" height="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <path d="M352.75 39.47l-33.094 83.374 111.156 111.28 58.22-58.28L352.75 39.47zm-160.344 5.218c-98.25 66.974-166.87 161.246-169.47 288.906 62.25-119.817 162.457-225.092 255.22-269.75l-85.75-19.157zM97.75 60.156L68.187 89.72c7.276 6.96 14.53 13.893 21.813 20.843 8.887-10.39 18.37-20.35 28.313-29.907l-20.563-20.5zm353.813 0L425.688 86l28.718 28.75c8.91-8.36 17.822-16.728 26.72-25.094l-29.563-29.5zm-263.938 89.75c-9.44 8.552-18.824 17.596-28.063 27.063 25.263 24.13 50.526 48.323 75.688 72.75l26.188-26.126-73.813-73.688zm153.313 20.72L68 443.155l29.313 29.22c83.48-96.13 175.757-186.498 269.812-275.532l-26.188-26.22zm-28.25 104.155c-8.692 8.42-17.35 16.853-25.97 25.314 55.896 55.38 111.166 112.353 165.157 172.437l29.438-29.374L312.688 274.78z"></path>
+            </svg>
+            <div>
+              <p class="text-sm font-semibold text-text">Mark Occurrence</p>
+              <p class="text-xs text-text-muted">Location where this mark was found</p>
+            </div>
+          </div>
+          <div class="flex-1 border-l border-border pl-6 hidden sm:block">
+            <p class="text-xs text-text-muted">
+              <i class="bi bi-lightbulb mr-1"></i>
+              Click on any marker to see more details about that occurrence and navigate to the full information.
+            </p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

@@ -8,6 +8,12 @@ export const MARK_ROUTES : Routes = [
         m => m.MarkDetailComponent),
   },
   {
+    path: ':id/map',
+    loadComponent: () =>
+      import('@features/marks/mark-occurrences-map/mark-occurrences-map').then(
+        m => m.MarkOccurrencesMap),
+  },
+  {
     path: 'occurrence/:id',
     loadComponent: () =>
       import('@features/marks/mark-occurrence-detail/mark-occurrence-detail').then(

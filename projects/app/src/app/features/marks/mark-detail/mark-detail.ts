@@ -157,6 +157,11 @@ export class MarkDetailComponent implements OnInit {
     this.bookmarkFacade.toggle(BookmarkDto.TypeEnum.Mark, this.currentMarkId);
   }
 
+  viewMap(): void {
+    if (!this.currentMarkId) return;
+    this.router.navigate(['/marks', this.currentMarkId, 'map']);
+  }
+
   viewOccurrence(occurrenceId: number): void {
     this.router.navigate(['marks/occurrence', occurrenceId]);
   }

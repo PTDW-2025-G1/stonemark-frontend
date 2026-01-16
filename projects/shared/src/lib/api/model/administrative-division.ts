@@ -20,7 +20,7 @@ export interface AdministrativeDivision {
     osmAdminLevel?: number;
     name?: string;
     geometry?: Geometry;
-    parent?: any | null;
+    parent?: AdministrativeDivision;
     countryCode?: string;
     monumentsCount?: number;
 }

@@ -14,7 +14,6 @@ import { MonumentResponseDto } from './monument-response-dto';
 export interface MarkOccurrenceProposalDto { 
     id?: number;
     priority?: number;
-    submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
     coverId?: number;
     existingMonument?: MonumentResponseDto;
     monumentName?: string;
@@ -23,6 +22,7 @@ export interface MarkOccurrenceProposalDto {
     existingMark?: MarkDto;
     newMark?: boolean;
     userNotes?: string;
+    submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
     isSubmitted?: boolean;
     status?: MarkOccurrenceProposalDto.StatusEnum;
 }

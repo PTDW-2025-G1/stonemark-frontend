@@ -77,6 +77,10 @@ export class MonumentService {
     return this.http.get<PageMonumentListDto>(`${this.baseUrl}/division/${divisionId}`, { params });
   }
 
+  getPopularMonuments(): Observable<MonumentListDto[]> {
+    return this.http.get<MonumentListDto[]>(`${this.baseUrl}/popular`);
+  }
+
   getLatestMonuments(): Observable<MonumentListDto[]> {
     return this.http.get<MonumentListDto[]>(`${this.baseUrl}/latest`);
   }

@@ -135,6 +135,7 @@ export class MapSectionComponent implements AfterViewInit {
           ])),
           id: monument.id,
           name: monument.name,
+          parish: monument.parish?.name
         });
 
         feature.setStyle(
@@ -198,7 +199,7 @@ export class MapSectionComponent implements AfterViewInit {
     const name = props.name || this.translate.instant('home-map-section.unknown');
     const protection = props.protectionTitle;
     const website = props.website;
-    const city = props.city || this.translate.instant('home-map-section.city');
+    const city = props.parish || this.translate.instant('home-map-section.city');
 
     const marksText = this.translate.instant('home-map-section.marks', {
       count: occurrenceCount,

@@ -18,11 +18,11 @@ export interface PageMarkOccurrenceProposalDto {
     size?: number;
     content?: Array<MarkOccurrenceProposalDto>;
     number?: number;
-    pageable?: PageableObject;
+    sort?: SortObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
-    sort?: SortObject;
+    pageable?: PageableObject;
     empty?: boolean;
 }
 

@@ -21,21 +21,21 @@ export interface Geometry {
     length?: number;
     empty?: boolean;
     valid?: boolean;
+    dimension?: number;
     simple?: boolean;
-    geometryType?: string;
-    srid?: number;
-    numGeometries?: number;
-    precisionModel?: PrecisionModel;
-    coordinate?: Coordinate;
-    coordinates?: Array<Coordinate>;
-    numPoints?: number;
-    rectangle?: boolean;
-    area?: number;
-    centroid?: Point;
     interiorPoint?: Point;
     boundary?: Geometry;
+    centroid?: Point;
+    rectangle?: boolean;
+    geometryType?: string;
+    numGeometries?: number;
+    precisionModel?: PrecisionModel;
+    numPoints?: number;
+    coordinates?: Array<Coordinate>;
+    coordinate?: Coordinate;
     boundaryDimension?: number;
     envelopeInternal?: Envelope;
-    dimension?: number;
+    area?: number;
+    srid?: number;
 }
 

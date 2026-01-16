@@ -14,7 +14,7 @@ export interface Coordinate {
     y?: number;
     z?: number;
     valid?: boolean;
-    coordinate?: any | null;
     m?: number;
+    coordinate?: any | null;
 }
 

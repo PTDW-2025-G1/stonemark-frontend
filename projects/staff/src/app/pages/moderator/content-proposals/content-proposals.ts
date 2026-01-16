@@ -13,6 +13,7 @@ import { AppTableComponent } from '../../../components/table/table.component';
 import { StatusFilterComponent } from '../../../components/status-filter/status-filter.component';
 import { BaseFilterTableComponent } from '../../../shared/base-filter-table.component';
 import { firstValueFrom } from 'rxjs';
+import {PageProposalModeratorViewDto} from '@api/model/page-proposal-moderator-view-dto';
 
 @Component({
   selector: 'app-content-proposals',
@@ -117,7 +118,8 @@ export class ContentProposals
   }
 
   async loadData(): Promise<ProposalModeratorViewDto[]> {
-    return await firstValueFrom(this.moderationService.getAllProposals());
+    const page = await firstValueFrom(this.moderationService.getAllProposals());
+    return page.content || [];
   }
 
   viewDetails(item: ProposalModeratorViewDto) {

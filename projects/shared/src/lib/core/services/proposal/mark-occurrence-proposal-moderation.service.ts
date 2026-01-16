@@ -5,6 +5,8 @@ import { ProposalModeratorViewDto } from '@api/model/proposal-moderator-view-dto
 import { DecisionHistoryItem } from '@api/model/decision-history-item';
 import { ManualDecisionRequest } from '@api/model/manual-decision-request';
 import { environment } from '@env/environment';
+import {PageProposalModeratorViewDto} from '@api/model/page-proposal-moderator-view-dto';
+import {PageProposalModeratorListDto} from '@api/model/page-proposal-moderator-list-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +20,8 @@ export class MarkOccurrenceProposalModerationService {
    * Get all proposals for moderation
    * @returns Observable of ProposalModeratorViewDto array
    */
-  getAllProposals(): Observable<ProposalModeratorViewDto[]> {
-    return this.http.get<ProposalModeratorViewDto[]>(this.baseUrl);
+  getAllProposals(): Observable<PageProposalModeratorListDto> {
+    return this.http.get<PageProposalModeratorListDto>(this.baseUrl);
   }
 
   /**

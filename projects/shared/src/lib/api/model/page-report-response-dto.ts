@@ -18,11 +18,11 @@ export interface PageReportResponseDto {
     size?: number;
     content?: Array<ReportResponseDto>;
     number?: number;
-    pageable?: PageableObject;
+    sort?: SortObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;
-    sort?: SortObject;
+    pageable?: PageableObject;
     empty?: boolean;
 }
 

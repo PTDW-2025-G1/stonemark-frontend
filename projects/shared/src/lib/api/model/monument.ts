@@ -18,6 +18,7 @@ export interface Monument {
     lastModifiedAt?: string;
     modifiedBy?: AuditActor;
     id?: number;
+    externalId?: string;
     name?: string;
     protectionTitle?: string;
     description?: string;
@@ -27,6 +28,8 @@ export interface Monument {
     street?: string;
     houseNumber?: string;
     parish?: AdministrativeDivision;
+    municipality?: AdministrativeDivision;
+    district?: AdministrativeDivision;
     active?: boolean;
     cover?: MediaFile;
 }

@@ -80,8 +80,15 @@
             <i class="bi bi-geo-alt-fill text-primary"></i>
             <span class="text-sm font-medium uppercase tracking-wider">
               @if (monument.parish) {
-                <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.parish.id }" class="hover:text-primary hover:underline">
-                  {{ monument.parish.name }}</a>, Portugal
+                @if (monument.district) {
+                  <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.district.id, districtId: monument.district.id }" class="hover:text-primary hover:underline">{{ monument.district.name }}</a>
+                }
+                @if (monument.municipality) {
+                  @if(monument.district) {<span>, </span>}
+                  <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.municipality.id, districtId: monument.district?.id, municipalityId: monument.municipality.id }" class="hover:text-primary hover:underline">{{ monument.municipality.name }}</a>
+                }
+                @if(monument.municipality || monument.district) {<span>, </span>}
+                <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.parish.id, districtId: monument.district?.id, municipalityId: monument.municipality?.id, parishId: monument.parish.id }" class="hover:text-primary hover:underline">{{ monument.parish.name }}</a>, Portugal
               } @else {
                 Portugal
               }

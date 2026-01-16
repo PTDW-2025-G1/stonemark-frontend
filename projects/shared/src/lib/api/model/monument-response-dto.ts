@@ -21,6 +21,8 @@ export interface MonumentResponseDto {
     street?: string;
     houseNumber?: string;
     parish?: AdministrativeDivisionDto;
+    municipality?: AdministrativeDivisionDto;
+    district?: AdministrativeDivisionDto;
     coverId?: number;
     createdAt?: string;
     lastModifiedAt?: string;

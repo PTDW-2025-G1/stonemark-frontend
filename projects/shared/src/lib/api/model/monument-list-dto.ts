@@ -7,14 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AdministrativeDivisionDto } from './administrative-division-dto';
 
 
 export interface MonumentListDto { 
     id?: number;
-    coverId?: number;
     name?: string;
-    city?: string;
-    parish?: AdministrativeDivisionDto;
+    parishId?: number;
+    municipalityId?: number;
+    districtId?: number;
+    coverId?: number;
 }
 

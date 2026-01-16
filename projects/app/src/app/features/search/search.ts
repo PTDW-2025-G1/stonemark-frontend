@@ -100,14 +100,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.selectedParishId = parishId ? +parishId : null;
         } else if (divisionId) {
           const id = +divisionId;
-          const isStateMatching =
-            (id === this.selectedParishId && this.selectedMunicipalityId && this.selectedDistrictId) ||
-            (id === this.selectedMunicipalityId && this.selectedDistrictId && !this.selectedParishId) ||
-            (id === this.selectedDistrictId && !this.selectedMunicipalityId && !this.selectedParishId);
-
-          if (!isStateMatching) {
-            this.restoreStateSubscription = this.restoreDivisionState(id);
-          }
+          this.restoreStateSubscription = this.restoreDivisionState(id);
         } else {
             this.resetDivisionState();
         }
@@ -125,19 +118,21 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private loadDistricts(): void {
     this.divisionService.getDistricts().subscribe(districts => {
-      this.districts$.next(districts);
+      this.districts$.next(districts.slice().sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')));
     });
   }
 
   private loadMunicipalities(districtId: number): void {
     this.divisionService.getMunicipalitiesByDistrict(districtId).subscribe(municipalities => {
-      this.municipalities$.next(municipalities);
+      const filtered = municipalities.filter(m => (m.monumentsCount ?? 0) > 0);
+      this.municipalities$.next(filtered.slice().sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')));
     });
   }
 
   private loadParishes(municipalityId: number): void {
     this.divisionService.getParishesByMunicipality(municipalityId).subscribe(parishes => {
-      this.parishes$.next(parishes);
+      const filtered = parishes.filter(p => (p.monumentsCount ?? 0) > 0);
+      this.parishes$.next(filtered.slice().sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')));
     });
   }
 
@@ -152,7 +147,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private restoreDivisionState(divisionId: number): Subscription {
     return this.divisionService.getDivisionById(divisionId).pipe(
         switchMap(division => {
-            if (division.adminLevel === 8) { // Parish
+            if (division.osmAdminLevel === 8) { // Parish
                 this.selectedParishId = division.id!;
                 return this.divisionService.getMunicipalityByParish(division.id!).pipe(
                     switchMap(municipality => {
@@ -166,7 +161,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                         );
                     })
                 );
-            } else if (division.adminLevel === 7) { // Municipality
+            } else if (division.osmAdminLevel === 7) { // Municipality
                 this.selectedMunicipalityId = division.id!;
                 this.selectedParishId = null;
                 this.loadParishes(division.id!);
@@ -176,7 +171,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                         this.loadMunicipalities(district.id!);
                     })
                 );
-            } else if (division.adminLevel === 6) { // District
+            } else if (division.osmAdminLevel === 6) { // District
                 this.selectedDistrictId = division.id!;
                 this.selectedMunicipalityId = null;
                 this.selectedParishId = null;

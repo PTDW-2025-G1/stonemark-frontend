@@ -135,9 +135,6 @@ export class MapSectionComponent implements AfterViewInit {
           ])),
           id: monument.id,
           name: monument.name,
-          protectionTitle: monument.protectionTitle,
-          website: monument.website,
-          city: monument.city
         });
 
         feature.setStyle(

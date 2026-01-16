@@ -11,7 +11,9 @@
 
 export interface AdministrativeDivisionDto { 
     id?: number;
+    osmAdminLevel?: number;
     name?: string;
-    adminLevel?: number;
+    parentId?: number;
+    monumentsCount?: number;
 }
 

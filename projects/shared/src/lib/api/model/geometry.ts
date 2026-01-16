@@ -21,9 +21,10 @@ export interface Geometry {
     length?: number;
     empty?: boolean;
     valid?: boolean;
+    dimension?: number;
     simple?: boolean;
-    srid?: number;
     geometryType?: string;
+    srid?: number;
     numGeometries?: number;
     precisionModel?: PrecisionModel;
     coordinate?: Coordinate;
@@ -36,6 +37,5 @@ export interface Geometry {
     boundary?: Geometry;
     boundaryDimension?: number;
     envelopeInternal?: Envelope;
-    dimension?: number;
 }
 

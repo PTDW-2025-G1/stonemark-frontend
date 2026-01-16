@@ -17,8 +17,11 @@ export interface AdministrativeDivision {
     lastModifiedAt?: string;
     modifiedBy?: AuditActor;
     id?: number;
+    osmAdminLevel?: number;
     name?: string;
-    adminLevel?: number;
     geometry?: Geometry;
+    parent?: any | null;
+    countryCode?: string;
+    monumentsCount?: number;
 }
 

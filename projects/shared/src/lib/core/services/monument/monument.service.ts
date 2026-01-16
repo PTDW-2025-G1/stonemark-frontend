@@ -44,7 +44,7 @@ export class MonumentService {
   }
 
   getAllForMap(): Observable<MonumentMapDto[]> {
-    return this.http.get<PageMonumentMapDto>(`${this.baseUrl}/map`).pipe(
+    return this.http.get<PageMonumentMapDto>(`${this.baseUrl}/map?size=100`).pipe(
       map(page => page.content || [])
     );
   }

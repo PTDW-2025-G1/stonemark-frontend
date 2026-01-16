@@ -19,6 +19,15 @@ export interface MonumentDto {
     street?: string;
     houseNumber?: string;
     parish?: AdministrativeDivisionDto;
+    municipality?: AdministrativeDivisionDto;
+    district?: AdministrativeDivisionDto;
     coverId?: number;
+    protectionTitle?: string;
+    website?: string;
+    parishId?: number;
+    municipalityId?: number;
+    districtId?: number;
+    createdAt?: string;
+    lastModifiedAt?: string;
 }
 

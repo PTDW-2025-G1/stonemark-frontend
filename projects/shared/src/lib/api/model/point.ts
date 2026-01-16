@@ -20,6 +20,7 @@ export interface Point {
     userData?: any | null;
     coordinates?: Array<Coordinate>;
     empty?: boolean;
+    dimension?: number;
     simple?: boolean;
     geometryType?: string;
     coordinate?: Coordinate;
@@ -29,7 +30,6 @@ export interface Point {
     x?: number;
     y?: number;
     coordinateSequence?: CoordinateSequence;
-    dimension?: number;
     length?: number;
     valid?: boolean;
     srid?: number;

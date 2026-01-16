@@ -110,10 +110,10 @@
                 {{ proposal.existingMonument?.name || proposal.monumentName }}
               </p>
 
-              @if (proposal.existingMonument?.city) {
+              @if (proposal.existingMonument?.parish) {
                 <div class="flex items-center gap-2 text-sm text-text-muted mb-3">
                   <i class="bi bi-geo-alt"></i>
-                  <span>{{ proposal.existingMonument?.city }}, Portugal</span>
+                  <span>{{ proposal.existingMonument?.parish?.name }}, Portugal</span>
                 </div>
               }
 

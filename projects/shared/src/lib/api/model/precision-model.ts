@@ -9,11 +9,12 @@
  */
 
 
-export interface MarkDto { 
-    id?: number;
-    title?: string;
-    description?: string;
-    embedding?: Array<number>;
-    coverId?: number;
+export interface PrecisionModel { 
+    scale?: number;
+    type?: any | null;
+    floating?: boolean;
+    maximumSignificantDigits?: number;
+    offsetX?: number;
+    offsetY?: number;
 }
 

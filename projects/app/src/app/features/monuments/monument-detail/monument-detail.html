@@ -79,7 +79,19 @@
           <div class="flex items-center gap-2 text-text-muted mb-5">
             <i class="bi bi-geo-alt-fill text-primary"></i>
             <span class="text-sm font-medium uppercase tracking-wider">
-              {{ monument.city ? monument.city + ', Portugal' : 'Portugal' }}
+              @if (monument.parish) {
+                @if (monument.district) {
+                  <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.district.id, districtId: monument.district.id }" class="hover:text-primary hover:underline">{{ monument.district.name }}</a>
+                }
+                @if (monument.municipality) {
+                  @if(monument.district) {<span>, </span>}
+                  <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.municipality.id, districtId: monument.district?.id, municipalityId: monument.municipality.id }" class="hover:text-primary hover:underline">{{ monument.municipality.name }}</a>
+                }
+                @if(monument.municipality || monument.district) {<span>, </span>}
+                <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.parish.id, districtId: monument.district?.id, municipalityId: monument.municipality?.id, parishId: monument.parish.id }" class="hover:text-primary hover:underline">{{ monument.parish.name }}</a>, Portugal
+              } @else {
+                Portugal
+              }
             </span>
           </div>
 
@@ -145,8 +157,8 @@
             <span>Directions</span>
           </button>
         </div>
-        @if (monument.address) {
-        <p class="text-xs text-text-muted truncate mt-1 pl-1"><i class="bi bi-pin-map mr-1"></i>{{ monument.address }}
+        @if (monument.street) {
+        <p class="text-xs text-text-muted truncate mt-1 pl-1"><i class="bi bi-pin-map mr-1"></i>{{ monument.street + ', ' + monument.houseNumber }}
         </p>
         }
         }

@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { MediaFile } from './media-file';
+import { AdministrativeDivision } from './administrative-division';
 import { AuditActor } from './audit-actor';
 
 
@@ -17,14 +18,19 @@ export interface Monument {
     lastModifiedAt?: string;
     modifiedBy?: AuditActor;
     id?: number;
+    externalId?: string;
     name?: string;
+    protectionTitle?: string;
     description?: string;
     latitude?: number;
     longitude?: number;
     website?: string;
-    protectionTitle?: string;
-    address?: string;
-    city?: string;
+    street?: string;
+    houseNumber?: string;
+    parish?: AdministrativeDivision;
+    municipality?: AdministrativeDivision;
+    district?: AdministrativeDivision;
+    active?: boolean;
     cover?: MediaFile;
 }
 

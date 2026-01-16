@@ -9,11 +9,12 @@
  */
 
 
-export interface MarkDto { 
-    id?: number;
-    title?: string;
-    description?: string;
-    embedding?: Array<number>;
-    coverId?: number;
+export interface Coordinate { 
+    x?: number;
+    y?: number;
+    z?: number;
+    valid?: boolean;
+    coordinate?: any | null;
+    m?: number;
 }
 

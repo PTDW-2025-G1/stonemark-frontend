@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AdministrativeDivisionDto } from './administrative-division-dto';
 
 
 export interface MonumentDto { 
@@ -15,6 +16,18 @@ export interface MonumentDto {
     description?: string;
     latitude?: number;
     longitude?: number;
+    street?: string;
+    houseNumber?: string;
+    parish?: AdministrativeDivisionDto;
+    municipality?: AdministrativeDivisionDto;
+    district?: AdministrativeDivisionDto;
     coverId?: number;
+    protectionTitle?: string;
+    website?: string;
+    parishId?: number;
+    municipalityId?: number;
+    districtId?: number;
+    createdAt?: string;
+    lastModifiedAt?: string;
 }
 

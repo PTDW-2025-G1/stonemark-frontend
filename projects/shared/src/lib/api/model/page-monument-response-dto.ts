@@ -13,16 +13,16 @@ import { MonumentResponseDto } from './monument-response-dto';
 
 
 export interface PageMonumentResponseDto { 
-    totalElements?: number;
     totalPages?: number;
-    first?: boolean;
-    last?: boolean;
+    totalElements?: number;
     size?: number;
     content?: Array<MonumentResponseDto>;
     number?: number;
-    sort?: SortObject;
-    numberOfElements?: number;
     pageable?: PageableObject;
+    first?: boolean;
+    last?: boolean;
+    numberOfElements?: number;
+    sort?: SortObject;
     empty?: boolean;
 }
 

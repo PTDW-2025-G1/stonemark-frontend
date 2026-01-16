@@ -30,12 +30,12 @@ export namespace ProposalModeratorViewDto {
         AutoAccepted: 'AUTO_ACCEPTED',
         AutoRejected: 'AUTO_REJECTED',
         ManuallyAccepted: 'MANUALLY_ACCEPTED',
-        ManuallyRejected: 'MANUALLY_REJECTED'
+        ManuallyRejected: 'MANUALLY_REJECTED',
+        PendingMonumentCreation: 'PENDING_MONUMENT_CREATION'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
     export const SubmissionSourceEnum = {
         WebApp: 'WEB_APP',
-        StaffApp: 'STAFF_APP',
         Whatsapp: 'WHATSAPP',
         Api: 'API',
         TelegramBot: 'TELEGRAM_BOT',

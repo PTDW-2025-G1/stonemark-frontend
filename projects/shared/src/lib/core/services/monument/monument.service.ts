@@ -44,7 +44,7 @@ export class MonumentService {
   }
 
   getAllForMap(): Observable<MonumentMapDto[]> {
-    return this.http.get<PageMonumentMapDto>(`${this.baseUrl}/map`).pipe(
+    return this.http.get<PageMonumentMapDto>(`${this.baseUrl}/map?size=100`).pipe(
       map(page => page.content || [])
     );
   }
@@ -67,6 +67,18 @@ export class MonumentService {
       .set('sort', sort);
 
     return this.http.get<PageMonumentListDto>(`${this.baseUrl}/filter`, { params });
+  }
+
+  filterByDivision(divisionId: number, page: number = 0, size: number = 9): Observable<PageMonumentListDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PageMonumentListDto>(`${this.baseUrl}/division/${divisionId}`, { params });
+  }
+
+  getPopularMonuments(): Observable<MonumentListDto[]> {
+    return this.http.get<MonumentListDto[]>(`${this.baseUrl}/popular`);
   }
 
   getLatestMonuments(): Observable<MonumentListDto[]> {

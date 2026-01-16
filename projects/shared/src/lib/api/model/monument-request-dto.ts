@@ -10,13 +10,16 @@
 
 
 export interface MonumentRequestDto { 
-    name?: string;
+    name: string;
     description?: string;
     protectionTitle?: string;
     website?: string;
-    latitude?: number;
-    longitude?: number;
-    address?: string;
-    city?: string;
+    latitude: number;
+    longitude: number;
+    street?: string;
+    houseNumber?: string;
+    parishId?: number;
+    municipalityId?: number;
+    districtId?: number;
 }
 

@@ -23,7 +23,8 @@ export namespace MarkOccurrenceProposalListDto {
         AutoAccepted: 'AUTO_ACCEPTED',
         AutoRejected: 'AUTO_REJECTED',
         ManuallyAccepted: 'MANUALLY_ACCEPTED',
-        ManuallyRejected: 'MANUALLY_REJECTED'
+        ManuallyRejected: 'MANUALLY_REJECTED',
+        PendingMonumentCreation: 'PENDING_MONUMENT_CREATION'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }

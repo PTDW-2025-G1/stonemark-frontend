@@ -26,7 +26,7 @@ import {TranslateModule} from '@ngx-translate/core';
               [iconType]="'city'"
               [cover]="getImageUrl(monument)"
               [title]="monument.name || ('home-popular-section.unknown' | translate)"
-              [subtitle]="monument.city + ', Portugal'"
+              [subtitle]="monument.parish?.name + ', Portugal'"
               [id]="monument.id || 0"
               [type]="'monuments'"
             />

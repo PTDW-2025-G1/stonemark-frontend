@@ -7,13 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PrecisionModel } from './precision-model';
 
 
-export interface MarkDto { 
-    id?: number;
-    title?: string;
-    description?: string;
-    embedding?: Array<number>;
-    coverId?: number;
+export interface GeometryFactory { 
+    precisionModel?: PrecisionModel;
+    coordinateSequenceFactory?: any | null;
+    srid?: number;
 }
 

@@ -20,15 +20,15 @@ export interface Point {
     userData?: any | null;
     coordinates?: Array<Coordinate>;
     empty?: boolean;
-    x?: number;
-    y?: number;
-    coordinateSequence?: CoordinateSequence;
     simple?: boolean;
     geometryType?: string;
     coordinate?: Coordinate;
     numPoints?: number;
     boundary?: any | null;
     boundaryDimension?: number;
+    x?: number;
+    y?: number;
+    coordinateSequence?: CoordinateSequence;
     dimension?: number;
     length?: number;
     valid?: boolean;

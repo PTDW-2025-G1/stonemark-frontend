@@ -33,4 +33,16 @@ export class AdministrativeDivisionService {
   getDivisionsByCoordinates(latitude: number, longitude: number): Observable<AdministrativeDivisionDto[]> {
     return this.http.get<AdministrativeDivisionDto[]>(`${this.baseUrl}/coordinates?latitude=${latitude}&longitude=${longitude}`);
   }
+
+  getDivisionById(id: number): Observable<AdministrativeDivisionDto> {
+    return this.http.get<AdministrativeDivisionDto>(`${this.baseUrl}/${id}`);
+  }
+
+  getDistrictByMunicipality(municipalityId: number): Observable<AdministrativeDivisionDto> {
+    return this.http.get<AdministrativeDivisionDto>(`${this.baseUrl}/municipalities/${municipalityId}/district`);
+  }
+
+  getMunicipalityByParish(parishId: number): Observable<AdministrativeDivisionDto> {
+    return this.http.get<AdministrativeDivisionDto>(`${this.baseUrl}/parishes/${parishId}/municipality`);
+  }
 }

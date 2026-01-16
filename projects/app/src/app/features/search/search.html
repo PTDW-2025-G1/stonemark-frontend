@@ -3,10 +3,19 @@
   <app-search-header
     [type]="type"
     [title]="title"
-    [locations]="(districts$ | async) ?? []"
-    [selectedValue]="selectedDivisionId ?? ''"
+
+    [districts]="(districts$ | async) ?? []"
+    [municipalities]="(municipalities$ | async) ?? []"
+    [parishes]="(parishes$ | async) ?? []"
+
+    [selectedDistrictId]="selectedDistrictId"
+    [selectedMunicipalityId]="selectedMunicipalityId"
+    [selectedParishId]="selectedParishId"
+
     (search)="onSearch($event)"
-    (filterChange)="onFilterChange($event)">
+    (districtChange)="onDistrictChange($event)"
+    (municipalityChange)="onMunicipalityChange($event)"
+    (parishChange)="onParishChange($event)">
   </app-search-header>
   <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">

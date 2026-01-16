@@ -81,8 +81,7 @@
             <span class="text-sm font-medium uppercase tracking-wider">
               @if (monument.parish) {
                 <a [routerLink]="['/search/monuments']" [queryParams]="{ divisionId: monument.parish.id }" class="hover:text-primary hover:underline">
-                  {{ monument.parish.name }}
-                </a>, Portugal
+                  {{ monument.parish.name }}</a>, Portugal
               } @else {
                 Portugal
               }

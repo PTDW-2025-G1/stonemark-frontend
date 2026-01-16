@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SharedSelectComponent } from '@shared/ui/shared-select/shared-select';
@@ -11,20 +11,45 @@ import { AdministrativeDivisionDto } from '@api/model/administrative-division-dt
   imports: [CommonModule, FormsModule, SharedSelectComponent, TranslatePipe],
   templateUrl: './search-header.html',
 })
-export class SearchHeaderComponent {
+export class SearchHeaderComponent implements OnChanges {
   @Input() type: 'monuments' | 'marks' = 'monuments';
   @Input() title = '';
-  @Input() locations: AdministrativeDivisionDto[] = [];
-  @Input() selectedValue: string | number = '';
+  @Input() districts: AdministrativeDivisionDto[] = [];
+  @Input() municipalities: AdministrativeDivisionDto[] = [];
+  @Input() parishes: AdministrativeDivisionDto[] = [];
+
+  @Input() selectedDistrictId: number | null = null;
+  @Input() selectedMunicipalityId: number | null = null;
+  @Input() selectedParishId: number | null = null;
 
   @Output() search = new EventEmitter<string>();
-  @Output() filterChange = new EventEmitter<number>();
+  @Output() districtChange = new EventEmitter<number | null>();
+  @Output() municipalityChange = new EventEmitter<number | null>();
+  @Output() parishChange = new EventEmitter<number | null>();
 
-  get selectOptions(): { id: string | number; name: string }[] {
-    return this.locations.map(loc => ({
+  get districtOptions(): { id: string | number; name: string }[] {
+    return this.districts.map(loc => ({
       id: loc.id ?? 0,
       name: loc.name ?? ''
     }));
+  }
+
+  get municipalityOptions(): { id: string | number; name: string }[] {
+    return this.municipalities.map(loc => ({
+      id: loc.id ?? 0,
+      name: loc.name ?? ''
+    }));
+  }
+
+  get parishOptions(): { id: string | number; name: string }[] {
+    return this.parishes.map(loc => ({
+      id: loc.id ?? 0,
+      name: loc.name ?? ''
+    }));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      // React to changes if needed
   }
 
   onSearchInput(event: Event): void {
@@ -32,8 +57,15 @@ export class SearchHeaderComponent {
     this.search.emit(input.value);
   }
 
-  selectOption(value: string | number): void {
-    this.selectedValue = value;
-    this.filterChange.emit(+value);
+  selectDistrict(value: string | number): void {
+    this.districtChange.emit(value ? +value : null);
+  }
+
+  selectMunicipality(value: string | number): void {
+    this.municipalityChange.emit(value ? +value : null);
+  }
+
+  selectParish(value: string | number): void {
+    this.parishChange.emit(value ? +value : null);
   }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { ContactRequestDto } from '@api/model/contact-request-dto';
 import { ContactRequest } from '@api/model/contact-request';
+import { PageContactRequest } from '@api/model/page-contact-request';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
@@ -11,8 +12,16 @@ export class ContactService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<ContactRequest[]> {
-    return this.http.get<ContactRequest[]>(this.baseUrl);
+  getAll(page: number = 0, size: number = 10, sort?: string): Observable<PageContactRequest> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<PageContactRequest>(this.baseUrl, { params });
   }
 
   getById(id: number): Observable<ContactRequest> {

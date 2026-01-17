@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProposalModeratorViewDto } from '@api/model/proposal-moderator-view-dto';
 import { DecisionHistoryItem } from '@api/model/decision-history-item';
 import { ManualDecisionRequest } from '@api/model/manual-decision-request';
 import { environment } from '@env/environment';
-import {PageProposalModeratorViewDto} from '@api/model/page-proposal-moderator-view-dto';
 import {PageProposalModeratorListDto} from '@api/model/page-proposal-moderator-list-dto';
 
 @Injectable({
@@ -18,10 +17,28 @@ export class MarkOccurrenceProposalModerationService {
 
   /**
    * Get all proposals for moderation
-   * @returns Observable of ProposalModeratorViewDto array
+   * @param page - Page number (default: 0)
+   * @param size - Page size (default: 10)
+   * @param status - Optional status filter
+   * @param sort - Optional sort parameter (e.g., "submittedAt,desc")
+   * @returns Observable of PageProposalModeratorListDto
    */
-  getAllProposals(): Observable<PageProposalModeratorListDto> {
-    return this.http.get<PageProposalModeratorListDto>(this.baseUrl);
+  getAllProposals(page: number = 0, size: number = 10, status?: string[], sort?: string): Observable<PageProposalModeratorListDto> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (status && status.length > 0) {
+      status.forEach(s => {
+        params = params.append('status', s);
+      });
+    }
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<PageProposalModeratorListDto>(this.baseUrl, { params });
   }
 
   /**

@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -13,6 +14,9 @@ import { StatusFilterComponent, StatusOption } from '../../../components/status-
 import { ReportService } from '@core/services/report/report.service';
 import { ReportResponseDto } from '@api/model/report-response-dto';
 import { PageReportResponseDto } from '@api/model/page-report-response-dto';
+import { Subject, takeUntil, take } from 'rxjs';
+import { DateUtils } from '@shared/utils/date.utils';
+import { SortUtils } from '../../../utils/sort.utils';
 
 type ReportDisplay = Omit<ReportResponseDto, 'createdById' | 'modifiedById' | 'lastModifiedAt'> & {
   userId?: number;
@@ -53,9 +57,15 @@ type ReportDisplay = Omit<ReportResponseDto, 'createdById' | 'modifiedById' | 'l
 
     <app-table
       #table
-      [data]="filtered()"
+      [data]="reports()"
       [columns]="cols"
-      [globalFilterFields]="['id', 'targetTypeLabel', 'reasonLabel', 'status', 'description']"
+      [globalFilterFields]="['createdAt']"
+      [lazy]="true"
+      [totalRecords]="totalRecords()"
+      [rows]="pageSize()"
+      [first]="currentPage() * pageSize()"
+      (pageChange)="onPageChange($event)"
+      (searchChange)="onSearchChange($event)"
     >
       <ng-template #actions let-item>
         <p-button
@@ -113,12 +123,14 @@ type ReportDisplay = Omit<ReportResponseDto, 'createdById' | 'modifiedById' | 'l
     />
   `
 })
-export class ManageReports implements OnInit {
+export class ManageReports implements OnInit, OnDestroy {
 
-  reports: ReportDisplay[] = [];
-  filtered = signal<ReportDisplay[]>([]);
-
+  reports = signal<ReportDisplay[]>([]);
+  totalRecords = signal<number>(0);
+  currentPage = signal<number>(0);
+  pageSize = signal<number>(10);
   statusFilter = signal<string>('ALL');
+  private destroy$ = new Subject<void>();
 
   statusFilterOptions: StatusOption[] = [
     { label: 'All', value: 'ALL' },
@@ -144,46 +156,101 @@ export class ManageReports implements OnInit {
   ];
 
   constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private reportService: ReportService,
     private messageService: MessageService
   ) {}
 
   ngOnInit() {
-    this.reportService.getAllReports(0, 100).subscribe({
-      next: (page: PageReportResponseDto) => {
-        this.reports = (page.content || []).map(item => ({
-          ...item,
-          userId: item.createdById,
-          createdAt: item.createdAt ? new Date(item.createdAt).toLocaleString('pt-PT') : '',
-          reasonLabel: this.formatReason(item.reason),
-          targetTypeLabel: this.formatTargetType(item.targetType),
-          lastModifiedAt: item.lastModifiedAt ? new Date(item.lastModifiedAt).toLocaleString('pt-PT') : ''
-        }));
-        this.applyFilter();
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const page = params['page'] ? parseInt(params['page']) : 0;
+        const size = params['size'] ? parseInt(params['size']) : 10;
+        const status = params['status'] || 'ALL';
+
+        this.currentPage.set(page);
+        this.pageSize.set(size);
+        this.statusFilter.set(status);
+
+        this.loadReports(page, size);
+      });
+  }
+
+  loadReports(page: number = 0, size: number = 10, sortField?: string, sortOrder?: number): void {
+    const sort = SortUtils.buildSortString(sortField, sortOrder);
+
+    this.reportService.getAllReports(page, size, sort)
+      .pipe(take(1))
+      .subscribe({
+        next: (pageData: PageReportResponseDto) => {
+          const content = pageData.content || [];
+          const formatted = content.map(item => ({
+            ...item,
+            userId: item.createdById,
+            createdAt: DateUtils.formatShortDate(item.createdAt, 'pt-PT'),
+            reasonLabel: this.formatReason(item.reason),
+            targetTypeLabel: this.formatTargetType(item.targetType),
+            lastModifiedAt: DateUtils.formatShortDate(item.lastModifiedAt, 'pt-PT')
+          }));
+
+          // Apply status filter client-side
+          const statusFilterValue = this.statusFilter();
+          const filteredData = statusFilterValue === 'ALL'
+            ? formatted
+            : formatted.filter(r => r.status === statusFilterValue);
+
+          this.reports.set(filteredData);
+          // Update totalRecords based on filtered data when using client-side filter
+          this.totalRecords.set(statusFilterValue === 'ALL' ? (pageData.totalElements || 0) : filteredData.length);
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to load reports.'
+          });
+          console.error('Error loading reports:', err);
+        }
+      });
+  }
+
+  onPageChange(event: { first: number; rows: number; page: number; sortField?: string; sortOrder?: number }): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: event.page,
+        size: event.rows
       },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to load reports.'
-        });
-        console.error('Error loading reports:', err);
-      }
+      queryParamsHandling: 'merge'
     });
+
+    // Reload with sort if provided
+    if (event.sortField || event.sortOrder) {
+      this.loadReports(event.page, event.rows, event.sortField, event.sortOrder);
+    }
+  }
+
+  onSearchChange(searchValue: string): void {
+    if (searchValue.length > 0) {
+      // Carregar TODOS os dados para pesquisa
+      this.loadReports(0, 10000);
+    } else {
+      // Voltar para paginação normal
+      this.loadReports(this.currentPage(), this.pageSize());
+    }
   }
 
   filterByStatus(status: string) {
-    this.statusFilter.set(status);
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    const s = this.statusFilter();
-    if (s === 'ALL') {
-      this.filtered.set(this.reports);
-    } else {
-      this.filtered.set(this.reports.filter(r => r.status === s));
-    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        status,
+        page: 0
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   view(item: ReportDisplay) {
@@ -194,43 +261,34 @@ export class ManageReports implements OnInit {
   updateStatus(item: ReportDisplay, newStatus: ReportResponseDto.StatusEnum) {
     if (!item.id) return;
 
-    this.reportService.updateStatus(item.id, newStatus).subscribe({
-      next: (updated) => {
-        const index = this.reports.findIndex(r => r.id === item.id);
-        if (index !== -1) {
-          this.reports[index] = {
-            ...updated,
-            userId: updated.createdById,
-            createdAt: updated.createdAt ? new Date(updated.createdAt).toLocaleString('pt-PT') : '',
-            reasonLabel: this.formatReason(updated.reason),
-            targetTypeLabel: this.formatTargetType(updated.targetType),
-            lastModifiedAt: updated.lastModifiedAt ? new Date(updated.lastModifiedAt).toLocaleString('pt-PT') : ''
+    this.reportService.updateStatus(item.id, newStatus)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.loadReports(this.currentPage(), this.pageSize());
+
+          const statusLabels: Record<ReportResponseDto.StatusEnum, string> = {
+            [ReportResponseDto.StatusEnum.Pending]: 'Pending',
+            [ReportResponseDto.StatusEnum.UnderReview]: 'Under Review',
+            [ReportResponseDto.StatusEnum.Resolved]: 'Resolved',
+            [ReportResponseDto.StatusEnum.Rejected]: 'Rejected'
           };
-          this.applyFilter();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            detail: `Report marked as ${statusLabels[newStatus]}.`
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to update report status.'
+          });
+          console.error('Error updating status:', err);
         }
-
-        const statusLabels: Record<ReportResponseDto.StatusEnum, string> = {
-          [ReportResponseDto.StatusEnum.Pending]: 'Pending',
-          [ReportResponseDto.StatusEnum.UnderReview]: 'Under Review',
-          [ReportResponseDto.StatusEnum.Resolved]: 'Resolved',
-          [ReportResponseDto.StatusEnum.Rejected]: 'Rejected'
-        };
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          detail: `Report marked as ${statusLabels[newStatus]}.`
-        });
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to update report status.'
-        });
-        console.error('Error updating status:', err);
-      }
-    });
+      });
   }
 
   exportCsv() {
@@ -262,6 +320,11 @@ export class ManageReports implements OnInit {
       'PROPOSAL': 'Proposal'
     };
     return typeLabels[targetType] || targetType;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   protected readonly ReportResponseDto = ReportResponseDto;

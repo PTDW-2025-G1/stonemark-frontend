@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
@@ -11,9 +11,11 @@ import { ManualDecisionRequest } from '@api/model/manual-decision-request';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';
 import { StatusFilterComponent } from '../../../components/status-filter/status-filter.component';
-import { BaseFilterTableComponent } from '../../../shared/base-filter-table.component';
-import { firstValueFrom } from 'rxjs';
-import {PageProposalModeratorViewDto} from '@api/model/page-proposal-moderator-view-dto';
+import { Subject, takeUntil, take } from 'rxjs';
+import { ProposalModeratorListDto } from '@api/model/proposal-moderator-list-dto';
+import type { StatusFilterValue } from '../../../components/status-filter/status-filter.component';
+import { DateUtils } from '@shared/utils/date.utils';
+import { SortUtils } from '../../../utils/sort.utils';
 
 @Component({
   selector: 'app-content-proposals',
@@ -41,9 +43,15 @@ import {PageProposalModeratorViewDto} from '@api/model/page-proposal-moderator-v
       (statusChange)="filterByStatus($event)" />
     <app-table
       #table
-      [data]="filteredItems()"
+      [data]="proposals()"
       [columns]="columns"
-      [globalFilterFields]="['monumentName', 'status', 'submissionSource']"
+      [globalFilterFields]="['monumentName', 'submittedAt']"
+      [lazy]="true"
+      [totalRecords]="totalRecords()"
+      [rows]="pageSize()"
+      [first]="currentPage() * pageSize()"
+      (pageChange)="onPageChange($event)"
+      (searchChange)="onSearchChange($event)"
       (rowClick)="viewDetails($event)">
       <ng-template #actions let-item>
         <p-button
@@ -69,11 +77,15 @@ import {PageProposalModeratorViewDto} from '@api/model/page-proposal-moderator-v
   `,
   providers: [MessageService, ConfirmationService]
 })
-export class ContentProposals
-  extends BaseFilterTableComponent<ProposalModeratorViewDto>
-  implements OnInit
-{
+export class ContentProposals implements OnInit, OnDestroy {
   @ViewChild('table') tableComp!: AppTableComponent;
+
+  proposals = signal<ProposalModeratorListDto[]>([]);
+  totalRecords = signal<number>(0);
+  currentPage = signal<number>(0);
+  pageSize = signal<number>(10);
+  statusFilter = signal<StatusFilterValue>('ALL');
+  private destroy$ = new Subject<void>();
 
   statusOptions = [
     { label: 'All', value: 'ALL' },
@@ -97,29 +109,91 @@ export class ContentProposals
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private moderationService: MarkOccurrenceProposalModerationService
-  ) {
-    super();
+  ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const page = params['page'] ? parseInt(params['page']) : 0;
+        const size = params['size'] ? parseInt(params['size']) : 10;
+        const status = params['status'] || 'ALL';
+
+        this.currentPage.set(page);
+        this.pageSize.set(size);
+        this.statusFilter.set(status as StatusFilterValue);
+
+        this.loadProposals(page, size, status);
+      });
   }
 
-  async ngOnInit(): Promise<void> {
-    try {
-      await this.initData();
-    } catch (error) {
-      console.error('Error loading proposals:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to load proposals.'
+  loadProposals(page: number = 0, size: number = 10, statusFilter: string = 'ALL', sortField?: string, sortOrder?: number): void {
+    const statusArray = statusFilter !== 'ALL' ? [statusFilter] : undefined;
+    const sort = SortUtils.buildSortString(sortField, sortOrder);
+
+    this.moderationService.getAllProposals(page, size, statusArray, sort)
+      .pipe(take(1))
+      .subscribe({
+        next: (pageData) => {
+          const content = pageData.content || [];
+          const formatted = content.map(item => ({
+            ...item,
+            submittedAt: DateUtils.formatShortDate(item.submittedAt, 'pt-PT')
+          }));
+
+          this.proposals.set(formatted);
+          this.totalRecords.set(pageData.totalElements || 0);
+        },
+        error: (error) => {
+          console.error('Error loading proposals:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to load proposals.'
+          });
+        }
       });
+  }
+
+  onPageChange(event: { first: number; rows: number; page: number; sortField?: string; sortOrder?: number }): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: event.page,
+        size: event.rows
+      },
+      queryParamsHandling: 'merge'
+    });
+
+    // Reload with sort if provided
+    if (event.sortField || event.sortOrder) {
+      this.loadProposals(event.page, event.rows, this.statusFilter(), event.sortField, event.sortOrder);
     }
   }
 
-  async loadData(): Promise<ProposalModeratorViewDto[]> {
-    const page = await firstValueFrom(this.moderationService.getAllProposals());
-    return page.content || [];
+  onSearchChange(searchValue: string): void {
+    if (searchValue.length > 0) {
+      // Carregar TODOS os dados para pesquisa
+      this.loadProposals(0, 10000, this.statusFilter());
+    } else {
+      // Voltar para paginação normal
+      this.loadProposals(this.currentPage(), this.pageSize(), this.statusFilter());
+    }
+  }
+
+  filterByStatus(status: StatusFilterValue): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        status,
+        page: 0 // Reset to first page when filtering
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   viewDetails(item: ProposalModeratorViewDto) {
@@ -152,16 +226,27 @@ export class ContentProposals
         notes: undefined
       };
 
-      await firstValueFrom(this.moderationService.createManualDecision(item.id, request));
+      this.moderationService.createManualDecision(item.id, request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.loadProposals(this.currentPage(), this.pageSize(), this.statusFilter());
 
-      // Reload data to get updated status
-      await this.initData();
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: `The proposal has been ${outcome === 'ACCEPT' ? 'accepted' : 'rejected'}.`
-      });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: `The proposal has been ${outcome === 'ACCEPT' ? 'accepted' : 'rejected'}.`
+            });
+          },
+          error: (error) => {
+            console.error('Error creating manual decision:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to update proposal status.'
+            });
+          }
+        });
     } catch (error) {
       console.error('Error creating manual decision:', error);
       this.messageService.add({
@@ -174,5 +259,10 @@ export class ContentProposals
 
   exportCSV() {
     this.tableComp?.exportCSV();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

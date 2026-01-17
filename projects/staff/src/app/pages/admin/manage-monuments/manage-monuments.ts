@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { Toast } from 'primeng/toast';
@@ -8,10 +8,12 @@ import { AppToolbarComponent } from '../../../components/toolbar/toolbar.compone
 import { AppTableComponent } from '../../../components/table/table.component';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import {Router} from '@angular/router';
-import {take} from 'rxjs';
+import {Router, ActivatedRoute} from '@angular/router';
+import {take, Subject, takeUntil} from 'rxjs';
 import { ProgressBar } from 'primeng/progressbar';
 import { BlockUI } from 'primeng/blockui';
+import { DateUtils } from '@shared/utils/date.utils';
+import { SortUtils } from '../../../utils/sort.utils';
 
 @Component({
   selector: 'app-manage-monuments',
@@ -44,7 +46,17 @@ import { BlockUI } from 'primeng/blockui';
         (onClick)="createMonument()"></p-button>
     </div>
 
-    <app-table #table [data]="monuments()" [columns]="cols" [globalFilterFields]="['id', 'name', 'protectionTitle', 'latitude', 'longitude', 'createdAt', 'lastModifiedAt']">
+    <app-table
+      #table
+      [data]="monuments()"
+      [columns]="cols"
+      [globalFilterFields]="['name', 'createdAt', 'lastModifiedAt']"
+      [lazy]="true"
+      [totalRecords]="totalRecords()"
+      [rows]="pageSize()"
+      [first]="currentPage() * pageSize()"
+      (pageChange)="onPageChange($event)"
+      (searchChange)="onSearchChange($event)">
       <ng-template #actions let-monument>
         <p-button
           label="Edit"
@@ -63,9 +75,13 @@ import { BlockUI } from 'primeng/blockui';
   `,
   providers: [MessageService, MonumentService, ConfirmationService]
 })
-export class ManageMonuments implements OnInit {
+export class ManageMonuments implements OnInit, OnDestroy {
   monuments = signal<MonumentResponseDto[]>([]);
+  totalRecords = signal<number>(0);
+  currentPage = signal<number>(0);
+  pageSize = signal<number>(10);
   isImporting = signal<boolean>(false);
+  private destroy$ = new Subject<void>();
   @ViewChild('table') tableComp!: AppTableComponent;
 
   cols = [
@@ -82,24 +98,39 @@ export class ManageMonuments implements OnInit {
     private monumentService: MonumentService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.loadMonuments();
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const page = params['page'] ? parseInt(params['page']) : 0;
+        const size = params['size'] ? parseInt(params['size']) : 10;
+
+        this.currentPage.set(page);
+        this.pageSize.set(size);
+
+        this.loadMonuments(page, size);
+      });
   }
 
-  loadMonuments(): void {
-    this.monumentService.getDetailedMonuments()
+  loadMonuments(page: number = 0, size: number = 10, sortField?: string, sortOrder?: number): void {
+    const sort = SortUtils.buildSortString(sortField, sortOrder);
+
+    this.monumentService.getDetailedMonuments(page, size, sort)
       .pipe(take(1))
       .subscribe({
-        next: (data) => {
-          const formatted = data.map(item => ({
+        next: (pageData) => {
+          const content = pageData.content || [];
+          const formatted = content.map(item => ({
             ...item,
-            createdAt: item.createdAt ? new Date(item.createdAt).toLocaleString('pt-PT') : '',
-            lastModifiedAt: item.lastModifiedAt ? new Date(item.lastModifiedAt).toLocaleString('pt-PT') : ''
+            createdAt: DateUtils.formatShortDate(item.createdAt, 'pt-PT'),
+            lastModifiedAt: DateUtils.formatShortDate(item.lastModifiedAt, 'pt-PT')
           }));
           this.monuments.set(formatted);
+          this.totalRecords.set(pageData.totalElements || 0);
         },
         error: () => {
           this.messageService.add({
@@ -113,6 +144,32 @@ export class ManageMonuments implements OnInit {
 
   createMonument(){
     this.router.navigate(['/admin/monuments/create']);
+  }
+
+  onPageChange(event: { first: number; rows: number; page: number; sortField?: string; sortOrder?: number }): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: event.page,
+        size: event.rows
+      },
+      queryParamsHandling: 'merge'
+    });
+
+    // Reload with sort if provided
+    if (event.sortField || event.sortOrder) {
+      this.loadMonuments(event.page, event.rows, event.sortField, event.sortOrder);
+    }
+  }
+
+  onSearchChange(searchValue: string): void {
+    if (searchValue.length > 0) {
+      // Carregar TODOS os dados para pesquisa
+      this.loadMonuments(0, 10000);
+    } else {
+      // Voltar para paginação normal
+      this.loadMonuments(this.currentPage(), this.pageSize());
+    }
   }
 
   editMonument(monument: MonumentResponseDto) {
@@ -145,7 +202,7 @@ export class ManageMonuments implements OnInit {
                 summary: 'Success',
                 detail: 'Monument deleted successfully'
               });
-              this.loadMonuments();
+              this.loadMonuments(this.currentPage(), this.pageSize());
             },
             error: () => {
               this.messageService.add({
@@ -183,7 +240,7 @@ export class ManageMonuments implements OnInit {
                   summary: 'Success',
                   detail: `${monuments.length} monuments imported successfully`
                 });
-                this.loadMonuments();
+                this.loadMonuments(this.currentPage(), this.pageSize());
               },
               error: (error) => {
                 this.isImporting.set(false);
@@ -221,5 +278,10 @@ export class ManageMonuments implements OnInit {
 
   exportCSV() {
     this.tableComp?.exportCSV();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

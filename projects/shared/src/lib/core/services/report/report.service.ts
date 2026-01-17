@@ -17,10 +17,14 @@ export class ReportService {
     return this.http.post<ReportResponseDto>(this.baseUrl, report);
   }
 
-  getAllReports(page: number = 0, size: number = 10): Observable<PageReportResponseDto> {
-    const params = new HttpParams()
+  getAllReports(page: number = 0, size: number = 10, sort?: string): Observable<PageReportResponseDto> {
+    let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
 
     return this.http.get<PageReportResponseDto>(this.baseUrl, { params });
   }

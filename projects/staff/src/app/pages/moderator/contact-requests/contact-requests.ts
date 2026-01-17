@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -14,6 +15,9 @@ import { StatusFilterContactComponent, ContactStatusFilterValue }
 import { ContactService } from '@core/services/contact/contact.service';
 import { ContactRequest } from '@api/model/contact-request';
 import {Tooltip} from 'primeng/tooltip';
+import { Subject, takeUntil, take } from 'rxjs';
+import { DateUtils } from '@shared/utils/date.utils';
+import { SortUtils } from '../../../utils/sort.utils';
 
 @Component({
   selector: 'app-contact-requests',
@@ -45,9 +49,15 @@ import {Tooltip} from 'primeng/tooltip';
 
     <app-table
       #table
-      [data]="filtered()"
+      [data]="requests()"
       [columns]="cols"
-      [globalFilterFields]="['name', 'email', 'subject', 'status']"
+      [globalFilterFields]="['name', 'createdAt']"
+      [lazy]="true"
+      [totalRecords]="totalRecords()"
+      [rows]="pageSize()"
+      [first]="currentPage() * pageSize()"
+      (pageChange)="onPageChange($event)"
+      (searchChange)="onSearchChange($event)"
     >
       <ng-template #actions let-item>
         <p-button
@@ -103,12 +113,14 @@ import {Tooltip} from 'primeng/tooltip';
     />
   `
 })
-export class ContactRequests implements OnInit {
+export class ContactRequests implements OnInit, OnDestroy {
 
-  requests: ContactRequest[] = [];
-  filtered = signal<ContactRequest[]>([]);
-
+  requests = signal<ContactRequest[]>([]);
+  totalRecords = signal<number>(0);
+  currentPage = signal<number>(0);
+  pageSize = signal<number>(10);
   statusFilter = signal<ContactStatusFilterValue>('ALL');
+  private destroy$ = new Subject<void>();
 
   @ViewChild('table') tableComp!: AppTableComponent;
 
@@ -117,7 +129,6 @@ export class ContactRequests implements OnInit {
 
   cols = [
     { field: 'name', header: 'Name' },
-    { field: 'name', header: 'Name' },
     { field: 'email', header: 'Email' },
     { field: 'subject', header: 'Subject' },
     { field: 'status', header: 'Status', type: 'status' },
@@ -125,43 +136,97 @@ export class ContactRequests implements OnInit {
   ];
 
   constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private contactService: ContactService,
     private messageService: MessageService
   ) {}
 
   ngOnInit() {
-    this.contactService.getAll().subscribe({
-      next: (data) => {
-        this.requests = data.map(item => ({
-          ...item,
-          createdAt: item.createdAt ? new Date(item.createdAt).toLocaleString('pt-PT') : ''
-        }));
-        this.applyFilter();
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const page = params['page'] ? parseInt(params['page']) : 0;
+        const size = params['size'] ? parseInt(params['size']) : 10;
+        const status = params['status'] || 'ALL';
+
+        this.currentPage.set(page);
+        this.pageSize.set(size);
+        this.statusFilter.set(status as ContactStatusFilterValue);
+
+        this.loadRequests(page, size);
+      });
+  }
+
+  loadRequests(page: number = 0, size: number = 10, sortField?: string, sortOrder?: number): void {
+    const sort = SortUtils.buildSortString(sortField, sortOrder);
+
+    this.contactService.getAll(page, size, sort)
+      .pipe(take(1))
+      .subscribe({
+        next: (pageData) => {
+          const content = pageData.content || [];
+          const formatted = content.map(item => ({
+            ...item,
+            createdAt: DateUtils.formatShortDate(item.createdAt, 'pt-PT')
+          }));
+
+          // Apply status filter client-side
+          const statusFilterValue = this.statusFilter();
+          const filteredData = statusFilterValue === 'ALL'
+            ? formatted
+            : formatted.filter(r => r.status === statusFilterValue);
+
+          this.requests.set(filteredData);
+          // Update totalRecords based on filtered data when using client-side filter
+          this.totalRecords.set(statusFilterValue === 'ALL' ? (pageData.totalElements || 0) : filteredData.length);
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to load contact requests.'
+          });
+          console.error('Error loading contact requests:', err);
+        }
+      });
+  }
+
+  onPageChange(event: { first: number; rows: number; page: number; sortField?: string; sortOrder?: number }): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: event.page,
+        size: event.rows
       },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to load contact requests.'
-        });
-        console.error('Error loading contact requests:', err);
-      }
+      queryParamsHandling: 'merge'
     });
+
+    // Reload with sort if provided
+    if (event.sortField || event.sortOrder) {
+      this.loadRequests(event.page, event.rows, event.sortField, event.sortOrder);
+    }
+  }
+
+  onSearchChange(searchValue: string): void {
+    if (searchValue.length > 0) {
+      // Carregar TODOS os dados para pesquisa
+      this.loadRequests(0, 10000);
+    } else {
+      // Voltar para paginação normal
+      this.loadRequests(this.currentPage(), this.pageSize());
+    }
   }
 
   filterByStatus(status: ContactStatusFilterValue) {
-    this.statusFilter.set(status);
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    const s = this.statusFilter();
-
-    if (s === 'ALL') {
-      this.filtered.set(this.requests);
-    } else {
-      this.filtered.set(this.requests.filter(r => r.status === s));
-    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        status,
+        page: 0 // Reset to first page when filtering
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   view(item: ContactRequest) {
@@ -172,44 +237,44 @@ export class ContactRequests implements OnInit {
   updateStatus(item: ContactRequest, newStatus: ContactRequest.StatusEnum) {
     if (!item.id) return;
 
-    this.contactService.updateStatus(item.id, newStatus).subscribe({
-      next: (updated) => {
-        const index = this.requests.findIndex(r => r.id === item.id);
-        if (index !== -1) {
-          this.requests[index] = {
-            ...updated,
-            createdAt: updated.createdAt ? new Date(updated.createdAt).toLocaleString('pt-PT') : ''
+    this.contactService.updateStatus(item.id, newStatus)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.loadRequests(this.currentPage(), this.pageSize());
+
+          const statusLabels: Record<ContactRequest.StatusEnum, string> = {
+            [ContactRequest.StatusEnum.Pending]: 'Pending',
+            [ContactRequest.StatusEnum.InReview]: 'In Review',
+            [ContactRequest.StatusEnum.Resolved]: 'Resolved',
+            [ContactRequest.StatusEnum.Archived]: 'Archived'
           };
-          this.applyFilter();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            detail: `Request marked as ${statusLabels[newStatus]}.`
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to update request status.'
+          });
+          console.error('Error updating status:', err);
         }
-
-        const statusLabels: Record<ContactRequest.StatusEnum, string> = {
-          [ContactRequest.StatusEnum.Pending]: 'Pending',
-          [ContactRequest.StatusEnum.InReview]: 'In Review',
-          [ContactRequest.StatusEnum.Resolved]: 'Resolved',
-          [ContactRequest.StatusEnum.Archived]: 'Archived'
-        };
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          detail: `Request marked as ${statusLabels[newStatus]}.`
-        });
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to update request status.'
-        });
-        console.error('Error updating status:', err);
-      }
-    });
+      });
   }
 
   exportCsv() {
     if (this.tableComp) {
       this.tableComp.exportCSV();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

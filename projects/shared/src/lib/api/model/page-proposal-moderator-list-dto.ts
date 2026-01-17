@@ -13,8 +13,8 @@ import { ProposalModeratorListDto } from './proposal-moderator-list-dto';
 
 
 export interface PageProposalModeratorListDto { 
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     size?: number;
     content?: Array<ProposalModeratorListDto>;
     number?: number;

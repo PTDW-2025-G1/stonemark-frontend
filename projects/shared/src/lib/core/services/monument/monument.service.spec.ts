@@ -4,6 +4,8 @@ import { MonumentService } from './monument.service';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { PageMonumentDto } from '@api/model/page-monument-dto';
+import { PageMonumentResponseDto } from '@api/model/page-monument-response-dto';
+import { HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 
 describe('MonumentService', () => {
@@ -31,21 +33,19 @@ describe('MonumentService', () => {
   it('should create a new monument', async () => {
     const payload: MonumentRequestDto = {
       name: 'Torre de Belém',
-      city: 'Lisboa',
       latitude: 38.6916,
       longitude: -9.2160,
       description: 'Torre histórica',
-      address: 'Av. Brasília',
+      street: 'Av. Brasília',
     };
 
     const mockCreated: MonumentResponseDto = {
       id: 1,
       name: 'Torre de Belém',
-      city: 'Lisboa',
       latitude: 38.6916,
       longitude: -9.2160,
       description: 'Torre histórica',
-      address: 'Av. Brasília',
+      street: 'Av. Brasília',
       createdAt: '2024-01-01T10:00:00Z',
     };
 
@@ -60,14 +60,14 @@ describe('MonumentService', () => {
   it('should update a monument', async () => {
     const payload: MonumentRequestDto = {
       name: 'Torre de Belém Atualizada',
-      city: 'Lisboa',
+      latitude: 38.6916,
+      longitude: -9.2160,
       description: 'Torre histórica atualizada',
     };
 
     const mockUpdated: MonumentResponseDto = {
       id: 1,
       name: 'Torre de Belém Atualizada',
-      city: 'Lisboa',
       description: 'Torre histórica atualizada',
       lastModifiedAt: '2024-01-02T10:00:00Z',
     };
@@ -91,25 +91,32 @@ describe('MonumentService', () => {
 
   it('should fetch all monuments', async () => {
     const mockMonuments: MonumentResponseDto[] = [
-      { id: 1, name: 'Torre de Belém', city: 'Lisboa' },
-      { id: 2, name: 'Mosteiro dos Jerónimos', city: 'Lisboa' },
+      { id: 1, name: 'Torre de Belém', protectionTitle: 'Monumento Nacional' },
+      { id: 2, name: 'Mosteiro dos Jerónimos', protectionTitle: 'Monumento Nacional' },
     ];
 
-    const mockPage: PageMonumentDto = {
+    const mockPage: PageMonumentResponseDto = {
       content: mockMonuments,
+      totalElements: 2,
+      totalPages: 1,
     };
 
     (httpMock.get as any).mockReturnValue(of(mockPage));
 
-    const result = await firstValueFrom(service.getDetailedMonuments());
+    const result = await firstValueFrom(service.getDetailedMonuments(0, 10));
 
-    expect(result).toEqual(mockMonuments);
-    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/details?size=10000`);
+    expect(result).toEqual(mockPage);
+    expect(httpMock.get).toHaveBeenCalledWith(
+      `${baseUrl}/details`,
+      expect.objectContaining({
+        params: expect.any(HttpParams)
+      })
+    );
   });
 
   it('should fetch paginated monuments', async () => {
     const mockPage: PageMonumentDto = {
-      content: [{ id: 1, name: 'Torre de Belém', city: 'Lisboa' }],
+      content: [{ id: 1, name: 'Torre de Belém', protectionTitle: 'Monumento Nacional' }],
       totalElements: 1,
       totalPages: 1,
     };
@@ -129,7 +136,7 @@ describe('MonumentService', () => {
 
   it('should search monuments', async () => {
     const mockPage: PageMonumentDto = {
-      content: [{ id: 1, name: 'Torre de Belém', city: 'Lisboa' }],
+      content: [{ id: 1, name: 'Torre de Belém', protectionTitle: 'Monumento Nacional' }],
     };
 
     (httpMock.get as any).mockReturnValue(of(mockPage));
@@ -149,7 +156,7 @@ describe('MonumentService', () => {
 
   it('should filter monuments by city', async () => {
     const mockPage: PageMonumentDto = {
-      content: [{ id: 1, name: 'Torre de Belém', city: 'Lisboa' }],
+      content: [{ id: 1, name: 'Torre de Belém', protectionTitle: 'Monumento Nacional' }],
     };
 
     (httpMock.get as any).mockReturnValue(of(mockPage));
@@ -166,8 +173,8 @@ describe('MonumentService', () => {
 
   it('should fetch latest monuments', async () => {
     const mockMonuments: MonumentResponseDto[] = [
-      { id: 1, name: 'Torre de Belém', city: 'Lisboa' },
-      { id: 2, name: 'Mosteiro dos Jerónimos', city: 'Lisboa' },
+      { id: 1, name: 'Torre de Belém', protectionTitle: 'Monumento Nacional' },
+      { id: 2, name: 'Mosteiro dos Jerónimos', protectionTitle: 'Monumento Nacional' },
     ];
 
     (httpMock.get as any).mockReturnValue(of(mockMonuments));
@@ -182,8 +189,8 @@ describe('MonumentService', () => {
     const mockMonument: MonumentResponseDto = {
       id: 1,
       name: 'Torre de Belém',
-      city: 'Lisboa',
       description: 'Torre histórica',
+      protectionTitle: 'Monumento Nacional',
       createdAt: '2024-01-01T10:00:00Z',
     };
 
@@ -198,7 +205,7 @@ describe('MonumentService', () => {
   it('should import monuments from Overpass', async () => {
     const geoJson = '{"type":"FeatureCollection","features":[]}';
     const mockMonuments: MonumentResponseDto[] = [
-      { id: 1, name: 'Imported Monument', city: 'Porto' },
+      { id: 1, name: 'Imported Monument', protectionTitle: 'Monumento Importado' },
     ];
 
     (httpMock.post as any).mockReturnValue(of(mockMonuments));

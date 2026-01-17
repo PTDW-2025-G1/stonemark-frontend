@@ -23,19 +23,19 @@ export interface Geometry {
     valid?: boolean;
     dimension?: number;
     simple?: boolean;
-    interiorPoint?: Point;
-    boundary?: Geometry;
-    centroid?: Point;
-    rectangle?: boolean;
-    geometryType?: string;
-    numGeometries?: number;
-    precisionModel?: PrecisionModel;
-    numPoints?: number;
-    coordinates?: Array<Coordinate>;
-    coordinate?: Coordinate;
     boundaryDimension?: number;
     envelopeInternal?: Envelope;
     area?: number;
     srid?: number;
+    precisionModel?: PrecisionModel;
+    numPoints?: number;
+    geometryType?: string;
+    numGeometries?: number;
+    coordinate?: Coordinate;
+    interiorPoint?: Point;
+    centroid?: Point;
+    boundary?: Geometry;
+    coordinates?: Array<Coordinate>;
+    rectangle?: boolean;
 }
 

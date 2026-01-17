@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { of, throwError } from 'rxjs';
+import { of, throwError, BehaviorSubject } from 'rxjs';
 import { ContactRequests } from './contact-requests';
 import {ContactRequest} from '@api/model/contact-request';
+import { PageContactRequest } from '@api/model/page-contact-request';
 
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -13,6 +14,9 @@ describe('ContactRequests Component', () => {
   let component: ContactRequests;
   let contactService: any;
   let messageService: any;
+  let router: any;
+  let route: any;
+  let queryParams$: BehaviorSubject<any>;
 
   const mockRequests = [
     {
@@ -35,9 +39,19 @@ describe('ContactRequests Component', () => {
     }
   ];
 
+  const mockPageResponse: PageContactRequest = {
+    content: mockRequests,
+    totalElements: 2,
+    totalPages: 1,
+    size: 10,
+    number: 0
+  };
+
   beforeEach(() => {
+    queryParams$ = new BehaviorSubject({ page: '0', size: '10', status: 'ALL' });
+
     contactService = {
-      getAll: vi.fn(),
+      getAll: vi.fn().mockReturnValue(of(mockPageResponse)),
       updateStatus: vi.fn(),
     };
 
@@ -45,26 +59,39 @@ describe('ContactRequests Component', () => {
       add: vi.fn(),
     };
 
-    component = new ContactRequests(contactService, messageService);
+    router = {
+      navigate: vi.fn().mockReturnValue(Promise.resolve(true)),
+    };
+
+    route = {
+      queryParams: queryParams$.asObservable(),
+    };
+
+    component = new ContactRequests(router, route, contactService, messageService);
   });
 
 
-  it('should load requests on init', () => {
-    contactService.getAll.mockReturnValue(of(mockRequests));
-
+  it('should load requests on init', async () => {
     component.ngOnInit();
 
-    expect(component.requests.length).toBe(2);
-    expect(component.filtered().length).toBe(2);
+    // Aguardar carregamento assíncrono
+    await new Promise(resolve => setTimeout(resolve, 100));
 
-    // Date formatting applied
-    expect(component.requests[0].createdAt).toContain('2024');
+    expect(contactService.getAll).toHaveBeenCalledWith(0, 10, undefined);
+    expect(component.requests().length).toBe(2);
+    expect(component.totalRecords()).toBe(2);
+
+    // Date formatting applied (short date)
+    expect(component.requests()[0].createdAt).toContain('2024');
   });
 
-  it('should show error toast if loading fails', () => {
-    contactService.getAll.mockReturnValue(throwError(() => new Error()));
+  it('should show error toast if loading fails', async () => {
+    contactService.getAll.mockReturnValue(throwError(() => new Error('Load failed')));
 
     component.ngOnInit();
+
+    // Aguardar carregamento assíncrono
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     expect(messageService.add).toHaveBeenCalledWith(
       expect.objectContaining({ severity: 'error' })
@@ -73,12 +100,17 @@ describe('ContactRequests Component', () => {
 
 
   it('should filter by status', () => {
-    component.requests = mockRequests;
-
     component.filterByStatus('RESOLVED');
 
-    expect(component.filtered().length).toBe(1);
-    expect(component.filtered()[0].status).toBe('RESOLVED');
+    expect(router.navigate).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: expect.objectContaining({
+          status: 'RESOLVED',
+          page: 0
+        })
+      })
+    );
   });
 
 
@@ -91,25 +123,31 @@ describe('ContactRequests Component', () => {
     expect(component.current).toEqual(item);
   });
 
-  it('should update status successfully', () => {
-    const updated = { ...mockRequests[0], status: 'RESOLVED' };
+  it('should update status successfully', async () => {
+    const updated = { ...mockRequests[0], status: ContactRequest.StatusEnum.Resolved };
 
-    component.requests = [...mockRequests];
     contactService.updateStatus.mockReturnValue(of(updated));
 
-    component.updateStatus(mockRequests[0], 'RESOLVED');
+    component.updateStatus(mockRequests[0], ContactRequest.StatusEnum.Resolved);
 
-    expect(component.requests[0].status).toBe('RESOLVED');
+    // Aguardar processamento assíncrono
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(contactService.updateStatus).toHaveBeenCalledWith(1, ContactRequest.StatusEnum.Resolved);
     expect(messageService.add).toHaveBeenCalledWith(
       expect.objectContaining({ severity: 'success' })
     );
+    // Verifica se loadRequests foi chamado para recarregar os dados
+    expect(contactService.getAll).toHaveBeenCalled();
   });
 
-  it('should show error toast on update failure', () => {
-    component.requests = [...mockRequests];
+  it('should show error toast on update failure', async () => {
     contactService.updateStatus.mockReturnValue(throwError(() => new Error()));
 
-    component.updateStatus(mockRequests[0], 'RESOLVED');
+    component.updateStatus(mockRequests[0], ContactRequest.StatusEnum.Resolved);
+
+    // Aguardar processamento assíncrono
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     expect(messageService.add).toHaveBeenCalledWith(
       expect.objectContaining({ severity: 'error' })

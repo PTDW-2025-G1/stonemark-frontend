@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
@@ -10,7 +10,10 @@ import { AppTableComponent } from '../../../components/table/table.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { AppDialogComponent } from '../../../components/dialog/dialog.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil, take } from 'rxjs';
+import { DateUtils } from '@shared/utils/date.utils';
+import { SortUtils } from '../../../utils/sort.utils';
 
 @Component({
   selector: 'app-manage-users',
@@ -39,13 +42,13 @@ import { Router } from '@angular/router';
       #table
       [data]="users()"
       [columns]="cols"
-      [globalFilterFields]="[
-        'id',
-        'firstName',
-        'lastName',
-        'username',
-        'role'
-      ]"
+      [globalFilterFields]="['firstName', 'lastName', 'createdAt']"
+      [lazy]="true"
+      [totalRecords]="totalRecords()"
+      [rows]="pageSize()"
+      [first]="currentPage() * pageSize()"
+      (pageChange)="onPageChange($event)"
+      (searchChange)="onSearchChange($event)"
     >
       <ng-template #actions let-user>
         <p-button icon="pi pi-eye" class="mr-2" (click)="viewUser(user)"></p-button>
@@ -73,8 +76,13 @@ import { Router } from '@angular/router';
   `,
   providers: [MessageService]
 })
-export class ManageUsers implements OnInit {
+export class ManageUsers implements OnInit, OnDestroy {
   users = signal<any[]>([]);
+  totalRecords = signal<number>(0);
+  currentPage = signal<number>(0);
+  pageSize = signal<number>(10);
+  private destroy$ = new Subject<void>();
+
   @ViewChild('table') tableComp!: AppTableComponent;
 
   detailsDialogVisible = false;
@@ -92,11 +100,22 @@ export class ManageUsers implements OnInit {
   constructor(
     private userManagementService: UserManagementService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.loadUsers();
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const page = params['page'] ? parseInt(params['page']) : 0;
+        const size = params['size'] ? parseInt(params['size']) : 10;
+
+        this.currentPage.set(page);
+        this.pageSize.set(size);
+
+        this.loadUsers(page, size);
+      });
   }
 
   viewUser(user: UserDto) {
@@ -108,31 +127,66 @@ export class ManageUsers implements OnInit {
     this.router.navigate(['/admin/users/edit', user.id]);
   }
 
-  loadUsers() {
-    this.userManagementService.getAll(0, 100).subscribe({
-      next: (page) => {
-        const formattedUsers = (page.content || []).map(user => {
-          return {
-            ...user,
-            createdAt: user.createdAt
-              ? new Date(user.createdAt).toLocaleString('pt-PT')
-              : ''
-          };
-        });
+  loadUsers(page: number = 0, size: number = 10, sortField?: string, sortOrder?: number) {
+    const sort = SortUtils.buildSortString(sortField, sortOrder);
 
-        this.users.set(formattedUsers);
+    this.userManagementService.getAll(page, size, sort)
+      .pipe(take(1))
+      .subscribe({
+        next: (pageData) => {
+          const content = pageData.content || [];
+          const formattedUsers = content.map(user => {
+            return {
+              ...user,
+              createdAt: DateUtils.formatShortDate(user.createdAt, 'pt-PT')
+            };
+          });
+
+          this.users.set(formattedUsers);
+          this.totalRecords.set(pageData.totalElements || 0);
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'It was not possible to load the users'
+          });
+        }
+      });
+  }
+
+  onPageChange(event: { first: number; rows: number; page: number; sortField?: string; sortOrder?: number }): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: event.page,
+        size: event.rows
       },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'It was not possible to load the users'
-        });
-      }
+      queryParamsHandling: 'merge'
     });
+
+    // Reload with sort if provided
+    if (event.sortField || event.sortOrder) {
+      this.loadUsers(event.page, event.rows, event.sortField, event.sortOrder);
+    }
+  }
+
+  onSearchChange(searchValue: string): void {
+    if (searchValue.length > 0) {
+      // Carregar TODOS os dados para pesquisa
+      this.loadUsers(0, 10000);
+    } else {
+      // Voltar para paginação normal
+      this.loadUsers(this.currentPage(), this.pageSize());
+    }
   }
 
   exportCSV() {
     this.tableComp?.exportCSV();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

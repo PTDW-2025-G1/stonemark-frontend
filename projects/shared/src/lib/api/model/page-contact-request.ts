@@ -8,15 +8,15 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageable-object';
+import { ContactRequest } from './contact-request';
 import { SortObject } from './sort-object';
-import { MarkOccurrenceProposalListDto } from './mark-occurrence-proposal-list-dto';
 
 
-export interface PageMarkOccurrenceProposalListDto { 
+export interface PageContactRequest { 
     totalElements?: number;
     totalPages?: number;
     size?: number;
-    content?: Array<MarkOccurrenceProposalListDto>;
+    content?: Array<ContactRequest>;
     number?: number;
     sort?: SortObject;
     first?: boolean;

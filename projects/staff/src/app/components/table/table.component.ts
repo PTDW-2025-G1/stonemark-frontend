@@ -31,7 +31,11 @@ import { getSeverity } from '../../utils/severity.util';
                 [value]="data"
                 dataKey="id"
                 [paginator]="true"
-                [rows]="10"
+                [rows]="rows"
+                [lazy]="lazy && !hasGlobalFilter"
+                [totalRecords]="totalRecords"
+                [first]="first"
+                (onLazyLoad)="onLazyLoad($event)"
                 [columns]="columns"
                 [globalFilterFields]="globalFilterFields"
                 styleClass="modern-table"
@@ -74,14 +78,21 @@ export class AppTableComponent implements OnInit, OnDestroy {
     @Input() data: any[] = [];
     @Input() columns: { field: string; header: string; type?: string }[] = [];
     @Input() globalFilterFields: string[] = [];
+    @Input() lazy: boolean = false;
+    @Input() totalRecords: number = 0;
+    @Input() rows: number = 10;
+    @Input() first: number = 0;
     @ContentChild('actions') actions?: TemplateRef<any>;
 
     @ViewChild('dt') dt: any;
     @Output() export = new EventEmitter<void>();
     @Output() rowClick = new EventEmitter<any>();
+    @Output() pageChange = new EventEmitter<{ first: number; rows: number; page: number; sortField?: string; sortOrder?: number }>();
+    @Output() searchChange = new EventEmitter<string>();
 
     searchStyle: any = {};
     subscription!: Subscription;
+    hasGlobalFilter: boolean = false;
 
     constructor(
         public layoutService: LayoutService,
@@ -108,11 +119,36 @@ export class AppTableComponent implements OnInit, OnDestroy {
     }
 
     onGlobalFilter(table: any, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+        const value = (event.target as HTMLInputElement).value;
+        const hadFilter = this.hasGlobalFilter;
+        this.hasGlobalFilter = value.length > 0;
+
+        // Emitir evento para componentes pai carregarem todos os dados
+        this.searchChange.emit(value);
+
+        if (value.length === 0 && hadFilter) {
+            // Limpar o filtro e resetar a tabela
+            table.clear();
+            table.filterGlobal('', 'contains');
+        } else {
+            table.filterGlobal(value, 'contains');
+        }
     }
 
     onRowClick(item: any) {
         this.rowClick.emit(item);
+    }
+
+    onLazyLoad(event: any) {
+        if (this.lazy) {
+            this.pageChange.emit({
+                first: event.first,
+                rows: event.rows,
+                page: event.first / event.rows,
+                sortField: event.sortField,
+                sortOrder: event.sortOrder
+            });
+        }
     }
 
     protected readonly getSeverity = getSeverity;

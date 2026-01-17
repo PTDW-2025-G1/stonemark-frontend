@@ -3,6 +3,8 @@ import { of, firstValueFrom } from 'rxjs';
 import { ContactService } from './contact.service';
 import { ContactRequestDto } from '@api/model/contact-request-dto';
 import { ContactRequest } from '@api/model/contact-request';
+import { PageContactRequest } from '@api/model/page-contact-request';
+import { HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 
 describe('ContactService', () => {
@@ -33,12 +35,23 @@ describe('ContactService', () => {
       { id: 2, name: 'Jane Doe', message: 'Hello', status: 'REVIEWED' } as any,
     ];
 
-    (httpMock.get as any).mockReturnValue(of(mockContacts));
+    const mockPage: PageContactRequest = {
+      content: mockContacts,
+      totalElements: 2,
+      totalPages: 1,
+    };
 
-    const result = await firstValueFrom(service.getAll());
+    (httpMock.get as any).mockReturnValue(of(mockPage));
 
-    expect(result).toEqual(mockContacts);
-    expect(httpMock.get).toHaveBeenCalledWith(baseUrl);
+    const result = await firstValueFrom(service.getAll(0, 10));
+
+    expect(result).toEqual(mockPage);
+    expect(httpMock.get).toHaveBeenCalledWith(
+      baseUrl,
+      expect.objectContaining({
+        params: expect.any(HttpParams)
+      })
+    );
   });
 
   it('should fetch a contact by ID', async () => {

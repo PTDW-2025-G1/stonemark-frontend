@@ -22,23 +22,23 @@ export interface Point {
     empty?: boolean;
     dimension?: number;
     simple?: boolean;
-    boundary?: any | null;
-    geometryType?: string;
-    numPoints?: number;
-    coordinate?: Coordinate;
     boundaryDimension?: number;
+    numPoints?: number;
+    geometryType?: string;
+    coordinate?: Coordinate;
+    boundary?: any | null;
     x?: number;
     y?: number;
     coordinateSequence?: CoordinateSequence;
     length?: number;
     valid?: boolean;
-    interiorPoint?: any | null;
-    centroid?: any | null;
-    rectangle?: boolean;
-    numGeometries?: number;
-    precisionModel?: PrecisionModel;
     envelopeInternal?: Envelope;
     area?: number;
     srid?: number;
+    precisionModel?: PrecisionModel;
+    numGeometries?: number;
+    interiorPoint?: any | null;
+    centroid?: any | null;
+    rectangle?: boolean;
 }
 

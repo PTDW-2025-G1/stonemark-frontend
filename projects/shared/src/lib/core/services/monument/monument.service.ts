@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { PageMonumentDto } from '@api/model/page-monument-dto';
 import { environment } from '@env/environment';
 import {MonumentResponseDto} from '@api/model/monument-response-dto';
 import {MonumentRequestDto} from '@api/model/monument-request-dto';
@@ -10,6 +9,7 @@ import {MonumentListDto} from '@api/model/monument-list-dto';
 import {PageMonumentListDto} from '@api/model/page-monument-list-dto';
 import {MonumentMapDto} from '@api/model/monument-map-dto';
 import {PageMonumentMapDto} from '@api/model/page-monument-map-dto';
+import {PageMonumentResponseDto} from '@api/model/page-monument-response-dto';
 
 @Injectable({ providedIn: 'root' })
 export class MonumentService {
@@ -37,10 +37,16 @@ export class MonumentService {
     return this.http.get<PageMonumentListDto>(`${this.baseUrl}`, { params });
   }
 
-  getDetailedMonuments(): Observable<MonumentResponseDto[]> {
-    return this.http.get<PageMonumentDto>(`${this.baseUrl}/details?size=10000`).pipe(
-      map(page => page.content || [])
-    );
+  getDetailedMonuments(page: number = 0, size: number = 10, sort?: string): Observable<PageMonumentResponseDto> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<PageMonumentResponseDto>(`${this.baseUrl}/details`, { params });
   }
 
   getAllForMap(): Observable<MonumentMapDto[]> {

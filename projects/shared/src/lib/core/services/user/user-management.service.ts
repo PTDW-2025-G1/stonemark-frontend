@@ -12,10 +12,14 @@ export class UserManagementService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(page: number = 0, size: number = 20): Observable<PageUserDto> {
-    return this.http.get<PageUserDto>(this.baseUrl, {
-      params: { page: page.toString(), size: size.toString() }
-    });
+  getAll(page: number = 0, size: number = 20, sort?: string): Observable<PageUserDto> {
+    let params: any = { page: page.toString(), size: size.toString() };
+
+    if (sort) {
+      params.sort = sort;
+    }
+
+    return this.http.get<PageUserDto>(this.baseUrl, { params });
   }
 
   getById(id: number): Observable<UserDto> {

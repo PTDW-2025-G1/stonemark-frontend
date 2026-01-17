@@ -91,7 +91,7 @@ describe('PartnerSectionComponent', () => {
   it('should render partner logo image', () => {
     const image = fixture.debugElement.query(By.css('img'));
     expect(image).toBeTruthy();
-    expect(image.nativeElement.getAttribute('src')).toBe('assets/images/aprupp.png');
+    expect(image.nativeElement.getAttribute('src')).toBe('assets/images/aprupp.webp');
   });
 
   it('should render pillars grid', () => {

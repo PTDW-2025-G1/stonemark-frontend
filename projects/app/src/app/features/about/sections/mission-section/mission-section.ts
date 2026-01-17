@@ -31,7 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
         <div class="border-l-0 md:border-l border-border bg-surface-muted relative min-h-[400px]">
           <img
-            src="assets/images/about_1.png"
+            src="assets/images/about_1.webp"
             alt="Stone carving detail"
             class="w-full h-full object-cover absolute inset-0 mix-blend-multiply grayscale hover:grayscale-0 transition-all duration-500"
           />

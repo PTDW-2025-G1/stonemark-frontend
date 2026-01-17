@@ -48,7 +48,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 
           <a routerLink="/search/monuments" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
             <div class="absolute inset-0">
-              <img src="/assets/images/home_featured_monuments.jpg"
+              <img src="/assets/images/home_featured_monuments.webp"
                    alt="Monument"
                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500"></div>
@@ -66,7 +66,7 @@ import {TranslatePipe} from '@ngx-translate/core';
           </a>
           <a routerLink="/search/marks" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
             <div class="absolute inset-0">
-              <img src="/assets/images/home_featured_marks.jpg"
+              <img src="/assets/images/home_featured_marks.webp"
                    alt="Mason Marks"
                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500"></div>
@@ -84,7 +84,7 @@ import {TranslatePipe} from '@ngx-translate/core';
           </a>
           <a routerLink="/contribute" class="group relative h-64 rounded-3xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center justify-center text-center p-6">
             <div class="absolute inset-0">
-              <img src="/assets/images/home_featured_contribute.jpg"
+              <img src="/assets/images/home_featured_contribute.webp"
                    alt="Contribute"
                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div class="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500"></div>

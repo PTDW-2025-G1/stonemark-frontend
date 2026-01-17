@@ -73,7 +73,7 @@ import {TranslateModule} from '@ngx-translate/core';
       <!-- Desktop Image Showcase -->
       <div class="hidden md:block relative group mb-32">
         <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-border/50 bg-surface-alt">
-          <img src="assets/images/captureMark.png" [alt]="'contribute-how-it-works.desktop_img_alt' | translate" class="w-full h-auto" />
+          <img src="assets/images/captureMark.webp" [alt]="'contribute-how-it-works.desktop_img_alt' | translate" class="w-full h-auto" />
         </div>
         <div class="text-center mt-6">
           <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted">
@@ -85,13 +85,13 @@ import {TranslateModule} from '@ngx-translate/core';
       <!-- Mobile Image Showcase -->
       <div class="md:hidden -mx-6 space-y-0 overflow-hidden mb-24">
         <div class="w-[115%] -ml-[7.5%]">
-          <img src="assets/images/captureMarkMobile1.png" [alt]="'contribute-how-it-works.mobile_img1_alt' | translate" class="w-full h-auto block" />
+          <img src="assets/images/captureMarkMobile1.webp" [alt]="'contribute-how-it-works.mobile_img1_alt' | translate" class="w-full h-auto block" />
         </div>
         <div class="w-[115%] -ml-[7.5%]">
-          <img src="assets/images/captureMarkMobile2.png" [alt]="'contribute-how-it-works.mobile_img2_alt' | translate" class="w-full h-auto block" />
+          <img src="assets/images/captureMarkMobile2.webp" [alt]="'contribute-how-it-works.mobile_img2_alt' | translate" class="w-full h-auto block" />
         </div>
         <div class="w-[115%] -ml-[7.5%]">
-          <img src="assets/images/captureMarkMobile3.png" [alt]="'contribute-how-it-works.mobile_img3_alt' | translate" class="w-full h-auto block" />
+          <img src="assets/images/captureMarkMobile3.webp" [alt]="'contribute-how-it-works.mobile_img3_alt' | translate" class="w-full h-auto block" />
         </div>
 
         <div class="text-center mt-8 px-6">

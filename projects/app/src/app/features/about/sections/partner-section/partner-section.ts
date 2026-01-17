@@ -40,7 +40,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
         <div class="order-1 md:order-2 aspect-square bg-surface border border-border relative flex items-center justify-center p-12">
           <img
-            src="assets/images/aprupp.png"
+            src="assets/images/aprupp.webp"
             alt="APRUPP logo"
             class="w-full h-full object-contain"
           />

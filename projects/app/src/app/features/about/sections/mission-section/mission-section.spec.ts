@@ -70,7 +70,7 @@ describe('MissionSectionComponent', () => {
 
   it('should render image with correct source', () => {
     const image = fixture.debugElement.query(By.css('img'));
-    expect(image.nativeElement.getAttribute('src')).toBe('assets/images/about_1.png');
+    expect(image.nativeElement.getAttribute('src')).toBe('assets/images/about_1.webp');
   });
 
   it('should apply visual effects to image', () => {

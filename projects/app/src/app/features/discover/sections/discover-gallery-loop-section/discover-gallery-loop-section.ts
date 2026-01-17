@@ -8,9 +8,9 @@ import {TranslateModule} from '@ngx-translate/core';
 })
 export class DiscoverGalleryLoopSectionComponent {
   images = [
-    '/assets/images/galleryMarkImage1.jpg',
-    '/assets/images/galleryMarkImage2.jpg',
-    '/assets/images/galleryMarkImage3.jpg',
-    '/assets/images/galleryMarkImage4.jpg'
+    '/assets/images/galleryMarkImage1.webp',
+    '/assets/images/galleryMarkImage2.webp',
+    '/assets/images/galleryMarkImage3.webp',
+    '/assets/images/galleryMarkImage4.webp'
   ];
 }

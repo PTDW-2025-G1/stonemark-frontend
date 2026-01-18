@@ -49,6 +49,11 @@
     "p1": "O projeto combina <strong>património cultural</strong>, <strong>recolha de dados no terreno</strong> e <strong>tecnologia digital</strong> para preservar os vestígios invisíveis da tradição arquitetónica.",
     "p2": "Cada marca de canteiro conta uma história — do artesão que a esculpiu, da guilda a que pertenceu e do monumento que ajudou a construir. O Stone Mark dá vida a estas histórias."
   },
+  "video": {
+    "label": "Vê o Projeto em Ação",
+    "title": "Descobre o Stone Mark",
+    "desc": "Um olhar imersivo sobre como estamos a preservar o património artesanal para as gerações futuras através da tecnologia digital."
+  },
   "cta": {
     "title": "Junta-te a Nós na Preservação da História",
     "desc": "Faz parte de um movimento global para documentar e proteger as tradições artesanais que moldaram o nosso mundo",

@@ -159,7 +159,21 @@ describe('MarkOccurrenceService', () => {
     const result = await firstValueFrom(service.create(dto));
 
     expect(result).toBe(dto);
-    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, dto);
+    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, expect.any(FormData));
+  });
+
+  it('should create a mark occurrence with file', async () => {
+    const dto = {} as MarkOccurrenceDto;
+    const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
+    httpMock.post.mockReturnValue(of(dto));
+
+    const result = await firstValueFrom(service.create(dto, file));
+
+    expect(result).toBe(dto);
+    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, expect.any(FormData));
+
+    const formData = httpMock.post.mock.calls[0][1] as FormData;
+    expect(formData.get('file')).toBe(file);
   });
 
   it('should update a mark occurrence', async () => {
@@ -169,7 +183,21 @@ describe('MarkOccurrenceService', () => {
     const result = await firstValueFrom(service.update(10, dto));
 
     expect(result).toBe(dto);
-    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/10`, dto);
+    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/10`, expect.any(FormData));
+  });
+
+  it('should update a mark occurrence with file', async () => {
+    const dto = {} as MarkOccurrenceDto;
+    const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
+    httpMock.put.mockReturnValue(of(dto));
+
+    const result = await firstValueFrom(service.update(10, dto, file));
+
+    expect(result).toBe(dto);
+    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/10`, expect.any(FormData));
+
+    const formData = httpMock.put.mock.calls[0][1] as FormData;
+    expect(formData.get('file')).toBe(file);
   });
 
   it('should delete a mark occurrence', async () => {

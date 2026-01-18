@@ -49,6 +49,11 @@
     "p1": "The project combines <strong>cultural heritage</strong>, <strong>field data collection</strong>, and <strong>digital technology</strong> to preserve the invisible traces of architectural tradition.",
     "p2": "Every stonemason mark tells a story - of the craftsman who carved it, the guild they belonged to, and the monument they helped build. Stone Mark brings these stories to light."
   },
+  "video": {
+    "label": "See the Project in Action",
+    "title": "Discover Stone Mark",
+    "desc": "An immersive look at how we're preserving craftsmanship heritage for future generations through digital technology."
+  },
   "cta": {
     "title": "Join Us in Preserving History",
     "desc": "Be part of a global movement to document and protect the craft traditions that shaped our world",

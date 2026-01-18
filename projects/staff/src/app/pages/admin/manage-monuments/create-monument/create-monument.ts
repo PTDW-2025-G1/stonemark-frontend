@@ -44,8 +44,8 @@ export class CreateMonument {
     private router: Router
   ) {}
 
-  createMonument(monument: MonumentRequestDto): void {
-    this.monumentService.createMonument(monument)
+  createMonument(event: { monument: MonumentRequestDto, file?: File }): void {
+    this.monumentService.createMonument(event.monument, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

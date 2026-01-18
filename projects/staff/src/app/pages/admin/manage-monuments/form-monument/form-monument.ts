@@ -6,6 +6,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { DividerModule } from 'primeng/divider';
+import { FileUploadModule } from 'primeng/fileupload';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 
@@ -19,7 +20,8 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
     InputNumberModule,
     ButtonModule,
     TextareaModule,
-    DividerModule
+    DividerModule,
+    FileUploadModule
   ],
   template: `
     <form [formGroup]="monumentForm" (ngSubmit)="onSubmit()" class="monument-form">
@@ -128,6 +130,31 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
 
       <p-divider></p-divider>
 
+      <!-- Section: Media -->
+      <section class="form-section">
+        <h3 class="section-title">Media</h3>
+        <div class="field">
+          <label>Cover Image</label>
+          <p-fileUpload
+            mode="basic"
+            chooseLabel="Choose Image"
+            accept="image/*"
+            [maxFileSize]="10000000"
+            (onSelect)="onFileSelect($event)"
+            [auto]="true">
+          </p-fileUpload>
+          @if (selectedFile) {
+            <div class="selected-file">
+              <i class="pi pi-image"></i>
+              <span>{{ selectedFile.name }}</span>
+              <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger p-button-sm" (click)="clearFile()"></button>
+            </div>
+          }
+        </div>
+      </section>
+
+      <p-divider></p-divider>
+
       <!-- Actions -->
       <div class="form-actions">
         <button
@@ -218,6 +245,16 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
       font-size: 0.875rem;
     }
 
+    .selected-file {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: var(--surface-ground);
+      border-radius: 4px;
+    }
+
     ::ng-deep {
       .p-inputtext,
       .p-inputnumber-input {
@@ -234,11 +271,12 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
 })
 export class FormMonument implements OnInit {
   @Input() monument?: MonumentResponseDto;
-  @Output() save = new EventEmitter<MonumentRequestDto>();
+  @Output() save = new EventEmitter<{ monument: MonumentRequestDto, file?: File }>();
   @Output() cancel = new EventEmitter<void>();
 
   monumentForm!: FormGroup;
   loading = false;
+  selectedFile?: File;
 
   constructor(private fb: FormBuilder) {}
 
@@ -267,10 +305,23 @@ export class FormMonument implements OnInit {
     return this.monumentForm.get('name');
   }
 
+  onFileSelect(event: any): void {
+    if (event.files && event.files.length > 0) {
+      this.selectedFile = event.files[0];
+    }
+  }
+
+  clearFile(): void {
+    this.selectedFile = undefined;
+  }
+
   onSubmit(): void {
     if (this.monumentForm.valid) {
       this.loading = true;
-      this.save.emit(this.monumentForm.value);
+      this.save.emit({
+        monument: this.monumentForm.value,
+        file: this.selectedFile
+      });
     } else {
       this.markFormGroupTouched(this.monumentForm);
     }

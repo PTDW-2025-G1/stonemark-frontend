@@ -83,8 +83,8 @@ export class EditMonument implements OnInit {
       });
   }
 
-  updateMonument(monument: MonumentRequestDto): void {
-    this.monumentService.updateMonument(this.monumentId, monument)
+  updateMonument(event: { monument: MonumentRequestDto, file?: File }): void {
+    this.monumentService.updateMonument(this.monumentId, event.monument, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -109,4 +109,3 @@ export class EditMonument implements OnInit {
     this.router.navigate(['/admin/monuments']);
   }
 }
-

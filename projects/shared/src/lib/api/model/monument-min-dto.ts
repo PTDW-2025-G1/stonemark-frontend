@@ -7,13 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MonumentMinDto } from './monument-min-dto';
 
 
-export interface MarkOccurrenceListDto { 
+export interface MonumentMinDto { 
     id?: number;
-    coverId?: number;
-    monument?: MonumentMinDto;
-    publishedAt?: string;
+    name?: string;
 }
 

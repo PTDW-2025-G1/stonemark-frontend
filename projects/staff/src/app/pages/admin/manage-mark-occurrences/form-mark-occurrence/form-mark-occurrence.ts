@@ -12,6 +12,8 @@ import { MarkDto } from '@api/model/mark-dto';
 import { MonumentListDto } from '@api/model/monument-list-dto';
 import { environment } from '@env/environment';
 import { take } from 'rxjs';
+import { TooltipModule } from 'primeng/tooltip';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-form-mark-occurrence',
@@ -22,7 +24,8 @@ import { take } from 'rxjs';
     SelectModule,
     ButtonModule,
     DividerModule,
-    FileUploadModule
+    FileUploadModule,
+    TooltipModule
   ],
   providers: [MarkService, MonumentService],
   template: `
@@ -32,34 +35,51 @@ import { take } from 'rxjs';
 
         <div class="field">
           <label for="mark" class="required">Mark</label>
-          <p-select
-            id="mark"
-            [options]="marks"
-            formControlName="markId"
-            optionLabel="description"
-            optionValue="id"
-            [filter]="true"
-            filterBy="description"
-            [showClear]="true"
-            placeholder="Select a Mark"
-            styleClass="w-full">
-            <ng-template let-mark pTemplate="item">
-              <div class="flex align-items-center gap-2">
-                @if (mark.coverId) {
-                  <img [src]="getImageUrl(mark.coverId)" style="width: 100px; height: 100px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
-                }
-                <div>{{ mark.description }}</div>
-              </div>
-            </ng-template>
-            <ng-template let-mark pTemplate="selectedItem">
-              <div class="flex align-items-center gap-2" *ngIf="mark">
-                @if (mark.coverId) {
-                  <img [src]="getImageUrl(mark.coverId)" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
-                }
-                <div>{{ mark.description }}</div>
-              </div>
-            </ng-template>
-          </p-select>
+          <div class="flex gap-2">
+            <p-select
+              id="mark"
+              [options]="marks"
+              formControlName="markId"
+              optionLabel="description"
+              optionValue="id"
+              [filter]="true"
+              filterBy="description"
+              [showClear]="true"
+              placeholder="Select a Mark"
+              styleClass="w-full">
+              <ng-template let-mark pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  @if (mark.coverId) {
+                    <img [src]="getImageUrl(mark.coverId)" style="width: 100px; height: 100px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
+                  }
+                  <div>{{ mark.description }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-mark pTemplate="selectedItem">
+                <div class="flex align-items-center gap-2" *ngIf="mark">
+                  @if (mark.coverId) {
+                    <img [src]="getImageUrl(mark.coverId)" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
+                  }
+                  <div>{{ mark.description }}</div>
+                </div>
+              </ng-template>
+            </p-select>
+            <p-fileUpload
+              mode="basic"
+              chooseIcon="pi pi-camera"
+              accept="image/*"
+              [maxFileSize]="10000000"
+              [customUpload]="true"
+              (uploadHandler)="onSearchImageUpload($event)"
+              [auto]="true"
+              pTooltip="Search by Image"
+              tooltipPosition="top"
+              [disabled]="searching">
+            </p-fileUpload>
+          </div>
+          @if (searching) {
+            <small class="block mt-1">Searching for similar marks...</small>
+          }
           @if (markIdControl?.invalid && markIdControl?.touched) {
             <small class="p-error">Mark is required</small>
           }
@@ -90,12 +110,12 @@ import { take } from 'rxjs';
       <section class="form-section">
         <h3 class="section-title">Media</h3>
         <div class="field">
-          <label>Cover Image</label>
+          <label class="required">Cover Image</label>
           <p-fileUpload
             mode="basic"
             chooseLabel="Choose Image"
             accept="image/*"
-            [maxFileSize]="1000000"
+            [maxFileSize]="10000000"
             (onSelect)="onFileSelect($event)"
             [auto]="true">
           </p-fileUpload>
@@ -115,6 +135,9 @@ import { take } from 'rxjs';
                 style="max-width: 200px; width: 100%; height: auto; display: block; border-radius: 4px;" />
             </div>
           }
+          @if (imageError) {
+            <small class="p-error block mt-2">Cover image is required</small>
+          }
         </div>
       </section>
 
@@ -132,7 +155,7 @@ import { take } from 'rxjs';
         <button
           pButton
           type="submit"
-          [disabled]="form.invalid || loading"
+          [disabled]="loading"
           [loading]="loading">
           <i class="pi pi-check" style="margin-right: 0.5rem"></i>
           Save
@@ -218,11 +241,14 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   selectedFile?: File;
   marks: MarkDto[] = [];
   monuments: MonumentListDto[] = [];
+  searching = false;
+  imageError = false;
 
   constructor(
     private fb: FormBuilder,
     private markService: MarkService,
-    private monumentService: MonumentService
+    private monumentService: MonumentService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -257,7 +283,7 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
     if (this.markOccurrence && this.form) {
       this.form.patchValue({
         markId: this.markOccurrence.markId,
-        monumentId: this.markOccurrence.monument?.id // Assuming monument object is present or I need to check DTO structure
+        monumentId: this.markOccurrence.monumentId
       });
       // If markOccurrence has monumentId directly
        if ((this.markOccurrence as any).monumentId) {
@@ -277,6 +303,40 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   onFileSelect(event: any): void {
     if (event.files && event.files.length > 0) {
       this.selectedFile = event.files[0];
+      this.imageError = false;
+    }
+  }
+
+  onSearchImageUpload(event: any): void {
+    if (event.files && event.files.length > 0) {
+      const file = event.files[0];
+      this.searching = true;
+      this.markService.searchByImage(file).pipe(take(1)).subscribe({
+        next: (similarMarkIds: string[]) => {
+          this.searching = false;
+          if (similarMarkIds && similarMarkIds.length > 0) {
+             const bestMatchId = Number(similarMarkIds[0]);
+             const foundMark = this.marks.find(m => m.id === bestMatchId);
+
+             if (foundMark) {
+               this.form.patchValue({ markId: bestMatchId });
+               this.messageService.add({ severity: 'success', summary: 'Found', detail: 'Similar mark found and selected' });
+             } else {
+               this.markService.getMark(bestMatchId).pipe(take(1)).subscribe(mark => {
+                 this.marks = [mark, ...this.marks];
+                 this.form.patchValue({ markId: bestMatchId });
+                 this.messageService.add({ severity: 'success', summary: 'Found', detail: 'Similar mark found and selected' });
+               });
+             }
+          } else {
+            this.messageService.add({ severity: 'info', summary: 'No Match', detail: 'No similar marks found' });
+          }
+        },
+        error: () => {
+          this.searching = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error searching for marks' });
+        }
+      });
     }
   }
 
@@ -285,7 +345,15 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if (this.form.valid) {
+    const hasImage = !!this.selectedFile || !!this.markOccurrence?.coverId;
+
+    if (!hasImage) {
+      this.imageError = true;
+    } else {
+      this.imageError = false;
+    }
+
+    if (this.form.valid && hasImage) {
       this.loading = true;
       this.save.emit({
         dto: this.form.value,

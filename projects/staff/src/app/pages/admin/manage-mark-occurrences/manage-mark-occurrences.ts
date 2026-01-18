@@ -59,8 +59,6 @@ import { environment } from '@env/environment';
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 4rem">ID</th>
-            <th style="width: 10rem">Image</th>
-            <th>Mark</th>
             <th>Monument</th>
             <th>Published At</th>
             <th>Actions</th>
@@ -71,12 +69,14 @@ import { environment } from '@env/environment';
           <tr>
             <td>{{occurrence.id}}</td>
             <td>
-              @if (occurrence.coverId) {
-                <img [src]="getImageUrl(occurrence.coverId)" alt="Cover" width="100" class="shadow-4" />
+              @if (occurrence.monument) {
+                <a [routerLink]="['/admin/monuments/edit', occurrence.monument.id]" class="text-primary hover:underline cursor-pointer font-medium">
+                  {{occurrence.monument.name}}
+                </a>
+              } @else {
+                N/A
               }
             </td>
-            <td>{{occurrence.mark?.title || 'N/A'}}</td>
-            <td>{{occurrence.monument?.name || 'N/A'}}</td>
             <td>{{occurrence.publishedAt | date:'short'}}</td>
             <td>
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editOccurrence(occurrence)"></button>
@@ -102,6 +102,10 @@ import { environment } from '@env/environment';
       background: var(--surface-card);
       border-radius: 8px;
     }
+
+    a {
+      text-decoration: none;
+    }
   `]
 })
 export class ManageMarkOccurrences implements OnInit {
@@ -122,25 +126,17 @@ export class ManageMarkOccurrences implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.markId = params['markId'] ? Number(params['markId']) : undefined;
-      this.loadOccurrences(0, this.rows);
+      if (!this.markId) {
+        this.router.navigate(['/admin/marks']);
+      } else {
+        this.loadOccurrences(0, this.rows);
+      }
     });
   }
 
   loadOccurrences(page: number, size: number) {
     if (this.markId) {
       this.service.getByMarkId(this.markId, page, size)
-        .pipe(take(1))
-        .subscribe({
-          next: (response) => {
-            this.occurrences = response.content || [];
-            this.totalRecords = response.totalElements || 0;
-          },
-          error: () => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load occurrences' });
-          }
-        });
-    } else {
-      this.service.getAll(page, size)
         .pipe(take(1))
         .subscribe({
           next: (response) => {

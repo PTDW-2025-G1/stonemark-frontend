@@ -47,7 +47,7 @@ import { environment } from '@env/environment';
             mode="basic"
             chooseLabel="Choose Image"
             accept="image/*"
-            [maxFileSize]="1000000"
+            [maxFileSize]="10000000"
             (onSelect)="onFileSelect($event)"
             [auto]="true">
           </p-fileUpload>

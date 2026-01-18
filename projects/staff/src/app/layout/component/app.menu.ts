@@ -32,6 +32,7 @@ export class AppMenu implements OnInit {
           { label: 'Manage Reports', icon: 'pi pi-flag', routerLink: ['/moderator/manage-reports'] },
           { label: 'Manage Users', icon: 'pi pi-fw pi-users', routerLink: ['/admin/users'] },
           { label: 'Manage Monuments', icon: 'pi pi-fw pi-map', routerLink: ['/admin/monuments'] },
+          { label: 'Manage Marks', icon: 'pi pi-fw pi-bookmark', routerLink: ['/admin/marks'] },
           { label: 'Manage Divisions', icon: 'pi pi-fw pi-sitemap', routerLink: ['/admin/divisions'] },
           { label: 'My Profile', icon: 'pi pi-fw pi-user', url: environment.profileUrl + '/profile' },
           { label: 'Logout', icon: 'pi pi-fw pi-sign-out', routerLink: ['/logout'] }

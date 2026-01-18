@@ -19,6 +19,7 @@ export interface UserDto {
     tfaMethod?: UserDto.TfaMethodEnum;
     accountLocked?: boolean;
     enabled?: boolean;
+    photoId?: number;
 }
 export namespace UserDto {
     export const RoleEnum = {

@@ -43,15 +43,31 @@ export class MarkService {
     return this.http.get<MarkDto>(`${this.baseUrl}/${id}`);
   }
 
-  createMark(dto: MarkDto): Observable<MarkDto> {
-    return this.http.post<MarkDto>(this.baseUrl, dto);
+  createMark(dto: MarkDto, file?: File): Observable<MarkDto> {
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.post<MarkDto>(this.baseUrl, formData);
   }
 
-  updateMark(id: number, dto: MarkDto): Observable<MarkDto> {
-    return this.http.put<MarkDto>(`${this.baseUrl}/${id}`, dto);
+  updateMark(id: number, dto: MarkDto, file?: File): Observable<MarkDto> {
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.put<MarkDto>(`${this.baseUrl}/${id}`, formData);
   }
 
   deleteMark(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  uploadPhoto(id: number, file: File): Observable<MarkDto> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<MarkDto>(`${this.baseUrl}/${id}/photo`, formData);
   }
 }

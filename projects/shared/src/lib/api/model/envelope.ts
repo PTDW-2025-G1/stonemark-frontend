@@ -11,13 +11,13 @@
 
 export interface Envelope { 
     'null'?: boolean;
+    diameter?: number;
     width?: number;
     area?: number;
     height?: number;
-    maxY?: number;
-    minY?: number;
     minX?: number;
     maxX?: number;
-    diameter?: number;
+    minY?: number;
+    maxY?: number;
 }
 

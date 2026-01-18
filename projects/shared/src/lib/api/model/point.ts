@@ -20,25 +20,25 @@ export interface Point {
     userData?: any | null;
     coordinates?: Array<Coordinate>;
     empty?: boolean;
-    dimension?: number;
     simple?: boolean;
-    boundaryDimension?: number;
-    numPoints?: number;
     geometryType?: string;
     coordinate?: Coordinate;
+    numPoints?: number;
     boundary?: any | null;
+    boundaryDimension?: number;
     x?: number;
     y?: number;
     coordinateSequence?: CoordinateSequence;
+    dimension?: number;
     length?: number;
     valid?: boolean;
-    envelopeInternal?: Envelope;
-    area?: number;
     srid?: number;
-    precisionModel?: PrecisionModel;
     numGeometries?: number;
-    interiorPoint?: any | null;
-    centroid?: any | null;
+    precisionModel?: PrecisionModel;
     rectangle?: boolean;
+    area?: number;
+    centroid?: any | null;
+    interiorPoint?: any | null;
+    envelopeInternal?: Envelope;
 }
 

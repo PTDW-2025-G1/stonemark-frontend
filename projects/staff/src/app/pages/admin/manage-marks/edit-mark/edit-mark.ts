@@ -3,37 +3,35 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MonumentService } from '@core/services/monument/monument.service';
-import { MonumentRequestDto } from '@api/model/monument-request-dto';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
-import { FormMonument } from '../form-monument/form-monument';
+import { MarkService } from '@core/services/mark/mark.service';
+import { MarkDto } from '@api/model/mark-dto';
+import { FormMark } from '../form-mark/form-mark';
 import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
-
 import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-monument',
+  selector: 'app-edit-mark',
   standalone: true,
-  imports: [CommonModule, Toast, FormMonument, AppToolbarComponent],
-  providers: [MessageService, MonumentService],
+  imports: [CommonModule, Toast, FormMark, AppToolbarComponent],
+  providers: [MessageService, MarkService],
   template: `
     <app-toolbar
-      title="Edit Monument"
-      [subtitle]="monument ? monument.name : 'Loading...'"
+      title="Edit Mark"
+      [subtitle]="mark ? mark.description : 'Loading...'"
       [showBackButton]="true"
       (back)="goBack()"></app-toolbar>
     <p-toast />
-    @if (monument) {
+    @if (mark) {
       <div class="card">
-        <app-form-monument
-          [monument]="monument"
-          (save)="updateMonument($event)"
-          (cancel)="goBack()"></app-form-monument>
+        <app-form-mark
+          [mark]="mark"
+          (save)="updateMark($event)"
+          (cancel)="goBack()"></app-form-mark>
       </div>
     }
     @if (loading) {
       <div class="card">
-        <p>Loading monument...</p>
+        <p>Loading mark...</p>
       </div>
     }
   `,
@@ -46,36 +44,36 @@ import { take } from 'rxjs';
     }
   `]
 })
-export class EditMonument implements OnInit {
-  monument?: MonumentResponseDto;
+export class EditMark implements OnInit {
+  mark?: MarkDto;
   loading = true;
-  monumentId!: number;
+  markId!: number;
 
   constructor(
-    private monumentService: MonumentService,
+    private markService: MarkService,
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.monumentId = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadMonument();
+    this.markId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadMark();
   }
 
-  loadMonument() {
-    this.monumentService.getMonumentById(this.monumentId)
+  loadMark() {
+    this.markService.getMark(this.markId)
       .pipe(take(1))
       .subscribe({
-        next: (monument) => {
-          this.monument = monument;
+        next: (mark) => {
+          this.mark = mark;
           this.loading = false;
         },
         error: () => {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Error loading monument'
+            detail: 'Error loading mark'
           });
           this.loading = false;
           setTimeout(() => this.goBack(), 2000);
@@ -83,15 +81,15 @@ export class EditMonument implements OnInit {
       });
   }
 
-  updateMonument(event: { monument: MonumentRequestDto, file?: File }): void {
-    this.monumentService.updateMonument(this.monumentId, event.monument, event.file)
+  updateMark(event: { mark: MarkDto, file?: File }): void {
+    this.markService.updateMark(this.markId, event.mark, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Monument updated successfully'
+            detail: 'Mark updated successfully'
           });
           setTimeout(() => this.goBack(), 1500);
         },
@@ -99,13 +97,13 @@ export class EditMonument implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Error updating monument'
+            detail: 'Error updating mark'
           });
         }
       });
   }
 
   goBack() {
-    this.router.navigate(['/admin/monuments']);
+    this.router.navigate(['/admin/marks']);
   }
 }

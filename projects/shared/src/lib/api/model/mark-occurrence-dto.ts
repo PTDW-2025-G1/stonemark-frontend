@@ -8,14 +8,15 @@
  * Do not edit the class manually.
  */
 import { MarkDto } from './mark-dto';
-import { MonumentDto } from './monument-dto';
+import { MonumentMinDto } from './monument-min-dto';
 
 
 export interface MarkOccurrenceDto { 
     id?: number;
     markId?: number;
+    monumentId?: number;
     mark?: MarkDto;
-    monument?: MonumentDto;
+    monument?: MonumentMinDto;
     coverId?: number;
     authorId?: number;
     authorName?: string;

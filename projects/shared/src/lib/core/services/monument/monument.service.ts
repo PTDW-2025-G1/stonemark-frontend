@@ -18,16 +18,32 @@ export class MonumentService {
 
   constructor(private http: HttpClient) {}
 
-  createMonument(monument: MonumentRequestDto): Observable<MonumentResponseDto> {
-    return this.http.post<MonumentResponseDto>(this.baseUrl, monument);
+  createMonument(monument: MonumentRequestDto, file?: File): Observable<MonumentResponseDto> {
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(monument)], { type: 'application/json' }));
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.post<MonumentResponseDto>(this.baseUrl, formData);
   }
 
-  updateMonument(id: number, monument: MonumentRequestDto): Observable<MonumentResponseDto> {
-    return this.http.put<MonumentResponseDto>(`${this.baseUrl}/${id}`, monument);
+  updateMonument(id: number, monument: MonumentRequestDto, file?: File): Observable<MonumentResponseDto> {
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(monument)], { type: 'application/json' }));
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.put<MonumentResponseDto>(`${this.baseUrl}/${id}`, formData);
   }
 
   deleteMonument(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  uploadPhoto(id: number, file: File): Observable<MonumentResponseDto> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<MonumentResponseDto>(`${this.baseUrl}/${id}/photo`, formData);
   }
 
   getMonuments(page: number = 0, size: number = 9): Observable<PageMonumentListDto> {
@@ -65,6 +81,13 @@ export class MonumentService {
     return this.http.get<PageMonumentListDto>(`${this.baseUrl}/search`, { params });
   }
 
+  findByPolygon(geoJson: string, page: number = 0, size: number = 9): Observable<PageMonumentListDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.post<PageMonumentListDto>(`${this.baseUrl}/search/polygon`, geoJson, { params });
+  }
+
   filterByCity(city: string, page: number = 0, size: number = 9, sort: string = 'name,asc'): Observable<PageMonumentListDto> {
     const params = new HttpParams()
       .set('city', city)
@@ -89,6 +112,10 @@ export class MonumentService {
 
   getLatestMonuments(): Observable<MonumentListDto[]> {
     return this.http.get<MonumentListDto[]>(`${this.baseUrl}/latest`);
+  }
+
+  countMonuments(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count`);
   }
 
   getMonumentById(id: number): Observable<MonumentResponseDto> {

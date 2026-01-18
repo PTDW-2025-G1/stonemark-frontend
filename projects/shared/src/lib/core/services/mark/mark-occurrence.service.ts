@@ -6,7 +6,8 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
 import { MarkOccurrenceListDto } from '@api/model/mark-occurrence-list-dto';
 import { MarkOccurrenceMapDto } from '@api/model/mark-occurrence-map-dto';
-import {PageMarkOccurrenceListDto} from '@api/model/page-mark-occurrence-list-dto'
+import { PageMarkOccurrenceListDto } from '@api/model/page-mark-occurrence-list-dto';
+import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,12 @@ export class MarkOccurrenceService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(page: number = 0, size: number = 20): Observable<PageMarkOccurrenceListDto> {
+  getAll(page: number = 0, size: number = 20): Observable<PageMarkOccurrenceDto> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size);
 
-    return this.http.get<PageMarkOccurrenceListDto>(this.baseUrl, { params });
+    return this.http.get<PageMarkOccurrenceDto>(this.baseUrl, { params });
   }
 
   getById(id: number): Observable<MarkOccurrenceDetailedDto> {
@@ -75,16 +76,32 @@ export class MarkOccurrenceService {
     return this.http.get<number>(`${this.baseUrl}/count-monuments-by-mark/${markId}`);
   }
 
-  create(dto: MarkOccurrenceDto): Observable<MarkOccurrenceDto> {
-    return this.http.post<MarkOccurrenceDto>(this.baseUrl, dto);
+  create(dto: MarkOccurrenceDto, file?: File): Observable<MarkOccurrenceDto> {
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.post<MarkOccurrenceDto>(this.baseUrl, formData);
   }
 
-  update(id: number, dto: MarkOccurrenceDto): Observable<MarkOccurrenceDto> {
-    return this.http.put<MarkOccurrenceDto>(`${this.baseUrl}/${id}`, dto);
+  update(id: number, dto: MarkOccurrenceDto, file?: File): Observable<MarkOccurrenceDto> {
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.put<MarkOccurrenceDto>(`${this.baseUrl}/${id}`, formData);
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  uploadPhoto(id: number, file: File): Observable<MarkOccurrenceDto> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<MarkOccurrenceDto>(`${this.baseUrl}/${id}/photo`, formData);
   }
 
   getAvailableMarksByMonument(monumentId: number): Observable<any[]> {

@@ -26,6 +26,48 @@
 <div class="bg-gradient-to-br from-surface-alt to-surface rounded-2xl border-2 border-border p-6 sm:p-8 shadow-xl">
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
 
+    <!-- Photo Upload -->
+    <div class="mb-6">
+      <label class="block text-sm font-semibold text-text mb-2">
+        Profile Photo
+      </label>
+      <div class="flex items-center gap-4">
+        <div class="relative w-20 h-20 rounded-full overflow-hidden bg-surface-muted border-2 border-border">
+          @if (previewUrl) {
+             <img [src]="previewUrl" class="w-full h-full object-cover" alt="Profile Preview" />
+          } @else if (currentProfile.photoId) {
+             <img [src]="getImageUrl(currentProfile.photoId)" class="w-full h-full object-cover" alt="Current Profile" />
+          } @else {
+            <div class="w-full h-full flex items-center justify-center text-text-muted">
+              <i class="bi bi-person text-3xl"></i>
+            </div>
+          }
+        </div>
+        <div>
+          <input
+            type="file"
+            id="photoUpload"
+            class="hidden"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            #fileInput
+          />
+          <app-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            (click)="fileInput.click()"
+          >
+            <i class="bi bi-upload"></i>
+            Upload New Photo
+          </app-button>
+          <p class="text-xs text-text-muted mt-2">
+            Recommended: Square JPG, PNG. Max 5MB.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- First Name -->
     <div class="mb-6">
       <label for="firstName" class="block text-sm font-semibold text-text mb-2">

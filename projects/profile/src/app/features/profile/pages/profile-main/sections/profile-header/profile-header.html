@@ -13,10 +13,14 @@
           <!-- Avatar - Larger -->
           <div class="relative group flex-shrink-0">
             <div class="absolute -inset-1 bg-gradient-to-br from-primary to-accent rounded-2xl opacity-20 group-hover:opacity-30 blur transition-all duration-300"></div>
-            <div class="relative w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-              <span class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
-                {{ getInitials() }}
-              </span>
+            <div class="relative w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg overflow-hidden">
+              @if (user.photoId) {
+                <img [src]="getImageUrl(user.photoId)" class="w-full h-full object-cover" alt="Profile Photo" />
+              } @else {
+                <span class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
+                  {{ getInitials() }}
+                </span>
+              }
             </div>
           </div>
 

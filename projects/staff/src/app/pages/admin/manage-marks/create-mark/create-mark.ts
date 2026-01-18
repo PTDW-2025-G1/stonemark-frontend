@@ -3,29 +3,29 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MonumentService } from '@core/services/monument/monument.service';
-import { MonumentRequestDto } from '@api/model/monument-request-dto';
-import { FormMonument } from '../form-monument/form-monument';
-import { AppToolbarComponent} from '../../../../components/toolbar/toolbar.component';
-import {take} from 'rxjs';
+import { MarkService } from '@core/services/mark/mark.service';
+import { MarkDto } from '@api/model/mark-dto';
+import { FormMark } from '../form-mark/form-mark';
+import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
+import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-create-monument',
+  selector: 'app-create-mark',
   standalone: true,
-  imports: [CommonModule, Toast, FormMonument, AppToolbarComponent],
-  providers: [MessageService, MonumentService],
+  imports: [CommonModule, Toast, FormMark, AppToolbarComponent],
+  providers: [MessageService, MarkService],
   template: `
     <app-toolbar
-      title="Create Monument"
-      subtitle="Add a new monument"
+      title="Create Mark"
+      subtitle="Add a new mark"
       [showBackButton]="true"
       (back)="goBack()">
     </app-toolbar>
     <p-toast />
     <div class="card">
-      <app-form-monument
-        (save)="createMonument($event)"
-        (cancel)="goBack()"></app-form-monument>
+      <app-form-mark
+        (save)="createMark($event)"
+        (cancel)="goBack()"></app-form-mark>
     </div>
   `,
   styles: [`
@@ -37,22 +37,22 @@ import {take} from 'rxjs';
     }
   `]
 })
-export class CreateMonument {
+export class CreateMark {
   constructor(
-    private monumentService: MonumentService,
+    private markService: MarkService,
     private messageService: MessageService,
     private router: Router
   ) {}
 
-  createMonument(event: { monument: MonumentRequestDto, file?: File }): void {
-    this.monumentService.createMonument(event.monument, event.file)
+  createMark(event: { mark: MarkDto, file?: File }): void {
+    this.markService.createMark(event.mark, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Monument created successfully'
+            detail: 'Mark created successfully'
           });
           setTimeout(() => this.goBack(), 1500);
         },
@@ -60,13 +60,13 @@ export class CreateMonument {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Error creating monument'
+            detail: 'Error creating mark'
           });
         }
       });
   }
 
   goBack() {
-    this.router.navigate(['/admin/monuments']);
+    this.router.navigate(['/admin/marks']);
   }
 }

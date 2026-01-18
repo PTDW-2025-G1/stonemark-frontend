@@ -14,7 +14,5 @@ export interface MediaFileDto {
     filename?: string;
     originalFilename?: string;
     size?: number;
-    storagePath?: string;
-    uploadedAt?: string;
 }
 

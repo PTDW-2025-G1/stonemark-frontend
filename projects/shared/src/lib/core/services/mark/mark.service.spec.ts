@@ -102,7 +102,10 @@ describe('MarkService', () => {
     const result = await firstValueFrom(service.createMark(dto));
 
     expect(result).toEqual(dto);
-    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, dto);
+    expect(httpMock.post).toHaveBeenCalled();
+    const [url, body] = httpMock.post.mock.calls[0];
+    expect(url).toBe(baseUrl);
+    expect(body).toBeInstanceOf(FormData);
   });
 
   it('should update a mark', async () => {
@@ -113,7 +116,10 @@ describe('MarkService', () => {
     const result = await firstValueFrom(service.updateMark(5, dto));
 
     expect(result).toEqual(dto);
-    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/5`, dto);
+    expect(httpMock.put).toHaveBeenCalled();
+    const [url, body] = httpMock.put.mock.calls[0];
+    expect(url).toBe(`${baseUrl}/5`);
+    expect(body).toBeInstanceOf(FormData);
   });
 
   it('should delete a mark', async () => {
@@ -123,5 +129,20 @@ describe('MarkService', () => {
 
     expect(result).toBeUndefined();
     expect(httpMock.delete).toHaveBeenCalledWith(`${baseUrl}/3`);
+  });
+
+  it('should upload a photo', async () => {
+    const dto: MarkDto = { id: 1, title: 'Mark with Photo' } as MarkDto;
+    const file = new File([''], 'photo.jpg');
+
+    httpMock.post.mockReturnValue(of(dto));
+
+    const result = await firstValueFrom(service.uploadPhoto(1, file));
+
+    expect(result).toEqual(dto);
+    expect(httpMock.post).toHaveBeenCalled();
+    const [url, body] = httpMock.post.mock.calls[0];
+    expect(url).toBe(`${baseUrl}/1/photo`);
+    expect(body).toBeInstanceOf(FormData);
   });
 });

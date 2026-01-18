@@ -1,45 +1,30 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
-import { MonumentRequestDto } from '@api/model/monument-request-dto';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MarkDto } from '@api/model/mark-dto';
+import { environment } from '@env/environment';
 
 @Component({
-  selector: 'app-form-monument',
+  selector: 'app-form-mark',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
     InputTextModule,
-    InputNumberModule,
     ButtonModule,
     TextareaModule,
     DividerModule,
     FileUploadModule
   ],
   template: `
-    <form [formGroup]="monumentForm" (ngSubmit)="onSubmit()" class="monument-form">
-      <!-- Section: Basic Information -->
+    <form [formGroup]="markForm" (ngSubmit)="onSubmit()" class="mark-form">
       <section class="form-section">
-        <h3 class="section-title">Basic Information</h3>
-
-        <div class="field">
-          <label for="name" class="required">Name</label>
-          <input
-            pInputText
-            id="name"
-            formControlName="name"
-            placeholder="Monument name" />
-          @if (nameControl?.invalid && nameControl?.touched) {
-            <small class="p-error">Name is required</small>
-          }
-        </div>
+        <h3 class="section-title">Mark Information</h3>
 
         <div class="field">
           <label for="description">Description</label>
@@ -48,89 +33,12 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
             id="description"
             formControlName="description"
             rows="5"
-            placeholder="Describe the monument..."></textarea>
-        </div>
-
-        <div class="field">
-          <label for="protectionTitle">Protection Title</label>
-          <input
-            pInputText
-            id="protectionTitle"
-            formControlName="protectionTitle"
-            placeholder="E.g.: National Monument" />
-        </div>
-
-        <div class="field">
-          <label for="website">Website</label>
-          <input
-            pInputText
-            id="website"
-            formControlName="website"
-            type="url"
-            placeholder="https://..." />
+            placeholder="Describe the mark..."></textarea>
         </div>
       </section>
 
       <p-divider></p-divider>
 
-      <!-- Section: Location -->
-      <section class="form-section">
-        <h3 class="section-title">Location</h3>
-
-        <div class="field">
-          <label for="address">Address</label>
-          <input
-            pInputText
-            id="address"
-            formControlName="address"
-            placeholder="Street, number, etc." />
-        </div>
-
-        <div class="field">
-          <label for="city">City</label>
-          <input
-            pInputText
-            id="city"
-            formControlName="city"
-            placeholder="City name" />
-        </div>
-
-        <div class="coordinates-group">
-          <div class="field">
-            <label for="latitude">Latitude</label>
-            <p-inputNumber
-              id="latitude"
-              formControlName="latitude"
-              [minFractionDigits]="6"
-              [maxFractionDigits]="6"
-              [min]="-90"
-              [max]="90"
-              [showButtons]="true"
-              [step]="0.000001"
-              placeholder="E.g.: 40.416775">
-            </p-inputNumber>
-          </div>
-
-          <div class="field">
-            <label for="longitude">Longitude</label>
-            <p-inputNumber
-              id="longitude"
-              formControlName="longitude"
-              [minFractionDigits]="6"
-              [maxFractionDigits]="6"
-              [min]="-180"
-              [max]="180"
-              [showButtons]="true"
-              [step]="0.000001"
-              placeholder="E.g.: -8.650000">
-            </p-inputNumber>
-          </div>
-        </div>
-      </section>
-
-      <p-divider></p-divider>
-
-      <!-- Section: Media -->
       <section class="form-section">
         <h3 class="section-title">Media</h3>
         <div class="field">
@@ -150,12 +58,21 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
               <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger p-button-sm" (click)="clearFile()"></button>
             </div>
           }
+          @if (!selectedFile && mark?.coverId) {
+            <div class="current-image mt-2">
+              <p>Current Image:</p>
+              <img
+                [src]="getImageUrl(mark!.coverId!)"
+                alt="Current cover"
+                class="preview-image"
+                style="max-width: 200px; width: 100%; height: auto; display: block; border-radius: 4px;" />
+            </div>
+          }
         </div>
       </section>
 
       <p-divider></p-divider>
 
-      <!-- Actions -->
       <div class="form-actions">
         <button
           pButton
@@ -168,7 +85,7 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
         <button
           pButton
           type="submit"
-          [disabled]="monumentForm.invalid || loading"
+          [disabled]="markForm.invalid || loading"
           [loading]="loading">
           <i class="pi pi-check" style="margin-right: 0.5rem"></i>
           Save
@@ -177,7 +94,7 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
     </form>
   `,
   styles: `
-    .monument-form {
+    .mark-form {
       max-width: 800px;
       margin: 0 auto;
       padding: 1rem;
@@ -218,18 +135,6 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
       color: var(--red-500);
     }
 
-    .coordinates-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      .coordinates-group {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .form-actions {
       display: flex;
       gap: 1rem;
@@ -256,8 +161,7 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
     }
 
     ::ng-deep {
-      .p-inputtext,
-      .p-inputnumber-input {
+      .p-inputtext {
         width: 100%;
       }
 
@@ -269,12 +173,12 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
     }
   `
 })
-export class FormMonument implements OnInit {
-  @Input() monument?: MonumentResponseDto;
-  @Output() save = new EventEmitter<{ monument: MonumentRequestDto, file?: File }>();
+export class FormMark implements OnInit, OnChanges {
+  @Input() mark?: MarkDto;
+  @Output() save = new EventEmitter<{ mark: MarkDto, file?: File }>();
   @Output() cancel = new EventEmitter<void>();
 
-  monumentForm!: FormGroup;
+  markForm!: FormGroup;
   loading = false;
   selectedFile?: File;
 
@@ -282,27 +186,27 @@ export class FormMonument implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.updateForm();
+  }
 
-    if (this.monument) {
-      this.monumentForm.patchValue(this.monument);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['mark']) {
+      this.updateForm();
     }
   }
 
   private initForm(): void {
-    this.monumentForm = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      protectionTitle: [''],
-      website: [''],
-      latitude: [null],
-      longitude: [null],
-      address: [''],
-      city: ['']
+    this.markForm = this.fb.group({
+      description: ['']
     });
   }
 
-  get nameControl() {
-    return this.monumentForm.get('name');
+  private updateForm(): void {
+    if (this.mark && this.markForm) {
+      this.markForm.patchValue({
+        description: this.mark.description
+      });
+    }
   }
 
   onFileSelect(event: any): void {
@@ -316,19 +220,23 @@ export class FormMonument implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.monumentForm.valid) {
+    if (this.markForm.valid) {
       this.loading = true;
       this.save.emit({
-        monument: this.monumentForm.value,
+        mark: this.markForm.value,
         file: this.selectedFile
       });
     } else {
-      this.markFormGroupTouched(this.monumentForm);
+      this.markFormGroupTouched(this.markForm);
     }
   }
 
   onCancel(): void {
     this.cancel.emit();
+  }
+
+  getImageUrl(coverId: number): string {
+    return `${environment.apiUrl}/media/${coverId}`;
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

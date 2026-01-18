@@ -15,5 +15,6 @@
 export interface ProfileUpdateRequestDto { 
     firstName: string;
     lastName: string;
+    photoId?: number;
 }
 

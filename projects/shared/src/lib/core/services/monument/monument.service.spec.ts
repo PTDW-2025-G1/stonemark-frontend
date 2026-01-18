@@ -54,7 +54,10 @@ describe('MonumentService', () => {
     const result = await firstValueFrom(service.createMonument(payload));
 
     expect(result).toEqual(mockCreated);
-    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, payload);
+    expect(httpMock.post).toHaveBeenCalled();
+    const [url, body] = (httpMock.post as any).mock.calls[0];
+    expect(url).toBe(baseUrl);
+    expect(body).toBeInstanceOf(FormData);
   });
 
   it('should update a monument', async () => {
@@ -77,7 +80,10 @@ describe('MonumentService', () => {
     const result = await firstValueFrom(service.updateMonument(1, payload));
 
     expect(result).toEqual(mockUpdated);
-    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/1`, payload);
+    expect(httpMock.put).toHaveBeenCalled();
+    const [url, body] = (httpMock.put as any).mock.calls[0];
+    expect(url).toBe(`${baseUrl}/1`);
+    expect(body).toBeInstanceOf(FormData);
   });
 
   it('should delete a monument', async () => {
@@ -87,6 +93,25 @@ describe('MonumentService', () => {
 
     expect(result).toBeUndefined();
     expect(httpMock.delete).toHaveBeenCalledWith(`${baseUrl}/1`);
+  });
+
+  it('should upload a photo', async () => {
+    const mockUpdated: MonumentResponseDto = {
+      id: 1,
+      name: 'Torre de Belém',
+      description: 'Torre histórica',
+    };
+    const file = new File([''], 'photo.jpg');
+
+    (httpMock.post as any).mockReturnValue(of(mockUpdated));
+
+    const result = await firstValueFrom(service.uploadPhoto(1, file));
+
+    expect(result).toEqual(mockUpdated);
+    expect(httpMock.post).toHaveBeenCalled();
+    const [url, body] = (httpMock.post as any).mock.calls[0];
+    expect(url).toBe(`${baseUrl}/1/photo`);
+    expect(body).toBeInstanceOf(FormData);
   });
 
   it('should fetch all monuments', async () => {

@@ -10,7 +10,7 @@
 
 
 export interface CoordinateSequence { 
-    dimension?: number;
     measures?: number;
+    dimension?: number;
 }
 

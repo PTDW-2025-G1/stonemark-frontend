@@ -7,13 +7,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MonumentMinDto } from './monument-min-dto';
 
 
-export interface MarkOccurrenceListDto { 
-    id?: number;
-    coverId?: number;
-    monument?: MonumentMinDto;
-    publishedAt?: string;
+export interface UploadPhotoRequest { 
+    file: Blob;
 }
 

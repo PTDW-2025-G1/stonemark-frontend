@@ -60,6 +60,7 @@ export class ProfileComponent implements OnInit {
           username: data.username ? `@${data.username}` : undefined,
           memberSince: memberSinceString,
           role: data.role,
+          photoId: data.photoId,
           stats: {
             accepted: 0,
             under_review: 0,

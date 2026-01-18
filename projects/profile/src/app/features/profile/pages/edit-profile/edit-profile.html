@@ -11,6 +11,7 @@
           [errorMessage]="errorMessage"
           (submitProfile)="onSubmitProfile($event)"
           (cancel)="goBack()"
+          (uploadPhoto)="onPhotoSelected($event)"
         />
       }
       @if (profileUpdated) {

@@ -55,4 +55,10 @@ export class ProfileService {
     return this.http.post(`${this.authUrl}/confirm-code`, request);
   }
 
+  uploadPhoto(file: File): Observable<UserDto> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<UserDto>(`${this.baseUrl}/photo`, formData);
+  }
+
 }

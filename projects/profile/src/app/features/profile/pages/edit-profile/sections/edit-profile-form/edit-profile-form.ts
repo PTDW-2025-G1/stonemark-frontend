@@ -2,16 +2,19 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {ButtonComponent} from '@shared/ui/button/button';
+import { CommonModule } from '@angular/common';
+import { ImageUtils } from '@shared/utils/image.utils';
 
 export interface ProfileFormData {
   firstName: string;
   lastName: string;
+  photoId?: number;
 }
 
 @Component({
   selector: 'app-edit-profile-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ButtonComponent],
   templateUrl: './edit-profile-form.html'
 })
 export class EditProfileFormComponent implements OnInit, OnChanges {
@@ -23,8 +26,10 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
   @Input() errorMessage: string = '';
   @Output() submitProfile = new EventEmitter<ProfileFormData>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() uploadPhoto = new EventEmitter<File>();
 
   profileForm!: FormGroup;
+  previewUrl: string | null = null;
 
   constructor(private fb: FormBuilder) {}
 
@@ -42,7 +47,8 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
   private initializeForm(): void {
     this.profileForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.maxLength(50)]]
+      lastName: ['', [Validators.required, Validators.maxLength(50)]],
+      photoId: [null]
     });
   }
 
@@ -69,6 +75,27 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
   hasChanges(): boolean {
     const formValue = this.profileForm.value;
     return formValue.firstName !== this.currentProfile.firstName ||
-      formValue.lastName !== this.currentProfile.lastName;
+      formValue.lastName !== this.currentProfile.lastName ||
+      formValue.photoId !== this.currentProfile.photoId ||
+      !!this.previewUrl;
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.uploadPhoto.emit(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getImageUrl(photoId: number): string {
+    return ImageUtils.getImageUrl(photoId, '');
   }
 }

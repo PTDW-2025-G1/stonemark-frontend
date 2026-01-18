@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter, inject} from '@angular/core';
 import {AuthService} from '@core/services/auth/auth.service';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
+import { ImageUtils } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-profile-header',
@@ -39,5 +40,9 @@ export class ProfileHeaderComponent {
 
   isStaff(): boolean {
     return this.authService.isStaff();
+  }
+
+  getImageUrl(photoId: number): string {
+    return ImageUtils.getImageUrl(photoId, '');
   }
 }

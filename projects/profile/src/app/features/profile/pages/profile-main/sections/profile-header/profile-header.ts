@@ -1,13 +1,15 @@
 import {Component, Input, Output, EventEmitter, inject} from '@angular/core';
 import {AuthService} from '@core/services/auth/auth.service';
+import {ProfileService} from '@core/services/profile/profile.service';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { ImageUtils } from '@shared/utils/image.utils';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-profile-header',
   standalone: true,
-  imports: [SafeHtmlPipe],
+  imports: [SafeHtmlPipe, AsyncPipe],
   templateUrl: './profile-header.html'
 })
 export class ProfileHeaderComponent {
@@ -15,6 +17,7 @@ export class ProfileHeaderComponent {
 
   @Output() editProfile = new EventEmitter<void>();
   @Output() changePassword = new EventEmitter<void>();
+  @Output() setPassword = new EventEmitter<void>();
   @Output() openSecurity = new EventEmitter<void>();
   @Output() openContacts = new EventEmitter<void>();
   @Output() openSocial = new EventEmitter<void>();
@@ -23,6 +26,7 @@ export class ProfileHeaderComponent {
   @Output() logout = new EventEmitter<void>();
 
   private authService = inject(AuthService);
+  public profileService = inject(ProfileService);
 
   marksIcon = MARKS_ICON;
 

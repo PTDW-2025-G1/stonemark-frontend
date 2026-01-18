@@ -14,7 +14,6 @@ export class ProfileSuggestionsComponent {
   @Input() getFilteredSuggestions: () => Suggestion[] = () => [];
   @Input() getFilteredCount: (status: 'validated' | 'pending' | 'rejected') => number = () => 0;
 
-  @Output() createSuggestion = new EventEmitter<void>();
   @Output() editSuggestion = new EventEmitter<Suggestion>();
   @Output() viewSuggestion = new EventEmitter<Suggestion>();
   @Output() filterChange = new EventEmitter<'all' | 'validated' | 'pending' | 'rejected'>();

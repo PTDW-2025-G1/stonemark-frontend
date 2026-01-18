@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+import { hasPasswordGuard } from '@core/guards/has-password.guard';
 
 export const PROFILE_ROUTES: Routes = [
   {
@@ -15,6 +16,7 @@ export const PROFILE_ROUTES: Routes = [
   },
   {
     path: 'change-password',
+    canActivate: [hasPasswordGuard],
     loadComponent: () =>
       import('./pages/change-password/change-password').then(m => m.ChangePasswordComponent),
     title: 'Change Password'

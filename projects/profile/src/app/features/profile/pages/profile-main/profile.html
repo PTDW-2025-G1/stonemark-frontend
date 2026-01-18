@@ -1,6 +1,7 @@
 <app-profile-header
   [user]="user"
   (editProfile)="editProfile()"
+  (setPassword)="setPassword()"
   (changePassword)="changePassword()"
   (openSecurity)="openSecurity()"
   (openContacts)="openContacts()"
@@ -18,7 +19,6 @@
       [occurrences]="occurrences"
       [currentPage]="marksPagination.currentPage"
       [totalPages]="marksPagination.totalPages"
-      (addOccurrence)="onAddMark()"
       (viewOccurrence)="onViewOccurrence($event)"
       (pageChange)="onMarksPageChange($event)"
     ></app-profile-marks>
@@ -29,7 +29,6 @@
       [suggestionFilter]="suggestionFilter"
       [getFilteredSuggestions]="getFilteredSuggestions.bind(this)"
       [getFilteredCount]="getFilteredCount.bind(this)"
-      (createSuggestion)="onCreateSuggestion()"
       (editSuggestion)="onEditSuggestion($event)"
       (viewSuggestion)="onViewSuggestion($event)"
       (filterChange)="onSuggestionFilterChange($event)">

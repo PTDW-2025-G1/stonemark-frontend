@@ -125,26 +125,6 @@
         </div>
       </div>
 
-      @if (mustSetPassword) {
-        <div class="mt-8 p-6 bg-surface-alt border border-warning">
-          <h3 class="text-lg font-medium mb-2">
-            Password required
-          </h3>
-          <p class="text-sm text-text-muted mb-4">
-            Your account currently relies on Google for authentication.
-            Please set a password before disconnecting this provider.
-          </p>
-
-          <a
-            routerLink="/profile/set-password"
-            class="inline-flex items-center gap-2 border border-primary
-             bg-primary text-primary-foreground px-4 py-2.5
-             hover:bg-text transition-colors font-medium text-sm">
-            <i class="bi bi-shield-lock"></i>
-            Set password
-          </a>
-        </div>
-      }
 
       <!-- Future Providers Placeholder -->
       <div class="py-8 border-b border-border opacity-40 pointer-events-none">

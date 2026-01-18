@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '@env/environment';
 import { UserDto } from "@api/model/user-dto"
 import { EmailChangeRequestDto } from "@api/model/email-change-request-dto"
@@ -17,6 +17,9 @@ export class ProfileService {
   private baseUrl = `${environment.apiUrl}/account`;
   private authUrl = `${environment.apiUrl}/auth`;
 
+  private hasPasswordSubject = new BehaviorSubject<boolean | null>(null);
+  public hasPassword$ = this.hasPasswordSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
   getCurrentUser(): Observable<UserDto> {
@@ -26,7 +29,13 @@ export class ProfileService {
   getSecurityStatus(): Observable<{ hasPassword: boolean }> {
     return this.http.get<{ hasPassword: boolean }>(
       `${this.baseUrl}/security/status`
+    ).pipe(
+      tap(status => this.hasPasswordSubject.next(status.hasPassword))
     );
+  }
+
+  getHasPassword(): boolean | null {
+    return this.hasPasswordSubject.value;
   }
 
   updateProfile(profile: ProfileUpdateRequestDto): Observable<void> {
@@ -34,7 +43,9 @@ export class ProfileService {
   }
 
   setPassword(password: PasswordSetRequestDto): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/set-password`, password);
+    return this.http.post<void>(`${this.baseUrl}/set-password`, password).pipe(
+      tap(() => this.hasPasswordSubject.next(true))
+    );
   }
 
   changeEmail(newEmail: string): Observable<void> {

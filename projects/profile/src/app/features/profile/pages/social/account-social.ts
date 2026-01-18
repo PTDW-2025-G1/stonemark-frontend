@@ -21,24 +21,17 @@ export class AccountSocialComponent implements OnInit {
   loading = false;
   message: string | null = null;
   isGoogleLinked = false;
-  mustSetPassword = false;
-  hasPassword = false;
-  checkingSecurity = false;
   providersCount = 0;
 
   constructor(
     private accountSocialService: AccountSocialService,
-    private profileService: ProfileService
+    public profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
     this.loadLinkedProviders();
-    this.loadSecurityStatus();
+    this.profileService.getSecurityStatus().subscribe();
   }
-
-  // --------------------------------------------------
-  // Initial state
-  // --------------------------------------------------
 
   private loadLinkedProviders(): void {
     this.accountSocialService.getLinkedProviders().subscribe({
@@ -59,24 +52,6 @@ export class AccountSocialComponent implements OnInit {
     });
   }
 
-  private loadSecurityStatus(): void {
-    this.checkingSecurity = true;
-
-    this.profileService.getSecurityStatus().subscribe({
-      next: (status) => {
-        this.hasPassword = status.hasPassword;
-        this.checkingSecurity = false;
-      },
-      error: () => {
-        this.hasPassword = false;
-        this.checkingSecurity = false;
-      }
-    });
-  }
-
-  // --------------------------------------------------
-  // Google linking
-  // --------------------------------------------------
 
   private initGoogle(): void {
     if (typeof google === 'undefined') {
@@ -136,7 +111,8 @@ export class AccountSocialComponent implements OnInit {
   }
 
   get mustDefinePassword(): boolean {
-    return this.isGoogleLinked && this.providersCount === 1 && !this.hasPassword;
+    const hasPassword = this.profileService.getHasPassword();
+    return this.isGoogleLinked && this.providersCount === 1 && !hasPassword;
   }
 
 }

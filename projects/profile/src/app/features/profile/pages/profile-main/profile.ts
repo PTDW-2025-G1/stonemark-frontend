@@ -46,6 +46,7 @@ export class ProfileComponent implements OnInit {
     this.loadMarks(page);
     this.loadMockSuggestions();
     this.loadUserStats();
+    this.profileService.getSecurityStatus().subscribe();
   }
 
   loadUserProfile(): void {
@@ -83,7 +84,7 @@ export class ProfileComponent implements OnInit {
           this.markOccurrenceProposalService.findByUser(data.id, page, 6).subscribe((pageResponse) => {
             this.occurrences = pageResponse.content ?? [];
             this.marksPagination.setServerPage(
-              (pageResponse.number ?? 0) + 1, // Convert 0-based to 1-based
+              (pageResponse.number ?? 0) + 1,
               pageResponse.totalPages ?? 1
             );
           });
@@ -148,10 +149,6 @@ export class ProfileComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  onAddMark() {
-    this.router.navigate(['/marks/create']);
-  }
-
   onViewOccurrence(proposalId: number): void {
     this.router.navigate(['/proposals', proposalId]);
   }
@@ -166,16 +163,12 @@ export class ProfileComponent implements OnInit {
     this.loadMarks(page - 1);
   }
 
-  onCreateSuggestion() {
-    // lógica para criar sugestão
-  }
-
   onEditSuggestion(suggestion: Suggestion) {
-    // lógica para editar sugestão
+    // to:do in the next version 2.0
   }
 
   onViewSuggestion(suggestion: Suggestion) {
-    // lógica para ver sugestão
+    // to:do in the next version 2.0
   }
 
   onSuggestionFilterChange(filter: 'all' | 'validated' | 'pending' | 'rejected') {
@@ -193,6 +186,10 @@ export class ProfileComponent implements OnInit {
 
   editProfile(): void {
     this.router.navigate(['/profile/edit']);
+  }
+
+  setPassword(): void {
+    this.router.navigate(['/profile/set-password']);
   }
 
   changePassword(): void {

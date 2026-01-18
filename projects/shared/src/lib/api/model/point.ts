@@ -19,26 +19,26 @@ export interface Point {
     factory?: GeometryFactory;
     userData?: any | null;
     coordinates?: Array<Coordinate>;
+    dimension?: number;
     empty?: boolean;
     simple?: boolean;
+    boundaryDimension?: number;
     geometryType?: string;
-    coordinate?: Coordinate;
     numPoints?: number;
     boundary?: any | null;
-    boundaryDimension?: number;
+    coordinate?: Coordinate;
     x?: number;
     y?: number;
     coordinateSequence?: CoordinateSequence;
-    dimension?: number;
     length?: number;
     valid?: boolean;
     srid?: number;
-    numGeometries?: number;
-    precisionModel?: PrecisionModel;
-    rectangle?: boolean;
     area?: number;
-    centroid?: any | null;
-    interiorPoint?: any | null;
     envelopeInternal?: Envelope;
+    precisionModel?: PrecisionModel;
+    centroid?: any | null;
+    numGeometries?: number;
+    rectangle?: boolean;
+    interiorPoint?: any | null;
 }
 

@@ -39,7 +39,7 @@
               <app-shared-select
                 [options]="districtOptions"
                 [selected]="selectedDistrictId ?? ''"
-                [label]="'Districts'"
+                [label]="'search-header.districts' | translate"
                 [searchable]="true"
                 optionLabelKey="name"
                 optionValueKey="id"
@@ -52,7 +52,7 @@
                   <app-shared-select
                     [options]="municipalityOptions"
                     [selected]="selectedMunicipalityId ?? ''"
-                    [label]="'Municipalities'"
+                    [label]="'search-header.municipalities' | translate"
                     [searchable]="true"
                     optionLabelKey="name"
                     optionValueKey="id"
@@ -66,7 +66,7 @@
                   <app-shared-select
                     [options]="parishOptions"
                     [selected]="selectedParishId ?? ''"
-                    [label]="'Parishes'"
+                    [label]="'search-header.parishes' | translate"
                     [searchable]="true"
                     optionLabelKey="name"
                     optionValueKey="id"

@@ -18,24 +18,24 @@ export interface Geometry {
     envelope?: Geometry;
     factory?: GeometryFactory;
     userData?: any | null;
+    dimension?: number;
     length?: number;
     empty?: boolean;
     valid?: boolean;
     simple?: boolean;
-    geometryType?: string;
     srid?: number;
-    numGeometries?: number;
-    precisionModel?: PrecisionModel;
-    coordinate?: Coordinate;
-    coordinates?: Array<Coordinate>;
-    numPoints?: number;
-    rectangle?: boolean;
     area?: number;
-    centroid?: Point;
-    interiorPoint?: Point;
-    boundary?: Geometry;
     boundaryDimension?: number;
     envelopeInternal?: Envelope;
-    dimension?: number;
+    precisionModel?: PrecisionModel;
+    centroid?: Point;
+    geometryType?: string;
+    numPoints?: number;
+    boundary?: Geometry;
+    coordinates?: Array<Coordinate>;
+    numGeometries?: number;
+    rectangle?: boolean;
+    interiorPoint?: Point;
+    coordinate?: Coordinate;
 }
 

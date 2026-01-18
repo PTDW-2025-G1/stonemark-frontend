@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
 
   user: any = null;
   loading = true;
+  marksLoading = true;
 
   occurrences: MarkOccurrenceProposalListDto[] = [];
   suggestions: Suggestion[] = [];
@@ -78,19 +79,34 @@ export class ProfileComponent implements OnInit {
   }
 
   loadMarks(page: number = 0): void {
+    this.marksLoading = true;
     this.profileService.getCurrentUser().subscribe({
       next: (data: UserDto) => {
         if (typeof data.id === 'number') {
-          this.markOccurrenceProposalService.findByUser(data.id, page, 6).subscribe((pageResponse) => {
-            this.occurrences = pageResponse.content ?? [];
-            this.marksPagination.setServerPage(
-              (pageResponse.number ?? 0) + 1,
-              pageResponse.totalPages ?? 1
-            );
+          this.markOccurrenceProposalService.findByUser(data.id, page, 6).subscribe({
+            next: (pageResponse) => {
+              this.occurrences = pageResponse.content ?? [];
+              this.marksPagination.setServerPage(
+                (pageResponse.number ?? 0) + 1,
+                pageResponse.totalPages ?? 1
+              );
+              this.marksLoading = false;
+            },
+            error: (err) => {
+              console.error('Failed to load marks:', err);
+              this.occurrences = [];
+              this.marksLoading = false;
+            }
           });
         } else {
           this.occurrences = [];
+          this.marksLoading = false;
         }
+      },
+      error: (err) => {
+        console.error('Failed to load user for marks:', err);
+        this.occurrences = [];
+        this.marksLoading = false;
       }
     });
   }

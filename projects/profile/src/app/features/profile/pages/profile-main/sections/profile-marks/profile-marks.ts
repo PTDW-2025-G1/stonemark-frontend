@@ -15,6 +15,7 @@ export class ProfileMarksComponent {
   @Input() occurrences: MarkOccurrenceProposalListDto[] = [];
   @Input() currentPage = 1;
   @Input() totalPages = 1;
+  @Input() loading = false;
   @Output() viewOccurrence = new EventEmitter<number>();
   @Output() pageChange = new EventEmitter<number>();
 

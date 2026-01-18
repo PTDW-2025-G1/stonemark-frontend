@@ -26,6 +26,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   title = '';
 
   items$ = new BehaviorSubject<any[]>([]);
+  loading$ = new BehaviorSubject<boolean>(false);
 
   districts$ = new BehaviorSubject<AdministrativeDivisionDto[]>([]);
   municipalities$ = new BehaviorSubject<AdministrativeDivisionDto[]>([]);
@@ -70,8 +71,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.restoreStateSubscription = undefined;
         }
 
-        const page = +(queryParams.get('page') || 1);
-        this.pagination.currentPage = page;
+        this.pagination.currentPage = +(queryParams.get('page') || 1);
 
         const divisionId = queryParams.get('divisionId');
         this.searchQuery = queryParams.get('query') || '';
@@ -189,6 +189,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private loadData(divisionId: number | null): void {
+    this.loading$.next(true);
     const pageIndex = this.pagination.currentPage - 1;
 
     if (this.type === 'marks') {
@@ -196,14 +197,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         ? this.markService.searchMarks(this.searchQuery, pageIndex, this.pageSize)
         : this.markService.getMarks(pageIndex, this.pageSize);
 
-      source.subscribe(page => {
-        this.items$.next(page.content ?? []);
-
-        this.pagination.setServerPage(
-          (page.number ?? 0) + 1,
-          page.totalPages ?? 1
-        );
-        this.totalElements = page.totalElements ?? 0;
+      source.subscribe({
+        next: (page) => this.handlePageResponse(page),
+        error: (err) => this.handleLoadError('marks', err)
       });
     } else {
       let source;
@@ -216,15 +212,26 @@ export class SearchComponent implements OnInit, OnDestroy {
           source = this.monumentService.getMonuments(pageIndex, this.pageSize);
       }
 
-      source.subscribe(page => {
-        this.items$.next(page.content ?? []);
-        this.pagination.setServerPage(
-          (page.number ?? 0) + 1,
-          page.totalPages ?? 1
-        );
-        this.totalElements = page.totalElements ?? 0;
+      source.subscribe({
+        next: (page) => this.handlePageResponse(page),
+        error: (err) => this.handleLoadError('monuments', err)
       });
     }
+  }
+
+  private handlePageResponse(page: any): void {
+    this.items$.next(page.content ?? []);
+    this.pagination.setServerPage(
+      (page.number ?? 0) + 1,
+      page.totalPages ?? 1
+    );
+    this.totalElements = page.totalElements ?? 0;
+    this.loading$.next(false);
+  }
+
+  private handleLoadError(type: string, err: any): void {
+    console.error(`Error loading ${type}:`, err);
+    this.loading$.next(false);
   }
 
   private getTitle(type: string): string {
@@ -276,15 +283,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private updateRoute(divisionId: number | null): void {
-    const queryParams: any = {
+    this.navigateWithParams({
       divisionId,
       page: 1,
       query: null,
       districtId: this.selectedDistrictId || null,
       municipalityId: this.selectedMunicipalityId || null,
       parishId: this.selectedParishId || null
-    };
+    });
+  }
 
+  private navigateWithParams(queryParams: any): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams,
@@ -293,27 +302,19 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   onSearch(query: string): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-          query,
-          page: 1,
-          divisionId: null,
-          districtId: null,
-          municipalityId: null,
-          parishId: null
-      },
-      queryParamsHandling: 'merge'
+    this.navigateWithParams({
+      query,
+      page: 1,
+      divisionId: null,
+      districtId: null,
+      municipalityId: null,
+      parishId: null
     });
   }
 
   onPageChange(page: number): void {
     if (page < 1 || page > this.pagination.totalPages) return;
 
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { page },
-      queryParamsHandling: 'merge'
-    });
+    this.navigateWithParams({ page });
   }
 }

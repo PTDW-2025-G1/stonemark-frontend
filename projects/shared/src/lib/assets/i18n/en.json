@@ -35,7 +35,8 @@
     "privacy_policy": "Privacy Policy",
     "cookie_policy": "Cookie Policy",
     "marks_title": "Mason Marks",
-    "last_updated": "Last updated: 22 December 2025"
+    "last_updated": "Last updated: 22 December 2025",
+    "quick_search": "Quick search..."
   },
 
   "pagination": {
@@ -372,7 +373,10 @@
     "displaying_monuments": "Displaying Monuments",
     "marks_desc": "Explore our collection of historic mason marks found across monuments. Each mark tells a unique story of the craftsmen who left their signature in stone.",
     "search_placeholder": "Search...",
-    "all_locations": "All Locations"
+    "all_locations": "All Locations",
+    "districts": "Districts",
+    "municipalities": "Municipalities",
+    "parishes": "Parishes"
   },
   "accessibility": {
     "consent_required": "You need to accept preference cookies to save accessibility settings. Please manage your cookie preferences in the footer.",

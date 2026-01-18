@@ -19,6 +19,7 @@ type SearchItem = MonumentListDto | MarkListDto;
 export class SearchResultsComponent {
   @Input() items: SearchItem[] = [];
   @Input() type: 'monuments' | 'marks' = 'monuments';
+  @Input() loading = false;
   occurrenceCount: Record<string | number, number> = {};
 
   constructor(

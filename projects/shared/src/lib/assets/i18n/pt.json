@@ -35,7 +35,8 @@
     "privacy_policy": "Política de Privacidade",
     "cookie_policy": "Política de Cookies",
     "marks_title": "Marcas de Canteiro",
-    "last_updated": "Última atualização: 22 Dezembro 2025"
+    "last_updated": "Última atualização: 22 Dezembro 2025",
+    "quick_search": "Pesquisa rápida..."
   },
 
   "pagination": {
@@ -371,7 +372,10 @@
     "displaying_monuments": "A mostrar Monumentos",
     "marks_desc": "Explora a nossa coleção de marcas históricas de canteiro encontradas em monumentos. Cada marca conta uma história única dos artesãos que deixaram a sua assinatura na pedra.",
     "search_placeholder": "Pesquisar...",
-    "all_locations": "Todas as Localizações"
+    "all_locations": "Todas as Localizações",
+    "districts": "Distritos",
+    "municipalities": "Municípios",
+    "parishes": "Freguesias"
   },
   "accessibility": {
     "consent_required": "Precisas de aceitar cookies de preferências para guardar as definições de acessibilidade. Por favor, gere as tuas preferências de cookies no rodapé.",

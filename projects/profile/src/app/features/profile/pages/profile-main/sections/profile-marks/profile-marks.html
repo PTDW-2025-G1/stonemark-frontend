@@ -6,8 +6,26 @@
   </div>
 </div>
 
+<!-- Loading State -->
+@if (loading) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (skeleton of [1,2,3,4,5,6]; track skeleton) {
+      <div class="relative rounded-2xl overflow-hidden aspect-square bg-surface-alt border border-border animate-pulse">
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-muted via-surface-alt to-surface"></div>
+        <div class="absolute top-3 left-3">
+          <div class="w-20 h-6 bg-surface-muted rounded-full"></div>
+        </div>
+        <div class="absolute bottom-4 left-4 right-4">
+          <div class="h-4 bg-surface-muted rounded w-3/4 mb-2"></div>
+          <div class="h-3 bg-surface-muted rounded w-1/2"></div>
+        </div>
+      </div>
+    }
+  </div>
+}
+
 <!-- Empty State -->
-@if (occurrences.length === 0) {
+@if (!loading && occurrences.length === 0) {
   <div class="text-center py-16 bg-surface-alt rounded-2xl border-2 border-dashed border-border">
     <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
       <i class="bi bi-star text-primary text-4xl"></i>
@@ -18,7 +36,7 @@
 }
 
 <!-- Proposals Grid -->
-@if (occurrences.length > 0) {
+@if (!loading && occurrences.length > 0) {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (occurrence of occurrences; track occurrence.id) {
       <div class="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer aspect-square"

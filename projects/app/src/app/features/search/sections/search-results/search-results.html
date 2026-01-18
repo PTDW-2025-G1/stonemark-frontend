@@ -1,5 +1,43 @@
 <main class="flex-1">
-  @if (items.length > 0) {
+  <!-- Loading Skeleton -->
+  @if (loading) {
+    <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      @for (skeleton of [1,2,3,4,5,6,7,8,9]; track skeleton) {
+        <div class="relative bg-white rounded-2xl overflow-hidden shadow-md border border-border">
+          <!-- Skeleton Image -->
+          <div class="relative aspect-4/3 bg-surface-alt animate-pulse">
+            <div class="absolute inset-0 bg-gradient-to-br from-surface-muted/50 to-surface-alt"></div>
+
+            <!-- Skeleton badge -->
+            @if (type === 'monuments') {
+              <div class="absolute top-4 left-4">
+                <div class="w-32 h-7 bg-surface-muted/80 rounded-full animate-pulse"></div>
+              </div>
+            }
+
+            <!-- Skeleton bookmark -->
+            <div class="absolute top-3 right-3">
+              <div class="w-10 h-10 bg-surface-muted/80 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+
+          <!-- Skeleton Content -->
+          <div class="p-4 sm:p-5 space-y-3">
+            <div class="space-y-2">
+              <div class="h-5 bg-surface-alt rounded animate-pulse w-4/5"></div>
+              <div class="h-5 bg-surface-alt rounded animate-pulse w-2/3"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="h-4 bg-surface-alt rounded animate-pulse w-1/2"></div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Results -->
+  @if (!loading && items.length > 0) {
     <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
       @for (item of items; track item.id) {
@@ -64,7 +102,10 @@
       }
 
     </div>
-  } @else {
+  }
+
+  <!-- Empty State -->
+  @if (!loading && items.length === 0) {
     <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
       <i class="bi bi-search text-6xl text-text-muted mb-4"></i>
       <h3 class="text-xl font-serif font-semibold text-text mb-2">No results found</h3>

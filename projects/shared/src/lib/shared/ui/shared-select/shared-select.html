@@ -20,7 +20,7 @@
           <input
             type="text"
             [(ngModel)]="dropdownSearch"
-            placeholder="Quick search..."
+            [placeholder]="'shared-links.quick_search' | translate"
             class="w-full pl-3 pr-3 py-2 bg-surface border border-border rounded-lg text-sm"
             (click)="$event.stopPropagation()"
           />

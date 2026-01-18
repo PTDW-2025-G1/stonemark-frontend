@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -7,6 +7,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MarkDto } from '@api/model/mark-dto';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-form-mark',
@@ -24,18 +25,6 @@ import { MarkDto } from '@api/model/mark-dto';
     <form [formGroup]="markForm" (ngSubmit)="onSubmit()" class="mark-form">
       <section class="form-section">
         <h3 class="section-title">Mark Information</h3>
-
-        <div class="field">
-          <label for="title" class="required">Title</label>
-          <input
-            pInputText
-            id="title"
-            formControlName="title"
-            placeholder="Mark title" />
-          @if (titleControl?.invalid && titleControl?.touched) {
-            <small class="p-error">Title is required</small>
-          }
-        </div>
 
         <div class="field">
           <label for="description">Description</label>
@@ -58,7 +47,7 @@ import { MarkDto } from '@api/model/mark-dto';
             mode="basic"
             chooseLabel="Choose Image"
             accept="image/*"
-            [maxFileSize]="10000000"
+            [maxFileSize]="1000000"
             (onSelect)="onFileSelect($event)"
             [auto]="true">
           </p-fileUpload>
@@ -67,6 +56,16 @@ import { MarkDto } from '@api/model/mark-dto';
               <i class="pi pi-image"></i>
               <span>{{ selectedFile.name }}</span>
               <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger p-button-sm" (click)="clearFile()"></button>
+            </div>
+          }
+          @if (!selectedFile && mark?.coverId) {
+            <div class="current-image mt-2">
+              <p>Current Image:</p>
+              <img
+                [src]="getImageUrl(mark!.coverId!)"
+                alt="Current cover"
+                class="preview-image"
+                style="max-width: 200px; width: 100%; height: auto; display: block; border-radius: 4px;" />
             </div>
           }
         </div>
@@ -174,7 +173,7 @@ import { MarkDto } from '@api/model/mark-dto';
     }
   `
 })
-export class FormMark implements OnInit {
+export class FormMark implements OnInit, OnChanges {
   @Input() mark?: MarkDto;
   @Output() save = new EventEmitter<{ mark: MarkDto, file?: File }>();
   @Output() cancel = new EventEmitter<void>();
@@ -187,21 +186,27 @@ export class FormMark implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.updateForm();
+  }
 
-    if (this.mark) {
-      this.markForm.patchValue(this.mark);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['mark']) {
+      this.updateForm();
     }
   }
 
   private initForm(): void {
     this.markForm = this.fb.group({
-      title: ['', Validators.required],
       description: ['']
     });
   }
 
-  get titleControl() {
-    return this.markForm.get('title');
+  private updateForm(): void {
+    if (this.mark && this.markForm) {
+      this.markForm.patchValue({
+        description: this.mark.description
+      });
+    }
   }
 
   onFileSelect(event: any): void {
@@ -228,6 +233,10 @@ export class FormMark implements OnInit {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+
+  getImageUrl(coverId: number): string {
+    return `${environment.apiUrl}/media/${coverId}`;
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

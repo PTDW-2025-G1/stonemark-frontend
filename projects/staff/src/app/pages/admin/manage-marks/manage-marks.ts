@@ -11,9 +11,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { MarkService } from '@core/services/mark/mark.service';
-import { MarkDto } from '@api/model/mark-dto';
+import { MarkDetailedDto } from '@api/model/mark-detailed-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-manage-marks',
@@ -58,7 +59,7 @@ import { take } from 'rxjs';
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 4rem">ID</th>
-            <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+            <th style="width: 10rem">Image</th>
             <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
             <th>Actions</th>
           </tr>
@@ -67,10 +68,15 @@ import { take } from 'rxjs';
         <ng-template pTemplate="body" let-mark>
           <tr>
             <td>{{mark.id}}</td>
-            <td>{{mark.title}}</td>
+            <td>
+              @if (mark.coverId) {
+                <img [src]="getImageUrl(mark.coverId)" [alt]="mark.description" width="100" class="shadow-4" />
+              }
+            </td>
             <td>{{mark.description}}</td>
             <td>
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editMark(mark)"></button>
+              <button pButton pRipple icon="pi pi-tags" class="p-button-rounded p-button-info mr-2" (click)="manageOccurrences(mark)"></button>
               <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteMark(mark)"></button>
             </td>
           </tr>
@@ -96,7 +102,7 @@ import { take } from 'rxjs';
   `]
 })
 export class ManageMarks implements OnInit {
-  marks: MarkDto[] = [];
+  marks: MarkDetailedDto[] = [];
   totalRecords: number = 0;
   first: number = 0;
   rows: number = 10;
@@ -136,13 +142,17 @@ export class ManageMarks implements OnInit {
     this.router.navigate(['/admin/marks/create']);
   }
 
-  editMark(mark: MarkDto) {
+  editMark(mark: MarkDetailedDto) {
     this.router.navigate(['/admin/marks/edit', mark.id]);
   }
 
-  deleteMark(mark: MarkDto) {
+  manageOccurrences(mark: MarkDetailedDto) {
+    this.router.navigate(['/admin/marks/occurrences'], { queryParams: { markId: mark.id } });
+  }
+
+  deleteMark(mark: MarkDetailedDto) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + mark.title + '?',
+      message: 'Are you sure you want to delete this mark?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -161,5 +171,9 @@ export class ManageMarks implements OnInit {
         }
       }
     });
+  }
+
+  getImageUrl(coverId: number): string {
+    return `${environment.apiUrl}/media/${coverId}`;
   }
 }

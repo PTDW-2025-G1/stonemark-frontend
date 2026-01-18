@@ -17,7 +17,7 @@ import { take } from 'rxjs';
   template: `
     <app-toolbar
       title="Edit Mark"
-      [subtitle]="mark ? mark.title : 'Loading...'"
+      [subtitle]="mark ? mark.description : 'Loading...'"
       [showBackButton]="true"
       (back)="goBack()"></app-toolbar>
     <p-toast />

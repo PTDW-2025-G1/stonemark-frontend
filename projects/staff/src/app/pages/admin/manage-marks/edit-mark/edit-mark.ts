@@ -81,8 +81,13 @@ export class EditMark implements OnInit {
       });
   }
 
-  updateMark(event: { mark: MarkDto, file?: File }): void {
-    this.markService.updateMark(this.markId, event.mark, event.file)
+  updateMark(event: { mark: MarkDto, file?: File, coverId?: number }): void {
+    const markToUpdate = { ...this.mark, ...event.mark };
+    if (event.coverId) {
+        markToUpdate.coverId = event.coverId;
+    }
+
+    this.markService.updateMark(this.markId, markToUpdate, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

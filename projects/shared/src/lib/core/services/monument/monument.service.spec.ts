@@ -235,7 +235,7 @@ describe('MonumentService', () => {
 
     (httpMock.post as any).mockReturnValue(of(mockMonuments));
 
-    const result = await firstValueFrom(service.importMonumentsFromOverpass(geoJson));
+    const result = await firstValueFrom(service.importMonumentsFromGeoJson(geoJson));
 
     expect(result).toEqual(mockMonuments);
     expect(httpMock.post).toHaveBeenCalledWith(

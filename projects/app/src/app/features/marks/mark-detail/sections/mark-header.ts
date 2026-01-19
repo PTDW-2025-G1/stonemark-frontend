@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MarkDto } from '@api/model/mark-dto';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { ShareSectionComponent } from '@shared/ui/share-section/share-section';
@@ -114,6 +114,6 @@ export class MarkHeaderComponent {
   }
 
   getImageUrl(): string {
-    return ImageUtils.getImageUrl(this.mark?.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(this.mark?.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

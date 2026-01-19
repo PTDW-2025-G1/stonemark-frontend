@@ -11,7 +11,7 @@ import { BookmarkDto } from '@api/model/bookmark-dto';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { ReportFacade } from '@shared/facades/report.facade';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import {ButtonComponent} from '@shared/ui/button/button';
@@ -119,6 +119,6 @@ export class MonumentDetailComponent implements OnInit {
   }
 
   getImageUrl(monument: MonumentResponseDto): string {
-    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

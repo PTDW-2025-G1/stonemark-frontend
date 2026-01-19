@@ -13,8 +13,8 @@ export interface PrecisionModel {
     scale?: number;
     type?: any | null;
     floating?: boolean;
+    maximumSignificantDigits?: number;
     offsetX?: number;
     offsetY?: number;
-    maximumSignificantDigits?: number;
 }
 

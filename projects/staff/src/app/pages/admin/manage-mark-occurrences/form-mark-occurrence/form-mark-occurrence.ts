@@ -14,6 +14,7 @@ import { environment } from '@env/environment';
 import { take } from 'rxjs';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-form-mark-occurrence',
@@ -369,6 +370,6 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   }
 
   getImageUrl(coverId: number): string {
-    return `${environment.apiUrl}/media/${coverId}`;
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.THUMBNAIL);
   }
 }

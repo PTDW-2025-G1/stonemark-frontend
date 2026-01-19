@@ -9,6 +9,7 @@ import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-form-monument',
@@ -148,6 +149,16 @@ import { MonumentResponseDto } from '@api/model/monument-response-dto';
               <i class="pi pi-image"></i>
               <span>{{ selectedFile.name }}</span>
               <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger p-button-sm" (click)="clearFile()"></button>
+            </div>
+          }
+          @if (!selectedFile && monument?.coverId) {
+            <div class="current-image mt-2">
+              <p>Current Image:</p>
+              <img
+                [src]="getImageUrl(monument!.coverId!)"
+                alt="Current cover"
+                class="preview-image"
+                style="max-width: 200px; width: 100%; height: auto; display: block; border-radius: 4px;" />
             </div>
           }
         </div>
@@ -329,6 +340,10 @@ export class FormMonument implements OnInit {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+
+  getImageUrl(coverId: number): string {
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

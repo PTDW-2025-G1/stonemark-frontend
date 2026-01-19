@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import {RouterLink} from '@angular/router';
 import {ButtonComponent} from '@shared/ui/button/button';
 import { CommonModule } from '@angular/common';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 export interface ProfileFormData {
   firstName: string;
@@ -96,6 +96,6 @@ export class EditProfileFormComponent implements OnInit, OnChanges {
   }
 
   getImageUrl(photoId: number): string {
-    return ImageUtils.getImageUrl(photoId, '');
+    return ImageUtils.getImageUrl(photoId, '', ImageVariant.THUMBNAIL);
   }
 }

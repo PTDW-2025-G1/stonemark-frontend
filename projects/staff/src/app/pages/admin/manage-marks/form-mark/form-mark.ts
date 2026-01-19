@@ -8,6 +8,10 @@ import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MarkDto } from '@api/model/mark-dto';
 import { environment } from '@env/environment';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
+import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-form-mark',
@@ -19,8 +23,10 @@ import { environment } from '@env/environment';
     ButtonModule,
     TextareaModule,
     DividerModule,
-    FileUploadModule
+    FileUploadModule,
+    SelectModule
   ],
+  providers: [MarkOccurrenceService],
   template: `
     <form [formGroup]="markForm" (ngSubmit)="onSubmit()" class="mark-form">
       <section class="form-section">
@@ -69,6 +75,30 @@ import { environment } from '@env/environment';
             </div>
           }
         </div>
+
+        @if (mark?.id) {
+          <div class="field mt-4">
+            <label>Or select from existing occurrences</label>
+            <p-select
+              [options]="occurrences"
+              optionLabel="id"
+              placeholder="Select an occurrence image"
+              styleClass="w-full"
+              (onChange)="onOccurrenceSelect($event)">
+              <ng-template let-occurrence pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  <img [src]="getImageUrl(occurrence.coverId, 'THUMBNAIL')" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />
+                  <span>Occurrence #{{ occurrence.id }}</span>
+                </div>
+              </ng-template>
+              <ng-template let-occurrence pTemplate="selectedItem">
+                 <div class="flex align-items-center gap-2" *ngIf="occurrence">
+                  <span>Occurrence #{{ occurrence.id }}</span>
+                </div>
+              </ng-template>
+            </p-select>
+          </div>
+        }
       </section>
 
       <p-divider></p-divider>
@@ -170,19 +200,28 @@ import { environment } from '@env/environment';
         resize: vertical;
         font-family: inherit;
       }
+
+      .p-select {
+        width: 100%;
+      }
     }
   `
 })
 export class FormMark implements OnInit, OnChanges {
   @Input() mark?: MarkDto;
-  @Output() save = new EventEmitter<{ mark: MarkDto, file?: File }>();
+  @Output() save = new EventEmitter<{ mark: MarkDto, file?: File, coverId?: number }>();
   @Output() cancel = new EventEmitter<void>();
 
   markForm!: FormGroup;
   loading = false;
   selectedFile?: File;
+  occurrences: MarkOccurrenceDto[] = [];
+  selectedCoverId?: number;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private markOccurrenceService: MarkOccurrenceService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -192,6 +231,9 @@ export class FormMark implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mark']) {
       this.updateForm();
+      if (this.mark?.id) {
+        this.loadOccurrences(this.mark.id);
+      }
     }
   }
 
@@ -209,9 +251,28 @@ export class FormMark implements OnInit, OnChanges {
     }
   }
 
+  private loadOccurrences(markId: number): void {
+    this.markOccurrenceService.getByMarkId(markId, 0, 100).subscribe(page => {
+      this.occurrences = page.content?.filter(o => o.coverId) || [];
+    });
+  }
+
   onFileSelect(event: any): void {
     if (event.files && event.files.length > 0) {
       this.selectedFile = event.files[0];
+      this.selectedCoverId = undefined; // Clear selected occurrence image if file is uploaded
+    }
+  }
+
+  onOccurrenceSelect(event: any): void {
+    if (event.value) {
+      this.selectedCoverId = event.value.coverId;
+      this.selectedFile = undefined; // Clear uploaded file if occurrence image is selected
+
+      // Update preview if needed, or just rely on the fact that we'll send coverId
+      if (this.mark) {
+         this.mark = { ...this.mark, coverId: this.selectedCoverId };
+      }
     }
   }
 
@@ -224,7 +285,8 @@ export class FormMark implements OnInit, OnChanges {
       this.loading = true;
       this.save.emit({
         mark: this.markForm.value,
-        file: this.selectedFile
+        file: this.selectedFile,
+        coverId: this.selectedCoverId
       });
     } else {
       this.markFormGroupTouched(this.markForm);
@@ -235,8 +297,8 @@ export class FormMark implements OnInit, OnChanges {
     this.cancel.emit();
   }
 
-  getImageUrl(coverId: number): string {
-    return `${environment.apiUrl}/media/${coverId}`;
+  getImageUrl(coverId: number, variant: keyof typeof ImageVariant = 'PREVIEW'): string {
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant[variant]);
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

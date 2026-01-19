@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MarkOccurrenceProposalListDto } from '@api/model/mark-occurrence-proposal-list-dto';
 import { DateUtils } from '@shared/utils/date.utils';
-import {ImageUtils} from '@shared/utils/image.utils';
+import {ImageUtils, ImageVariant} from '@shared/utils/image.utils';
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
 
 @Component({
@@ -22,7 +22,8 @@ export class ProfileMarksComponent {
   getImageUrl(occurrence: MarkOccurrenceProposalListDto): string {
     return ImageUtils.getImageUrl(
       occurrence.coverId,
-      'assets/placeholder.png'
+      'assets/placeholder.png',
+      ImageVariant.PREVIEW
     );
   }
 

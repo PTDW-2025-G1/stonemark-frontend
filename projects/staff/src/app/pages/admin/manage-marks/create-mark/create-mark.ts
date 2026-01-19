@@ -44,8 +44,13 @@ export class CreateMark {
     private router: Router
   ) {}
 
-  createMark(event: { mark: MarkDto, file?: File }): void {
-    this.markService.createMark(event.mark, event.file)
+  createMark(event: { mark: MarkDto, file?: File, coverId?: number }): void {
+    const markToSave = { ...event.mark };
+    if (event.coverId) {
+        markToSave.coverId = event.coverId;
+    }
+
+    this.markService.createMark(markToSave, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

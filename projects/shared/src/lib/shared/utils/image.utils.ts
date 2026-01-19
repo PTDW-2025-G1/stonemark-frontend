@@ -1,17 +1,24 @@
 import { environment } from '@env/environment';
 
+export enum ImageVariant {
+    ORIGINAL = '',
+    THUMBNAIL = '/thumbnail',
+    PREVIEW = '/preview',
+    OPTIMIZED = '/optimized'
+}
+
 export class ImageUtils {
-    public static getFullUrl(imageId: number): string {
+    public static getFullUrl(imageId: number, variant: ImageVariant = ImageVariant.ORIGINAL): string {
         if (!imageId) {
             return '';
         }
-        return `${environment.apiUrl}/media/${imageId}`;
+        return `${environment.apiUrl}/media/${imageId}${variant}`;
     }
 
-    public static getImageUrl(imageId: number | undefined | null, fallbackUrl: string): string {
+    public static getImageUrl(imageId: number | undefined | null, fallbackUrl: string, variant: ImageVariant = ImageVariant.ORIGINAL): string {
         if (!imageId) {
             return fallbackUrl;
         }
-        return this.getFullUrl(imageId);
+        return this.getFullUrl(imageId, variant);
     }
 }

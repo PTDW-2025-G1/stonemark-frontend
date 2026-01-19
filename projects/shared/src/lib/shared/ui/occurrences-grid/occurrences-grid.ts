@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DateUtils } from '@shared/utils/date.utils';
-import {ImageUtils} from '@shared/utils/image.utils';
+import {ImageUtils, ImageVariant} from '@shared/utils/image.utils';
 import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
 
 @Component({
@@ -62,6 +62,6 @@ export class OccurrencesGridComponent {
   }
 
   getImageUrl(occurrence: MarkOccurrenceListDto): string {
-    return ImageUtils.getImageUrl(occurrence.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(occurrence.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

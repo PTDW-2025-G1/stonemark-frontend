@@ -10,14 +10,14 @@
 
 
 export interface Envelope { 
-    width?: number;
     'null'?: boolean;
-    area?: number;
+    diameter?: number;
+    width?: number;
     height?: number;
+    area?: number;
     minX?: number;
+    maxX?: number;
     minY?: number;
     maxY?: number;
-    maxX?: number;
-    diameter?: number;
 }
 

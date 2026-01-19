@@ -8,17 +8,22 @@ import { AppToolbarComponent } from '../../../components/toolbar/toolbar.compone
 import { AppTableComponent } from '../../../components/table/table.component';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {take, Subject, takeUntil} from 'rxjs';
 import { ProgressBar } from 'primeng/progressbar';
 import { BlockUI } from 'primeng/blockui';
 import { DateUtils } from '@shared/utils/date.utils';
 import { SortUtils } from '../../../utils/sort.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
+import { SelectModule } from 'primeng/select';
+import { AdministrativeDivisionService } from '@core/services/administrative-division/administrative-division.service';
+import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-monuments',
   standalone: true,
-  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI],
+  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI, RouterModule, SelectModule, FormsModule],
   template: `
     <app-toolbar
       title="Manage Monuments"
@@ -39,7 +44,41 @@ import { SortUtils } from '../../../utils/sort.utils';
       </div>
     </p-blockUI>
 
-    <div class="mb-3" style="display: flex; justify-content: flex-end;">
+    <div class="mb-3 flex justify-content-between align-items-center">
+      <div class="flex gap-2">
+        <p-select
+          [options]="districts"
+          [(ngModel)]="selectedDistrict"
+          optionLabel="name"
+          placeholder="Filter by District"
+          (onChange)="onDistrictChange()"
+          [showClear]="true"
+          styleClass="w-15rem">
+        </p-select>
+
+        <p-select
+          [options]="municipalities"
+          [(ngModel)]="selectedMunicipality"
+          optionLabel="name"
+          placeholder="Filter by Municipality"
+          (onChange)="onMunicipalityChange()"
+          [showClear]="true"
+          [disabled]="!selectedDistrict"
+          styleClass="w-15rem">
+        </p-select>
+
+        <p-select
+          [options]="parishes"
+          [(ngModel)]="selectedParish"
+          optionLabel="name"
+          placeholder="Filter by Parish"
+          (onChange)="onParishChange()"
+          [showClear]="true"
+          [disabled]="!selectedMunicipality"
+          styleClass="w-15rem">
+        </p-select>
+      </div>
+
       <p-button
         label="Create Monument"
         icon="pi pi-plus"
@@ -57,23 +96,27 @@ import { SortUtils } from '../../../utils/sort.utils';
       [first]="currentPage() * pageSize()"
       (pageChange)="onPageChange($event)"
       (searchChange)="onSearchChange($event)">
+
       <ng-template #actions let-monument>
         <p-button
-          label="Edit"
           icon="pi pi-pencil"
           severity="info"
           class="mr-2"
+          [rounded]="true"
+          [text]="true"
           (onClick)="editMonument(monument)"></p-button>
 
         <p-button
-          label="Delete"
           icon="pi pi-trash"
           severity="danger"
+          [rounded]="true"
+          [text]="true"
           (onClick)="deleteMonument(monument)"></p-button>
       </ng-template>
+
     </app-table>
   `,
-  providers: [MessageService, MonumentService, ConfirmationService]
+  providers: [MessageService, MonumentService, ConfirmationService, AdministrativeDivisionService]
 })
 export class ManageMonuments implements OnInit, OnDestroy {
   monuments = signal<MonumentResponseDto[]>([]);
@@ -84,13 +127,17 @@ export class ManageMonuments implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('table') tableComp!: AppTableComponent;
 
+  districts: AdministrativeDivisionDto[] = [];
+  municipalities: AdministrativeDivisionDto[] = [];
+  parishes: AdministrativeDivisionDto[] = [];
+  selectedDistrict: AdministrativeDivisionDto | null = null;
+  selectedMunicipality: AdministrativeDivisionDto | null = null;
+  selectedParish: AdministrativeDivisionDto | null = null;
+
   cols = [
     { field: 'id', header: 'ID' },
     { field: 'name', header: 'Name' },
     { field: 'protectionTitle', header: 'Protection Title' },
-    { field: 'latitude', header: 'Latitude' },
-    { field: 'longitude', header: 'Longitude' },
-    { field: 'createdAt', header: 'Created At', type: 'date' },
     { field: 'lastModifiedAt', header: 'Modified At', type: 'date' }
   ];
 
@@ -99,10 +146,13 @@ export class ManageMonuments implements OnInit, OnDestroy {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private divisionService: AdministrativeDivisionService
   ) {}
 
   ngOnInit() {
+    this.loadDistricts();
+
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
@@ -116,18 +166,69 @@ export class ManageMonuments implements OnInit, OnDestroy {
       });
   }
 
+  loadDistricts() {
+    this.divisionService.getDistricts().subscribe(districts => {
+      this.districts = districts;
+    });
+  }
+
+  onDistrictChange() {
+    this.selectedMunicipality = null;
+    this.selectedParish = null;
+    this.municipalities = [];
+    this.parishes = [];
+
+    if (this.selectedDistrict) {
+      this.divisionService.getMunicipalitiesByDistrict(this.selectedDistrict.id!).subscribe(municipalities => {
+        this.municipalities = municipalities;
+      });
+      this.loadMonuments(0, this.pageSize());
+    } else {
+      this.loadMonuments(0, this.pageSize());
+    }
+  }
+
+  onMunicipalityChange() {
+    this.selectedParish = null;
+    this.parishes = [];
+
+    if (this.selectedMunicipality) {
+      this.divisionService.getParishesByMunicipality(this.selectedMunicipality.id!).subscribe(parishes => {
+        this.parishes = parishes;
+      });
+      this.loadMonuments(0, this.pageSize());
+    } else {
+      this.loadMonuments(0, this.pageSize());
+    }
+  }
+
+  onParishChange() {
+    this.loadMonuments(0, this.pageSize());
+  }
+
   loadMonuments(page: number = 0, size: number = 10, sortField?: string, sortOrder?: number): void {
     const sort = SortUtils.buildSortString(sortField, sortOrder);
 
-    this.monumentService.getDetailedMonuments(page, size, sort)
+    let observable;
+    if (this.selectedParish) {
+      observable = this.monumentService.filterByDivision(this.selectedParish.id!, page, size);
+    } else if (this.selectedMunicipality) {
+      observable = this.monumentService.filterByDivision(this.selectedMunicipality.id!, page, size);
+    } else if (this.selectedDistrict) {
+      observable = this.monumentService.filterByDivision(this.selectedDistrict.id!, page, size);
+    } else {
+      observable = this.monumentService.getDetailedMonuments(page, size, sort);
+    }
+
+    observable
       .pipe(take(1))
       .subscribe({
         next: (pageData) => {
           const content = pageData.content || [];
-          const formatted = content.map(item => ({
+          const formatted = content.map((item: any) => ({
             ...item,
-            createdAt: DateUtils.formatShortDate(item.createdAt, 'pt-PT'),
-            lastModifiedAt: DateUtils.formatShortDate(item.lastModifiedAt, 'pt-PT')
+            createdAt: item.createdAt ? DateUtils.formatShortDate(item.createdAt, 'pt-PT') : '',
+            lastModifiedAt: item.lastModifiedAt ? DateUtils.formatShortDate(item.lastModifiedAt, 'pt-PT') : ''
           }));
           this.monuments.set(formatted);
           this.totalRecords.set(pageData.totalElements || 0);
@@ -227,18 +328,20 @@ export class ManageMonuments implements OnInit, OnDestroy {
       if (file) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          try {
-            const geoJsonContent = e.target.result;
+          // We don't need to read the content here anymore, just pass the file
+          // But since the current implementation reads it, let's keep it consistent or change it.
+          // The request is to use the file directly.
 
-            this.isImporting.set(true);
+          this.isImporting.set(true);
 
-            this.monumentService.importMonumentsFromOverpass(geoJsonContent).subscribe({
-              next: (monuments) => {
+          // We need to pass the file object, not the content string
+          this.monumentService.importMonumentsFromGeoJson(file).subscribe({
+              next: (response) => {
                 this.isImporting.set(false);
                 this.messageService.add({
                   severity: 'success',
                   summary: 'Success',
-                  detail: `${monuments.length} monuments imported successfully`
+                  detail: response.message || 'Monuments imported successfully'
                 });
                 this.loadMonuments(this.currentPage(), this.pageSize());
               },
@@ -251,14 +354,6 @@ export class ManageMonuments implements OnInit, OnDestroy {
                 });
               }
             });
-          } catch (parseError) {
-            this.isImporting.set(false);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Invalid JSON file'
-            });
-          }
         };
 
         reader.onerror = () => {
@@ -278,6 +373,10 @@ export class ManageMonuments implements OnInit, OnDestroy {
 
   exportCSV() {
     this.tableComp?.exportCSV();
+  }
+
+  getImageUrl(coverId: number): string {
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.THUMBNAIL);
   }
 
   ngOnDestroy() {

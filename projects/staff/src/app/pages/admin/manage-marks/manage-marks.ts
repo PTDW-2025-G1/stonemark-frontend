@@ -15,6 +15,7 @@ import { MarkDetailedDto } from '@api/model/mark-detailed-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
 import { environment } from '@env/environment';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-manage-marks',
@@ -174,6 +175,6 @@ export class ManageMarks implements OnInit {
   }
 
   getImageUrl(coverId: number): string {
-    return `${environment.apiUrl}/media/${coverId}`;
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.THUMBNAIL);
   }
 }

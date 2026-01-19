@@ -10,11 +10,13 @@ import {PageMonumentListDto} from '@api/model/page-monument-list-dto';
 import {MonumentMapDto} from '@api/model/monument-map-dto';
 import {PageMonumentMapDto} from '@api/model/page-monument-map-dto';
 import {PageMonumentResponseDto} from '@api/model/page-monument-response-dto';
+import {MessageResponseDto} from '@api/model/message-response-dto';
 
 @Injectable({ providedIn: 'root' })
 export class MonumentService {
 
   private baseUrl = `${environment.apiUrl}/monuments`;
+  private importUrl = `${environment.apiUrl}/import`;
 
   constructor(private http: HttpClient) {}
 
@@ -122,16 +124,10 @@ export class MonumentService {
     return this.http.get<MonumentResponseDto>(`${this.baseUrl}/${id}`);
   }
 
-  importMonumentsFromOverpass(geoJson: string): Observable<MonumentResponseDto[]> {
-    return this.http.post<MonumentResponseDto[]>(
-      `${environment.apiUrl}/import/monuments/overpass`,
-      geoJson,
-      {
-        headers: {
-          'Content-Type': 'text/plain'
-        }
-      }
-    );
+  importMonumentsFromGeoJson(file: File): Observable<MessageResponseDto> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<MessageResponseDto>(`${this.importUrl}/monuments/geojson`, formData);
   }
 
 }

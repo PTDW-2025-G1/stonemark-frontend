@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit{
     constructor(private monumentService: MonumentService, private markOccurrenceService : MarkOccurrenceService) {}
 
     ngOnInit(): void {
-        this.monumentService.getLatestMonuments().subscribe(monuments => {
+        this.monumentService.getPopularMonuments().subscribe(monuments => {
             this.popularMonuments = monuments;
         });
         this.markOccurrenceService.getLatestOccurrences().subscribe(occurrences => {

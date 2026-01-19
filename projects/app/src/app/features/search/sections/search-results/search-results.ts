@@ -91,9 +91,11 @@ export class SearchResultsComponent {
   }
 
   getItemSubtitle(item: SearchItem): string {
-    const id = item.id;
-    const count = id !== undefined ? this.occurrenceCount[id] ?? 0 : 0;
-    return `Portugal · ${count} occurrence${count === 1 ? '' : 's'}`;
+    if (this.type === 'monuments') {
+      const parish = (item as MonumentListDto).parish?.name;
+      return parish ? `${parish}, Portugal` : '';
+    }
+    return '';
   }
 
   onItemClick(item: SearchItem): void {

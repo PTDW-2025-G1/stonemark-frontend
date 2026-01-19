@@ -42,8 +42,8 @@ interface BookmarkItem {
             </div>
 
             <!-- Skeleton image -->
-            <div class="relative aspect-[4/3] bg-surface-alt animate-pulse min-h-[200px]">
-              <div class="absolute inset-0 bg-gradient-to-br from-surface-muted/40 to-surface-alt"></div>
+            <div class="relative aspect-4/3 bg-surface-alt animate-pulse min-h-[200px]">
+              <div class="absolute inset-0 bg-linear-to-br from-surface-muted/40 to-surface-alt"></div>
             </div>
 
             <!-- Skeleton content -->
@@ -62,60 +62,41 @@ interface BookmarkItem {
       <!-- Results -->
       @if (!loading) {
         @for (item of items; track item.id) {
-
           <a
             [href]="getItemUrl(item)"
-            class="group relative bg-white rounded-2xl overflow-hidden shadow-md
-                   hover:shadow-2xl border border-border hover:border-primary/30
-                   transition-all duration-300 hover:-translate-y-1 block
-                   min-h-[360px]"
+            class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 block p-0 min-h-[260px]"
           >
-
             <!-- Bookmark Button -->
             <button
-              (click)="remove.emit({ bookmarkId: item.bookmarkId, type: item.type });
-                       $event.stopPropagation(); $event.preventDefault()"
-              class="absolute top-3 right-3 z-10 w-10 h-10 bg-surface/90 backdrop-blur-sm
-                     rounded-full flex items-center justify-center hover:bg-error
-                     hover:scale-110 transition-all duration-300 shadow-lg group/btn">
+              (click)="remove.emit({ bookmarkId: item.bookmarkId, type: item.type }); $event.stopPropagation(); $event.preventDefault()"
+              class="absolute top-3 right-3 z-10 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-error hover:scale-110 transition-all duration-300 shadow-lg group/btn">
               <i class="bi bi-bookmark-check-fill text-primary group-hover/btn:text-white transition-colors"></i>
             </button>
 
             <!-- Type Badge -->
-            <div
-              class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-sm
-                     rounded-full text-xs font-medium border border-border flex items-center
-                     pointer-events-none">
-              <span class="mr-1"
-                    [innerHTML]="item.type === 'monument' ? monumentsIcon : marksIcon">
-              </span>
+            <div class="absolute top-3 left-3 z-10 px-3 py-1 bg-surface/90 backdrop-blur-sm rounded-full text-xs font-medium border border-border flex items-center pointer-events-none">
+              <span class="mr-1" [innerHTML]="item.type === 'monument' ? monumentsIcon : marksIcon"></span>
               {{ item.type === 'monument' ? 'Monument' : 'Mark' }}
             </div>
 
             <!-- Image -->
-            <div class="relative aspect-[4/3] overflow-hidden min-h-[200px]">
+            <div class="relative aspect-4/3 w-full h-full">
               <img
                 [src]="getItemCover(item)"
                 [alt]="getItemName(item)"
-                class="w-full h-full object-cover
-                       group-hover:scale-110 transition-transform duration-500"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
+              <!-- Content overlay for monument -->
+              @if (item.type === 'monument') {
+                <div class="absolute bottom-0 left-0 w-full bg-linear-to-t from-black/70 to-transparent p-4 pointer-events-none">
+                  <h3 class="text-lg font-serif font-semibold text-white mb-1 line-clamp-2">{{ getItemName(item) }}</h3>
+                  <p class="text-sm text-white/80 flex items-center gap-1.5">
+                    <i class="bi bi-geo-alt-fill text-white text-xs"></i>
+                    {{ getItemSubtitle(item) }}
+                  </p>
+                </div>
+              }
             </div>
-
-            <!-- Content -->
-            <div class="p-5 pointer-events-none">
-              <h3
-                class="text-lg font-serif font-semibold mb-1
-                       group-hover:text-primary transition-colors line-clamp-2">
-                {{ getItemName(item) }}
-              </h3>
-
-              <p class="text-sm text-text-muted flex items-center gap-1.5">
-                <i class="bi bi-geo-alt-fill text-primary text-xs"></i>
-                {{ getItemSubtitle(item) }}
-              </p>
-            </div>
-
           </a>
         }
       }

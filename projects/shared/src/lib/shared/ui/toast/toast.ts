@@ -130,6 +130,14 @@ export interface Toast {
         width: 0;
       }
     }
+
+    .animate-slide-in-right {
+      animation: slide-in-right 0.3s ease-out;
+    }
+
+    .animate-progress {
+      animation: progress linear forwards;
+    }
   `]
 })
 export class ToastComponent {

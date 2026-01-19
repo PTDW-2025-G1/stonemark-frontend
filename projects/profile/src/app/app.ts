@@ -1,21 +1,28 @@
-import {Component, signal} from '@angular/core';
+import {Component, signal, ViewChild, AfterViewInit} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Header} from 'projects/shared/src/lib/layout/header/header';
 import {Footer} from 'projects/shared/src/lib/layout/footer/footer';
 import {ScrollToTopComponent} from '@shared/ui/scroll-top/scroll-top';
 import { LanguageService } from '@core/services/language/language.service';
 import { CookieConsentBannerComponent } from '@shared/ui/cookie-consent-banner/cookie-consent-banner.component';
+import { ToastComponent } from '@shared/ui/toast/toast';
+import { NotificationService } from '@core/services/notification.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, ScrollToTopComponent, CookieConsentBannerComponent],
+  imports: [RouterOutlet, Header, Footer, ScrollToTopComponent, CookieConsentBannerComponent, ToastComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements AfterViewInit {
+  @ViewChild(ToastComponent) toastComponent!: ToastComponent;
   protected readonly title = signal('stonemark-frontend');
 
-  constructor(router: Router, private languageService: LanguageService) {
+  constructor(
+    router: Router,
+    private languageService: LanguageService,
+    private notificationService: NotificationService
+  ) {
     this.languageService.initialize();
 
     router.events.subscribe(event => {
@@ -25,4 +32,7 @@ export class App {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.notificationService.registerToastComponent(this.toastComponent);
+  }
 }

@@ -27,6 +27,7 @@ export interface BookmarkItem {
 @Injectable({ providedIn: 'root' })
 export class BookmarksFacade {
 
+  loading = true;
   activeTab: TabType = 'all';
 
   monuments: BookmarkItem[] = [];
@@ -42,14 +43,19 @@ export class BookmarksFacade {
   ) {}
 
   loadBookmarks(): void {
+    this.loading = true;
+
     this.bookmarkService.getUserBookmarks().subscribe(bookmarks => {
       if (!bookmarks.length) {
         this.reset();
+        this.loading = false;
         return;
       }
+
       this.loadBookmarkDetails(bookmarks);
     });
   }
+
 
   private loadBookmarkDetails(bookmarks: BookmarkDto[]): void {
     const requests = bookmarks.map(b => {
@@ -79,12 +85,14 @@ export class BookmarksFacade {
     });
 
     forkJoin(requests).subscribe(items => {
+
       const markItems = items.filter(i => i.type === 'mark');
 
       if (!markItems.length) {
         this.monuments = items.filter(i => i.type === 'monument');
         this.marks = [];
         this.updateFilteredItems();
+        this.loading = false;
         return;
       }
 
@@ -102,6 +110,7 @@ export class BookmarksFacade {
         this.monuments = items.filter(i => i.type === 'monument');
         this.marks = markItemsWithCount;
         this.updateFilteredItems();
+        this.loading = false;
       });
     });
   }

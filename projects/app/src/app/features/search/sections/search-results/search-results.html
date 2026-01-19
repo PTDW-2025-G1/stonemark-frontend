@@ -1,11 +1,19 @@
 <main class="flex-1">
+
   <!-- Loading Skeleton -->
   @if (loading) {
     <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       @for (skeleton of [1,2,3,4,5,6,7,8,9]; track skeleton) {
-        <div class="relative bg-white rounded-2xl overflow-hidden shadow-md border border-border">
+
+        <div
+          class="relative bg-white rounded-2xl overflow-hidden shadow-md
+                 border border-border min-h-[380px]"
+        >
+
           <!-- Skeleton Image -->
-          <div class="relative aspect-4/3 bg-surface-alt animate-pulse">
+          <div
+            class="relative aspect-4/3 bg-surface-alt animate-pulse min-h-[200px]"
+          >
             <div class="absolute inset-0 bg-gradient-to-br from-surface-muted/50 to-surface-alt"></div>
 
             <!-- Skeleton badge -->
@@ -24,13 +32,13 @@
           <!-- Skeleton Content -->
           <div class="p-4 sm:p-5 space-y-3">
             <div class="space-y-2">
-              <div class="h-5 bg-surface-alt rounded animate-pulse w-4/5"></div>
-              <div class="h-5 bg-surface-alt rounded animate-pulse w-2/3"></div>
+              <div class="h-5 w-4/5 bg-surface-alt rounded animate-pulse"></div>
+              <div class="h-5 w-3/5 bg-surface-alt rounded animate-pulse"></div>
             </div>
-            <div class="flex items-center gap-2">
-              <div class="h-4 bg-surface-alt rounded animate-pulse w-1/2"></div>
-            </div>
+
+            <div class="h-4 w-1/2 bg-surface-alt rounded animate-pulse"></div>
           </div>
+
         </div>
       }
     </div>
@@ -46,9 +54,11 @@
           [routerLink]="['/', type, item.id]"
           class="group relative bg-white rounded-2xl overflow-hidden shadow-md
                  hover:shadow-2xl border border-border hover:border-primary/30
-                 transition-all duration-300 hover:-translate-y-1 block"
+                 transition-all duration-300 hover:-translate-y-1 block
+                 min-h-[380px]"
         >
 
+          <!-- Bookmark -->
           <button
             (click)="toggleBookmark($event, item)"
             class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full
@@ -65,7 +75,8 @@
             </i>
           </button>
 
-          <div class="relative aspect-4/3 overflow-hidden">
+          <!-- Image -->
+          <div class="relative aspect-4/3 overflow-hidden min-h-[200px]">
             <img
               [src]="getItemCover(item)"
               [alt]="getItemName(item)"
@@ -85,6 +96,7 @@
             }
           </div>
 
+          <!-- Content -->
           <div class="p-4 sm:p-5 space-y-2 pointer-events-none">
             <h3
               class="text-base sm:text-lg font-serif font-semibold text-text
@@ -100,7 +112,6 @@
 
         </a>
       }
-
     </div>
   }
 
@@ -108,8 +119,13 @@
   @if (!loading && items.length === 0) {
     <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
       <i class="bi bi-search text-6xl text-text-muted mb-4"></i>
-      <h3 class="text-xl font-serif font-semibold text-text mb-2">No results found</h3>
-      <p class="text-text-muted">Try adjusting your search or filters</p>
+      <h3 class="text-xl font-serif font-semibold text-text mb-2">
+        No results found
+      </h3>
+      <p class="text-text-muted">
+        Try adjusting your search or filters
+      </p>
     </div>
   }
+
 </main>

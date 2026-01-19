@@ -25,19 +25,29 @@
       (tabChange)="changeTab($event)">
     </app-bookmarks-tabs-section>
 
-    <!-- Empty -->
-    @if (facade.filteredItems.length === 0) {
+    <!-- Loading / Skeleton -->
+    @if (facade.loading) {
+      <app-bookmarks-grid-section
+        [items]="[]"
+        [loading]="true">
+      </app-bookmarks-grid-section>
+    }
+
+    <!-- Empty State -->
+    @if (!facade.loading && facade.filteredItems.length === 0) {
       <app-bookmarks-empty-state-section></app-bookmarks-empty-state-section>
     }
 
     <!-- Grid -->
-    @if (facade.pagination.paginatedItems.length > 0) {
+    @if (!facade.loading && facade.pagination.paginatedItems.length > 0) {
       <app-bookmarks-grid-section
         [items]="facade.pagination.paginatedItems"
+        [loading]="false"
         (remove)="removeBookmark($event)"
         (viewDetails)="viewDetails($event)">
       </app-bookmarks-grid-section>
     }
+
 
     <!-- Pagination -->
     @if (facade.pagination.totalPages > 1) {

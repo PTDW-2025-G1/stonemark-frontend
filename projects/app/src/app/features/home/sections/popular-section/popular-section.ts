@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
-import {ImageUtils} from '@shared/utils/image.utils';
+import {ImageUtils, ImageVariant} from '@shared/utils/image.utils';
 import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
 import {MonumentListDto} from '@api/model/monument-list-dto';
 import {TranslateModule} from '@ngx-translate/core';
@@ -40,6 +40,6 @@ export class PopularSectionComponent {
   @Input() monuments: MonumentListDto[] = [];
 
   getImageUrl(monument: MonumentListDto): string {
-    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

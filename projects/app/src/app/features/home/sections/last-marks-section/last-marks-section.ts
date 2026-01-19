@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { EntityCardComponent } from '@shared/ui/entity-card/entity-card';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
-import { ImageUtils } from '@shared/utils/image.utils';
+import {ImageUtils, ImageVariant} from '@shared/utils/image.utils';
 import {HomeHeaderComponent} from '@shared/ui/home-header/home-header';
 import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';
 import {DateUtils} from '@shared/utils/date.utils';
@@ -47,8 +47,8 @@ export class LastMarkSectionComponent {
   getImageUrl(occurrence: MarkOccurrenceDto): string {
     return ImageUtils.getImageUrl(
       occurrence.mark?.coverId,
-      'assets/placeholder.png'
+      'assets/placeholder.png',
+      ImageVariant.PREVIEW
     );
   }
 }
-

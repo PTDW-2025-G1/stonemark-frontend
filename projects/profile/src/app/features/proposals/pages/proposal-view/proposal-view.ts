@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence-proposal.service';
 import { MarkOccurrenceProposalDto } from '@api/model/mark-occurrence-proposal-dto';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { environment } from '@env/environment';
@@ -52,7 +52,7 @@ export class ProposalViewComponent implements OnInit {
   }
 
   getImageUrl(coverId?: number): string {
-    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 
   getStatusLabel(status?: string): string {
@@ -104,4 +104,3 @@ export class ProposalViewComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 }
-

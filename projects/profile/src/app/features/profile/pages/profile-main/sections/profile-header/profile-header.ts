@@ -3,7 +3,7 @@ import {AuthService} from '@core/services/auth/auth.service';
 import {ProfileService} from '@core/services/profile/profile.service';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -47,6 +47,6 @@ export class ProfileHeaderComponent {
   }
 
   getImageUrl(photoId: number): string {
-    return ImageUtils.getImageUrl(photoId, '');
+    return ImageUtils.getImageUrl(photoId, '', ImageVariant.THUMBNAIL);
   }
 }

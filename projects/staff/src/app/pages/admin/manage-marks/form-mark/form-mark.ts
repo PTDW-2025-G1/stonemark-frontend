@@ -8,6 +8,7 @@ import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MarkDto } from '@api/model/mark-dto';
 import { environment } from '@env/environment';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-form-mark',
@@ -236,7 +237,7 @@ export class FormMark implements OnInit, OnChanges {
   }
 
   getImageUrl(coverId: number): string {
-    return `${environment.apiUrl}/media/${coverId}`;
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.THUMBNAIL);
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

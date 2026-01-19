@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 import {MonumentListDto} from '@api/model/monument-list-dto';
 import {MarkListDto} from '@api/model/mark-list-dto';
@@ -81,7 +81,7 @@ export class SearchResultsComponent {
   }
 
   getItemCover(item: SearchItem): string {
-    return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 
   getItemName(item: SearchItem): string {

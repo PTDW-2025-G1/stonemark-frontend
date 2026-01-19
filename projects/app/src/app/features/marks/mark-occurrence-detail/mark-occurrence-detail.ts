@@ -6,7 +6,7 @@ import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.servi
 import { DateUtils } from '@shared/utils/date.utils';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
 import {UserManagementService} from '@core/services/user/user-management.service';
@@ -141,7 +141,7 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getProposerImage(): string | null {
-    return ImageUtils.getImageUrl(this.proposer?.photoId, "assets/portrait-placeholder.png");
+    return ImageUtils.getImageUrl(this.proposer?.photoId, "assets/portrait-placeholder.png", ImageVariant.THUMBNAIL);
   }
 
   openReportModal(): void {
@@ -154,10 +154,10 @@ export class MarkOccurrenceDetail implements OnInit {
   }
 
   getImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(this.occurrence.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 
   getMonumentImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/placeholder.png', ImageVariant.OPTIMIZED);
   }
 }

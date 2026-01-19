@@ -12,7 +12,7 @@ import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrence
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
 import { InfoBoxComponent } from '@features/marks/mark-detail/sections/info-box';
 import { MarkDto } from '@api/model/mark-dto';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { FiltersComponent } from '@shared/ui/filters/filters';
 import { MarkOccurrencesFacade } from '@shared/facades/mark-occurrences.facade';
 
@@ -160,6 +160,6 @@ export class MonumentMarksComponent implements OnInit {
   }
 
   getImageUrl(monument: MonumentResponseDto): string {
-    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

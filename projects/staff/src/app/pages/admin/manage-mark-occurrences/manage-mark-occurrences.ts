@@ -15,6 +15,7 @@ import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
 import { environment } from '@env/environment';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 @Component({
   selector: 'app-manage-mark-occurrences',
@@ -188,6 +189,6 @@ export class ManageMarkOccurrences implements OnInit {
   }
 
   getImageUrl(coverId: number): string {
-    return `${environment.apiUrl}/media/${coverId}`;
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.THUMBNAIL);
   }
 }

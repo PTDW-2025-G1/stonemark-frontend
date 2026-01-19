@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ImageUtils } from '@shared/utils/image.utils';
+import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 import { environment } from '@env/environment';
@@ -102,7 +102,7 @@ export class GridSectionComponent {
   }
 
   getItemCover(item: BookmarkItem): string {
-    return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png');
+    return ImageUtils.getImageUrl(item.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 
   getItemName(item: BookmarkItem): string {

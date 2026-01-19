@@ -15,14 +15,14 @@ import { MarkDto } from './mark-dto';
 export interface PageMarkDto { 
     totalPages?: number;
     totalElements?: number;
-    first?: boolean;
-    last?: boolean;
     size?: number;
     content?: Array<MarkDto>;
     number?: number;
-    sort?: SortObject;
-    numberOfElements?: number;
     pageable?: PageableObject;
+    first?: boolean;
+    last?: boolean;
+    numberOfElements?: number;
+    sort?: SortObject;
     empty?: boolean;
 }
 

@@ -15,14 +15,14 @@ import { SortObject } from './sort-object';
 export interface PageContactRequest { 
     totalPages?: number;
     totalElements?: number;
-    first?: boolean;
-    last?: boolean;
     size?: number;
     content?: Array<ContactRequest>;
     number?: number;
-    sort?: SortObject;
-    numberOfElements?: number;
     pageable?: PageableObject;
+    first?: boolean;
+    last?: boolean;
+    numberOfElements?: number;
+    sort?: SortObject;
     empty?: boolean;
 }
 

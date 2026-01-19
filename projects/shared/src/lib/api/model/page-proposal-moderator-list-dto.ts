@@ -15,14 +15,14 @@ import { ProposalModeratorListDto } from './proposal-moderator-list-dto';
 export interface PageProposalModeratorListDto { 
     totalPages?: number;
     totalElements?: number;
-    first?: boolean;
-    last?: boolean;
     size?: number;
     content?: Array<ProposalModeratorListDto>;
     number?: number;
-    sort?: SortObject;
-    numberOfElements?: number;
     pageable?: PageableObject;
+    first?: boolean;
+    last?: boolean;
+    numberOfElements?: number;
+    sort?: SortObject;
     empty?: boolean;
 }
 

@@ -18,6 +18,7 @@ export interface MediaFile {
     storagePath?: string;
     providerPublicId?: string;
     uploadedAt?: string;
+    status?: MediaFile.StatusEnum;
 }
 export namespace MediaFile {
     export const StorageProviderEnum = {
@@ -26,6 +27,13 @@ export namespace MediaFile {
         Azure: 'AZURE'
     } as const;
     export type StorageProviderEnum = typeof StorageProviderEnum[keyof typeof StorageProviderEnum];
+    export const StatusEnum = {
+        Uploaded: 'UPLOADED',
+        Processing: 'PROCESSING',
+        Ready: 'READY',
+        Failed: 'FAILED'
+    } as const;
+    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }
 
 

@@ -14,5 +14,16 @@ export interface MediaFileDto {
     filename?: string;
     originalFilename?: string;
     size?: number;
+    status?: MediaFileDto.StatusEnum;
 }
+export namespace MediaFileDto {
+    export const StatusEnum = {
+        Uploaded: 'UPLOADED',
+        Processing: 'PROCESSING',
+        Ready: 'READY',
+        Failed: 'FAILED'
+    } as const;
+    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
+}
+
 

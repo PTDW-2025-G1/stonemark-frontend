@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { AccountSecurityService } from '@core/services/account/account-security/account-security.service';
 import { AccountContactService } from '@core/services/account/account-contact/account-contact.service';
+import { ProfileService } from '@core/services/profile/profile.service';
 import { UserContactDto } from '@api/model/user-contact-dto';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 import {ButtonComponent} from '@shared/ui/button/button';
+import {AuthService} from '@core/services/auth/auth.service';
 
 @Component({
   selector: 'app-account-security',
@@ -32,9 +34,13 @@ export class AccountSecurityComponent implements OnInit {
 
   loading = false;
 
+  showDeleteConfirmation = false;
+
   constructor(
     private securityService: AccountSecurityService,
-    private contactService: AccountContactService
+    private contactService: AccountContactService,
+    private profileService: ProfileService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -202,5 +208,34 @@ export class AccountSecurityComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  openDeleteConfirmation(): void {
+    this.showDeleteConfirmation = true;
+    this.resetMessages();
+  }
+
+  closeDeleteConfirmation(): void {
+    this.showDeleteConfirmation = false;
+  }
+
+  confirmDeleteAccount(): void {
+    this.resetMessages();
+    this.loading = true;
+
+    this.profileService.deleteAccount().subscribe({
+      next: (res) => {
+        this.message = res.message ?? 'Account deleted successfully. Redirecting...';
+        this.loading = false;
+        this.authService.removeTokens();
+        setTimeout(() => {
+          this.authService['redirectToLogin']();
+        }, 2000);
+      },
+      error: (err) => {
+        this.message = err.error?.message || 'Failed to delete account.';
+        this.loading = false;
+      }
+    });
   }
 }

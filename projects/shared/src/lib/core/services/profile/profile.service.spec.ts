@@ -15,6 +15,7 @@ describe('ProfileService', () => {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;
     put: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
   };
 
   let service: ProfileService;
@@ -26,6 +27,7 @@ describe('ProfileService', () => {
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
+      delete: vi.fn(),
     };
 
     service = new ProfileService(httpMock as any);
@@ -36,13 +38,13 @@ describe('ProfileService', () => {
       id: 1,
       firstName: 'João',
       lastName: 'Silva',
-      // Todo: update test
-      email: 'joao@example.com',
-      telephone: '+351912345678',
+      username: 'joaosilva',
       role: 'USER',
       createdAt: '2024-01-01T10:00:00Z',
       accountLocked: false,
       enabled: true,
+      photoId: 42,
+      tfaMethod: 'NONE',
     };
 
     (httpMock.get as any).mockReturnValue(of(mockUser));

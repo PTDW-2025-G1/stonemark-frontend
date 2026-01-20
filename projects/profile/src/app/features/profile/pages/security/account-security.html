@@ -291,5 +291,73 @@
     </div>
   </section>
 
+  <!-- Danger Zone -->
+  <section class="mt-16 pt-12 border-t-2 border-error/20">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-2">
+        <i class="bi bi-exclamation-triangle-fill text-error text-xl"></i>
+        <h3 class="text-lg font-medium text-error">Danger Zone</h3>
+      </div>
+      <p class="text-sm text-text-muted">
+        Permanently delete your account and all associated data. This action cannot be undone.
+      </p>
+    </div>
+
+    @if (!showDeleteConfirmation) {
+      <button
+        (click)="openDeleteConfirmation()"
+        class="w-full border-2 border-error text-error px-4 py-3
+               hover:bg-error hover:text-white transition-all
+               font-medium text-sm cursor-pointer group">
+        <span class="flex items-center justify-center gap-2">
+          <i class="bi bi-trash text-lg"></i>
+          <span>Delete My Account</span>
+        </span>
+      </button>
+    } @else {
+      <div class="border-2 border-error p-6 space-y-6">
+        <div class="bg-error/5 p-4 border-l-4 border-error">
+          <div class="flex items-start gap-3">
+            <i class="bi bi-exclamation-triangle-fill text-error text-lg mt-0.5"></i>
+            <div class="text-sm">
+              <p class="font-medium text-error mb-2">Warning: This action is permanent!</p>
+              <p class="text-text-muted">
+                All your data including profile, bookmarks, contributions, and photos will be permanently deleted.
+                You will not be able to recover your account.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="text-sm text-text-muted bg-surface-alt p-4 rounded">
+            Are you sure you want to permanently delete your account? This action cannot be undone.
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button
+            (click)="confirmDeleteAccount()"
+            [disabled]="loading"
+            class="flex-1 border-2 border-error bg-error text-white px-4 py-3
+                   hover:bg-error/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
+                   font-medium text-sm cursor-pointer">
+            <span class="flex items-center justify-center gap-2">
+              <i class="bi bi-trash"></i>
+              <span>{{ loading ? 'Deleting...' : 'Permanently Delete Account' }}</span>
+            </span>
+          </button>
+          <button
+            (click)="closeDeleteConfirmation()"
+            [disabled]="loading"
+            class="px-6 py-3 border-2 border-border hover:border-text-muted transition-colors
+                   font-medium text-sm cursor-pointer disabled:opacity-50">
+            Cancel
+          </button>
+        </div>
+      </div>
+    }
+  </section>
+
 </div>
 </div>

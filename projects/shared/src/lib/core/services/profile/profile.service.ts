@@ -72,4 +72,8 @@ export class ProfileService {
     return this.http.post<UserDto>(`${this.baseUrl}/photo`, formData);
   }
 
+  deleteAccount(): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.baseUrl}`);
+  }
+
 }

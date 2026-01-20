@@ -27,6 +27,7 @@ export interface MonumentDto {
     parishId?: number;
     municipalityId?: number;
     districtId?: number;
+    active?: boolean;
     createdAt?: string;
     lastModifiedAt?: string;
 }

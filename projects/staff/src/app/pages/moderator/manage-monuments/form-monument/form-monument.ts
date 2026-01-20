@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CheckboxModule } from 'primeng/checkbox';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
@@ -22,7 +23,8 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
     ButtonModule,
     TextareaModule,
     DividerModule,
-    FileUploadModule
+    FileUploadModule,
+    CheckboxModule
   ],
   template: `
     <form [formGroup]="monumentForm" (ngSubmit)="onSubmit()" class="monument-form">
@@ -69,6 +71,11 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
             formControlName="website"
             type="url"
             placeholder="https://..." />
+        </div>
+
+        <div class="field-checkbox">
+          <p-checkbox formControlName="active" [binary]="true" inputId="active"></p-checkbox>
+          <label for="active">Active</label>
         </div>
       </section>
 
@@ -229,6 +236,17 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
       color: var(--red-500);
     }
 
+    .field-checkbox {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .field-checkbox label {
+      margin-left: 0.5rem;
+      margin-bottom: 0;
+    }
+
     .coordinates-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -295,7 +313,10 @@ export class FormMonument implements OnInit {
     this.initForm();
 
     if (this.monument) {
-      this.monumentForm.patchValue(this.monument);
+      this.monumentForm.patchValue({
+        ...this.monument,
+        active: this.monument.active !== undefined ? this.monument.active : true
+      });
     }
   }
 
@@ -308,7 +329,8 @@ export class FormMonument implements OnInit {
       latitude: [null],
       longitude: [null],
       address: [''],
-      city: ['']
+      city: [''],
+      active: [true]
     });
   }
 

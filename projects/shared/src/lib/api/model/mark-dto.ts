@@ -15,5 +15,6 @@ export interface MarkDto {
     description?: string;
     embedding?: Array<number>;
     coverId?: number;
+    active?: boolean;
 }
 

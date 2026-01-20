@@ -26,6 +26,14 @@ export class MarkOccurrenceService {
     return this.http.get<PageMarkOccurrenceDto>(this.baseUrl, { params });
   }
 
+  findAllManagement(page: number = 0, size: number = 20): Observable<PageMarkOccurrenceDto> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+
+    return this.http.get<PageMarkOccurrenceDto>(`${this.baseUrl}/management`, { params });
+  }
+
   getById(id: number): Observable<MarkOccurrenceDetailedDto> {
     return this.http.get<MarkOccurrenceDetailedDto>(`${this.baseUrl}/${id}`);
   }

@@ -19,11 +19,12 @@ import { SelectModule } from 'primeng/select';
 import { AdministrativeDivisionService } from '@core/services/administrative-division/administrative-division.service';
 import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
 import { FormsModule } from '@angular/forms';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-manage-monuments',
   standalone: true,
-  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI, RouterModule, SelectModule, FormsModule],
+  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI, RouterModule, SelectModule, FormsModule, TagModule],
   template: `
     <app-toolbar
       title="Manage Monuments"
@@ -97,21 +98,37 @@ import { FormsModule } from '@angular/forms';
       (pageChange)="onPageChange($event)"
       (searchChange)="onSearchChange($event)">
 
-      <ng-template #actions let-monument>
-        <p-button
-          icon="pi pi-pencil"
-          severity="info"
-          class="mr-2"
-          [rounded]="true"
-          [text]="true"
-          (onClick)="editMonument(monument)"></p-button>
+      <ng-template #body let-monument let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <ng-container [ngSwitch]="col.field">
+              <ng-container *ngSwitchCase="'active'">
+                <p-tag [value]="monument.active ? 'Active' : 'Inactive'" [severity]="monument.active ? 'success' : 'danger'"></p-tag>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ monument[col.field] }}
+              </ng-container>
+            </ng-container>
+          </td>
+          <td>
+            <div class="flex">
+              <p-button
+                icon="pi pi-pencil"
+                severity="info"
+                class="mr-2"
+                [rounded]="true"
+                [text]="true"
+                (onClick)="editMonument(monument)"></p-button>
 
-        <p-button
-          icon="pi pi-trash"
-          severity="danger"
-          [rounded]="true"
-          [text]="true"
-          (onClick)="deleteMonument(monument)"></p-button>
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [text]="true"
+                (onClick)="deleteMonument(monument)"></p-button>
+            </div>
+          </td>
+        </tr>
       </ng-template>
 
     </app-table>
@@ -138,7 +155,8 @@ export class ManageMonuments implements OnInit, OnDestroy {
     { field: 'id', header: 'ID' },
     { field: 'name', header: 'Name' },
     { field: 'protectionTitle', header: 'Protection Title' },
-    { field: 'lastModifiedAt', header: 'Modified At', type: 'date' }
+    { field: 'lastModifiedAt', header: 'Modified At', type: 'date' },
+    { field: 'active', header: 'Active' }
   ];
 
   constructor(
@@ -217,7 +235,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
     } else if (this.selectedDistrict) {
       observable = this.monumentService.filterByDivision(this.selectedDistrict.id!, page, size);
     } else {
-      observable = this.monumentService.getDetailedMonuments(page, size, sort);
+      observable = this.monumentService.getDetailedMonumentsManagement(page, size, sort);
     }
 
     observable

@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MediaVariant } from './media-variant';
 
 
 export interface MediaFile { 
@@ -18,6 +19,7 @@ export interface MediaFile {
     storagePath?: string;
     providerPublicId?: string;
     uploadedAt?: string;
+    variants?: Array<MediaVariant>;
     status?: MediaFile.StatusEnum;
 }
 export namespace MediaFile {

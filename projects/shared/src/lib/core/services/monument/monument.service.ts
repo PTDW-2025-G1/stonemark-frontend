@@ -67,6 +67,18 @@ export class MonumentService {
     return this.http.get<PageMonumentResponseDto>(`${this.baseUrl}/details`, { params });
   }
 
+  getDetailedMonumentsManagement(page: number = 0, size: number = 10, sort?: string): Observable<PageMonumentResponseDto> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<PageMonumentResponseDto>(`${this.baseUrl}/management`, { params });
+  }
+
   getAllForMap(): Observable<MonumentMapDto[]> {
     return this.http.get<PageMonumentMapDto>(`${this.baseUrl}/map?size=100`).pipe(
       map(page => page.content || [])

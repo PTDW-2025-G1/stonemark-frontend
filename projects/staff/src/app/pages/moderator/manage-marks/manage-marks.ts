@@ -16,6 +16,7 @@ import { AppToolbarComponent } from '../../../components/toolbar/toolbar.compone
 import { take } from 'rxjs';
 import { environment } from '@env/environment';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-manage-marks',
@@ -31,7 +32,8 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
     ConfirmDialogModule,
     PaginatorModule,
     RouterModule,
-    AppToolbarComponent
+    AppToolbarComponent,
+    TagModule
   ],
   providers: [MessageService, ConfirmationService, MarkService],
   template: `
@@ -62,6 +64,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
             <th style="width: 4rem">ID</th>
             <th style="width: 10rem">Image</th>
             <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+            <th>Active</th>
             <th>Actions</th>
           </tr>
         </ng-template>
@@ -75,6 +78,9 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
               }
             </td>
             <td>{{mark.description}}</td>
+            <td>
+              <p-tag [value]="mark.active ? 'Active' : 'Inactive'" [severity]="mark.active ? 'success' : 'danger'"></p-tag>
+            </td>
             <td>
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editMark(mark)"></button>
               <button pButton pRipple icon="pi pi-tags" class="p-button-rounded p-button-info mr-2" (click)="manageOccurrences(mark)"></button>
@@ -120,7 +126,7 @@ export class ManageMarks implements OnInit {
   }
 
   loadMarks(page: number, size: number) {
-    this.markService.getDetailedMarks(page, size)
+    this.markService.getDetailedMarksManagement(page, size)
       .pipe(take(1))
       .subscribe({
         next: (response) => {

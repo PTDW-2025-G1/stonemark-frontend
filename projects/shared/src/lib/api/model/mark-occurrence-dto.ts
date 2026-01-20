@@ -21,5 +21,6 @@ export interface MarkOccurrenceDto {
     authorId?: number;
     authorName?: string;
     publishedAt?: string;
+    active?: boolean;
 }
 

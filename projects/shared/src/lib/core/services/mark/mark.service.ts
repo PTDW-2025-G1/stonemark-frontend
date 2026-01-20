@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { MarkDto } from '@api/model/mark-dto';
 import { PageMarkListDto } from '@api/model/page-mark-list-dto';
 import { PageMarkDetailedDto } from '@api/model/page-mark-detailed-dto';
+import { PageMarkDto } from '@api/model/page-mark-dto';
 
 
 @Injectable({
@@ -28,6 +29,13 @@ export class MarkService {
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get<PageMarkDetailedDto>(`${this.baseUrl}/details`, { params });
+  }
+
+  getDetailedMarksManagement(page: number = 0, size: number = 9): Observable<PageMarkDto> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageMarkDto>(`${this.baseUrl}/management`, { params });
   }
 
   searchMarks(query: string, page: number = 0, size: number = 9, sort: string = 'title,asc'){

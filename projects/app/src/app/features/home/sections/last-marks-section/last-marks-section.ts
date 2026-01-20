@@ -46,7 +46,7 @@ export class LastMarkSectionComponent {
 
   getImageUrl(occurrence: MarkOccurrenceDto): string {
     return ImageUtils.getImageUrl(
-      occurrence.mark?.coverId,
+      occurrence.coverId,
       'assets/placeholder.png',
       ImageVariant.PREVIEW
     );

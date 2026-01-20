@@ -79,6 +79,6 @@ export class CreateMarkOccurrence implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/admin/marks/occurrences']);
+    this.router.navigate(['/moderator/marks/occurrences']);
   }
 }

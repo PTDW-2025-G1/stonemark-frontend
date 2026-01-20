@@ -71,7 +71,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
             <td>{{occurrence.id}}</td>
             <td>
               @if (occurrence.monument) {
-                <a [routerLink]="['/admin/monuments/edit', occurrence.monument.id]" class="text-primary hover:underline cursor-pointer font-medium">
+                <a [routerLink]="['/moderator/monuments/edit', occurrence.monument.id]" class="text-primary hover:underline cursor-pointer font-medium">
                   {{occurrence.monument.name}}
                 </a>
               } @else {
@@ -128,7 +128,7 @@ export class ManageMarkOccurrences implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.markId = params['markId'] ? Number(params['markId']) : undefined;
       if (!this.markId) {
-        this.router.navigate(['/admin/marks']);
+        this.router.navigate(['/moderator/marks']);
       } else {
         this.loadOccurrences(0, this.rows);
       }
@@ -158,11 +158,11 @@ export class ManageMarkOccurrences implements OnInit {
   }
 
   openNew() {
-    this.router.navigate(['/admin/marks/occurrences/create'], { queryParams: { markId: this.markId } });
+    this.router.navigate(['/moderator/marks/occurrences/create'], { queryParams: { markId: this.markId } });
   }
 
   editOccurrence(occurrence: MarkOccurrenceDto) {
-    this.router.navigate(['/admin/marks/occurrences/edit', occurrence.id]);
+    this.router.navigate(['/moderator/marks/occurrences/edit', occurrence.id]);
   }
 
   deleteOccurrence(occurrence: MarkOccurrenceDto) {

@@ -244,7 +244,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
   }
 
   createMonument(){
-    this.router.navigate(['/admin/monuments/create']);
+    this.router.navigate(['/moderator/monuments/create']);
   }
 
   onPageChange(event: { first: number; rows: number; page: number; sortField?: string; sortOrder?: number }): void {
@@ -274,7 +274,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
   }
 
   editMonument(monument: MonumentResponseDto) {
-    this.router.navigate(['/admin/monuments/edit', monument.id]);
+    this.router.navigate(['/moderator/monuments/edit', monument.id]);
   }
 
   deleteMonument(monument: MonumentResponseDto): void {

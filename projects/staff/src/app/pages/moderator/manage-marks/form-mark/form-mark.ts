@@ -7,7 +7,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MarkDto } from '@api/model/mark-dto';
-import { environment } from '@env/environment';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';

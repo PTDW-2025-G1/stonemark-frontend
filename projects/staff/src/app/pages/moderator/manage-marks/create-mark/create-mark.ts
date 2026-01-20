@@ -72,6 +72,6 @@ export class CreateMark {
   }
 
   goBack() {
-    this.router.navigate(['/admin/marks']);
+    this.router.navigate(['/moderator/marks']);
   }
 }

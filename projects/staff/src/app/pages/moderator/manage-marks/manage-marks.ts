@@ -140,15 +140,15 @@ export class ManageMarks implements OnInit {
   }
 
   openNew() {
-    this.router.navigate(['/admin/marks/create']);
+    this.router.navigate(['/moderator/marks/create']);
   }
 
   editMark(mark: MarkDetailedDto) {
-    this.router.navigate(['/admin/marks/edit', mark.id]);
+    this.router.navigate(['/moderator/marks/edit', mark.id]);
   }
 
   manageOccurrences(mark: MarkDetailedDto) {
-    this.router.navigate(['/admin/marks/occurrences'], { queryParams: { markId: mark.id } });
+    this.router.navigate(['/moderator/marks/occurrences'], { queryParams: { markId: mark.id } });
   }
 
   deleteMark(mark: MarkDetailedDto) {

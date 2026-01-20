@@ -109,6 +109,6 @@ export class EditMark implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/admin/marks']);
+    this.router.navigate(['/moderator/marks']);
   }
 }

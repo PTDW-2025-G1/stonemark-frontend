@@ -33,11 +33,11 @@ interface Monument {
 })
 export class BestMonumentsWidget {
     monuments: Monument[] = [
-        { name: 'Torre de Belém', city: 'Lisboa', marks: 120 },
-        { name: 'Mosteiro dos Jerónimos', city: 'Lisboa', marks: 98 },
-        { name: 'Palácio da Pena', city: 'Sintra', marks: 87 },
-        { name: 'Castelo de São Jorge', city: 'Lisboa', marks: 75 },
-        { name: 'Sé do Porto', city: 'Porto', marks: 60 },
-        { name: 'Convento de Cristo', city: 'Tomar', marks: 55 }
+        { name: 'Torre de Belém', city: 'Lisboa', marks: 5 },
+        { name: 'Mosteiro dos Jerónimos', city: 'Lisboa', marks: 3 },
+        { name: 'Palácio da Pena', city: 'Sintra', marks: 2 },
+        { name: 'Castelo de São Jorge', city: 'Lisboa', marks: 7 },
+        { name: 'Sé do Porto', city: 'Porto', marks: 2 },
+        { name: 'Convento de Cristo', city: 'Tomar', marks: 4 }
     ];
 }

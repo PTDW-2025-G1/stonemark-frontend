@@ -67,6 +67,6 @@ export class CreateMonument {
   }
 
   goBack() {
-    this.router.navigate(['/admin/monuments']);
+    this.router.navigate(['/moderator/monuments']);
   }
 }

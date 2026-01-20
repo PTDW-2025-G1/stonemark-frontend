@@ -106,6 +106,6 @@ export class EditMonument implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/admin/monuments']);
+    this.router.navigate(['/moderator/monuments']);
   }
 }

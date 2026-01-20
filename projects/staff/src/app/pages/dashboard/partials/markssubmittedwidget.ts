@@ -40,7 +40,7 @@ export class MarksSubmittedWidget {
                     type: 'bar',
                     label: 'Marks Submitted',
                     backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
-                    data: [120, 200, 150, 180],
+                    data: [5, 10, 2, 3],
                     barThickness: 32
                 }
             ]

@@ -45,7 +45,7 @@ import { TagModule } from 'primeng/tag';
       </div>
     </p-blockUI>
 
-    <div class="mb-3 flex justify-content-between align-items-center">
+    <div class="mb-3 flex justify-content-between align-items-center gap-3">
       <div class="flex gap-2">
         <p-select
           [options]="districts"
@@ -98,6 +98,25 @@ import { TagModule } from 'primeng/tag';
       (pageChange)="onPageChange($event)"
       (searchChange)="onSearchChange($event)">
 
+      <ng-template #actions let-monument>
+        <div class="flex justify-content-end">
+          <p-button
+            icon="pi pi-pencil"
+            severity="info"
+            class="mr-2"
+            [rounded]="true"
+            [text]="true"
+            (onClick)="editMonument(monument)"></p-button>
+
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [text]="true"
+            (onClick)="deleteMonument(monument)"></p-button>
+        </div>
+      </ng-template>
+
       <ng-template #body let-monument let-columns="columns">
         <tr>
           <td *ngFor="let col of columns">
@@ -110,23 +129,8 @@ import { TagModule } from 'primeng/tag';
               </ng-container>
             </ng-container>
           </td>
-          <td>
-            <div class="flex">
-              <p-button
-                icon="pi pi-pencil"
-                severity="info"
-                class="mr-2"
-                [rounded]="true"
-                [text]="true"
-                (onClick)="editMonument(monument)"></p-button>
-
-              <p-button
-                icon="pi pi-trash"
-                severity="danger"
-                [rounded]="true"
-                [text]="true"
-                (onClick)="deleteMonument(monument)"></p-button>
-            </div>
+          <td style="text-align: right">
+            <ng-container *ngTemplateOutlet="actions; context: {$implicit: monument}"></ng-container>
           </td>
         </tr>
       </ng-template>
@@ -346,13 +350,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
       if (file) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          // We don't need to read the content here anymore, just pass the file
-          // But since the current implementation reads it, let's keep it consistent or change it.
-          // The request is to use the file directly.
-
           this.isImporting.set(true);
-
-          // We need to pass the file object, not the content string
           this.monumentService.importMonumentsFromGeoJson(file).subscribe({
               next: (response) => {
                 this.isImporting.set(false);

@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CheckboxModule } from 'primeng/checkbox';
 import { MarkDto } from '@api/model/mark-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
@@ -23,7 +24,8 @@ import { SelectModule } from 'primeng/select';
     TextareaModule,
     DividerModule,
     FileUploadModule,
-    SelectModule
+    SelectModule,
+    CheckboxModule
   ],
   providers: [MarkOccurrenceService],
   template: `
@@ -39,6 +41,11 @@ import { SelectModule } from 'primeng/select';
             formControlName="description"
             rows="5"
             placeholder="Describe the mark..."></textarea>
+        </div>
+
+        <div class="field-checkbox">
+          <p-checkbox formControlName="active" [binary]="true" inputId="active"></p-checkbox>
+          <label for="active">Active</label>
         </div>
       </section>
 
@@ -164,6 +171,17 @@ import { SelectModule } from 'primeng/select';
       color: var(--red-500);
     }
 
+    .field-checkbox {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .field-checkbox label {
+      margin-left: 0.5rem;
+      margin-bottom: 0;
+    }
+
     .form-actions {
       display: flex;
       gap: 1rem;
@@ -238,14 +256,16 @@ export class FormMark implements OnInit, OnChanges {
 
   private initForm(): void {
     this.markForm = this.fb.group({
-      description: ['']
+      description: [''],
+      active: [true]
     });
   }
 
   private updateForm(): void {
     if (this.mark && this.markForm) {
       this.markForm.patchValue({
-        description: this.mark.description
+        description: this.mark.description,
+        active: this.mark.active !== undefined ? this.mark.active : true
       });
     }
   }

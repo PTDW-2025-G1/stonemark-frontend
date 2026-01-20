@@ -22,5 +22,6 @@ export interface MonumentRequestDto {
     municipalityId?: number;
     districtId?: number;
     coverId?: number;
+    active?: boolean;
 }
 

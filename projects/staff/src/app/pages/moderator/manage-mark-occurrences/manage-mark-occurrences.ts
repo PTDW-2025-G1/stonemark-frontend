@@ -16,6 +16,7 @@ import { AppToolbarComponent } from '../../../components/toolbar/toolbar.compone
 import { take } from 'rxjs';
 import { environment } from '@env/environment';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-manage-mark-occurrences',
@@ -31,7 +32,8 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
     ConfirmDialogModule,
     PaginatorModule,
     RouterModule,
-    AppToolbarComponent
+    AppToolbarComponent,
+    TagModule
   ],
   providers: [MessageService, ConfirmationService, MarkOccurrenceService],
   template: `
@@ -62,6 +64,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
             <th style="width: 4rem">ID</th>
             <th>Monument</th>
             <th>Published At</th>
+            <th>Active</th>
             <th>Actions</th>
           </tr>
         </ng-template>
@@ -79,6 +82,9 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
               }
             </td>
             <td>{{occurrence.publishedAt | date:'short'}}</td>
+            <td>
+              <p-tag [value]="occurrence.active ? 'Active' : 'Inactive'" [severity]="occurrence.active ? 'success' : 'danger'"></p-tag>
+            </td>
             <td>
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editOccurrence(occurrence)"></button>
               <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteOccurrence(occurrence)"></button>
@@ -128,7 +134,7 @@ export class ManageMarkOccurrences implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.markId = params['markId'] ? Number(params['markId']) : undefined;
       if (!this.markId) {
-        this.router.navigate(['/moderator/marks']);
+        this.loadOccurrences(0, this.rows);
       } else {
         this.loadOccurrences(0, this.rows);
       }
@@ -138,6 +144,18 @@ export class ManageMarkOccurrences implements OnInit {
   loadOccurrences(page: number, size: number) {
     if (this.markId) {
       this.service.getByMarkId(this.markId, page, size)
+        .pipe(take(1))
+        .subscribe({
+          next: (response) => {
+            this.occurrences = response.content || [];
+            this.totalRecords = response.totalElements || 0;
+          },
+          error: () => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load occurrences' });
+          }
+        });
+    } else {
+        this.service.findAllManagement(page, size)
         .pipe(take(1))
         .subscribe({
           next: (response) => {

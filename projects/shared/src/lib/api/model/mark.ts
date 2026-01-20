@@ -20,5 +20,6 @@ export interface Mark {
     description?: string;
     cover?: MediaFile;
     embedding?: Array<number>;
+    active?: boolean;
 }
 

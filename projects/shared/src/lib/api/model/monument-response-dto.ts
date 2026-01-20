@@ -26,5 +26,6 @@ export interface MonumentResponseDto {
     coverId?: number;
     createdAt?: string;
     lastModifiedAt?: string;
+    active?: boolean;
 }
 

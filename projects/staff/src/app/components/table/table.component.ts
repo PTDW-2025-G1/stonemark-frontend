@@ -50,24 +50,29 @@ import { getSeverity } from '../../utils/severity.util';
                     </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-item>
-                    <tr class="table-row" (click)="onRowClick(item)" [style.cursor]="rowClick.observed ? 'pointer' : 'default'">
-                        <td *ngFor="let col of columns">
-                            <ng-container [ngSwitch]="col.type">
-                                <p-tag
-                                    *ngSwitchCase="'status'"
-                                    [value]="item[col.field]"
-                                    [severity]="getSeverity(item[col.field])"
-                                    styleClass="modern-tag"
-                                ></p-tag>
-                                <span *ngSwitchDefault>{{ item[col.field] }}</span>
-                            </ng-container>
-                        </td>
+                <ng-template pTemplate="body" let-item let-columns="columns">
+                    <ng-container *ngIf="bodyTemplate; else defaultBody">
+                        <ng-container *ngTemplateOutlet="bodyTemplate; context: { $implicit: item, columns: columns }"></ng-container>
+                    </ng-container>
+                    <ng-template #defaultBody>
+                        <tr class="table-row" (click)="onRowClick(item)" [style.cursor]="rowClick.observed ? 'pointer' : 'default'">
+                            <td *ngFor="let col of columns">
+                                <ng-container [ngSwitch]="col.type">
+                                    <p-tag
+                                        *ngSwitchCase="'status'"
+                                        [value]="item[col.field]"
+                                        [severity]="getSeverity(item[col.field])"
+                                        styleClass="modern-tag"
+                                    ></p-tag>
+                                    <span *ngSwitchDefault>{{ item[col.field] }}</span>
+                                </ng-container>
+                            </td>
 
-                        <td *ngIf="actions" style="text-align: right;">
-                            <ng-container *ngTemplateOutlet="actions; context: { $implicit: item }"></ng-container>
-                        </td>
-                    </tr>
+                            <td *ngIf="actions" style="text-align: right;">
+                                <ng-container *ngTemplateOutlet="actions; context: { $implicit: item }"></ng-container>
+                            </td>
+                        </tr>
+                    </ng-template>
                 </ng-template>
             </p-table>
         </div>
@@ -83,6 +88,7 @@ export class AppTableComponent implements OnInit, OnDestroy {
     @Input() rows: number = 10;
     @Input() first: number = 0;
     @ContentChild('actions') actions?: TemplateRef<any>;
+    @ContentChild('body') bodyTemplate?: TemplateRef<any>;
 
     @ViewChild('dt') dt: any;
     @Output() export = new EventEmitter<void>();

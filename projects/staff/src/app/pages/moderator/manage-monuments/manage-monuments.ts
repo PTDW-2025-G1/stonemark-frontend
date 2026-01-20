@@ -19,11 +19,12 @@ import { SelectModule } from 'primeng/select';
 import { AdministrativeDivisionService } from '@core/services/administrative-division/administrative-division.service';
 import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
 import { FormsModule } from '@angular/forms';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-manage-monuments',
   standalone: true,
-  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI, RouterModule, SelectModule, FormsModule],
+  imports: [CommonModule, Toast, ButtonModule, AppToolbarComponent, AppTableComponent, ConfirmDialog, ProgressBar, BlockUI, RouterModule, SelectModule, FormsModule, TagModule],
   template: `
     <app-toolbar
       title="Manage Monuments"
@@ -44,7 +45,7 @@ import { FormsModule } from '@angular/forms';
       </div>
     </p-blockUI>
 
-    <div class="mb-3 flex justify-content-between align-items-center">
+    <div class="mb-3 flex justify-content-between align-items-center gap-3">
       <div class="flex gap-2">
         <p-select
           [options]="districts"
@@ -98,20 +99,40 @@ import { FormsModule } from '@angular/forms';
       (searchChange)="onSearchChange($event)">
 
       <ng-template #actions let-monument>
-        <p-button
-          icon="pi pi-pencil"
-          severity="info"
-          class="mr-2"
-          [rounded]="true"
-          [text]="true"
-          (onClick)="editMonument(monument)"></p-button>
+        <div class="flex justify-content-end">
+          <p-button
+            icon="pi pi-pencil"
+            severity="info"
+            class="mr-2"
+            [rounded]="true"
+            [text]="true"
+            (onClick)="editMonument(monument)"></p-button>
 
-        <p-button
-          icon="pi pi-trash"
-          severity="danger"
-          [rounded]="true"
-          [text]="true"
-          (onClick)="deleteMonument(monument)"></p-button>
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [text]="true"
+            (onClick)="deleteMonument(monument)"></p-button>
+        </div>
+      </ng-template>
+
+      <ng-template #body let-monument let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <ng-container [ngSwitch]="col.field">
+              <ng-container *ngSwitchCase="'active'">
+                <p-tag [value]="monument.active ? 'Active' : 'Inactive'" [severity]="monument.active ? 'success' : 'danger'"></p-tag>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ monument[col.field] }}
+              </ng-container>
+            </ng-container>
+          </td>
+          <td style="text-align: right">
+            <ng-container *ngTemplateOutlet="actions; context: {$implicit: monument}"></ng-container>
+          </td>
+        </tr>
       </ng-template>
 
     </app-table>
@@ -138,7 +159,8 @@ export class ManageMonuments implements OnInit, OnDestroy {
     { field: 'id', header: 'ID' },
     { field: 'name', header: 'Name' },
     { field: 'protectionTitle', header: 'Protection Title' },
-    { field: 'lastModifiedAt', header: 'Modified At', type: 'date' }
+    { field: 'lastModifiedAt', header: 'Modified At', type: 'date' },
+    { field: 'active', header: 'Active' }
   ];
 
   constructor(
@@ -217,7 +239,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
     } else if (this.selectedDistrict) {
       observable = this.monumentService.filterByDivision(this.selectedDistrict.id!, page, size);
     } else {
-      observable = this.monumentService.getDetailedMonuments(page, size, sort);
+      observable = this.monumentService.getDetailedMonumentsManagement(page, size, sort);
     }
 
     observable
@@ -328,13 +350,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
       if (file) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          // We don't need to read the content here anymore, just pass the file
-          // But since the current implementation reads it, let's keep it consistent or change it.
-          // The request is to use the file directly.
-
           this.isImporting.set(true);
-
-          // We need to pass the file object, not the content string
           this.monumentService.importMonumentsFromGeoJson(file).subscribe({
               next: (response) => {
                 this.isImporting.set(false);

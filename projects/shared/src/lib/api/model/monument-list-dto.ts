@@ -15,5 +15,6 @@ export interface MonumentListDto {
     name?: string;
     parish?: AdministrativeDivisionDto;
     coverId?: number;
+    active?: boolean;
 }
 

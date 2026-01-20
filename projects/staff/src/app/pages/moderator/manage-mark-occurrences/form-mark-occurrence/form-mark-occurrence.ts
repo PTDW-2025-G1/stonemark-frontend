@@ -5,6 +5,7 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CheckboxModule } from 'primeng/checkbox';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkService } from '@core/services/mark/mark.service';
 import { MonumentService } from '@core/services/monument/monument.service';
@@ -26,7 +27,8 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
     ButtonModule,
     DividerModule,
     FileUploadModule,
-    TooltipModule
+    TooltipModule,
+    CheckboxModule
   ],
   providers: [MarkService, MonumentService],
   template: `
@@ -103,6 +105,11 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
           @if (monumentIdControl?.invalid && monumentIdControl?.touched) {
             <small class="p-error">Monument is required</small>
           }
+        </div>
+
+        <div class="field-checkbox">
+          <p-checkbox formControlName="active" [binary]="true" inputId="active"></p-checkbox>
+          <label for="active">Active</label>
         </div>
       </section>
 
@@ -200,6 +207,17 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
       color: var(--red-500);
     }
 
+    .field-checkbox {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .field-checkbox label {
+      margin-left: 0.5rem;
+      margin-bottom: 0;
+    }
+
     .form-actions {
       display: flex;
       gap: 1rem;
@@ -267,7 +285,8 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   private initForm(): void {
     this.form = this.fb.group({
       markId: [null, Validators.required],
-      monumentId: [null, Validators.required]
+      monumentId: [null, Validators.required],
+      active: [true]
     });
   }
 
@@ -284,7 +303,8 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
     if (this.markOccurrence && this.form) {
       this.form.patchValue({
         markId: this.markOccurrence.markId,
-        monumentId: this.markOccurrence.monumentId
+        monumentId: this.markOccurrence.monumentId,
+        active: this.markOccurrence.active !== undefined ? this.markOccurrence.active : true
       });
       // If markOccurrence has monumentId directly
        if ((this.markOccurrence as any).monumentId) {
@@ -370,6 +390,6 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   }
 
   getImageUrl(coverId: number): string {
-    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.THUMBNAIL);
+    return ImageUtils.getImageUrl(coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

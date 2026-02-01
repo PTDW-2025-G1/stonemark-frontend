@@ -5,14 +5,12 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { MarkOccurrenceProposalModerationService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal-moderation.service';
-import { ProposalModeratorViewDto } from '@api/model/proposal-moderator-view-dto';
-import { ManualDecisionRequest } from '@api/model/manual-decision-request';
+import { AdminProposalService } from '@core/services/proposal/admin-proposal.service';
+import { ProposalAdminListDto } from '@api/model/proposal-admin-list-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';
 import { StatusFilterComponent } from '../../../components/status-filter/status-filter.component';
 import { Subject, takeUntil, take } from 'rxjs';
-import { ProposalModeratorListDto } from '@api/model/proposal-moderator-list-dto';
 import type { StatusFilterValue } from '../../../components/status-filter/status-filter.component';
 import { DateUtils } from '@shared/utils/date.utils';
 import { SortUtils } from '../../../utils/sort.utils';
@@ -31,8 +29,8 @@ import { SortUtils } from '../../../utils/sort.utils';
   ],
   template: `
     <app-toolbar
-      title="Mark Occurrence Proposals"
-      subtitle="Review and moderate mark occurrence proposals submitted by users."
+      title="Proposals"
+      subtitle="Review and moderate proposals submitted by users."
       (export)="exportCSV()"
     ></app-toolbar>
     <p-toast />
@@ -45,7 +43,7 @@ import { SortUtils } from '../../../utils/sort.utils';
       #table
       [data]="proposals()"
       [columns]="columns"
-      [globalFilterFields]="['monumentName', 'submittedAt']"
+      [globalFilterFields]="['title', 'submittedAt']"
       [lazy]="true"
       [totalRecords]="totalRecords()"
       [rows]="pageSize()"
@@ -59,19 +57,6 @@ import { SortUtils } from '../../../utils/sort.utils';
           class="mr-2"
           (click)="viewDetails(item); $event.stopPropagation()">
         </p-button>
-        @if (item.status === 'SUBMITTED' || item.status === 'UNDER_REVIEW') {
-          <p-button
-            icon="pi pi-check"
-            severity="success"
-            class="mr-2"
-            (click)="confirmAction(item, 'ACCEPT'); $event.stopPropagation()">
-          </p-button>
-          <p-button
-            icon="pi pi-times"
-            severity="danger"
-            (click)="confirmAction(item, 'REJECT'); $event.stopPropagation()">
-          </p-button>
-        }
       </ng-template>
     </app-table>
   `,
@@ -80,7 +65,7 @@ import { SortUtils } from '../../../utils/sort.utils';
 export class ContentProposals implements OnInit, OnDestroy {
   @ViewChild('table') tableComp!: AppTableComponent;
 
-  proposals = signal<ProposalModeratorListDto[]>([]);
+  proposals = signal<ProposalAdminListDto[]>([]);
   totalRecords = signal<number>(0);
   currentPage = signal<number>(0);
   pageSize = signal<number>(10);
@@ -100,7 +85,7 @@ export class ContentProposals implements OnInit, OnDestroy {
 
   columns = [
     { field: 'id', header: 'ID' },
-    { field: 'monumentName', header: 'Monument' },
+    { field: 'title', header: 'Title' },
     { field: 'status', header: 'Status', type: 'status' },
     { field: 'priority', header: 'Priority' },
     { field: 'submissionSource', header: 'Source' },
@@ -111,8 +96,7 @@ export class ContentProposals implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private moderationService: MarkOccurrenceProposalModerationService
+    private adminProposalService: AdminProposalService
   ) {}
 
   ngOnInit(): void {
@@ -135,7 +119,7 @@ export class ContentProposals implements OnInit, OnDestroy {
     const statusArray = statusFilter !== 'ALL' ? [statusFilter] : undefined;
     const sort = SortUtils.buildSortString(sortField, sortOrder);
 
-    this.moderationService.getAllProposals(page, size, statusArray, sort)
+    this.adminProposalService.getAllProposals(page, size, sort, statusArray)
       .pipe(take(1))
       .subscribe({
         next: (pageData) => {
@@ -196,64 +180,9 @@ export class ContentProposals implements OnInit, OnDestroy {
     });
   }
 
-  viewDetails(item: ProposalModeratorViewDto) {
+  viewDetails(item: ProposalAdminListDto) {
     if (item.id) {
       this.router.navigate(['/moderator/content-proposals', item.id]);
-    }
-  }
-
-  confirmAction(item: ProposalModeratorViewDto, outcome: ManualDecisionRequest.OutcomeEnum) {
-    const action = outcome === 'ACCEPT' ? 'accept' : 'reject';
-    this.confirmationService.confirm({
-      message: `Do you want to ${action} the proposal for ${item.monumentName || 'this monument'}?`,
-      accept: () => this.createManualDecision(item, outcome)
-    });
-  }
-
-  async createManualDecision(item: ProposalModeratorViewDto, outcome: ManualDecisionRequest.OutcomeEnum) {
-    if (!item.id) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Invalid proposal ID.'
-      });
-      return;
-    }
-
-    try {
-      const request: ManualDecisionRequest = {
-        outcome: outcome,
-        notes: undefined
-      };
-
-      this.moderationService.createManualDecision(item.id, request)
-        .pipe(take(1))
-        .subscribe({
-          next: () => {
-            this.loadProposals(this.currentPage(), this.pageSize(), this.statusFilter());
-
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: `The proposal has been ${outcome === 'ACCEPT' ? 'accepted' : 'rejected'}.`
-            });
-          },
-          error: (error) => {
-            console.error('Error creating manual decision:', error);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Failed to update proposal status.'
-            });
-          }
-        });
-    } catch (error) {
-      console.error('Error creating manual decision:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to update proposal status.'
-      });
     }
   }
 

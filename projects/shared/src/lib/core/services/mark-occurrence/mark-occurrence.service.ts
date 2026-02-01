@@ -29,7 +29,7 @@ export class MarkOccurrenceService {
     return this.http.get<MarkOccurrenceDto>(`${this.baseUrl}/${id}`);
   }
 
-  getOccurrencesByMark(markId: number, page: number = 0, size: number = 6, sort: string = 'publishedAt,desc'): Observable<PageMarkOccurrenceListDto> {
+  getByMarkId(markId: number, page: number = 0, size: number = 6, sort: string = 'publishedAt,desc'): Observable<PageMarkOccurrenceListDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())

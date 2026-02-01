@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { MarkService } from '@core/services/mark/mark.service';
+import { AdminMarkService } from '@core/services/mark/admin-mark.service';
 import { MarkDto } from '@api/model/mark-dto';
 import { FormMark } from '../form-mark/form-mark';
 import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
@@ -13,7 +14,7 @@ import { take } from 'rxjs';
   selector: 'app-edit-mark',
   standalone: true,
   imports: [CommonModule, Toast, FormMark, AppToolbarComponent],
-  providers: [MessageService, MarkService],
+  providers: [MessageService, MarkService, AdminMarkService],
   template: `
     <app-toolbar
       title="Edit Mark"
@@ -51,6 +52,7 @@ export class EditMark implements OnInit {
 
   constructor(
     private markService: MarkService,
+    private adminMarkService: AdminMarkService,
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute
@@ -87,7 +89,7 @@ export class EditMark implements OnInit {
         markToUpdate.coverId = event.coverId;
     }
 
-    this.markService.updateMark(this.markId, markToUpdate, event.file)
+    this.adminMarkService.updateMark(this.markId, markToUpdate, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { MonumentService } from '@core/services/monument/monument.service';
+import { AdminMonumentService } from '@core/services/monument/admin-monument.service';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';
@@ -137,7 +138,7 @@ import { TagModule } from 'primeng/tag';
 
     </app-table>
   `,
-  providers: [MessageService, MonumentService, ConfirmationService, AdministrativeDivisionService]
+  providers: [MessageService, MonumentService, AdminMonumentService, ConfirmationService, AdministrativeDivisionService]
 })
 export class ManageMonuments implements OnInit, OnDestroy {
   monuments = signal<MonumentResponseDto[]>([]);
@@ -165,6 +166,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
 
   constructor(
     private monumentService: MonumentService,
+    private adminMonumentService: AdminMonumentService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
@@ -239,7 +241,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
     } else if (this.selectedDistrict) {
       observable = this.monumentService.filterByDivision(this.selectedDistrict.id!, page, size);
     } else {
-      observable = this.monumentService.getDetailedMonumentsManagement(page, size, sort);
+      observable = this.adminMonumentService.getMonumentsManagement(page, size);
     }
 
     observable
@@ -316,7 +318,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       accept: () => {
-        this.monumentService.deleteMonument(monument.id!)
+        this.adminMonumentService.deleteMonument(monument.id!)
           .pipe(take(1))
           .subscribe({
             next: () => {

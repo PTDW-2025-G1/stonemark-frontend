@@ -7,11 +7,12 @@ import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { MarkOccurrenceRequestDto } from '@api/model/mark-occurrence-request-dto';
 import { MarkService } from '@core/services/mark/mark.service';
-import { MonumentService } from '@core/services/monument/monument.service';
+import { AdminMarkService } from '@core/services/mark/admin-mark.service';
+import { AdminMonumentService } from '@core/services/monument/admin-monument.service';
 import { MarkDto } from '@api/model/mark-dto';
 import { MonumentListDto } from '@api/model/monument-list-dto';
-import { environment } from '@env/environment';
 import { take } from 'rxjs';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
@@ -30,7 +31,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
     TooltipModule,
     CheckboxModule
   ],
-  providers: [MarkService, MonumentService],
+  providers: [MarkService, AdminMarkService, AdminMonumentService],
   template: `
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mark-occurrence-form">
       <section class="form-section">
@@ -53,7 +54,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
               <ng-template let-mark pTemplate="item">
                 <div class="flex align-items-center gap-2">
                   @if (mark.coverId) {
-                    <img [src]="getImageUrl(mark.coverId)" style="width: 100px; height: 100px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
+                    <img [src]="getImageUrl(mark.coverId)" alt="Mark cover" style="width: 100px; height: 100px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
                   }
                   <div>{{ mark.description }}</div>
                 </div>
@@ -61,7 +62,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
               <ng-template let-mark pTemplate="selectedItem">
                 <div class="flex align-items-center gap-2" *ngIf="mark">
                   @if (mark.coverId) {
-                    <img [src]="getImageUrl(mark.coverId)" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
+                    <img [src]="getImageUrl(mark.coverId)" alt="Mark cover" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover; image-rendering: high-quality;" />
                   }
                   <div>{{ mark.description }}</div>
                 </div>
@@ -252,7 +253,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 })
 export class FormMarkOccurrence implements OnInit, OnChanges {
   @Input() markOccurrence?: MarkOccurrenceDto;
-  @Output() save = new EventEmitter<{ dto: MarkOccurrenceDto, file?: File }>();
+  @Output() save = new EventEmitter<{ dto: MarkOccurrenceRequestDto, file?: File }>();
   @Output() cancel = new EventEmitter<void>();
 
   form!: FormGroup;
@@ -266,7 +267,8 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private markService: MarkService,
-    private monumentService: MonumentService,
+    private adminMarkService: AdminMarkService,
+    private adminMonumentService: AdminMonumentService,
     private messageService: MessageService
   ) {}
 
@@ -291,11 +293,11 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   }
 
   private loadData(): void {
-    this.markService.getMarks(0, 100).pipe(take(1)).subscribe(page => {
+    this.adminMarkService.getMarksManagement(0, 100).pipe(take(1)).subscribe(page => {
       this.marks = page.content || [];
     });
-    this.monumentService.getMonuments(0, 100).pipe(take(1)).subscribe(page => {
-      this.monuments = page.content || [];
+    this.adminMonumentService.getMonumentsManagement(0, 100).pipe(take(1)).subscribe(page => {
+      this.monuments = (page.content as unknown as MonumentListDto[]) || [];
     });
   }
 
@@ -368,16 +370,21 @@ export class FormMarkOccurrence implements OnInit, OnChanges {
   onSubmit(): void {
     const hasImage = !!this.selectedFile || !!this.markOccurrence?.coverId;
 
-    if (!hasImage) {
-      this.imageError = true;
-    } else {
-      this.imageError = false;
-    }
+    this.imageError = !hasImage;
 
     if (this.form.valid && hasImage) {
       this.loading = true;
+
+      const dto: MarkOccurrenceRequestDto = {
+        markId: this.form.value.markId,
+        monumentId: this.form.value.monumentId,
+        active: this.form.value.active,
+        coverId: this.markOccurrence?.coverId,
+        publishedAt: this.markOccurrence?.publishedAt
+      };
+
       this.save.emit({
-        dto: this.form.value,
+        dto: dto,
         file: this.selectedFile
       });
     } else {

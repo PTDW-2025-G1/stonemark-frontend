@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { MonumentService } from '@core/services/monument/monument.service';
+import { AdminMonumentService } from '@core/services/monument/admin-monument.service';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
 import { FormMonument } from '../form-monument/form-monument';
@@ -15,7 +16,7 @@ import { take } from 'rxjs';
   selector: 'app-edit-monument',
   standalone: true,
   imports: [CommonModule, Toast, FormMonument, AppToolbarComponent],
-  providers: [MessageService, MonumentService],
+  providers: [MessageService, MonumentService, AdminMonumentService],
   template: `
     <app-toolbar
       title="Edit Monument"
@@ -53,6 +54,7 @@ export class EditMonument implements OnInit {
 
   constructor(
     private monumentService: MonumentService,
+    private adminMonumentService: AdminMonumentService,
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute
@@ -84,7 +86,7 @@ export class EditMonument implements OnInit {
   }
 
   updateMonument(event: { monument: MonumentRequestDto, file?: File }): void {
-    this.monumentService.updateMonument(this.monumentId, event.monument, event.file)
+    this.adminMonumentService.updateMonument(this.monumentId, event.monument, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { AdministrativeDivisionService } from '@core/services/administrative-division/administrative-division.service';
+import { AdminAdministrativeDivisionService } from '@core/services/administrative-division/admin-administrative-division.service';
 import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';
@@ -63,7 +64,7 @@ import { DialogModule } from 'primeng/dialog';
       </app-table>
     </p-dialog>
   `,
-  providers: [MessageService, AdministrativeDivisionService]
+  providers: [MessageService, AdministrativeDivisionService, AdminAdministrativeDivisionService]
 })
 export class ManageDivisions implements OnInit {
   divisions = signal<AdministrativeDivisionDto[]>([]);
@@ -83,6 +84,7 @@ export class ManageDivisions implements OnInit {
 
   constructor(
     private divisionService: AdministrativeDivisionService,
+    private adminDivisionService: AdminAdministrativeDivisionService,
     private messageService: MessageService
   ) {}
 
@@ -150,7 +152,7 @@ export class ManageDivisions implements OnInit {
       const file = event.target.files[0];
       if (file) {
         this.isImporting.set(true);
-        this.divisionService.importDivisionsFromPbf(file).subscribe({
+        this.adminDivisionService.importDivisionsFromPbf(file).subscribe({
           next: (response) => {
             this.isImporting.set(false);
             this.messageService.add({

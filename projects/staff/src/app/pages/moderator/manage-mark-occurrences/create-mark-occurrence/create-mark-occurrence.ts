@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { AdminMarkOccurrenceService } from '@core/services/mark-occurrence/admin-mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
+import { MarkOccurrenceRequestDto } from '@api/model/mark-occurrence-request-dto';
 import { FormMarkOccurrence } from '../form-mark-occurrence/form-mark-occurrence';
 import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
@@ -13,7 +14,7 @@ import { take } from 'rxjs';
   selector: 'app-create-mark-occurrence',
   standalone: true,
   imports: [CommonModule, Toast, FormMarkOccurrence, AppToolbarComponent],
-  providers: [MessageService, MarkOccurrenceService],
+  providers: [MessageService, AdminMarkOccurrenceService],
   template: `
     <app-toolbar
       title="Create Mark Occurrence"
@@ -42,7 +43,7 @@ export class CreateMarkOccurrence implements OnInit {
   initialData?: MarkOccurrenceDto;
 
   constructor(
-    private service: MarkOccurrenceService,
+    private service: AdminMarkOccurrenceService,
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute
@@ -56,8 +57,8 @@ export class CreateMarkOccurrence implements OnInit {
     });
   }
 
-  create(event: { dto: MarkOccurrenceDto, file?: File }): void {
-    this.service.create(event.dto, event.file)
+  create(event: { dto: MarkOccurrenceRequestDto, file?: File }): void {
+    this.service.createMarkOccurrence(event.dto, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

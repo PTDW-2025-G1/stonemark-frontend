@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserManagementService } from '@core/services/user/user-management.service';
+import { AdminUserService } from '@core/services/user/admin-user.service';
 import { UserDto } from '@api/model/user-dto';
 import { UserContactDto } from '@api/model/user-contact-dto';
 import { UserContactService } from '@core/services/contact/user-contact.service';
@@ -54,7 +54,7 @@ export class EditUserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userManagementService: UserManagementService,
+    private userManagementService: AdminUserService,
     private userContactService: UserContactService,
     private messageService: MessageService
   ) {}

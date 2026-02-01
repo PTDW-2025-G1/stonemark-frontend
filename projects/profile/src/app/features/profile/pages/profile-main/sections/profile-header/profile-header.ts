@@ -1,6 +1,6 @@
 import {Component, Input, Output, EventEmitter, inject} from '@angular/core';
 import {AuthService} from '@core/services/auth/auth.service';
-import {ProfileService} from '@core/services/profile/profile.service';
+import {AccountService} from '@core/services/account/account.service';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
@@ -26,7 +26,7 @@ export class ProfileHeaderComponent {
   @Output() logout = new EventEmitter<void>();
 
   private authService = inject(AuthService);
-  public profileService = inject(ProfileService);
+  public profileService = inject(AccountService);
 
   marksIcon = MARKS_ICON;
 

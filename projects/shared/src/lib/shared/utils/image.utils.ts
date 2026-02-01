@@ -12,7 +12,7 @@ export class ImageUtils {
         if (!imageId) {
             return '';
         }
-        return `${environment.apiUrl}/media/${imageId}${variant}`;
+        return `${environment.apiUrl}/public/media/${imageId}${variant}`;
     }
 
     public static getImageUrl(imageId: number | undefined | null, fallbackUrl: string, variant: ImageVariant = ImageVariant.ORIGINAL): string {

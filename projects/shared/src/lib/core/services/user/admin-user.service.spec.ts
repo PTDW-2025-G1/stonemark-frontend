@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import { of, firstValueFrom } from 'rxjs';
-import { UserManagementService } from './user-management.service';
+import { AdminUserService } from './admin-user.service';
 import { environment } from '@env/environment';
 
 describe('UserManagementService (unit)', () => {
@@ -10,8 +10,8 @@ describe('UserManagementService (unit)', () => {
     delete: ReturnType<typeof vi.fn>;
   };
 
-  let service: UserManagementService;
-  const baseUrl = `${environment.apiUrl}/users`;
+  let service: AdminUserService;
+  const baseUrl = `${environment.apiUrl}/admin/users`;
 
   beforeEach(() => {
     httpMock = {
@@ -20,7 +20,7 @@ describe('UserManagementService (unit)', () => {
       delete: vi.fn(),
     };
 
-    service = new UserManagementService(httpMock as any);
+    service = new AdminUserService(httpMock as any);
   });
 
   it('should fetch paginated users', async () => {

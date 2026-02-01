@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';

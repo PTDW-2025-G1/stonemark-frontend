@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MarkService } from '@core/services/mark/mark.service';
+import { AdminMarkService } from '@core/services/mark/admin-mark.service';
 import { MarkDto } from '@api/model/mark-dto';
 import { FormMark } from '../form-mark/form-mark';
 import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
@@ -13,7 +13,7 @@ import { take } from 'rxjs';
   selector: 'app-create-mark',
   standalone: true,
   imports: [CommonModule, Toast, FormMark, AppToolbarComponent],
-  providers: [MessageService, MarkService],
+  providers: [MessageService, AdminMarkService],
   template: `
     <app-toolbar
       title="Create Mark"
@@ -39,7 +39,7 @@ import { take } from 'rxjs';
 })
 export class CreateMark {
   constructor(
-    private markService: MarkService,
+    private adminMarkService: AdminMarkService,
     private messageService: MessageService,
     private router: Router
   ) {}
@@ -50,7 +50,7 @@ export class CreateMark {
         markToSave.coverId = event.coverId;
     }
 
-    this.markService.createMark(markToSave, event.file)
+    this.adminMarkService.createMark(markToSave, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

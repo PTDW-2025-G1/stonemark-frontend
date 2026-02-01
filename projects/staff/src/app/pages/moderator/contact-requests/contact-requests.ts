@@ -12,12 +12,11 @@ import { AppDialogComponent } from '../../../components/dialog/dialog.component'
 import { StatusFilterContactComponent, ContactStatusFilterValue }
   from '../../../components/contact-status/status-filter-contact.component';
 
-import { ContactService } from '@core/services/contact/contact.service';
+import { AdminContactRequestService } from '@core/services/contact-request/admin-contact-request.service';
 import { ContactRequest } from '@api/model/contact-request';
 import {Tooltip} from 'primeng/tooltip';
 import { Subject, takeUntil, take } from 'rxjs';
 import { DateUtils } from '@shared/utils/date.utils';
-import { SortUtils } from '../../../utils/sort.utils';
 
 @Component({
   selector: 'app-contact-requests',
@@ -32,7 +31,7 @@ import { SortUtils } from '../../../utils/sort.utils';
     StatusFilterContactComponent,
     Tooltip
   ],
-  providers: [MessageService, ContactService],
+  providers: [MessageService, AdminContactRequestService],
   template: `
     <app-toolbar
       title="Contact Requests"
@@ -67,31 +66,34 @@ import { SortUtils } from '../../../utils/sort.utils';
           [pTooltip]="'View Details'"
         ></p-button>
 
-        <p-button
-          *ngIf="item.status !== 'IN_REVIEW'"
-          icon="pi pi-book"
-          severity="info"
-          class="mr-2"
-          (click)="updateStatus(item, 'IN_REVIEW')"
-          [pTooltip]="'Mark as In Review'"
-        ></p-button>
+        @if (item.status !== 'IN_REVIEW') {
+          <p-button
+            icon="pi pi-book"
+            severity="info"
+            class="mr-2"
+            (click)="updateStatus(item, 'IN_REVIEW')"
+            [pTooltip]="'Mark as In Review'"
+          ></p-button>
+        }
 
-        <p-button
-          *ngIf="item.status !== 'RESOLVED'"
-          icon="pi pi-check"
-          severity="success"
-          class="mr-2"
-          (click)="updateStatus(item, 'RESOLVED')"
-          [pTooltip]="'Mark as Resolved'"
-        ></p-button>
+        @if (item.status !== 'RESOLVED') {
+          <p-button
+            icon="pi pi-check"
+            severity="success"
+            class="mr-2"
+            (click)="updateStatus(item, 'RESOLVED')"
+            [pTooltip]="'Mark as Resolved'"
+          ></p-button>
+        }
 
-        <p-button
-          *ngIf="item.status !== 'ARCHIVED'"
-          icon="pi pi-inbox"
-          severity="secondary"
-          (click)="updateStatus(item, 'ARCHIVED')"
-          [pTooltip]="'Archive'"
-        ></p-button>
+        @if (item.status !== 'ARCHIVED') {
+          <p-button
+            icon="pi pi-inbox"
+            severity="secondary"
+            (click)="updateStatus(item, 'ARCHIVED')"
+            [pTooltip]="'Archive'"
+          ></p-button>
+        }
       </ng-template>
 
     </app-table>
@@ -138,7 +140,7 @@ export class ContactRequests implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private contactService: ContactService,
+    private contactService: AdminContactRequestService,
     private messageService: MessageService
   ) {}
 
@@ -158,10 +160,8 @@ export class ContactRequests implements OnInit, OnDestroy {
       });
   }
 
-  loadRequests(page: number = 0, size: number = 10, sortField?: string, sortOrder?: number): void {
-    const sort = SortUtils.buildSortString(sortField, sortOrder);
-
-    this.contactService.getAll(page, size, sort)
+  loadRequests(page: number = 0, size: number = 10): void {
+    this.contactService.getAll(page, size)
       .pipe(take(1))
       .subscribe({
         next: (pageData) => {
@@ -204,7 +204,7 @@ export class ContactRequests implements OnInit, OnDestroy {
 
     // Reload with sort if provided
     if (event.sortField || event.sortOrder) {
-      this.loadRequests(event.page, event.rows, event.sortField, event.sortOrder);
+      this.loadRequests(event.page, event.rows);
     }
   }
 

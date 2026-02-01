@@ -8,7 +8,7 @@ describe('BookmarkService', () => {
   let service: BookmarkService;
   let httpMock: any;
 
-  const baseUrl = `${environment.apiUrl}/bookmarks`;
+  const baseUrl = `${environment.apiUrl}/public/bookmarks`;
 
   beforeEach(() => {
     httpMock = {

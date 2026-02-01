@@ -14,6 +14,8 @@ export interface MonumentDto {
     id?: number;
     name?: string;
     description?: string;
+    protectionTitle?: string;
+    website?: string;
     latitude?: number;
     longitude?: number;
     street?: string;
@@ -22,13 +24,8 @@ export interface MonumentDto {
     municipality?: AdministrativeDivisionDto;
     district?: AdministrativeDivisionDto;
     coverId?: number;
-    protectionTitle?: string;
-    website?: string;
-    parishId?: number;
-    municipalityId?: number;
-    districtId?: number;
-    active?: boolean;
     createdAt?: string;
     lastModifiedAt?: string;
+    active?: boolean;
 }
 

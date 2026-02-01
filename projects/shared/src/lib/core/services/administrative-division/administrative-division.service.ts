@@ -3,13 +3,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
-import { MessageResponseDto } from '@api/model/message-response-dto';
 
 @Injectable({ providedIn: 'root' })
 export class AdministrativeDivisionService {
 
-  private baseUrl = `${environment.apiUrl}/divisions`;
-  private importUrl = `${environment.apiUrl}/import`;
+  private baseUrl = `${environment.apiUrl}/public/divisions`;
 
   constructor(private http: HttpClient) {}
 
@@ -53,11 +51,5 @@ export class AdministrativeDivisionService {
       .set('latitude', latitude.toString())
       .set('longitude', longitude.toString());
     return this.http.get<AdministrativeDivisionDto[]>(`${this.baseUrl}/coordinates`, { params });
-  }
-
-  importDivisionsFromPbf(file: File): Observable<MessageResponseDto> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<MessageResponseDto>(`${this.importUrl}/divisions/pbf`, formData);
   }
 }

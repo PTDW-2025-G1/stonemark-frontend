@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import { of, firstValueFrom } from 'rxjs';
-import { ContactService } from './contact.service';
+import { ContactRequestService } from './contact-request.service';
 import { ContactRequestDto } from '@api/model/contact-request-dto';
 import { ContactRequest } from '@api/model/contact-request';
 import { PageContactRequest } from '@api/model/page-contact-request';
@@ -15,7 +15,7 @@ describe('ContactService', () => {
     delete: ReturnType<typeof vi.fn>;
   };
 
-  let service: ContactService;
+  let service: ContactRequestService;
   const baseUrl = `${environment.apiUrl}/contact-requests`;
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('ContactService', () => {
       delete: vi.fn(),
     };
 
-    service = new ContactService(httpMock as any);
+    service = new ContactRequestService(httpMock as any);
   });
 
   it('should fetch all contact requests', async () => {

@@ -11,6 +11,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { MarkService } from '@core/services/mark/mark.service';
+import { AdminMarkService } from '@core/services/mark/admin-mark.service';
 import { MarkDetailedDto } from '@api/model/mark-detailed-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
@@ -35,7 +36,7 @@ import { TagModule } from 'primeng/tag';
     AppToolbarComponent,
     TagModule
   ],
-  providers: [MessageService, ConfirmationService, MarkService],
+  providers: [MessageService, ConfirmationService, MarkService, AdminMarkService],
   template: `
     <app-toolbar title="Manage Marks" subtitle="Create, update and delete marks"></app-toolbar>
     <p-toast></p-toast>
@@ -116,6 +117,7 @@ export class ManageMarks implements OnInit {
 
   constructor(
     private markService: MarkService,
+    private adminMarkService: AdminMarkService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router
@@ -126,7 +128,7 @@ export class ManageMarks implements OnInit {
   }
 
   loadMarks(page: number, size: number) {
-    this.markService.getDetailedMarksManagement(page, size)
+    this.adminMarkService.getMarksManagement(page, size)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
@@ -164,7 +166,7 @@ export class ManageMarks implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (mark.id) {
-          this.markService.deleteMark(mark.id)
+          this.adminMarkService.deleteMark(mark.id)
             .pipe(take(1))
             .subscribe({
               next: () => {

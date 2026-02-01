@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, tap, switchMap, map, distinctUntilChanged } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { MARKS_ICON, MONUMENTS_ICON } from '@core/constants/content-icons';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { LoadingStateComponent } from '@features/marks/mark-detail/sections/loading-state';

@@ -9,7 +9,7 @@ import { PageReportResponseDto } from '@api/model/page-report-response-dto';
 @Injectable({ providedIn: 'root' })
 export class ReportService {
 
-  private baseUrl = `${environment.apiUrl}/reports`;
+  private baseUrl = `${environment.apiUrl}/public/reports`;
 
   constructor(private http: HttpClient) {}
 

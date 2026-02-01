@@ -7,7 +7,7 @@ import { UserContactDto } from '@api/model/user-contact-dto';
 @Injectable({ providedIn: 'root' })
 export class UserContactService {
   private getBaseUrl(userId: number) {
-    return `${environment.apiUrl}/users/${userId}/contacts`;
+    return `${environment.apiUrl}/admin/users/${userId}/contacts`;
   }
 
   constructor(private http: HttpClient) {}

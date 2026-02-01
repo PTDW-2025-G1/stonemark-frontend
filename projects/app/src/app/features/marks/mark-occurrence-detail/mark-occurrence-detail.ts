@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { DateUtils } from '@shared/utils/date.utils';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
-import {UserManagementService} from '@core/services/user/user-management.service';
+import {UserService} from '@core/services/user/user.service';
 import {UserPublicDto} from '@api/model/user-public-dto';
 import {finalize} from 'rxjs/operators';
 import {ReportFacade} from '@shared/facades/report.facade';
@@ -34,7 +34,7 @@ export class MarkOccurrenceDetail implements OnInit {
     private router: Router,
     private titleService: Title,
     private markOccurrenceService: MarkOccurrenceService,
-    private userManagementService: UserManagementService,
+    private userManagementService: UserService,
     public reportFacade: ReportFacade,
     public shareFacade: ShareFacade
   ) { }

@@ -6,11 +6,11 @@ import {ProfileTabsComponent} from './sections/profile-tabs/profile-tabs';
 import {ProfileMarksComponent} from './sections/profile-marks/profile-marks';
 import {ProfileSuggestionsComponent} from './sections/profile-suggestions/profile-suggestions';
 import { Suggestion } from '@core/models/suggestions.model';
-import {ProfileService} from '@core/services/profile/profile.service';
+import {AccountService} from '@core/services/account/account.service';
 import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth/auth.service';
-import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence-proposal.service';
+import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal.service';
 import { MarkOccurrenceProposalListDto } from '@api/model/mark-occurrence-proposal-list-dto';
 import { PaginationFacade } from '@shared/facades/pagination.facade';
 
@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private profileService: ProfileService,
+              private profileService: AccountService,
               private markOccurrenceProposalService: MarkOccurrenceProposalService,
               private authService: AuthService) {}
 

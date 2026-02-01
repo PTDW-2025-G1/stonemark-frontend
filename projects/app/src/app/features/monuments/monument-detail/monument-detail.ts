@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
 import { MonumentResponseDto } from '@api/model/monument-response-dto';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';

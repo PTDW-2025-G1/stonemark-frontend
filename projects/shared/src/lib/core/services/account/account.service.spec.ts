@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import { of, firstValueFrom } from 'rxjs';
-import { ProfileService } from './profile.service';
+import { AccountService } from './account.service';
 import { UserDto } from '@api/model/user-dto';
 import { ProfileUpdateRequestDto } from '@api/model/profile-update-request-dto';
 import { EmailChangeRequestDto } from '@api/model/email-change-request-dto';
@@ -18,7 +18,7 @@ describe('ProfileService', () => {
     delete: ReturnType<typeof vi.fn>;
   };
 
-  let service: ProfileService;
+  let service: AccountService;
   const baseUrl = `${environment.apiUrl}/account`;
   const authUrl = `${environment.apiUrl}/auth`;
 
@@ -30,7 +30,7 @@ describe('ProfileService', () => {
       delete: vi.fn(),
     };
 
-    service = new ProfileService(httpMock as any);
+    service = new AccountService(httpMock as any);
   });
 
   it('should get current user profile', async () => {

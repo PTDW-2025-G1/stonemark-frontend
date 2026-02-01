@@ -10,7 +10,7 @@ import { BehaviorSubject, of, Subscription } from 'rxjs';
 import {SearchResultsComponent} from '@features/search/sections/search-results/search-results';
 import {PaginationFacade} from '@shared/facades/pagination.facade';
 import { LanguageService } from '@core/services/language/language.service';
-import { AdministrativeDivisionService } from '@core/services/administrative-division.service';
+import { AdministrativeDivisionService } from '@core/services/administrative-division/administrative-division.service';
 import { AdministrativeDivisionDto } from '@api/model/administrative-division-dto';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
@@ -145,7 +145,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private restoreDivisionState(divisionId: number): Subscription {
-    return this.divisionService.getDivisionById(divisionId).pipe(
+    return this.divisionService.getById(divisionId).pipe(
         switchMap(division => {
             if (division.osmAdminLevel === 8) { // Parish
                 this.selectedParishId = division.id!;
@@ -193,11 +193,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const pageIndex = this.pagination.currentPage - 1;
 
     if (this.type === 'marks') {
-      const source = this.searchQuery.trim()
-        ? this.markService.searchMarks(this.searchQuery, pageIndex, this.pageSize)
-        : this.markService.getMarks(pageIndex, this.pageSize);
-
-      source.subscribe({
+      this.markService.getMarks(pageIndex, this.pageSize).subscribe({
         next: (page) => this.handlePageResponse(page),
         error: (err) => this.handleLoadError('marks', err)
       });

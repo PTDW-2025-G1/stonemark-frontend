@@ -10,11 +10,11 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
+import { AdminMarkOccurrenceService } from '@core/services/mark-occurrence/admin-mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
-import { environment } from '@env/environment';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { TagModule } from 'primeng/tag';
 
@@ -35,7 +35,7 @@ import { TagModule } from 'primeng/tag';
     AppToolbarComponent,
     TagModule
   ],
-  providers: [MessageService, ConfirmationService, MarkOccurrenceService],
+  providers: [MessageService, ConfirmationService, MarkOccurrenceService, AdminMarkOccurrenceService],
   template: `
     <app-toolbar title="Manage Mark Occurrences" subtitle="Create, update and delete mark occurrences"></app-toolbar>
     <p-toast></p-toast>
@@ -124,6 +124,7 @@ export class ManageMarkOccurrences implements OnInit {
 
   constructor(
     private service: MarkOccurrenceService,
+    private adminService: AdminMarkOccurrenceService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
@@ -133,11 +134,7 @@ export class ManageMarkOccurrences implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.markId = params['markId'] ? Number(params['markId']) : undefined;
-      if (!this.markId) {
-        this.loadOccurrences(0, this.rows);
-      } else {
-        this.loadOccurrences(0, this.rows);
-      }
+      this.loadOccurrences(0, this.rows);
     });
   }
 
@@ -147,7 +144,7 @@ export class ManageMarkOccurrences implements OnInit {
         .pipe(take(1))
         .subscribe({
           next: (response) => {
-            this.occurrences = response.content || [];
+            this.occurrences = (response.content as any[]) || [];
             this.totalRecords = response.totalElements || 0;
           },
           error: () => {
@@ -155,7 +152,7 @@ export class ManageMarkOccurrences implements OnInit {
           }
         });
     } else {
-        this.service.findAllManagement(page, size)
+        this.adminService.getMarkOccurrencesManagement(page, size)
         .pipe(take(1))
         .subscribe({
           next: (response) => {
@@ -190,7 +187,7 @@ export class ManageMarkOccurrences implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (occurrence.id) {
-          this.service.delete(occurrence.id)
+          this.adminService.deleteMarkOccurrence(occurrence.id)
             .pipe(take(1))
             .subscribe({
               next: () => {

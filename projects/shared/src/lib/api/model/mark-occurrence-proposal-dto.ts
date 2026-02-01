@@ -7,24 +7,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkDto } from './mark-dto';
-import { MonumentResponseDto } from './monument-response-dto';
 
 
 export interface MarkOccurrenceProposalDto { 
     id?: number;
     priority?: number;
-    coverId?: number;
-    existingMonument?: MonumentResponseDto;
-    monumentName?: string;
     latitude?: number;
     longitude?: number;
-    existingMark?: MarkDto;
     newMark?: boolean;
     userNotes?: string;
     submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
-    isSubmitted?: boolean;
     status?: MarkOccurrenceProposalDto.StatusEnum;
+    existingMonumentId?: number;
+    existingMonumentName?: string;
+    existingMarkId?: number;
+    existingMarkName?: string;
+    photoId?: number;
 }
 export namespace MarkOccurrenceProposalDto {
     export const SubmissionSourceEnum = {
@@ -41,8 +39,7 @@ export namespace MarkOccurrenceProposalDto {
         AutoAccepted: 'AUTO_ACCEPTED',
         AutoRejected: 'AUTO_REJECTED',
         ManuallyAccepted: 'MANUALLY_ACCEPTED',
-        ManuallyRejected: 'MANUALLY_REJECTED',
-        PendingMonumentCreation: 'PENDING_MONUMENT_CREATION'
+        ManuallyRejected: 'MANUALLY_REJECTED'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }

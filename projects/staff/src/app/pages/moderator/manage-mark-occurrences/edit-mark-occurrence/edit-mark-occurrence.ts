@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
+import { AdminMarkOccurrenceService } from '@core/services/mark-occurrence/admin-mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
-import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
+import { MarkOccurrenceRequestDto } from '@api/model/mark-occurrence-request-dto';
 import { FormMarkOccurrence } from '../form-mark-occurrence/form-mark-occurrence';
 import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
@@ -14,7 +15,7 @@ import { take } from 'rxjs';
   selector: 'app-edit-mark-occurrence',
   standalone: true,
   imports: [CommonModule, Toast, FormMarkOccurrence, AppToolbarComponent],
-  providers: [MessageService, MarkOccurrenceService],
+  providers: [MessageService, MarkOccurrenceService, AdminMarkOccurrenceService],
   template: `
     <app-toolbar
       title="Edit Mark Occurrence"
@@ -46,12 +47,13 @@ import { take } from 'rxjs';
   `]
 })
 export class EditMarkOccurrence implements OnInit {
-  markOccurrence?: MarkOccurrenceDto; // Using Dto for form, but service returns DetailedDto
+  markOccurrence?: MarkOccurrenceDto;
   loading = true;
   id!: number;
 
   constructor(
     private service: MarkOccurrenceService,
+    private adminService: AdminMarkOccurrenceService,
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute
@@ -66,15 +68,8 @@ export class EditMarkOccurrence implements OnInit {
     this.service.getById(this.id)
       .pipe(take(1))
       .subscribe({
-        next: (data: MarkOccurrenceDetailedDto) => {
-          // Map DetailedDto to Dto if necessary, or just cast if compatible enough for the form
-          // MarkOccurrenceDetailedDto likely has markId, monumentId etc.
-          // Let's check MarkOccurrenceDetailedDto structure.
-          // Assuming it has what we need.
-          this.markOccurrence = data as unknown as MarkOccurrenceDto;
-          // Ideally we should map it properly.
-          // MarkOccurrenceDetailedDto usually extends MarkOccurrenceDto or has similar fields.
-          // Let's assume it's compatible for now.
+        next: (data: MarkOccurrenceDto) => {
+          this.markOccurrence = data;
           this.loading = false;
         },
         error: () => {
@@ -89,8 +84,8 @@ export class EditMarkOccurrence implements OnInit {
       });
   }
 
-  update(event: { dto: MarkOccurrenceDto, file?: File }): void {
-    this.service.update(this.id, event.dto, event.file)
+  update(event: { dto: MarkOccurrenceRequestDto, file?: File }): void {
+    this.adminService.updateMarkOccurrence(this.id, event.dto, event.file)
       .pipe(take(1))
       .subscribe({
         next: () => {

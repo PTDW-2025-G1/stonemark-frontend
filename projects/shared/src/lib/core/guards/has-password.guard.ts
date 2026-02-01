@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
-import { ProfileService } from '@core/services/profile/profile.service';
+import { AccountService } from '@core/services/account/account.service';
 import { map, take } from 'rxjs/operators';
 
 export const hasPasswordGuard: CanActivateFn = () => {
   const router = inject(Router);
-  const profileService = inject(ProfileService);
+  const profileService = inject(AccountService);
 
   // Get the current hasPassword state
   const hasPassword = profileService.getHasPassword();

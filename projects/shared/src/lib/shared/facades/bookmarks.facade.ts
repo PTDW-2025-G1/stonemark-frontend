@@ -6,7 +6,7 @@ import { environment } from '@env/environment';
 import { BookmarkService } from '@core/services/bookmark/bookmark.service';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { MarkService } from '@core/services/mark/mark.service';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { PaginationFacade } from '@shared/facades/pagination.facade';

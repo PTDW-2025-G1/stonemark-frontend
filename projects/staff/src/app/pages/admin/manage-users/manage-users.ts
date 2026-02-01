@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { UserManagementService } from '@core/services/user/user-management.service';
+import { AdminUserService } from '@core/services/user/admin-user.service';
 import { UserDto } from '@api/model/user-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';
@@ -98,7 +98,7 @@ export class ManageUsers implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private userManagementService: UserManagementService,
+    private userManagementService: AdminUserService,
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute

@@ -9,7 +9,7 @@ import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/bread
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
 import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
-import {UserManagementService} from '@core/services/user/user-management.service';
+import {AdminUserService} from '@core/services/user/admin-user.service';
 import {UserPublicDto} from '@api/model/user-public-dto';
 import {finalize} from 'rxjs/operators';
 import {ReportFacade} from '@shared/facades/report.facade';
@@ -34,7 +34,7 @@ export class MarkOccurrenceDetail implements OnInit {
     private router: Router,
     private titleService: Title,
     private markOccurrenceService: MarkOccurrenceService,
-    private userManagementService: UserManagementService,
+    private userManagementService: AdminUserService,
     public reportFacade: ReportFacade,
     public shareFacade: ShareFacade
   ) { }

@@ -7,8 +7,8 @@ import { ContactRequest } from '@api/model/contact-request';
 import { PageContactRequest } from '@api/model/page-contact-request';
 
 @Injectable({ providedIn: 'root' })
-export class ContactService {
-  private baseUrl = `${environment.apiUrl}/contact-requests`;
+export class ContactRequestService {
+  private baseUrl = `${environment.apiUrl}/public/contact-requests`;
 
   constructor(private http: HttpClient) {}
 

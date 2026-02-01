@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ContactService } from '@core/services/contact/contact.service'
+import { ContactRequestService } from '@core/services/contact-request/contact-request.service'
 import {ProfileService} from '@core/services/profile/profile.service';
 import {AuthService} from '@core/services/auth/auth.service';
 import {SharedSelectComponent} from '@shared/ui/shared-select/shared-select';
@@ -194,7 +194,7 @@ export class ContactFormComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private contactService: ContactService,
+    private contactService: ContactRequestService,
     private profileService: ProfileService,
     private authService: AuthService,
     private translate: TranslateService

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { AccountSocialService } from '@core/services/account/account-social/account-social.service';
+import { AccountSocialService } from '@core/services/account/account-social.service';
 import { environment } from '@env/environment';
 import { LinkedProviderDto } from '@api/model/linked-provider-dto';
 import {BreadcrumbProfileComponent} from '@shared/ui/breadcrumb-profile/breadcrumb-profile';

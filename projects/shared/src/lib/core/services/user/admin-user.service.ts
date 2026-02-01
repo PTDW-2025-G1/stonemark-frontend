@@ -7,8 +7,8 @@ import { PageUserDto } from '@api/model/page-user-dto';
 import {UserPublicDto} from '@api/model/user-public-dto';
 
 @Injectable({ providedIn: 'root' })
-export class UserManagementService {
-  private readonly baseUrl = `${environment.apiUrl}/users`;
+export class AdminUserService {
+  private readonly baseUrl = `${environment.apiUrl}/admin/users`;
 
   constructor(private http: HttpClient) {}
 

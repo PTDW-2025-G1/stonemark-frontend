@@ -13,7 +13,7 @@ describe('ReportService', () => {
   let service: ReportService;
   let httpMock: any;
 
-  const baseUrl = `${environment.apiUrl}/reports`;
+  const baseUrl = `${environment.apiUrl}/public/reports`;
 
   beforeEach(() => {
     httpMock = {

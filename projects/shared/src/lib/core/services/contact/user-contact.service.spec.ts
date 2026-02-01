@@ -9,7 +9,7 @@ describe('UserContactService', () => {
   let httpMock: any;
 
   const userId = 10;
-  const baseUrl = `${environment.apiUrl}/users/${userId}/contacts`;
+  const baseUrl = `${environment.apiUrl}/admin/users/${userId}/contacts`;
 
   beforeEach(() => {
     httpMock = {

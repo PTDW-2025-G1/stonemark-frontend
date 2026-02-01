@@ -7,7 +7,7 @@ import { BookmarkDto } from '@api/model/bookmark-dto';
 @Injectable({ providedIn: 'root' })
 export class BookmarkService {
 
-  private baseUrl = `${environment.apiUrl}/bookmarks`;
+  private baseUrl = `${environment.apiUrl}/public/bookmarks`;
 
   constructor(private http: HttpClient) {}
 

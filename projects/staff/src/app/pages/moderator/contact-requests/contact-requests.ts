@@ -12,7 +12,7 @@ import { AppDialogComponent } from '../../../components/dialog/dialog.component'
 import { StatusFilterContactComponent, ContactStatusFilterValue }
   from '../../../components/contact-status/status-filter-contact.component';
 
-import { ContactService } from '@core/services/contact/contact.service';
+import { ContactRequestService } from '@core/services/contact-request/contact-request.service';
 import { ContactRequest } from '@api/model/contact-request';
 import {Tooltip} from 'primeng/tooltip';
 import { Subject, takeUntil, take } from 'rxjs';
@@ -32,7 +32,7 @@ import { SortUtils } from '../../../utils/sort.utils';
     StatusFilterContactComponent,
     Tooltip
   ],
-  providers: [MessageService, ContactService],
+  providers: [MessageService, ContactRequestService],
   template: `
     <app-toolbar
       title="Contact Requests"
@@ -138,7 +138,7 @@ export class ContactRequests implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private contactService: ContactService,
+    private contactService: ContactRequestService,
     private messageService: MessageService
   ) {}
 

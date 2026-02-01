@@ -9,14 +9,14 @@
  */
 import { PageableObject } from './pageable-object';
 import { SortObject } from './sort-object';
-import { MonumentDto } from './monument-dto';
+import { ProposalAdminListDto } from './proposal-admin-list-dto';
 
 
-export interface PageMonumentDto { 
+export interface PageProposalAdminListDto { 
     totalPages?: number;
     totalElements?: number;
     size?: number;
-    content?: Array<MonumentDto>;
+    content?: Array<ProposalAdminListDto>;
     number?: number;
     pageable?: PageableObject;
     first?: boolean;

@@ -9,14 +9,15 @@
  */
 
 
-export interface MarkOccurrenceProposalListDto { 
+export interface ProposalSummaryDto { 
     id?: number;
     title?: string;
+    type?: string;
     photoId?: number;
-    status?: MarkOccurrenceProposalListDto.StatusEnum;
+    status?: ProposalSummaryDto.StatusEnum;
     submittedAt?: string;
 }
-export namespace MarkOccurrenceProposalListDto {
+export namespace ProposalSummaryDto {
     export const StatusEnum = {
         Submitted: 'SUBMITTED',
         UnderReview: 'UNDER_REVIEW',

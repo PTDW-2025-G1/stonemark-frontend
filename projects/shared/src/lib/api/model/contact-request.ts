@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { User } from './user';
 
 
 export interface ContactRequest { 
@@ -17,6 +18,7 @@ export interface ContactRequest {
     message?: string;
     createdAt?: string;
     status?: ContactRequest.StatusEnum;
+    submittedBy?: User;
 }
 export namespace ContactRequest {
     export const StatusEnum = {

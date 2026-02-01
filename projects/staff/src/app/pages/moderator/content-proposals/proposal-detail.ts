@@ -9,7 +9,7 @@ import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Divider } from 'primeng/divider';
 import { Tag } from 'primeng/tag';
-import { MarkOccurrenceProposalModerationService } from '@core/services/proposal/mark-occurrence-proposal-moderation.service';
+import { MarkOccurrenceProposalModerationService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal-moderation.service';
 import { ProposalModeratorViewDto } from '@api/model/proposal-moderator-view-dto';
 import { DecisionHistoryItem } from '@api/model/decision-history-item';
 import { ManualDecisionRequest } from '@api/model/manual-decision-request';

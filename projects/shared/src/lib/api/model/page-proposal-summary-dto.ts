@@ -8,15 +8,15 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageable-object';
+import { ProposalSummaryDto } from './proposal-summary-dto';
 import { SortObject } from './sort-object';
-import { MonumentDto } from './monument-dto';
 
 
-export interface PageMonumentDto { 
+export interface PageProposalSummaryDto { 
     totalPages?: number;
     totalElements?: number;
     size?: number;
-    content?: Array<MonumentDto>;
+    content?: Array<ProposalSummaryDto>;
     number?: number;
     pageable?: PageableObject;
     first?: boolean;

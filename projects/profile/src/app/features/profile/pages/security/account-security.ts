@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AccountSecurityService } from '@core/services/account/account-security.service';
 import { AccountContactService } from '@core/services/account/account-contact.service';
-import { ProfileService } from '@core/services/profile/profile.service';
+import { AccountService } from '@core/services/account/account.service';
 import { UserContactDto } from '@api/model/user-contact-dto';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 import {ButtonComponent} from '@shared/ui/button/button';
@@ -39,7 +39,7 @@ export class AccountSecurityComponent implements OnInit {
   constructor(
     private securityService: AccountSecurityService,
     private contactService: AccountContactService,
-    private profileService: ProfileService,
+    private profileService: AccountService,
     private authService: AuthService
   ) {}
 

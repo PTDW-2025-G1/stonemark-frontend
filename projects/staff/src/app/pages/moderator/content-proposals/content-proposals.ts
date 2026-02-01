@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { MarkOccurrenceProposalModerationService } from '@core/services/proposal/mark-occurrence-proposal-moderation.service';
+import { MarkOccurrenceProposalModerationService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal-moderation.service';
 import { ProposalModeratorViewDto } from '@api/model/proposal-moderator-view-dto';
 import { ManualDecisionRequest } from '@api/model/manual-decision-request';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';

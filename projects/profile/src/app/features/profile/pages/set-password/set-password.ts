@@ -3,7 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { ProfileService } from '@core/services/profile/profile.service';
+import { AccountService } from '@core/services/account/account.service';
 import { PasswordContainerComponent } from '@shared/ui/password-container/password-container';
 import { PasswordFacade } from '@shared/facades/password.facade';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
@@ -36,7 +36,7 @@ export class SetPasswordComponent implements OnInit {
 
   constructor(
     private passwordFacade: PasswordFacade,
-    private profileService: ProfileService,
+    private profileService: AccountService,
     private router: Router,
     private location: Location
   ) {}

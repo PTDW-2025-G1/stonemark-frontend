@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
-import { ProfileService } from '@core/services/profile/profile.service';
+import { AccountService } from '@core/services/account/account.service';
 import { UserDto } from '@api/model/user-dto';
 import { Subscription } from 'rxjs';
 import {environment} from '@env/environment';
@@ -35,7 +35,7 @@ export class Header implements OnInit, OnDestroy {
     { labelKey: 'header.nav.about', route: `${environment.baseUrl}/about` },
   ];
 
-  constructor(protected authService: AuthService, private profileService: ProfileService) {}
+  constructor(protected authService: AuthService, private profileService: AccountService) {}
 
   ngOnInit(): void {
     const hasToken = this.authService.getAccessToken();

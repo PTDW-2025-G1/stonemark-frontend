@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence-proposal.service';
+import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal.service';
 import { MarkOccurrenceProposalDto } from '@api/model/mark-occurrence-proposal-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { ButtonComponent } from '@shared/ui/button/button';

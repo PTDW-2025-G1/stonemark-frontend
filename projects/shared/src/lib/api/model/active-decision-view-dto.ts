@@ -7,20 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Monument } from './monument';
-import { Mark } from './mark';
 
 
 export interface ActiveDecisionViewDto { 
     id?: number;
     type?: ActiveDecisionViewDto.TypeEnum;
     outcome?: ActiveDecisionViewDto.OutcomeEnum;
-    confident?: boolean;
-    detectedMark?: Mark;
-    detectedMonument?: Monument;
     notes?: string;
     decidedAt?: string;
-    decidedBy?: number;
+    decidedByUsername?: string;
 }
 export namespace ActiveDecisionViewDto {
     export const TypeEnum = {

@@ -9,14 +9,17 @@
  */
 
 
-export interface MarkOccurrenceProposalListDto { 
+export interface ProposalAdminListDto { 
     id?: number;
+    status?: ProposalAdminListDto.StatusEnum;
+    priority?: number;
     title?: string;
     photoId?: number;
-    status?: MarkOccurrenceProposalListDto.StatusEnum;
+    submittedByUsername?: string;
+    submissionSource?: ProposalAdminListDto.SubmissionSourceEnum;
     submittedAt?: string;
 }
-export namespace MarkOccurrenceProposalListDto {
+export namespace ProposalAdminListDto {
     export const StatusEnum = {
         Submitted: 'SUBMITTED',
         UnderReview: 'UNDER_REVIEW',
@@ -26,6 +29,14 @@ export namespace MarkOccurrenceProposalListDto {
         ManuallyRejected: 'MANUALLY_REJECTED'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
+    export const SubmissionSourceEnum = {
+        WebApp: 'WEB_APP',
+        Whatsapp: 'WHATSAPP',
+        Api: 'API',
+        TelegramBot: 'TELEGRAM_BOT',
+        Other: 'OTHER'
+    } as const;
+    export type SubmissionSourceEnum = typeof SubmissionSourceEnum[keyof typeof SubmissionSourceEnum];
 }
 
 

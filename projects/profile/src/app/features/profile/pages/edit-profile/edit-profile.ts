@@ -4,7 +4,7 @@ import {ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import {EditProfileFormComponent, ProfileFormData} from './sections/edit-profile-form/edit-profile-form';
 import {EditProfileSuccessComponent} from './sections/edit-profile-success/edit-profile-success';
-import {ProfileService} from '@core/services/profile/profile.service';
+import {AccountService} from '@core/services/account/account.service';
 import {UserDto} from '@api/model/user-dto';
 import { BreadcrumbProfileComponent } from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
 import { switchMap, map } from 'rxjs';
@@ -25,7 +25,7 @@ export class EditProfileComponent implements OnInit {
   errorMessage: string = '';
   selectedPhoto: File | null = null;
 
-  constructor(private router: Router, private profileService : ProfileService) {}
+  constructor(private router: Router, private profileService : AccountService) {}
 
   ngOnInit(): void {
     this.loadCurrentProfile();

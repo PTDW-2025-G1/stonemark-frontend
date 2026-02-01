@@ -7,24 +7,30 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MediaFileDto } from './media-file-dto';
+import { UserDto } from './user-dto';
+import { MarkDto } from './mark-dto';
+import { MonumentDto } from './monument-dto';
 
 
-export interface MarkOccurrenceProposalDto { 
+export interface ProposalWithRelationsDto { 
     id?: number;
-    priority?: number;
+    existingMark?: MarkDto;
+    existingMonument?: MonumentDto;
+    originalMediaFile?: MediaFileDto;
+    userNotes?: string;
     latitude?: number;
     longitude?: number;
+    submissionSource?: ProposalWithRelationsDto.SubmissionSourceEnum;
+    priority?: number;
+    credibilityScore?: number;
+    submitted?: boolean;
+    submittedBy?: UserDto;
+    submittedAt?: string;
     newMark?: boolean;
-    userNotes?: string;
-    submissionSource?: MarkOccurrenceProposalDto.SubmissionSourceEnum;
-    status?: MarkOccurrenceProposalDto.StatusEnum;
-    existingMonumentId?: number;
-    existingMonumentName?: string;
-    existingMarkId?: number;
-    existingMarkName?: string;
-    photoId?: number;
+    status?: ProposalWithRelationsDto.StatusEnum;
 }
-export namespace MarkOccurrenceProposalDto {
+export namespace ProposalWithRelationsDto {
     export const SubmissionSourceEnum = {
         WebApp: 'WEB_APP',
         Whatsapp: 'WHATSAPP',

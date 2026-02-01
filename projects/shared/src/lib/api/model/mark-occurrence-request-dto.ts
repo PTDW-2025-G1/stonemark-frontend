@@ -9,10 +9,11 @@
  */
 
 
-export interface MonumentMapDto { 
-    id?: number;
-    name?: string;
-    latitude?: number;
-    longitude?: number;
+export interface MarkOccurrenceRequestDto { 
+    markId: number;
+    monumentId: number;
+    coverId?: number;
+    publishedAt?: string;
+    active?: boolean;
 }
 

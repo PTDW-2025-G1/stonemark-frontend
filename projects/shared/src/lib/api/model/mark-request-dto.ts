@@ -9,10 +9,10 @@
  */
 
 
-export interface MonumentMapDto { 
-    id?: number;
-    name?: string;
-    latitude?: number;
-    longitude?: number;
+export interface MarkRequestDto { 
+    description?: string;
+    embedding?: Array<number>;
+    coverId?: number;
+    active?: boolean;
 }
 

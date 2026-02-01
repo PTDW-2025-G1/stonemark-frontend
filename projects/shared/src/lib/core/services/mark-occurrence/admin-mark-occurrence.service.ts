@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
+import {MarkOccurrenceRequestDto} from '@api/model/mark-occurrence-request-dto';
 
 @Injectable({
   providedIn: 'root'

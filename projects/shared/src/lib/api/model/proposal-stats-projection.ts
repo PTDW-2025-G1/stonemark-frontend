@@ -9,10 +9,9 @@
  */
 
 
-export interface MonumentMapDto { 
-    id?: number;
-    name?: string;
-    latitude?: number;
-    longitude?: number;
+export interface ProposalStatsProjection { 
+    accepted?: number;
+    underReview?: number;
+    rejected?: number;
 }
 

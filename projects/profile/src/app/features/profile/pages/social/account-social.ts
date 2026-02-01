@@ -5,7 +5,7 @@ import { AccountSocialService } from '@core/services/account/account-social.serv
 import { environment } from '@env/environment';
 import { LinkedProviderDto } from '@api/model/linked-provider-dto';
 import {BreadcrumbProfileComponent} from '@shared/ui/breadcrumb-profile/breadcrumb-profile';
-import {ProfileService} from '@core/services/profile/profile.service';
+import {AccountService} from '@core/services/account/account.service';
 import {ButtonComponent} from '@shared/ui/button/button';
 
 declare const google: any;
@@ -25,7 +25,7 @@ export class AccountSocialComponent implements OnInit {
 
   constructor(
     private accountSocialService: AccountSocialService,
-    public profileService: ProfileService
+    public profileService: AccountService
   ) {}
 
   ngOnInit(): void {

@@ -10,10 +10,12 @@ import { TelephoneChangeRequestDto } from "@api/model/telephone-change-request-d
 import {ConfirmationResponseDto} from '@api/model/confirmation-response-dto';
 import {CodeConfirmationRequestDto} from '@api/model/code-confirmation-request-dto';
 import {PasswordSetRequestDto} from '@api/model/password-set-request-dto';
+import {AccountSecurityStatusDto} from '@api/model/account-security-status-dto';
+import {MessageResponseDto} from '@api/model/message-response-dto';
 
 
 @Injectable({ providedIn: 'root' })
-export class ProfileService {
+export class AccountService {
   private baseUrl = `${environment.apiUrl}/account`;
   private authUrl = `${environment.apiUrl}/auth`;
 
@@ -26,11 +28,11 @@ export class ProfileService {
     return this.http.get<UserDto>(`${this.baseUrl}/profile`);
   }
 
-  getSecurityStatus(): Observable<{ hasPassword: boolean }> {
-    return this.http.get<{ hasPassword: boolean }>(
+  getSecurityStatus(): Observable<AccountSecurityStatusDto> {
+    return this.http.get<AccountSecurityStatusDto>(
       `${this.baseUrl}/security/status`
     ).pipe(
-      tap(status => this.hasPasswordSubject.next(status.hasPassword))
+      tap(status => this.hasPasswordSubject.next(status.hasPassword ?? false))
     );
   }
 
@@ -38,12 +40,12 @@ export class ProfileService {
     return this.hasPasswordSubject.value;
   }
 
-  updateProfile(profile: ProfileUpdateRequestDto): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/profile`, profile);
+  updateProfile(profile: ProfileUpdateRequestDto): Observable<MessageResponseDto> {
+    return this.http.put<MessageResponseDto>(`${this.baseUrl}/profile`, profile);
   }
 
-  setPassword(password: PasswordSetRequestDto): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/set-password`, password).pipe(
+  setPassword(password: PasswordSetRequestDto): Observable<MessageResponseDto> {
+    return this.http.post<MessageResponseDto>(`${this.baseUrl}/set-password`, password).pipe(
       tap(() => this.hasPasswordSubject.next(true))
     );
   }
@@ -53,9 +55,9 @@ export class ProfileService {
     return this.http.post<void>(`${this.baseUrl}/request-email-change`, payload);
   }
 
-  changePassword(oldPassword: string, newPassword: string): Observable<void> {
+  changePassword(oldPassword: string, newPassword: string): Observable<MessageResponseDto> {
     const payload: PasswordChangeRequestDto = {oldPassword, newPassword};
-    return this.http.post<void>(`${this.baseUrl}/change-password`, payload);
+    return this.http.post<MessageResponseDto>(`${this.baseUrl}/change-password`, payload);
   }
 
   requestTelephoneChange(request: TelephoneChangeRequestDto): Observable<any> {
@@ -72,8 +74,8 @@ export class ProfileService {
     return this.http.post<UserDto>(`${this.baseUrl}/photo`, formData);
   }
 
-  deleteAccount(): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.baseUrl}`);
+  deleteAccount(): Observable<MessageResponseDto> {
+    return this.http.delete<MessageResponseDto>(`${this.baseUrl}`);
   }
 
 }

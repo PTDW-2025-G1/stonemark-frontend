@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { PaginationFacade } from '@shared/facades/pagination.facade';
 import { PageMarkOccurrenceDto } from '@api/model/page-mark-occurrence-dto';
 import {MarkOccurrenceListDto} from '@api/model/mark-occurrence-list-dto';

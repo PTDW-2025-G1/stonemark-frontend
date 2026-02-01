@@ -12,6 +12,10 @@ export class ContactRequestService {
 
   constructor(private http: HttpClient) {}
 
+  create(payload: ContactRequestDto): Observable<ContactRequest> {
+    return this.http.post<ContactRequest>(this.baseUrl, payload);
+  }
+
   getAll(page: number = 0, size: number = 10, sort?: string): Observable<PageContactRequest> {
     let params = new HttpParams()
       .set('page', page.toString())
@@ -22,26 +26,5 @@ export class ContactRequestService {
     }
 
     return this.http.get<PageContactRequest>(this.baseUrl, { params });
-  }
-
-  getById(id: number): Observable<ContactRequest> {
-    return this.http.get<ContactRequest>(`${this.baseUrl}/${id}`);
-  }
-
-  create(payload: ContactRequestDto): Observable<ContactRequest> {
-    return this.http.post<ContactRequest>(this.baseUrl, payload);
-  }
-
-  updateStatus(id: number, status: ContactRequest.StatusEnum): Observable<ContactRequest> {
-    const params = new HttpParams().set('status', status);
-    return this.http.patch<ContactRequest>(
-      `${this.baseUrl}/${id}/status`,
-      null,
-      { params }
-    );
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

@@ -9,7 +9,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MarkDto } from '@api/model/mark-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { SelectModule } from 'primeng/select';
 

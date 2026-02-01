@@ -13,7 +13,7 @@ import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { MonumentService } from '@core/services/monument/monument.service';
-import { MarkOccurrenceService } from '@core/services/mark/mark-occurrence.service';
+import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { HomeHeaderComponent } from '@shared/ui/home-header/home-header';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {MonumentMapDto} from '@api/model/monument-map-dto';

@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDto } from '@api/model/user-dto';
 import { PageUserDto } from '@api/model/page-user-dto';
-import {UserPublicDto} from '@api/model/user-public-dto';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUserService {
@@ -24,11 +23,6 @@ export class AdminUserService {
 
   getById(id: number): Observable<UserDto> {
     return this.http.get<UserDto>(`${this.baseUrl}/${id}`);
-  }
-
-  // Todo: create a dedicated service maybe
-  publicGetById(id: number): Observable<UserPublicDto> {
-    return this.http.get<UserDto>(`${this.baseUrl}/${id}/public`);
   }
 
   update(id: number, userDto: Partial<UserDto>): Observable<UserDto> {

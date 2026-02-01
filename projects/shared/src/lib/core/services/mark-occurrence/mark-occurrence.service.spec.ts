@@ -4,7 +4,6 @@ import { MarkOccurrenceService } from './mark-occurrence.service';
 import { environment } from '@env/environment';
 import { HttpParams } from '@angular/common/http';
 
-import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import { MarkOccurrenceDetailedDto } from '@api/model/mark-occurrence-detailed-dto';
 import { MarkOccurrenceListDto } from '@api/model/mark-occurrence-list-dto';
 import { PageMarkOccurrenceListDto } from '@api/model/page-mark-occurrence-list-dto';
@@ -13,7 +12,7 @@ describe('MarkOccurrenceService', () => {
   let service: MarkOccurrenceService;
   let httpMock: any;
 
-  const baseUrl = `${environment.apiUrl}/mark-occurrences`;
+  const baseUrl = `${environment.apiUrl}/public/mark-occurrences`;
 
   beforeEach(() => {
     httpMock = {
@@ -119,10 +118,10 @@ describe('MarkOccurrenceService', () => {
     const response = [] as MarkOccurrenceListDto[];
     httpMock.get.mockReturnValue(of(response));
 
-    const result = await firstValueFrom(service.getLatestOccurrences());
+    const result = await firstValueFrom(service.getLatest());
 
     expect(result).toBe(response);
-    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/latest`);
+    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/latest`, expect.any(Object));
   });
 
   it('should count occurrences by mark id', async () => {
@@ -150,63 +149,6 @@ describe('MarkOccurrenceService', () => {
 
     expect(result).toBe(5);
     expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/count-monuments-by-mark/2`);
-  });
-
-  it('should create a mark occurrence', async () => {
-    const dto = {} as MarkOccurrenceDto;
-    httpMock.post.mockReturnValue(of(dto));
-
-    const result = await firstValueFrom(service.create(dto));
-
-    expect(result).toBe(dto);
-    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, expect.any(FormData));
-  });
-
-  it('should create a mark occurrence with file', async () => {
-    const dto = {} as MarkOccurrenceDto;
-    const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
-    httpMock.post.mockReturnValue(of(dto));
-
-    const result = await firstValueFrom(service.create(dto, file));
-
-    expect(result).toBe(dto);
-    expect(httpMock.post).toHaveBeenCalledWith(baseUrl, expect.any(FormData));
-
-    const formData = httpMock.post.mock.calls[0][1] as FormData;
-    expect(formData.get('file')).toBe(file);
-  });
-
-  it('should update a mark occurrence', async () => {
-    const dto = {} as MarkOccurrenceDto;
-    httpMock.put.mockReturnValue(of(dto));
-
-    const result = await firstValueFrom(service.update(10, dto));
-
-    expect(result).toBe(dto);
-    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/10`, expect.any(FormData));
-  });
-
-  it('should update a mark occurrence with file', async () => {
-    const dto = {} as MarkOccurrenceDto;
-    const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
-    httpMock.put.mockReturnValue(of(dto));
-
-    const result = await firstValueFrom(service.update(10, dto, file));
-
-    expect(result).toBe(dto);
-    expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/10`, expect.any(FormData));
-
-    const formData = httpMock.put.mock.calls[0][1] as FormData;
-    expect(formData.get('file')).toBe(file);
-  });
-
-  it('should delete a mark occurrence', async () => {
-    httpMock.delete.mockReturnValue(of(undefined));
-
-    const result = await firstValueFrom(service.delete(11));
-
-    expect(result).toBeUndefined();
-    expect(httpMock.delete).toHaveBeenCalledWith(`${baseUrl}/11`);
   });
 
   it('should fetch available marks by monument', async () => {

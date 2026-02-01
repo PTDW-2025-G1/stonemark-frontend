@@ -193,11 +193,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const pageIndex = this.pagination.currentPage - 1;
 
     if (this.type === 'marks') {
-      const source = this.searchQuery.trim()
-        ? this.markService.searchMarks(this.searchQuery, pageIndex, this.pageSize)
-        : this.markService.getMarks(pageIndex, this.pageSize);
-
-      source.subscribe({
+      this.markService.getMarks(pageIndex, this.pageSize).subscribe({
         next: (page) => this.handlePageResponse(page),
         error: (err) => this.handleLoadError('marks', err)
       });

@@ -134,8 +134,7 @@ export class MapSectionComponent implements AfterViewInit {
             monument.latitude ?? 0
           ])),
           id: monument.id,
-          name: monument.name,
-          parish: monument.parish?.name
+          name: monument.name
         });
 
         feature.setStyle(
@@ -199,7 +198,6 @@ export class MapSectionComponent implements AfterViewInit {
     const name = props.name || this.translate.instant('home-map-section.unknown');
     const protection = props.protectionTitle;
     const website = props.website;
-    const city = props.parish || this.translate.instant('home-map-section.city');
 
     const marksText = this.translate.instant('home-map-section.marks', {
       count: occurrenceCount,
@@ -231,10 +229,6 @@ export class MapSectionComponent implements AfterViewInit {
         <div class="pr-6">
           ${badgeHtml}
           <h3 class="font-serif text-lg font-bold text-text leading-tight mb-1">${name}</h3>
-          <p class="text-xs text-text-muted flex items-center gap-1 mb-2">
-            <i class="bi bi-geo-alt-fill text-primary/70"></i>
-            ${city}
-          </p>
           <p class="text-xs text-text-muted flex items-center gap-1">
             <i class="bi bi-bookmark-fill text-primary/70"></i>
             ${marksText}

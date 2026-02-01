@@ -18,14 +18,14 @@ export class MarkOccurrenceService {
 
   constructor(private http: HttpClient) {}
 
-  getMarkOccurrences(page: number = 0, size: number = 9): Observable<PageMarkOccurrenceDto> {
+  getAll(page: number = 0, size: number = 9): Observable<PageMarkOccurrenceDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get<PageMarkOccurrenceDto>(this.baseUrl, { params });
   }
 
-  getMarkOccurrence(id: number): Observable<MarkOccurrenceDto> {
+  getById(id: number): Observable<MarkOccurrenceDto> {
     return this.http.get<MarkOccurrenceDto>(`${this.baseUrl}/${id}`);
   }
 
@@ -37,28 +37,28 @@ export class MarkOccurrenceService {
     return this.http.get<PageMarkOccurrenceListDto>(`${this.baseUrl}/by-mark/${markId}`, { params });
   }
 
-  getOccurrencesForMapByMark(markId: number): Observable<MarkOccurrenceMapDto[]> {
+  getByMarkIdForMap(markId: number): Observable<MarkOccurrenceMapDto[]> {
     return this.http.get<MarkOccurrenceMapDto[]>(`${this.baseUrl}/map/by-mark/${markId}`);
   }
 
-  getLatestMarkOccurrences(limit: number = 6): Observable<MarkOccurrenceListDto[]> {
+  getLatest(limit: number = 6): Observable<MarkOccurrenceListDto[]> {
     const params = new HttpParams().set('limit', limit.toString());
     return this.http.get<MarkOccurrenceListDto[]>(`${this.baseUrl}/latest`, { params });
   }
 
-  countByMonument(monumentId: number): Observable<number> {
+  countByMonumentId(monumentId: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count-by-monument/${monumentId}`);
   }
 
-  countByMark(markId: number): Observable<number> {
+  countByMarkId(markId: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count-by-mark/${markId}`);
   }
 
-  countMonumentsByMark(markId: number): Observable<number> {
+  countMonumentsByMarkId(markId: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count-monuments-by-mark/${markId}`);
   }
 
-  getOccurrencesByMonument(monumentId: number, page: number = 0, size: number = 6, sort: string = 'publishedAt,desc'): Observable<PageMarkOccurrenceListDto> {
+  getByMonumentId(monumentId: number, page: number = 0, size: number = 6, sort: string = 'publishedAt,desc'): Observable<PageMarkOccurrenceListDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())

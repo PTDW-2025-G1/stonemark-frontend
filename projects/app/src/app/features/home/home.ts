@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit{
         this.monumentService.getPopularMonuments().subscribe(monuments => {
             this.popularMonuments = monuments;
         });
-        this.markOccurrenceService.getLatestOccurrences().subscribe(occurrences => {
+        this.markOccurrenceService.getLatest().subscribe(occurrences => {
           this.lastOccurrences =  occurrences;
         });
     }

@@ -65,7 +65,7 @@ export class EditMarkOccurrence implements OnInit {
   }
 
   load() {
-    this.service.getMarkOccurrence(this.id)
+    this.service.getById(this.id)
       .pipe(take(1))
       .subscribe({
         next: (data: MarkOccurrenceDto) => {

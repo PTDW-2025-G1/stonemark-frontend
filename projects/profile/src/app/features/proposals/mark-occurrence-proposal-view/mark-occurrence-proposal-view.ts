@@ -10,12 +10,12 @@ import { environment } from '@env/environment';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 
 @Component({
-  selector: 'app-proposal-view',
+  selector: 'app-mark-occurrence-proposal-view',
   standalone: true,
   imports: [CommonModule, RouterModule, ButtonComponent, SafeHtmlPipe],
-  templateUrl: './proposal-view.html'
+  templateUrl: './mark-occurrence-proposal-view.html'
 })
-export class ProposalViewComponent implements OnInit {
+export class MarkOccurrenceProposalViewComponent implements OnInit {
   proposal: MarkOccurrenceProposalDto | null = null;
   loading = true;
   error = false;

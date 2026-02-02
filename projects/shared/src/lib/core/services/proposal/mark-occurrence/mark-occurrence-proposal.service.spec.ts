@@ -32,7 +32,7 @@ describe('MarkOccurrenceProposalService', () => {
     const response = {} as PageMarkOccurrenceProposalListDto;
     httpMock.get.mockReturnValue(of(response));
 
-    const result = await firstValueFrom(service.findByUser(10, 1, 6));
+    const result = await firstValueFrom(service.findByCurrentUser(10, 1, 6));
 
     expect(result).toBe(response);
 

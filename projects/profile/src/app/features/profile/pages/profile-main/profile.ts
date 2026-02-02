@@ -13,6 +13,7 @@ import {AuthService} from '@core/services/auth/auth.service';
 import { MarkOccurrenceProposalService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal.service';
 import { MarkOccurrenceProposalListDto } from '@api/model/mark-occurrence-proposal-list-dto';
 import { PaginationFacade } from '@shared/facades/pagination.facade';
+import { ProposalService } from '@core/services/proposal/proposal.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit {
               private route: ActivatedRoute,
               private profileService: AccountService,
               private markOccurrenceProposalService: MarkOccurrenceProposalService,
+              private proposalService: ProposalService,
               private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -83,7 +85,7 @@ export class ProfileComponent implements OnInit {
     this.profileService.getCurrentUser().subscribe({
       next: (data: UserDto) => {
         if (typeof data.id === 'number') {
-          this.markOccurrenceProposalService.findByUser(data.id, page, 6).subscribe({
+          this.markOccurrenceProposalService.findByCurrentUser(page).subscribe({
             next: (pageResponse) => {
               this.occurrences = pageResponse.content ?? [];
               this.marksPagination.setServerPage(
@@ -149,7 +151,7 @@ export class ProfileComponent implements OnInit {
     this.profileService.getCurrentUser().subscribe({
       next: (data: UserDto) => {
         if (typeof data.id === 'number') {
-          this.markOccurrenceProposalService.getUserStats(data.id).subscribe(stats => {
+          this.proposalService.getUserStats().subscribe(stats => {
             this.user.stats = {
               accepted: stats.accepted,
               under_review: stats.underReview,
@@ -166,7 +168,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onViewOccurrence(proposalId: number): void {
-    this.router.navigate(['/proposals', proposalId]);
+    this.router.navigate(['/proposals/mark-occurrence', proposalId]);
   }
 
   onMarksPageChange(page: number): void {

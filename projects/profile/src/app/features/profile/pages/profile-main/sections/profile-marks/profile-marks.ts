@@ -21,7 +21,7 @@ export class ProfileMarksComponent {
 
   getImageUrl(occurrence: MarkOccurrenceProposalListDto): string {
     return ImageUtils.getImageUrl(
-      occurrence.coverId,
+      occurrence.photoId,
       'assets/placeholder.png',
       ImageVariant.PREVIEW
     );

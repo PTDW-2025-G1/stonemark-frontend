@@ -70,6 +70,12 @@
     },
     {
       "path": "./projects/staff/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/contribute/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/contribute/tsconfig.spec.json"
     }
   ]
 }

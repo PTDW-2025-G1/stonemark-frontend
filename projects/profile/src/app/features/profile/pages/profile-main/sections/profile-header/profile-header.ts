@@ -22,6 +22,7 @@ export class ProfileHeaderComponent {
   @Output() openContacts = new EventEmitter<void>();
   @Output() openSocial = new EventEmitter<void>();
   @Output() goToStaff = new EventEmitter<void>();
+  @Output() goToProposals = new EventEmitter<void>();
 
   @Output() logout = new EventEmitter<void>();
 

@@ -491,10 +491,16 @@
               {
                 "glob": "**/*",
                 "input": "projects/contribute/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
-              "projects/contribute/src/styles.scss"
+              "projects/contribute/src/styles.scss",
+              "projects/shared/src/lib/styles/styles.css"
             ]
           },
           "configurations": {
@@ -511,7 +517,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/shared/src/lib/core/environments/environment.ts",
+                  "with": "projects/shared/src/lib/core/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -528,7 +540,8 @@
               "buildTarget": "contribute:build:production"
             },
             "development": {
-              "buildTarget": "contribute:build:development"
+              "buildTarget": "contribute:build:development",
+              "port": 4203
             }
           },
           "defaultConfiguration": "development"
@@ -549,10 +562,16 @@
               {
                 "glob": "**/*",
                 "input": "projects/contribute/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
               }
             ],
             "styles": [
-              "projects/contribute/src/styles.scss"
+              "projects/contribute/src/styles.scss",
+              "projects/shared/src/lib/styles/styles.css"
             ]
           }
         }

@@ -1,0 +1,29 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 relative z-10 flex items-center justify-between">
+  <div class="bg-surface rounded-xl shadow-lg border border-border p-1.5 inline-flex gap-1">
+    <button
+      (click)="setTab('marks')"
+      [class.bg-primary]="activeTab === 'marks'"
+      [class.text-white]="activeTab === 'marks'"
+      [class.text-text-muted]="activeTab !== 'marks'"
+      class="px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 text-sm">
+      <span [innerHTML]="marksIcon | safeHtml" class="w-4 h-4"></span>
+      My Marks
+    </button>
+    <button
+      (click)="setTab('suggestions')"
+      [class.bg-primary]="activeTab === 'suggestions'"
+      [class.text-white]="activeTab === 'suggestions'"
+      [class.text-text-muted]="activeTab !== 'suggestions'"
+      class="px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 text-sm">
+      <i class="bi bi-lightbulb-fill"></i>
+      Suggestions
+    </button>
+  </div>
+
+  <button
+    (click)="goBack.emit()"
+    class="px-4 py-2 bg-surface-alt border border-border text-text rounded-lg font-semibold hover:border-primary hover:bg-primary/5 transition-all duration-300 flex items-center justify-center gap-2 text-sm group cursor-pointer">
+    <i class="bi bi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+    <span>Back to Profile</span>
+  </button>
+</div>

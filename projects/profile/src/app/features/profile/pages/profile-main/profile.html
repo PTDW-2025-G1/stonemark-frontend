@@ -8,31 +8,5 @@
   (openSocial)="openSocial()"
   (goToStaff)="goToStaff()"
   (logout)="onLogout()"
+  (goToProposals)="goToProposals()"
 ></app-profile-header>
-<app-profile-tabs
-  [activeTab]="activeTab"
-  (tabChange)="setTab($event)"
-></app-profile-tabs>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  @if (activeTab === 'marks') {
-    <app-profile-marks
-      [occurrences]="occurrences"
-      [currentPage]="marksPagination.currentPage"
-      [totalPages]="marksPagination.totalPages"
-      [loading]="marksLoading"
-      (viewOccurrence)="onViewOccurrence($event)"
-      (pageChange)="onMarksPageChange($event)"
-    ></app-profile-marks>
-  }
-  @if (activeTab === 'suggestions') {
-    <app-profile-suggestions
-      [suggestions]="suggestions"
-      [suggestionFilter]="suggestionFilter"
-      [getFilteredSuggestions]="getFilteredSuggestions.bind(this)"
-      [getFilteredCount]="getFilteredCount.bind(this)"
-      (editSuggestion)="onEditSuggestion($event)"
-      (viewSuggestion)="onViewSuggestion($event)"
-      (filterChange)="onSuggestionFilterChange($event)">
-    </app-profile-suggestions>
-  }
-  </div>

@@ -101,6 +101,6 @@ export class MarkOccurrenceProposalViewComponent implements OnInit {
   }
 
   goBack(): void {
-    window.location.href = environment.contributeUrl + '/proposals';
+    this.router.navigate(['/proposals']);
   }
 }

@@ -1,0 +1,104 @@
+<!-- Section Header -->
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-text mb-2">My Mark Proposals</h2>
+    <p class="text-text-muted">Your submitted proposals for new historical marks</p>
+  </div>
+</div>
+
+<!-- Loading State -->
+@if (loading) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (skeleton of [1,2,3,4,5,6]; track skeleton) {
+      <div class="relative rounded-2xl overflow-hidden aspect-square bg-surface-alt border border-border animate-pulse">
+        <div class="absolute inset-0 bg-gradient-to-t from-surface-muted via-surface-alt to-surface"></div>
+        <div class="absolute top-3 left-3">
+          <div class="w-20 h-6 bg-surface-muted rounded-full"></div>
+        </div>
+        <div class="absolute bottom-4 left-4 right-4">
+          <div class="h-4 bg-surface-muted rounded w-3/4 mb-2"></div>
+          <div class="h-3 bg-surface-muted rounded w-1/2"></div>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+<!-- Empty State -->
+@if (!loading && occurrences.length === 0) {
+  <div class="text-center py-16 bg-surface-alt rounded-2xl border-2 border-dashed border-border">
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
+      <i class="bi bi-star text-primary text-4xl"></i>
+    </div>
+    <h3 class="text-xl font-bold text-text mb-2">No proposals yet</h3>
+    <p class="text-text-muted mb-6">Start submitting new mason mark proposals</p>
+  </div>
+}
+
+<!-- Proposals Grid -->
+@if (!loading && occurrences.length > 0) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (occurrence of occurrences; track occurrence.id) {
+      <div class="group relative rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer aspect-square"
+           (click)="viewOccurrence.emit(occurrence.id)">
+        <!-- Image -->
+        <div class="relative w-full h-full overflow-hidden bg-surface-muted">
+          <img
+            [src]="getImageUrl(occurrence)"
+            alt="Mark Proposal"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
+
+          <!-- Status Badge -->
+          <div class="absolute top-3 left-3 flex gap-2">
+            <span
+              [ngClass]="{
+                'bg-warning/90 border-warning/20': occurrence.status === 'UNDER_REVIEW' || occurrence.status === 'SUBMITTED',
+                'bg-success/90 border-success/20': occurrence.status === 'AUTO_ACCEPTED' || occurrence.status === 'MANUALLY_ACCEPTED',
+                'bg-error/90 border-error/20': occurrence.status === 'AUTO_REJECTED' || occurrence.status === 'MANUALLY_REJECTED',
+              }"
+              class="px-3 py-1 backdrop-blur-sm text-white text-xs font-semibold rounded-full border"
+            >
+              <i
+                [ngClass]="{
+                  'bi-hourglass-split': occurrence.status === 'SUBMITTED' || occurrence.status === 'UNDER_REVIEW',
+                  'bi-check-circle': occurrence.status === 'AUTO_ACCEPTED' || occurrence.status === 'MANUALLY_ACCEPTED',
+                  'bi-x-circle': occurrence.status === 'AUTO_REJECTED' || occurrence.status === 'MANUALLY_REJECTED'
+                }"
+                class="bi"
+              ></i>
+              {{ occurrence.status ? (statusLabel(occurrence.status)) : 'Unknown' }}
+            </span>
+          </div>
+
+          <!-- Quick View Icon -->
+          <div class="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+              <i class="bi bi-eye text-primary text-sm"></i>
+            </div>
+          </div>
+
+          <!-- Info on hover - Bottom -->
+          <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
+            <div class="flex items-center justify-between text-white">
+              <div class="flex items-center gap-2">
+                <i class="bi bi-calendar-event"></i>
+                <span class="text-sm">{{ formatDate(occurrence.submittedAt) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Pagination -->
+  @if (totalPages > 1) {
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (pageChange)="pageChange.emit($event)"
+    ></app-pagination>
+  }
+}

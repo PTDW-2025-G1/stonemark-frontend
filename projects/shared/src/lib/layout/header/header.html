@@ -64,14 +64,6 @@
                       <i class="bi bi-person-circle"></i>
                       <span>{{ 'header.profile' | translate }}</span>
                     </button>
-                    <button
-                      (click)="goToBookmarks()"
-                      class="w-full text-left px-4 py-2.5 text-sm text-text-muted hover:text-text
-                             hover:bg-surface-alt transition-colors flex items-center gap-3 cursor-pointer"
-                    >
-                      <i class="bi bi-bookmark"></i>
-                      <span>{{ 'header.bookmarks' | translate }}</span>
-                    </button>
                     <div class="h-px bg-border my-2"></div>
                     <button
                       (click)="onLogout()"
@@ -163,15 +155,6 @@
             >
               <i class="bi bi-person-circle"></i>
               <span>{{ 'header.profile' | translate }}</span>
-            </button>
-            <button
-              (click)="closeMenu(); goToBookmarks()"
-              class="w-full text-left px-4 py-3 text-sm font-medium text-text-muted
-                     hover:text-text hover:bg-surface-alt rounded-xl transition-colors
-                     flex items-center gap-3"
-            >
-              <i class="bi bi-bookmark"></i>
-              <span>{{ 'header.bookmarks' | translate }}</span>
             </button>
           </div>
 

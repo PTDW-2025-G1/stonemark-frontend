@@ -108,11 +108,6 @@ export class Header implements OnInit, OnDestroy {
     window.location.href = `${environment.profileUrl}/profile`;
   }
 
-  goToBookmarks(): void {
-    this.isDropdownOpen = false;
-    window.location.href = `${environment.profileUrl}/bookmarks`;
-  }
-
   isActiveRoute(route: string): boolean {
     const currentPath = window.location.pathname;
     try {

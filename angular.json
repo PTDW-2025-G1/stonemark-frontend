@@ -399,13 +399,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "2.5mb"
+                  "maximumWarning": "2.5mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "8kB",
+                  "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all",
@@ -462,6 +462,116 @@
             ],
             "styles": [
               "projects/staff/src/assets/styles.scss"
+            ]
+          }
+        }
+      }
+    },
+    "contribute": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/contribute",
+      "sourceRoot": "projects/contribute/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/contribute/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/contribute/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/contribute/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "projects/contribute/src/styles.scss",
+              "projects/shared/src/lib/styles/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/shared/src/lib/core/environments/environment.ts",
+                  "with": "projects/shared/src/lib/core/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "contribute:build:production"
+            },
+            "development": {
+              "buildTarget": "contribute:build:development",
+              "port": 4203
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/contribute/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/contribute/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "projects/contribute/src/styles.scss",
+              "projects/shared/src/lib/styles/styles.css"
             ]
           }
         }

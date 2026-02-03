@@ -14,7 +14,7 @@ export class ProposalService {
 
   constructor(private http: HttpClient) {}
 
-  findByUser(page: number = 0, size: number = 6): Observable<PageProposalSummaryDto> {
+  findByCurrentUser(page: number = 0, size: number = 6): Observable<PageProposalSummaryDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());

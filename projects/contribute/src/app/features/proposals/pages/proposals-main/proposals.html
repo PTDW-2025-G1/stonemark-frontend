@@ -1,0 +1,29 @@
+<app-proposals-header [stats]="userStats"></app-proposals-header>
+<app-proposals-tabs
+  [activeTab]="activeTab"
+  (tabChange)="setTab($event)"
+  (goBack)="goBack()"
+></app-proposals-tabs>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  @if (activeTab === 'marks') {
+    <app-proposals-marks
+      [occurrences]="occurrences"
+      [currentPage]="marksPagination.currentPage"
+      [totalPages]="marksPagination.totalPages"
+      [loading]="marksLoading"
+      (viewOccurrence)="onViewOccurrence($event)"
+      (pageChange)="onMarksPageChange($event)"
+    ></app-proposals-marks>
+  }
+  @if (activeTab === 'suggestions') {
+    <app-proposals-suggestions
+      [suggestions]="suggestions"
+      [suggestionFilter]="suggestionFilter"
+      [getFilteredSuggestions]="getFilteredSuggestions.bind(this)"
+      [getFilteredCount]="getFilteredCount.bind(this)"
+      (editSuggestion)="onEditSuggestion($event)"
+      (viewSuggestion)="onViewSuggestion($event)"
+      (filterChange)="onSuggestionFilterChange($event)">
+    </app-proposals-suggestions>
+  }
+</div>

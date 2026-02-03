@@ -6,12 +6,12 @@ import {ImageUtils, ImageVariant} from '@shared/utils/image.utils';
 import { PaginationComponent } from '@shared/ui/pagination/pagination';
 
 @Component({
-  selector: 'app-profile-marks',
+  selector: 'app-proposals-marks',
   standalone: true,
   imports: [CommonModule, PaginationComponent],
-  templateUrl: './profile-marks.html'
+  templateUrl: './proposals-marks.html'
 })
-export class ProfileMarksComponent {
+export class ProposalsMarksComponent {
   @Input() occurrences: MarkOccurrenceProposalListDto[] = [];
   @Input() currentPage = 1;
   @Input() totalPages = 1;
@@ -21,7 +21,7 @@ export class ProfileMarksComponent {
 
   getImageUrl(occurrence: MarkOccurrenceProposalListDto): string {
     return ImageUtils.getImageUrl(
-      occurrence.coverId,
+      occurrence.photoId,
       'assets/placeholder.png',
       ImageVariant.PREVIEW
     );

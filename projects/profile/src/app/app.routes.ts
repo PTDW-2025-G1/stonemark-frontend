@@ -10,18 +10,6 @@ export const routes: Routes = [
       canActivate: [authGuard]
   },
   {
-    path: 'bookmarks',
-    loadChildren: () =>
-      import('projects/profile/src/app/features/bookmarks/bookmarks.routes').then(m => m.BOOKMARKS_ROUTES),
-      canActivate: [authGuard]
-  },
-  {
-    path: 'proposals',
-    loadChildren: () =>
-      import('projects/profile/src/app/features/proposals/proposals.routes').then(m => m.PROPOSAL_ROUTES),
-      canActivate: [authGuard]
-  },
-  {
     path: '**',
     component: NotFoundComponent
   }

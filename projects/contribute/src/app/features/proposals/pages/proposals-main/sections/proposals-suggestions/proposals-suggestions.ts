@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Suggestion } from '@core/models/suggestions.model';
 
 @Component({
-  selector: 'app-profile-suggestions',
+  selector: 'app-proposals-suggestions',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './profile-suggestions.html'
+  templateUrl: './proposals-suggestions.html'
 })
-export class ProfileSuggestionsComponent {
+export class ProposalsSuggestionsComponent {
   @Input() suggestions: Suggestion[] = [];
   @Input() suggestionFilter: 'all' | 'validated' | 'pending' | 'rejected' = 'all';
   @Input() getFilteredSuggestions: () => Suggestion[] = () => [];

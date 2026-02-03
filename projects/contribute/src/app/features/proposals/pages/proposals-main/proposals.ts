@@ -12,11 +12,12 @@ import {ProposalsTabsComponent} from './sections/proposals-tabs/proposals-tabs';
 import {ProposalsMarksComponent} from './sections/proposals-marks/proposals-marks';
 import {ProposalsSuggestionsComponent} from './sections/proposals-suggestions/proposals-suggestions';
 import {environment} from '@env/environment';
+import {ProposalsHeaderComponent} from './sections/proposals-header/proposals-header';
 
 @Component({
   selector: 'app-proposals',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProposalsTabsComponent, ProposalsMarksComponent, ProposalsSuggestionsComponent],
+  imports: [CommonModule, RouterModule, ProposalsTabsComponent, ProposalsMarksComponent, ProposalsSuggestionsComponent, ProposalsHeaderComponent],
   templateUrl: './proposals.html'
 })
 export class ProposalsComponent implements OnInit {
@@ -32,6 +33,12 @@ export class ProposalsComponent implements OnInit {
 
   marksPagination = new PaginationFacade<MarkOccurrenceProposalListDto>();
 
+  userStats: any = {
+    accepted: 0,
+    under_review: 0,
+    rejected: 0
+  };
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private profileService: AccountService,
@@ -43,6 +50,7 @@ export class ProposalsComponent implements OnInit {
     const page = pageParam ? parseInt(pageParam, 10) - 1 : 0;
     this.loadMarks(page);
     this.loadMockSuggestions();
+    this.loadUserStats();
   }
 
   loadMarks(page: number = 0): void {
@@ -110,6 +118,22 @@ export class ProposalsComponent implements OnInit {
         rejectionReason: 'Date already verified by official sources'
       }
     ];
+  }
+
+  loadUserStats(): void {
+    this.profileService.getCurrentUser().subscribe({
+      next: (data: UserDto) => {
+        if (typeof data.id === 'number') {
+          this.proposalService.getUserStats().subscribe(stats => {
+            this.userStats = {
+              accepted: stats.accepted,
+              under_review: stats.underReview,
+              rejected: stats.rejected
+            };
+          });
+        }
+      }
+    });
   }
 
   setTab(tab: 'marks' | 'suggestions') {

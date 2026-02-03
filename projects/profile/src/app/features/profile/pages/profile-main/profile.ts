@@ -6,12 +6,12 @@ import {AccountService} from '@core/services/account/account.service';
 import {UserDto} from '@api/model/user-dto';
 import {environment} from '@env/environment';
 import {AuthService} from '@core/services/auth/auth.service';
-import { ProposalService } from '@core/services/proposal/proposal.service';
+import { BookmarksComponent } from '../../../bookmarks/bookmarks';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProfileHeaderComponent],
+  imports: [CommonModule, RouterModule, ProfileHeaderComponent, BookmarksComponent],
   templateUrl: './profile.html'
 })
 export class ProfileComponent implements OnInit {
@@ -22,12 +22,10 @@ export class ProfileComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private profileService: AccountService,
-              private proposalService: ProposalService,
               private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadUserProfile();
-    this.loadUserStats();
     this.profileService.getSecurityStatus().subscribe();
   }
 
@@ -43,34 +41,13 @@ export class ProfileComponent implements OnInit {
           username: data.username ? `@${data.username}` : undefined,
           memberSince: memberSinceString,
           role: data.role,
-          photoId: data.photoId,
-          stats: {
-            accepted: 0,
-            under_review: 0,
-            rejected: 0
-          }
+          photoId: data.photoId
         };
         this.loading = false;
       },
       error: err => {
         console.error('Failed to load user:', err);
         this.loading = false;
-      }
-    });
-  }
-
-  loadUserStats(): void {
-    this.profileService.getCurrentUser().subscribe({
-      next: (data: UserDto) => {
-        if (typeof data.id === 'number') {
-          this.proposalService.getUserStats().subscribe(stats => {
-            this.user.stats = {
-              accepted: stats.accepted,
-              under_review: stats.underReview,
-              rejected: stats.rejected
-            };
-          });
-        }
       }
     });
   }

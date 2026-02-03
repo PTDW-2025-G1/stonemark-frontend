@@ -63,39 +63,6 @@
             </p>
           </div>
         </div>
-
-        <!-- Stats Grid  -->
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="flex items-center gap-3 px-4 py-3 bg-surface-alt border border-border rounded-xl hover:border-primary/40 hover:shadow-sm transition-all duration-300 cursor-default">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center flex-shrink-0 shadow-sm">
-              <span [innerHTML]="marksIcon | safeHtml" class="text-white text-xl"></span>
-            </div>
-            <div>
-              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user?.stats?.accepted }}</p>
-              <p class="text-xs text-text-muted leading-none">Accepted</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 px-4 py-3 bg-surface-alt border border-border rounded-xl hover:border-warning/40 hover:shadow-sm transition-all duration-300 cursor-default">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-warning to-warning/80 flex items-center justify-center flex-shrink-0 shadow-sm">
-              <i class="bi bi-clock text-white text-xl"></i>
-            </div>
-            <div>
-              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user?.stats?.under_review }}</p>
-              <p class="text-xs text-text-muted leading-none">Under Review</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 px-4 py-3 bg-surface-alt border border-border rounded-xl hover:border-error/40 hover:shadow-sm transition-all duration-300 cursor-default">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-error to-error/80 flex items-center justify-center flex-shrink-0 shadow-sm">
-              <i class="bi bi-x-circle text-white text-xl"></i>
-            </div>
-            <div>
-              <p class="text-2xl font-bold text-text leading-none mb-1">{{ user?.stats?.rejected }}</p>
-              <p class="text-xs text-text-muted leading-none">Rejected</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Right: Action Buttons -->

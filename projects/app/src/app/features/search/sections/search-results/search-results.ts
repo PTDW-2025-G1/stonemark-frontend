@@ -6,9 +6,8 @@ import { BookmarkDto } from '@api/model/bookmark-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
 import {MonumentListDto} from '@api/model/monument-list-dto';
-import {MarkListDto} from '@api/model/mark-list-dto';
 
-type SearchItem = MonumentListDto | MarkListDto;
+type SearchItem = MonumentListDto;
 
 @Component({
   selector: 'app-search-results',
@@ -18,7 +17,7 @@ type SearchItem = MonumentListDto | MarkListDto;
 })
 export class SearchResultsComponent {
   @Input() items: SearchItem[] = [];
-  @Input() type: 'monuments' | 'marks' = 'monuments';
+  @Input() type: 'monuments' = 'monuments';
   @Input() loading = false;
   occurrenceCount: Record<string | number, number> = {};
 
@@ -31,35 +30,19 @@ export class SearchResultsComponent {
   ngOnChanges(): void {
     if (!this.items.length) return;
 
-    const targetType =
-      this.type === 'monuments'
-        ? BookmarkDto.TypeEnum.Monument
-        : BookmarkDto.TypeEnum.Mark;
-
-    this.bookmarkFacade.loadForList(targetType);
+    this.bookmarkFacade.loadForList(BookmarkDto.TypeEnum.Monument);
     this.loadOccurrenceCounts();
   }
 
   private loadOccurrenceCounts(): void {
-    if (this.type === 'marks') {
-      this.items.forEach(item => {
-        const id = (item as MarkListDto).id;
-        if (id !== undefined) {
-          this.markOccurrenceService.countByMarkId(id).subscribe(
-            count => this.occurrenceCount[id] = count
-          );
-        }
-      });
-    } else {
-      this.items.forEach(item => {
-        const id = (item as MonumentListDto).id;
-        if (id !== undefined) {
-          this.markOccurrenceService.countByMonumentId(id).subscribe(
-            count => this.occurrenceCount[id] = count
-          );
-        }
-      });
-    }
+    this.items.forEach(item => {
+      const id = (item as MonumentListDto).id;
+      if (id !== undefined) {
+        this.markOccurrenceService.countByMonumentId(id).subscribe(
+          count => this.occurrenceCount[id] = count
+        );
+      }
+    });
   }
 
   toggleBookmark(event: Event, item: SearchItem): void {
@@ -68,12 +51,7 @@ export class SearchResultsComponent {
 
     if (!item.id) return;
 
-    const targetType =
-      this.type === 'monuments'
-        ? BookmarkDto.TypeEnum.Monument
-        : BookmarkDto.TypeEnum.Mark;
-
-    this.bookmarkFacade.toggleForItem(targetType, item.id);
+    this.bookmarkFacade.toggleForItem(BookmarkDto.TypeEnum.Monument, item.id);
   }
 
   isBookmarked(item: SearchItem): boolean {
@@ -85,21 +63,15 @@ export class SearchResultsComponent {
   }
 
   getItemName(item: SearchItem): string {
-    return this.type === 'monuments'
-      ? (item as MonumentListDto).name ?? ''
-      : '';
+    return (item as MonumentListDto).name ?? '';
   }
 
   getItemSubtitle(item: SearchItem): string {
-    if (this.type === 'monuments') {
-      const parish = (item as MonumentListDto).parish?.name;
-      return parish ? `${parish}, Portugal` : '';
-    }
-    return '';
+    const parish = (item as MonumentListDto).parish?.name;
+    return parish ? `${parish}, Portugal` : '';
   }
 
   onItemClick(item: SearchItem): void {
-    const route = this.type === 'monuments' ? '/monuments' : '/marks';
-    this.router.navigate([route, item.id]);
+    this.router.navigate(['/monuments', item.id]);
   }
 }

@@ -9,9 +9,9 @@ import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Divider } from 'primeng/divider';
 import { Tag } from 'primeng/tag';
-import { MarkOccurrenceProposalModerationService } from '@core/services/proposal/mark-occurrence/mark-occurrence-proposal-moderation.service';
-import { ProposalModeratorViewDto } from '@api/model/proposal-moderator-view-dto';
-import { DecisionHistoryItem } from '@api/model/decision-history-item';
+import { AdminProposalService } from '@core/services/proposal/admin-proposal.service';
+import { ProposalWithRelationsDto } from '@api/model/proposal-with-relations-dto';
+import { ActiveDecisionViewDto } from '@api/model/active-decision-view-dto';
 import { ManualDecisionRequest } from '@api/model/manual-decision-request';
 import { firstValueFrom } from 'rxjs';
 import { getSeverity } from '../../../utils/severity.util';
@@ -62,7 +62,7 @@ import { environment } from '@core/environments/environment';
                 styleClass="ml-2">
               </p-tag>
             </div>
-            <p class="subtitle">{{ proposal.monumentName || 'Unnamed Monument' }}</p>
+            <p class="subtitle">{{ proposal.existingMonument?.name || 'Unnamed Monument' }}</p>
           </div>
         </div>
 
@@ -83,7 +83,7 @@ import { environment } from '@core/environments/environment';
                     <i class="pi pi-monument"></i>
                     <label>Monument Name</label>
                   </div>
-                  <span class="info-value">{{ proposal.monumentName || 'N/A' }}</span>
+                  <span class="info-value">{{ proposal.existingMonument?.name || 'N/A' }}</span>
                 </div>
                 <div class="info-item">
                   <div class="info-label">
@@ -104,7 +104,7 @@ import { environment } from '@core/environments/environment';
                     <i class="pi pi-user"></i>
                     <label>Submitted By</label>
                   </div>
-                  <span class="info-value">User ID: {{ proposal.submittedById || 'N/A' }}</span>
+                  <span class="info-value">User ID: {{ proposal.submittedBy?.id || 'N/A' }}</span>
                 </div>
                 <div class="info-item">
                   <div class="info-label">
@@ -134,63 +134,6 @@ import { environment } from '@core/environments/environment';
                 }
               </div>
             </p-card>
-
-            @if (proposal.activeDecision) {
-              <p-card styleClass="active-decision-card">
-                <ng-template pTemplate="header">
-                  <div class="card-header-custom">
-                    <i class="pi pi-check-circle"></i>
-                    <span>Active Decision</span>
-                  </div>
-                </ng-template>
-                <div class="info-grid">
-                  <div class="info-item">
-                    <div class="info-label">
-                      <i class="pi pi-cog"></i>
-                      <label>Type</label>
-                    </div>
-                    <span class="info-value">{{ proposal.activeDecision.type }}</span>
-                  </div>
-                  <div class="info-item">
-                    <div class="info-label">
-                      <i class="pi pi-flag-fill"></i>
-                      <label>Outcome</label>
-                    </div>
-                    <div class="info-value">
-                      <p-tag
-                        [value]="proposal.activeDecision.outcome || ''"
-                        [severity]="getOutcomeSeverity(proposal.activeDecision.outcome || '')">
-                      </p-tag>
-                    </div>
-                  </div>
-                  <div class="info-item">
-                    <div class="info-label">
-                      <i class="pi pi-clock"></i>
-                      <label>Decided At</label>
-                    </div>
-                    <span class="info-value">{{ formatDate(proposal.activeDecision.decidedAt) }}</span>
-                  </div>
-                  @if (proposal.activeDecision.decidedByUsername) {
-                    <div class="info-item">
-                      <div class="info-label">
-                        <i class="pi pi-user"></i>
-                        <label>Decided By</label>
-                      </div>
-                      <span class="info-value">{{ proposal.activeDecision.decidedByUsername }}</span>
-                    </div>
-                  }
-                  @if (proposal.activeDecision.notes) {
-                    <div class="info-item full-width">
-                      <div class="info-label">
-                        <i class="pi pi-comment"></i>
-                        <label>Notes</label>
-                      </div>
-                      <p class="notes">{{ proposal.activeDecision.notes }}</p>
-                    </div>
-                  }
-                </div>
-              </p-card>
-            }
           </div>
 
           <!-- Right Column: Actions & History -->
@@ -262,10 +205,10 @@ import { environment } from '@core/environments/environment';
                         <i class="pi pi-calendar"></i>
                         {{ formatDate(item.decidedAt) }}
                       </p>
-                      @if (item.decidedBy) {
+                      @if (item.decidedByUsername) {
                         <p class="history-user">
                           <i class="pi pi-user"></i>
-                          User ID: {{ item.decidedBy }}
+                          User: {{ item.decidedByUsername }}
                         </p>
                       }
                       @if (item.notes) {
@@ -298,8 +241,8 @@ import { environment } from '@core/environments/environment';
   `
 })
 export class MarkOccurrenceProposalDetailComponent implements OnInit {
-  proposal: ProposalModeratorViewDto | null = null;
-  history: DecisionHistoryItem[] = [];
+  proposal: ProposalWithRelationsDto | null = null;
+  history: ActiveDecisionViewDto[] = [];
   loading = true;
   loadingHistory = true;
   proposalId: number | null = null;
@@ -307,7 +250,7 @@ export class MarkOccurrenceProposalDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private moderationService: MarkOccurrenceProposalModerationService,
+    private moderationService: AdminProposalService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
@@ -329,7 +272,7 @@ export class MarkOccurrenceProposalDetailComponent implements OnInit {
     try {
       this.loading = true;
       this.proposal = await firstValueFrom(
-        this.moderationService.getProposal(this.proposalId)
+        this.moderationService.getProposalDetails(this.proposalId)
       );
     } catch (error) {
       console.error('Error loading proposal:', error);
@@ -446,7 +389,7 @@ export class MarkOccurrenceProposalDetailComponent implements OnInit {
     }
   }
 
-  confirmActivateDecision(item: DecisionHistoryItem): void {
+  confirmActivateDecision(item: ActiveDecisionViewDto): void {
     this.confirmationService.confirm({
       message: `Are you sure you want to activate this ${item.type} decision with outcome ${item.outcome}?`,
       header: 'Confirm Activation',

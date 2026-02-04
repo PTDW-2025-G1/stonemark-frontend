@@ -3,8 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { MarkDto } from '@api/model/mark-dto';
-import { PageMarkListDto } from '@api/model/page-mark-list-dto';
-import { PageMarkDetailedDto } from '@api/model/page-mark-detailed-dto';
+import { PageMarkDto } from '@api/model/page-mark-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +13,18 @@ export class MarkService {
 
   constructor(private http: HttpClient) {}
 
-  getMarks(page: number = 0, size: number = 9): Observable<PageMarkListDto> {
+  getMarks(page: number = 0, size: number = 9): Observable<PageMarkDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<PageMarkListDto>(this.baseUrl, { params });
+    return this.http.get<PageMarkDto>(this.baseUrl, { params });
   }
 
-  getDetailedMarks(page: number = 0, size: number = 9): Observable<PageMarkDetailedDto> {
+  getDetailedMarks(page: number = 0, size: number = 9): Observable<PageMarkDto> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<PageMarkDetailedDto>(`${this.baseUrl}/details`, { params });
+    return this.http.get<PageMarkDto>(`${this.baseUrl}/details`, { params });
   }
 
   getMark(id: number): Observable<MarkDto> {

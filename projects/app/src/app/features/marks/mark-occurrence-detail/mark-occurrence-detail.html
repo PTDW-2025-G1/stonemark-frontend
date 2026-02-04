@@ -61,72 +61,23 @@
 
   <!-- Discovery Information -->
   <div class="border-t border-border">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
-      <div class="p-12 md:p-24 flex flex-col justify-center">
-        <span class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Discovery</span>
-        <h3 class="text-3xl md:text-4xl font-serif mb-6">Found At This Monument</h3>
+    <div class="max-w-7xl mx-auto p-12 md:p-24 flex flex-col justify-center">
+      <span class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Discovery</span>
+      <h3 class="text-3xl md:text-4xl font-serif mb-6">Found At This Monument</h3>
 
-        @if (occurrence.monument) {
-          <div class="space-y-4 mb-8">
-            <div class="flex items-start gap-3">
-              <div>
-                <p class="font-bold text-lg">{{ occurrence.monument.name }}</p>
-                @if (occurrence.monument.description) {
-                  <p class="text-text-muted text-sm leading-relaxed">
-                    {{ occurrence.monument.description }}
-                  </p>
-                }
-              </div>
+      @if (occurrence.monument) {
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start gap-3">
+            <div>
+              <p class="font-bold text-lg">
+                <a (click)="viewMonument()" class="hover:text-primary cursor-pointer transition-colors">
+                  {{ occurrence.monument.name }}
+                </a>
+              </p>
             </div>
-
-            @if (occurrence.monument.latitude && occurrence.monument.longitude) {
-              <div class="flex items-center gap-3">
-                <i class="bi bi-geo-alt text-text-muted"></i>
-                <p class="font-mono text-sm text-text-muted">
-                  {{ occurrence.monument.latitude | number:'1.6-6' }}, {{ occurrence.monument.longitude | number:'1.6-6' }}
-                </p>
-                <button
-                  (click)="shareFacade.copyCoordinates(
-                    occurrence.monument.latitude,
-                    occurrence.monument.longitude
-                  )"
-                  class="text-primary hover:text-text transition-colors text-sm min-w-[60px]"
-                  title="Copy coordinates">
-                  @if (shareFacade.copiedCoordinates) {
-                    <span class="text-xs">Copied</span>
-                  } @else {
-                    <i class="bi bi-clipboard cursor-pointer"></i>
-                  }
-                </button>
-              </div>
-            }
           </div>
-
-          <div class="flex flex-wrap gap-4">
-            <button
-              (click)="viewMonument()"
-              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer rounded-sm">
-              Monument Details
-            </button>
-            <button
-              (click)="shareFacade.openInMaps(
-                occurrence.monument.latitude,
-                occurrence.monument.longitude
-              )"
-              class="px-6 py-3 text-sm font-bold border border-border hover:border-primary hover:text-primary transition-colors cursor-pointer rounded-sm">
-              Open in Maps
-            </button>
-          </div>
-        }
-      </div>
-
-      <div class="border-l-0 md:border-l border-border bg-surface-muted relative min-h-[400px]">
-        <img
-          [src]="getMonumentImageUrl()"
-          [alt]="occurrence.monument?.name"
-          class="w-full h-full object-cover absolute inset-0 mix-blend-multiply transition-all duration-500"
-        />
-      </div>
+        </div>
+      }
     </div>
   </div>
 

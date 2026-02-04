@@ -17,7 +17,7 @@
             <div class="absolute inset-0 bg-gradient-to-br from-surface-muted/50 to-surface-alt"></div>
 
             <!-- Skeleton badge -->
-            @if (type === 'monuments' || type === 'marks') {
+            @if (type === 'monuments') {
               <div class="absolute top-4 left-4">
                 <div class="w-32 h-7 bg-surface-muted/80 rounded-full animate-pulse"></div>
               </div>
@@ -50,55 +50,6 @@
 
       @for (item of items; track item.id) {
 
-        @if (type === 'marks') {
-          <a
-            [routerLink]="['/', type, item.id]"
-            class="group relative bg-white rounded-2xl overflow-hidden shadow-md
-                   hover:shadow-2xl border border-border hover:border-primary/30
-                   transition-all duration-300 hover:-translate-y-1 block p-0"
-          >
-
-            <!-- Bookmark -->
-            <button
-              (click)="toggleBookmark($event, item)"
-              class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full
-                     bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white
-                     transition-all duration-200 flex items-center justify-center
-                     hover:scale-110 active:scale-95"
-              [attr.aria-label]="isBookmarked(item) ? 'Remove Bookmark' : 'Add Bookmark'">
-
-              <i
-                [class]="isBookmarked(item)
-                  ? 'bi bi-bookmark-check-fill text-primary'
-                  : 'bi bi-bookmark text-text-muted'"
-                class="text-lg">
-              </i>
-            </button>
-
-            <!-- Image -->
-            <div class="relative aspect-4/3 overflow-hidden w-full">
-              <img
-                [src]="getItemCover(item)"
-                [alt]="getItemName(item)"
-                class="w-full h-full object-cover group-hover:scale-105
-                       transition-transform duration-500"
-              />
-
-              <!-- Occurrences Count -->
-              <div class="absolute top-4 left-4">
-                <div
-                  class="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg
-                         text-xs font-semibold flex items-center gap-1.5 text-text">
-                  <i class="bi bi-pin-angle-fill text-primary"></i>
-                  <span>{{ occurrenceCount[item.id!] || 0 }} Occurrences</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Não mostrar título/subtítulo -->
-
-          </a>
-        } @else {
           <a
             [routerLink]="['/', type, item.id]"
             class="group relative bg-white rounded-2xl overflow-hidden shadow-md
@@ -157,7 +108,6 @@
               </div>
             </div>
           </a>
-        }
       }
     </div>
   }

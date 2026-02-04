@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PageProposalAdminListDto } from '@api/model/page-proposal-admin-list-dto';
 import { ProposalWithRelationsDto } from '@api/model/proposal-with-relations-dto';
+import { ActiveDecisionViewDto } from '@api/model/active-decision-view-dto';
+import { ManualDecisionRequest } from '@api/model/manual-decision-request';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -40,5 +42,21 @@ export class AdminProposalService {
 
   getProposalDetails(id: number): Observable<ProposalWithRelationsDto> {
     return this.http.get<ProposalWithRelationsDto>(`${this.baseUrl}/${id}`);
+  }
+
+  getDecisionHistory(id: number): Observable<ActiveDecisionViewDto[]> {
+    return this.http.get<ActiveDecisionViewDto[]>(`${this.baseUrl}/${id}/history`);
+  }
+
+  createManualDecision(id: number, request: ManualDecisionRequest): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${id}/decisions/manual`, request);
+  }
+
+  rerunAutomaticDecision(id: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${id}/decisions/automatic/rerun`, {});
+  }
+
+  activateDecision(id: number, attemptId: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${id}/decisions/${attemptId}/activate`, {});
   }
 }

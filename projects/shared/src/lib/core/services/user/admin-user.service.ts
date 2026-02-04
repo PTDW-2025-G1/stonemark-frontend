@@ -3,7 +3,7 @@ import { environment } from '@env/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDto } from '@api/model/user-dto';
-import { PageUserDto } from '@api/model/page-user-dto';
+import { Page } from '@api/model/page';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUserService {
@@ -11,14 +11,14 @@ export class AdminUserService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(page: number = 0, size: number = 20, sort?: string): Observable<PageUserDto> {
+  getAll(page: number = 0, size: number = 20, sort?: string): Observable<Page> {
     let params: any = { page: page.toString(), size: size.toString() };
 
     if (sort) {
       params.sort = sort;
     }
 
-    return this.http.get<PageUserDto>(this.baseUrl, { params });
+    return this.http.get<Page>(this.baseUrl, { params });
   }
 
   getById(id: number): Observable<UserDto> {

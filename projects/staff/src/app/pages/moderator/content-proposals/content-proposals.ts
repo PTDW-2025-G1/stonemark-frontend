@@ -43,7 +43,7 @@ import { SortUtils } from '../../../utils/sort.utils';
       #table
       [data]="proposals()"
       [columns]="columns"
-      [globalFilterFields]="['title', 'submittedAt']"
+      [globalFilterFields]="['proposalType', 'submittedAt']"
       [lazy]="true"
       [totalRecords]="totalRecords()"
       [rows]="pageSize()"
@@ -85,7 +85,7 @@ export class ContentProposals implements OnInit, OnDestroy {
 
   columns = [
     { field: 'id', header: 'ID' },
-    { field: 'title', header: 'Title' },
+    { field: 'proposalType', header: 'Proposal Type', type: 'proposalType' },
     { field: 'status', header: 'Status', type: 'status' },
     { field: 'priority', header: 'Priority' },
     { field: 'submissionSource', header: 'Source' },

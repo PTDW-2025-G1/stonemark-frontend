@@ -64,6 +64,9 @@ import { getSeverity } from '../../utils/severity.util';
                                         [severity]="getSeverity(item[col.field])"
                                         styleClass="modern-tag"
                                     ></p-tag>
+                                    <span *ngSwitchCase="'proposalType'">
+                                        {{ formatProposalType(item[col.field]) }}
+                                    </span>
                                     <span *ngSwitchDefault>{{ item[col.field] }}</span>
                                 </ng-container>
                             </td>
@@ -155,6 +158,11 @@ export class AppTableComponent implements OnInit, OnDestroy {
                 sortOrder: event.sortOrder
             });
         }
+    }
+
+    formatProposalType(type: string): string {
+        if (!type) return '';
+        return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
     }
 
     protected readonly getSeverity = getSeverity;

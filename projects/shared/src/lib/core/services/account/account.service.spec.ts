@@ -3,14 +3,13 @@ import { of, firstValueFrom } from 'rxjs';
 import { AccountService } from './account.service';
 import { UserDto } from '@api/model/user-dto';
 import { ProfileUpdateRequestDto } from '@api/model/profile-update-request-dto';
-import { EmailChangeRequestDto } from '@api/model/email-change-request-dto';
 import { PasswordChangeRequestDto } from '@api/model/password-change-request-dto';
-import { TelephoneChangeRequestDto } from '@api/model/telephone-change-request-dto';
-import { CodeConfirmationRequestDto } from '@api/model/code-confirmation-request-dto';
-import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
+import { PasswordSetRequestDto } from '@api/model/password-set-request-dto';
+import { AccountSecurityStatusDto } from '@api/model/account-security-status-dto';
+import { MessageResponseDto } from '@api/model/message-response-dto';
 import { environment } from '@env/environment';
 
-describe('ProfileService', () => {
+describe('AccountService', () => {
   let httpMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;
@@ -20,7 +19,6 @@ describe('ProfileService', () => {
 
   let service: AccountService;
   const baseUrl = `${environment.apiUrl}/account`;
-  const authUrl = `${environment.apiUrl}/auth`;
 
   beforeEach(() => {
     httpMock = {
@@ -55,123 +53,84 @@ describe('ProfileService', () => {
     expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/profile`);
   });
 
+  it('should get security status and update hasPasswordSubject', async () => {
+    const mockStatus: AccountSecurityStatusDto = { hasPassword: true };
+
+    (httpMock.get as any).mockReturnValue(of(mockStatus));
+
+    const result = await firstValueFrom(service.getSecurityStatus());
+
+    expect(result).toEqual(mockStatus);
+    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/security/status`);
+    expect(service.getHasPassword()).toBe(true);
+  });
+
   it('should update user profile', async () => {
     const payload: ProfileUpdateRequestDto = {
       firstName: 'João',
       lastName: 'Santos',
     };
+    const mockResponse: MessageResponseDto = { message: 'Profile updated' };
 
-    (httpMock.put as any).mockReturnValue(of(undefined));
+    (httpMock.put as any).mockReturnValue(of(mockResponse));
 
     const result = await firstValueFrom(service.updateProfile(payload));
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual(mockResponse);
     expect(httpMock.put).toHaveBeenCalledWith(`${baseUrl}/profile`, payload);
   });
 
-  it('should request email change', async () => {
-    const newEmail = 'newemail@example.com';
-    const expectedPayload: EmailChangeRequestDto = { newEmail };
+  it('should set password and update hasPasswordSubject', async () => {
+    const payload: PasswordSetRequestDto = { newPassword: 'newPassword123' };
+    const mockResponse: MessageResponseDto = { message: 'Password set' };
 
-    (httpMock.post as any).mockReturnValue(of(undefined));
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
 
-    const result = await firstValueFrom(service.changeEmail(newEmail));
+    const result = await firstValueFrom(service.setPassword(payload));
 
-    expect(result).toBeUndefined();
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-email-change`, expectedPayload);
+    expect(result).toEqual(mockResponse);
+    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/set-password`, payload);
+    expect(service.getHasPassword()).toBe(true);
   });
 
   it('should change password', async () => {
     const oldPassword = 'oldPassword123';
     const newPassword = 'newPassword456';
     const expectedPayload: PasswordChangeRequestDto = { oldPassword, newPassword };
+    const mockResponse: MessageResponseDto = { message: 'Password changed' };
 
-    (httpMock.post as any).mockReturnValue(of(undefined));
+    (httpMock.post as any).mockReturnValue(of(mockResponse));
 
     const result = await firstValueFrom(service.changePassword(oldPassword, newPassword));
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual(mockResponse);
     expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/change-password`, expectedPayload);
   });
 
-  it('should request telephone change', async () => {
-    const newTelephone = '+351923456789';
-    const payload: TelephoneChangeRequestDto = { newTelephone };
-    const mockResponse = { message: 'Telephone change requested' };
+  it('should upload photo', async () => {
+    const file = new File([''], 'photo.jpg');
+    const mockUser: UserDto = { id: 1, photoId: 100 } as UserDto;
 
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
+    (httpMock.post as any).mockReturnValue(of(mockUser));
 
-    const result = await firstValueFrom(service.requestTelephoneChange(payload));
+    const result = await firstValueFrom(service.uploadPhoto(file));
 
-    expect(result).toEqual(mockResponse);
-    expect(httpMock.post).toHaveBeenCalledWith(`${baseUrl}/request-telephone-change`, payload);
+    expect(result).toEqual(mockUser);
+    expect(httpMock.post).toHaveBeenCalled();
+    const [url, body] = httpMock.post.mock.calls[0];
+    expect(url).toBe(`${baseUrl}/photo`);
+    expect(body).toBeInstanceOf(FormData);
+    expect(body.get('file')).toBe(file);
   });
 
-  it('should confirm code successfully with SUCCESS status', async () => {
-    const code = 'ABC123';
-    const payload: CodeConfirmationRequestDto = { code };
-    const mockResponse: ConfirmationResponseDto = {
-      status: ConfirmationResponseDto.StatusEnum.Success,
-      message: 'Code verified successfully',
-      token: 'jwt-token-here'
-    };
+  it('should delete account', async () => {
+    const mockResponse: MessageResponseDto = { message: 'Account deleted' };
 
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
+    (httpMock.delete as any).mockReturnValue(of(mockResponse));
 
-    const result = await firstValueFrom(service.confirmCode(payload));
+    const result = await firstValueFrom(service.deleteAccount());
 
     expect(result).toEqual(mockResponse);
-    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.Success);
-    expect(httpMock.post).toHaveBeenCalledWith(`${authUrl}/confirm-code`, payload);
-  });
-
-  it('should confirm code with alphanumeric code', async () => {
-    const code = 'XYZ789';
-    const payload: CodeConfirmationRequestDto = { code };
-    const mockResponse: ConfirmationResponseDto = {
-      status: ConfirmationResponseDto.StatusEnum.Success,
-      message: 'Code verified successfully'
-    };
-
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
-
-    const result = await firstValueFrom(service.confirmCode(payload));
-
-    expect(result).toEqual(mockResponse);
-    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.Success);
-    expect(httpMock.post).toHaveBeenCalledWith(`${authUrl}/confirm-code`, payload);
-  });
-
-  it('should handle ERROR status in confirmCode', async () => {
-    const code = 'INVALID';
-    const payload: CodeConfirmationRequestDto = { code };
-    const mockResponse: ConfirmationResponseDto = {
-      status: ConfirmationResponseDto.StatusEnum.Error,
-      message: 'Invalid or expired code'
-    };
-
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
-
-    const result = await firstValueFrom(service.confirmCode(payload));
-
-    expect(result).toEqual(mockResponse);
-    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.Error);
-  });
-
-  it('should handle PASSWORD_RESET_REQUIRED status in confirmCode', async () => {
-    const code = 'RESET123';
-    const payload: CodeConfirmationRequestDto = { code };
-    const mockResponse: ConfirmationResponseDto = {
-      status: ConfirmationResponseDto.StatusEnum.PasswordResetRequired,
-      message: 'Password reset is required',
-      token: 'temp-token'
-    };
-
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
-
-    const result = await firstValueFrom(service.confirmCode(payload));
-
-    expect(result).toEqual(mockResponse);
-    expect(result.status).toBe(ConfirmationResponseDto.StatusEnum.PasswordResetRequired);
+    expect(httpMock.delete).toHaveBeenCalledWith(`${baseUrl}`);
   });
 });

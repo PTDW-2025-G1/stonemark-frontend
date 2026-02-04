@@ -5,7 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
@@ -25,7 +25,7 @@ import {ShareSectionComponent} from '@shared/ui/share-section/share-section';
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
-  monument$!: Observable<MonumentResponseDto | undefined>;
+  monument$!: Observable<MonumentDto | undefined>;
   mapUrl: SafeResourceUrl | null = null;
   occurrencesCount = 0;
 
@@ -118,7 +118,7 @@ export class MonumentDetailComponent implements OnInit {
     });
   }
 
-  getImageUrl(monument: MonumentResponseDto): string {
+  getImageUrl(monument: MonumentDto): string {
     return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

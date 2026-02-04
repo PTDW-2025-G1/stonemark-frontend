@@ -6,7 +6,7 @@ import { Toast } from 'primeng/toast';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { AdminMonumentService } from '@core/services/monument/admin-monument.service';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { FormMonument } from '../form-monument/form-monument';
 import { AppToolbarComponent } from '../../../../components/toolbar/toolbar.component';
 
@@ -48,7 +48,7 @@ import { take } from 'rxjs';
   `]
 })
 export class EditMonument implements OnInit {
-  monument?: MonumentResponseDto;
+  monument?: MonumentDto;
   loading = true;
   monumentId!: number;
 

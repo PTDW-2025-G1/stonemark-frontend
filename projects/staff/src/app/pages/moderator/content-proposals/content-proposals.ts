@@ -182,7 +182,11 @@ export class ContentProposals implements OnInit, OnDestroy {
 
   viewDetails(item: ProposalAdminListDto) {
     if (item.id) {
-      this.router.navigate(['/moderator/content-proposals', item.id]);
+      if (item.proposalType === 'MARK_OCCURRENCE') {
+        this.router.navigate(['/moderator/content-proposals/mark-occurrence', item.id]);
+      } else {
+        this.router.navigate(['/moderator/content-proposals', item.id]);
+      }
     }
   }
 

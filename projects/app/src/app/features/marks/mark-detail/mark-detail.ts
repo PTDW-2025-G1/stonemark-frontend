@@ -16,7 +16,7 @@ import { MarkDto } from '@api/model/mark-dto';
 import { MarkService } from '@core/services/mark/mark.service';
 import { BookmarkDto } from '@api/model/bookmark-dto';
 import { BookmarkFacade } from '@shared/facades/bookmark.facade';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { ReportFacade } from '@shared/facades/report.facade';
 import { ReportRequestDto } from '@api/model/report-request-dto';
@@ -35,7 +35,7 @@ export class MarkDetailComponent implements OnInit {
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   occurrencesCount = 0;
   uniqueMonumentsCount = 0;
-  monuments: MonumentResponseDto[] = [];
+  monuments: MonumentDto[] = [];
   monumentsIcon = MONUMENTS_ICON;
 
   private currentMarkId?: number;

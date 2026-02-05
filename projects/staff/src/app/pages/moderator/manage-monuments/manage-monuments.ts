@@ -4,7 +4,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { AdminMonumentService } from '@core/services/monument/admin-monument.service';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { AppTableComponent } from '../../../components/table/table.component';
 import { ButtonModule } from 'primeng/button';
@@ -141,7 +141,7 @@ import { TagModule } from 'primeng/tag';
   providers: [MessageService, MonumentService, AdminMonumentService, ConfirmationService, AdministrativeDivisionService]
 })
 export class ManageMonuments implements OnInit, OnDestroy {
-  monuments = signal<MonumentResponseDto[]>([]);
+  monuments = signal<MonumentDto[]>([]);
   totalRecords = signal<number>(0);
   currentPage = signal<number>(0);
   pageSize = signal<number>(10);
@@ -297,11 +297,11 @@ export class ManageMonuments implements OnInit, OnDestroy {
     }
   }
 
-  editMonument(monument: MonumentResponseDto) {
+  editMonument(monument: MonumentDto) {
     this.router.navigate(['/moderator/monuments/edit', monument.id]);
   }
 
-  deleteMonument(monument: MonumentResponseDto): void {
+  deleteMonument(monument: MonumentDto): void {
     if (!monument.id) {
       this.messageService.add({
         severity: 'error',

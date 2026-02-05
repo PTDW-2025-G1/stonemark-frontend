@@ -3,22 +3,19 @@ import { of, firstValueFrom } from 'rxjs';
 import { MarkService } from './mark.service';
 import { environment } from '@env/environment';
 import { MarkDto } from '@api/model/mark-dto';
-import { PageMarkListDto } from '@api/model/page-mark-list-dto';
-import { PageMarkDetailedDto } from '@api/model/page-mark-detailed-dto';
+import { PageMarkDto } from '@api/model/page-mark-dto';
 import { HttpParams } from '@angular/common/http';
 
 describe('MarkService', () => {
   let service: MarkService;
   let httpMock: any;
 
-  const baseUrl = `${environment.apiUrl}/marks`;
+  const baseUrl = `${environment.apiUrl}/public/marks`;
 
   beforeEach(() => {
     httpMock = {
       get: vi.fn(),
-      post: vi.fn(),
-      put: vi.fn(),
-      delete: vi.fn()
+      post: vi.fn()
     };
 
     service = new MarkService(httpMock as any);
@@ -29,7 +26,7 @@ describe('MarkService', () => {
   });
 
   it('should fetch paginated marks', async () => {
-    const response = {} as PageMarkListDto;
+    const response = {} as PageMarkDto;
 
     httpMock.get.mockReturnValue(of(response));
 
@@ -46,7 +43,7 @@ describe('MarkService', () => {
   });
 
   it('should fetch detailed paginated marks', async () => {
-    const response = {} as PageMarkDetailedDto;
+    const response = {} as PageMarkDto;
 
     httpMock.get.mockReturnValue(of(response));
 
@@ -62,27 +59,6 @@ describe('MarkService', () => {
     expect(params.get('size')).toBe('5');
   });
 
-  it('should search marks with query and sorting', async () => {
-    const response = {} as PageMarkListDto;
-
-    httpMock.get.mockReturnValue(of(response));
-
-    const result = await firstValueFrom(
-      service.searchMarks('cross', 0, 9, 'title,desc')
-    );
-
-    expect(result).toBe(response);
-
-    const [, options] = httpMock.get.mock.calls[0];
-    const params = options.params as HttpParams;
-
-    expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/search`, expect.any(Object));
-    expect(params.get('query')).toBe('cross');
-    expect(params.get('page')).toBe('0');
-    expect(params.get('size')).toBe('9');
-    expect(params.get('sort')).toBe('title,desc');
-  });
-
   it('should fetch a single mark by id', async () => {
     const mark: MarkDto = { id: 1 } as MarkDto;
 
@@ -94,55 +70,19 @@ describe('MarkService', () => {
     expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/1`);
   });
 
-  it('should create a mark', async () => {
-    const dto: MarkDto = { title: 'New Mark' } as MarkDto;
+  it('should search by image', async () => {
+    const response: string[] = ['result1', 'result2'];
+    const file = new File([''], 'test.jpg');
 
-    httpMock.post.mockReturnValue(of(dto));
+    httpMock.post.mockReturnValue(of(response));
 
-    const result = await firstValueFrom(service.createMark(dto));
+    const result = await firstValueFrom(service.searchByImage(file));
 
-    expect(result).toEqual(dto);
+    expect(result).toEqual(response);
     expect(httpMock.post).toHaveBeenCalled();
     const [url, body] = httpMock.post.mock.calls[0];
-    expect(url).toBe(baseUrl);
+    expect(url).toBe(`${baseUrl}/search/image`);
     expect(body).toBeInstanceOf(FormData);
-  });
-
-  it('should update a mark', async () => {
-    const dto: MarkDto = { id: 5, title: 'Updated Mark' } as MarkDto;
-
-    httpMock.put.mockReturnValue(of(dto));
-
-    const result = await firstValueFrom(service.updateMark(5, dto));
-
-    expect(result).toEqual(dto);
-    expect(httpMock.put).toHaveBeenCalled();
-    const [url, body] = httpMock.put.mock.calls[0];
-    expect(url).toBe(`${baseUrl}/5`);
-    expect(body).toBeInstanceOf(FormData);
-  });
-
-  it('should delete a mark', async () => {
-    httpMock.delete.mockReturnValue(of(undefined));
-
-    const result = await firstValueFrom(service.deleteMark(3));
-
-    expect(result).toBeUndefined();
-    expect(httpMock.delete).toHaveBeenCalledWith(`${baseUrl}/3`);
-  });
-
-  it('should upload a photo', async () => {
-    const dto: MarkDto = { id: 1, title: 'Mark with Photo' } as MarkDto;
-    const file = new File([''], 'photo.jpg');
-
-    httpMock.post.mockReturnValue(of(dto));
-
-    const result = await firstValueFrom(service.uploadPhoto(1, file));
-
-    expect(result).toEqual(dto);
-    expect(httpMock.post).toHaveBeenCalled();
-    const [url, body] = httpMock.post.mock.calls[0];
-    expect(url).toBe(`${baseUrl}/1/photo`);
-    expect(body).toBeInstanceOf(FormData);
+    expect(body.get('file')).toBe(file);
   });
 });

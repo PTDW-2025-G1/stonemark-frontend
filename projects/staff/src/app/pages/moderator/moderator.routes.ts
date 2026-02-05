@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ContentProposals } from './content-proposals/content-proposals';
 import { ProposalDetailComponent } from './content-proposals/proposal-detail';
+import { MarkOccurrenceProposalDetailComponent } from './content-proposals/mark-occurrence-proposal-detail';
 import { ContactRequests } from './contact-requests/contact-requests';
 import { ManageReports } from './manage-reports/manage-reports';
 import { moderatorGuard } from '@core/guards/moderator.guard';
@@ -75,6 +76,10 @@ export const moderatorRoutes: Routes = [
       {
         path: '',
         component: ContentProposals
+      },
+      {
+        path: 'mark-occurrence/:id',
+        component: MarkOccurrenceProposalDetailComponent
       },
       {
         path: ':id',

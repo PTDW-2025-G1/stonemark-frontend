@@ -6,7 +6,7 @@ import { AuthenticationResponseDto } from '@api/model/authentication-response-dt
 import { RegisterRequestDto } from '@api/model/register-request-dto';
 import { PasswordResetRequestDto } from '@api/model/password-reset-request-dto';
 import { ResetPasswordRequestDto } from '@api/model/reset-password-request-dto';
-import { CodeConfirmationRequestDto } from '@api/model/code-confirmation-request-dto';
+import { VerificationRequestDto } from '@api/model/verification-request-dto';
 import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
 import { RefreshTokenRequestDto } from '@api/model/refresh-token-request-dto';
 import { environment } from '@env/environment';
@@ -156,7 +156,7 @@ describe('AuthService', () => {
 
   it('should confirm code', async () => {
     const code = '123456';
-    const payload: CodeConfirmationRequestDto = { code };
+    const payload: VerificationRequestDto = { code };
     const mockResponse: ConfirmationResponseDto = {
       status: ConfirmationResponseDto.StatusEnum.Success,
       message: 'Code confirmed',

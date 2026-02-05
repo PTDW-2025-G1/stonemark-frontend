@@ -12,10 +12,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { MarkService } from '@core/services/mark/mark.service';
 import { AdminMarkService } from '@core/services/mark/admin-mark.service';
-import { MarkDetailedDto } from '@api/model/mark-detailed-dto';
+import { MarkDto } from '@api/model/mark-dto';
 import { AppToolbarComponent } from '../../../components/toolbar/toolbar.component';
 import { take } from 'rxjs';
-import { environment } from '@env/environment';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { TagModule } from 'primeng/tag';
 
@@ -110,7 +109,7 @@ import { TagModule } from 'primeng/tag';
   `]
 })
 export class ManageMarks implements OnInit {
-  marks: MarkDetailedDto[] = [];
+  marks: MarkDto[] = [];
   totalRecords: number = 0;
   first: number = 0;
   rows: number = 10;
@@ -151,15 +150,15 @@ export class ManageMarks implements OnInit {
     this.router.navigate(['/moderator/marks/create']);
   }
 
-  editMark(mark: MarkDetailedDto) {
+  editMark(mark: MarkDto) {
     this.router.navigate(['/moderator/marks/edit', mark.id]);
   }
 
-  manageOccurrences(mark: MarkDetailedDto) {
+  manageOccurrences(mark: MarkDto) {
     this.router.navigate(['/moderator/marks/occurrences'], { queryParams: { markId: mark.id } });
   }
 
-  deleteMark(mark: MarkDetailedDto) {
+  deleteMark(mark: MarkDto) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this mark?',
       header: 'Confirm',

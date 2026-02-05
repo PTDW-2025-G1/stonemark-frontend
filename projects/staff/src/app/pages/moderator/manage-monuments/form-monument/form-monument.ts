@@ -9,7 +9,7 @@ import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 
 @Component({
@@ -299,7 +299,7 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
   `
 })
 export class FormMonument implements OnInit {
-  @Input() monument?: MonumentResponseDto;
+  @Input() monument?: MonumentDto;
   @Output() save = new EventEmitter<{ monument: MonumentRequestDto, file?: File }>();
   @Output() cancel = new EventEmitter<void>();
 

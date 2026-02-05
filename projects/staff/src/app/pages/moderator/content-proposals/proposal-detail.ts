@@ -13,6 +13,7 @@ import { firstValueFrom } from 'rxjs';
 import { getSeverity } from '../../../utils/severity.util';
 import { environment } from '@core/environments/environment';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
+import { ProposalDecisionsComponent } from '../../../components/proposal-decisions/proposal-decisions.component';
 
 @Component({
   selector: 'app-proposal-detail',
@@ -23,7 +24,8 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
     Card,
     Toast,
     ConfirmDialog,
-    Tag
+    Tag,
+    ProposalDecisionsComponent
   ],
   providers: [ConfirmationService, MessageService],
   styleUrls: ['./proposal-detail.scss'],
@@ -135,73 +137,11 @@ import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
               </div>
             </p-card>
 
-            @if (proposal.existingMonument) {
-              <p-card>
-                <ng-template pTemplate="header">
-                  <div class="card-header-custom">
-                    <i class="pi pi-building"></i>
-                    <span>Existing Monument</span>
-                  </div>
-                </ng-template>
-                <div class="info-grid">
-                  <div class="info-item full-width">
-                    <div class="info-label">
-                      <i class="pi pi-monument"></i>
-                      <label>Name</label>
-                    </div>
-                    <div class="info-value">
-                      <a [href]="getMonumentUrl(proposal.existingMonument!.id)" target="_blank" class="link-primary">
-                        {{ proposal.existingMonument!.name }}
-                        <i class="pi pi-external-link ml-2"></i>
-                      </a>
-                    </div>
-                  </div>
-                  @if (proposal.existingMonument!.description) {
-                    <div class="info-item full-width">
-                      <div class="info-label">
-                        <i class="pi pi-align-left"></i>
-                        <label>Description</label>
-                      </div>
-                      <p class="notes">{{ proposal.existingMonument!.description }}</p>
-                    </div>
-                  }
-                </div>
-              </p-card>
-            }
-
-            @if (proposal.existingMark) {
-              <p-card>
-                <ng-template pTemplate="header">
-                  <div class="card-header-custom">
-                    <i class="pi pi-bookmark"></i>
-                    <span>Existing Mark</span>
-                  </div>
-                </ng-template>
-                <div class="info-grid">
-                  <div class="info-item full-width">
-                    <div class="info-label">
-                      <i class="pi pi-bookmark"></i>
-                      <label>Mark</label>
-                    </div>
-                    <div class="info-value">
-                      <a [href]="getMarkUrl(proposal.existingMark!.id)" target="_blank" class="link-primary">
-                        Mark #{{ proposal.existingMark!.id }}
-                        <i class="pi pi-external-link ml-2"></i>
-                      </a>
-                    </div>
-                  </div>
-                  @if (proposal.existingMark!.description) {
-                    <div class="info-item full-width">
-                      <div class="info-label">
-                        <i class="pi pi-align-left"></i>
-                        <label>Description</label>
-                      </div>
-                      <p class="notes">{{ proposal.existingMark!.description }}</p>
-                    </div>
-                  }
-                </div>
-              </p-card>
-            }
+            <app-proposal-decisions
+                [proposalId]="proposalId"
+                [canModerate]="canModerate()"
+                (decisionChanged)="onDecisionChanged()">
+             </app-proposal-decisions>
           </div>
 
           <!-- Right Column: Media -->
@@ -271,6 +211,15 @@ export class ProposalDetailComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  canModerate(): boolean {
+    return this.proposal?.status === 'SUBMITTED' ||
+           this.proposal?.status === 'UNDER_REVIEW';
+  }
+
+  async onDecisionChanged(): Promise<void> {
+    await this.loadProposal();
   }
 
   formatDate(date: string | undefined): string {

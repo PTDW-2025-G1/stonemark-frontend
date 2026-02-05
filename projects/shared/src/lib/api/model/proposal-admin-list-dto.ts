@@ -12,6 +12,7 @@
 export interface ProposalAdminListDto { 
     id?: number;
     status?: ProposalAdminListDto.StatusEnum;
+    proposalType?: ProposalAdminListDto.ProposalTypeEnum;
     priority?: number;
     title?: string;
     photoId?: number;
@@ -29,6 +30,12 @@ export namespace ProposalAdminListDto {
         ManuallyRejected: 'MANUALLY_REJECTED'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
+    export const ProposalTypeEnum = {
+        MarkOccurrence: 'MARK_OCCURRENCE',
+        NewMark: 'NEW_MARK',
+        NewMonument: 'NEW_MONUMENT'
+    } as const;
+    export type ProposalTypeEnum = typeof ProposalTypeEnum[keyof typeof ProposalTypeEnum];
     export const SubmissionSourceEnum = {
         WebApp: 'WEB_APP',
         Whatsapp: 'WHATSAPP',

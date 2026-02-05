@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { MonumentListDto } from '@api/model/monument-list-dto';
 import { PageMonumentListDto } from '@api/model/page-monument-list-dto';
 import { MonumentMapDto } from '@api/model/monument-map-dto';
@@ -69,8 +69,8 @@ export class MonumentService {
     return this.http.get<number>(`${this.baseUrl}/count`);
   }
 
-  getMonumentById(id: number): Observable<MonumentResponseDto> {
-    return this.http.get<MonumentResponseDto>(`${this.baseUrl}/${id}`);
+  getMonumentById(id: number): Observable<MonumentDto> {
+    return this.http.get<MonumentDto>(`${this.baseUrl}/${id}`);
   }
 
   importMonumentsFromGeoJson(file: File): Observable<MessageResponseDto> {

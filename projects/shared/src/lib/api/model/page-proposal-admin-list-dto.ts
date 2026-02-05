@@ -15,14 +15,14 @@ import { ProposalAdminListDto } from './proposal-admin-list-dto';
 export interface PageProposalAdminListDto { 
     totalPages?: number;
     totalElements?: number;
+    pageable?: PageableObject;
+    numberOfElements?: number;
     size?: number;
     content?: Array<ProposalAdminListDto>;
     number?: number;
-    pageable?: PageableObject;
+    sort?: SortObject;
     first?: boolean;
     last?: boolean;
-    numberOfElements?: number;
-    sort?: SortObject;
     empty?: boolean;
 }
 

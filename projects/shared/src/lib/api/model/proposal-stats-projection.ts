@@ -10,8 +10,8 @@
 
 
 export interface ProposalStatsProjection { 
-    accepted?: number;
     underReview?: number;
     rejected?: number;
+    accepted?: number;
 }
 

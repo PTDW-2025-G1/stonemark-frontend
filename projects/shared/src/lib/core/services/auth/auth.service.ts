@@ -10,7 +10,7 @@ import { RegisterRequestDto } from '@api/model/register-request-dto';
 import { PasswordResetRequestDto } from '@api/model/password-reset-request-dto';
 import { ResetPasswordRequestDto } from '@api/model/reset-password-request-dto';
 import { ConfirmationResponseDto } from '@api/model/confirmation-response-dto';
-import { CodeConfirmationRequestDto } from '@api/model/code-confirmation-request-dto';
+import { VerificationRequestDto } from '@api/model/verification-request-dto';
 import { GoogleAuthenticationRequestDto } from '@api/model/google-authentication-request-dto';
 import { RefreshTokenRequestDto } from '@api/model/refresh-token-request-dto';
 import { MessageResponseDto } from '@api/model/message-response-dto';
@@ -183,7 +183,7 @@ export class AuthService {
   }
 
   confirmCode(code: string): Observable<ConfirmationResponseDto> {
-    const payload: CodeConfirmationRequestDto = { code };
+    const payload: VerificationRequestDto = { code };
     return this.http.post<ConfirmationResponseDto>(`${this.baseUrl}/account-verification/confirm`, payload).pipe(
       catchError(this.handleError('Code confirmation failed'))
     );

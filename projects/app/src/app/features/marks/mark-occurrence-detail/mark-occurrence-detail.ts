@@ -8,7 +8,7 @@ import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MARKS_ICON } from '@core/constants/content-icons';
-import {MarkOccurrenceDetailedDto} from '@api/model/mark-occurrence-detailed-dto';
+import { MarkOccurrenceDto } from '@api/model/mark-occurrence-dto';
 import {UserService} from '@core/services/user/user.service';
 import {UserPublicDto} from '@api/model/user-public-dto';
 import {finalize} from 'rxjs/operators';
@@ -22,7 +22,7 @@ import { ShareFacade } from '@shared/facades/share.facade';
   templateUrl: './mark-occurrence-detail.html'
 })
 export class MarkOccurrenceDetail implements OnInit {
-  occurrence: MarkOccurrenceDetailedDto = {} as MarkOccurrenceDetailedDto;
+  occurrence: MarkOccurrenceDto = {} as MarkOccurrenceDto;
   loading = true;
   breadcrumbItems: BreadcrumbItem[] = [];
   proposer: UserPublicDto | null = null;
@@ -155,9 +155,5 @@ export class MarkOccurrenceDetail implements OnInit {
 
   getImageUrl(): string {
     return ImageUtils.getImageUrl(this.occurrence.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
-  }
-
-  getMonumentImageUrl(): string {
-    return ImageUtils.getImageUrl(this.occurrence.monument?.coverId, 'assets/placeholder.png', ImageVariant.OPTIMIZED);
   }
 }

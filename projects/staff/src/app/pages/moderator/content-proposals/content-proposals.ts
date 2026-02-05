@@ -43,7 +43,7 @@ import { SortUtils } from '../../../utils/sort.utils';
       #table
       [data]="proposals()"
       [columns]="columns"
-      [globalFilterFields]="['title', 'submittedAt']"
+      [globalFilterFields]="['proposalType', 'submittedAt']"
       [lazy]="true"
       [totalRecords]="totalRecords()"
       [rows]="pageSize()"
@@ -85,7 +85,7 @@ export class ContentProposals implements OnInit, OnDestroy {
 
   columns = [
     { field: 'id', header: 'ID' },
-    { field: 'title', header: 'Title' },
+    { field: 'proposalType', header: 'Proposal Type', type: 'proposalType' },
     { field: 'status', header: 'Status', type: 'status' },
     { field: 'priority', header: 'Priority' },
     { field: 'submissionSource', header: 'Source' },
@@ -182,7 +182,11 @@ export class ContentProposals implements OnInit, OnDestroy {
 
   viewDetails(item: ProposalAdminListDto) {
     if (item.id) {
-      this.router.navigate(['/moderator/content-proposals', item.id]);
+      if (item.proposalType === 'MARK_OCCURRENCE') {
+        this.router.navigate(['/moderator/content-proposals/mark-occurrence', item.id]);
+      } else {
+        this.router.navigate(['/moderator/content-proposals', item.id]);
+      }
     }
   }
 

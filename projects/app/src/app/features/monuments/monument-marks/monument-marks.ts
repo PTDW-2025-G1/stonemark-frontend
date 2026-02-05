@@ -5,7 +5,7 @@ import { Observable, switchMap, tap, map, distinctUntilChanged } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { MarkOccurrenceService } from '@core/services/mark-occurrence/mark-occurrence.service';
 import { MonumentService } from '@core/services/monument/monument.service';
-import { MonumentResponseDto } from '@api/model/monument-response-dto';
+import { MonumentDto } from '@api/model/monument-dto';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
 import { BreadcrumbComponent, BreadcrumbItem } from '@shared/ui/breadcrumb/breadcrumb';
 import { OccurrencesGridComponent } from '@shared/ui/occurrences-grid/occurrences-grid';
@@ -23,7 +23,7 @@ import { MarkOccurrencesFacade } from '@shared/facades/mark-occurrences.facade';
   templateUrl: './monument-marks.html'
 })
 export class MonumentMarksComponent implements OnInit {
-  monument$!: Observable<MonumentResponseDto | undefined>;
+  monument$!: Observable<MonumentDto | undefined>;
   breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   occurrencesCount = 0;
 
@@ -159,7 +159,7 @@ export class MonumentMarksComponent implements OnInit {
     this.router.navigate(['/submit'])
   }
 
-  getImageUrl(monument: MonumentResponseDto): string {
+  getImageUrl(monument: MonumentDto): string {
     return ImageUtils.getImageUrl(monument.coverId, 'assets/placeholder.png', ImageVariant.PREVIEW);
   }
 }

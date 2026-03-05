@@ -2,20 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { ReportRequestDto } from '@api/model/report-request-dto';
 import { ReportResponseDto } from '@api/model/report-response-dto';
 import { PageReportResponseDto } from '@api/model/page-report-response-dto';
 
 @Injectable({ providedIn: 'root' })
-export class ReportService {
+export class AdminReportService {
 
-  private baseUrl = `${environment.apiUrl}/public/reports`;
+  private baseUrl = `${environment.apiUrl}/admin/reports`;
 
   constructor(private http: HttpClient) {}
-
-  createReport(report: ReportRequestDto): Observable<ReportResponseDto> {
-    return this.http.post<ReportResponseDto>(this.baseUrl, report);
-  }
 
   getAllReports(page: number = 0, size: number = 10, sort?: string): Observable<PageReportResponseDto> {
     let params = new HttpParams()

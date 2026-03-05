@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ReportService } from '@core/services/report/report.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { NotificationService } from '@core/services/notification.service';
 import { ReportRequestDto } from '@api/model/report-request-dto';
 import { ReportModalConfig } from '@shared/ui/report-modal/report-modal';
 import { environment } from '@env/environment';
+import {PublicReportService} from '@core/services/report/public-report.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReportFacade {
@@ -14,7 +14,7 @@ export class ReportFacade {
   fieldErrors: Record<string, string> = {};
 
   constructor(
-    private reportService: ReportService,
+    private reportService: PublicReportService,
     private authService: AuthService,
     private notificationService: NotificationService
   ) {}

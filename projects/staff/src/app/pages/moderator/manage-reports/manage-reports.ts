@@ -11,12 +11,12 @@ import { AppTableComponent } from '../../../components/table/table.component';
 import { AppDialogComponent } from '../../../components/dialog/dialog.component';
 
 import { StatusFilterComponent, StatusOption } from '../../../components/status-filter/status-filter.component';
-import { ReportService } from '@core/services/report/report.service';
 import { ReportResponseDto } from '@api/model/report-response-dto';
 import { PageReportResponseDto } from '@api/model/page-report-response-dto';
 import { Subject, takeUntil, take } from 'rxjs';
 import { DateUtils } from '@shared/utils/date.utils';
 import { SortUtils } from '../../../utils/sort.utils';
+import {AdminReportService} from '@core/services/report/admin-report.service';
 
 type ReportDisplay = Omit<ReportResponseDto, 'createdById' | 'modifiedById' | 'lastModifiedAt'> & {
   userId?: number;
@@ -158,7 +158,7 @@ export class ManageReports implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private reportService: ReportService,
+    private reportService: AdminReportService,
     private messageService: MessageService
   ) {}
 

@@ -17,7 +17,7 @@ type SearchItem = MonumentListDto;
 })
 export class SearchResultsComponent {
   @Input() items: SearchItem[] = [];
-  @Input() type: 'monuments' = 'monuments';
+  @Input() type: 'monuments' | 'marks' = 'monuments';
   @Input() loading = false;
   occurrenceCount: Record<string | number, number> = {};
 

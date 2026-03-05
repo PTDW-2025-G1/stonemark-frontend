@@ -13,7 +13,6 @@ import { MessageResponseDto } from '@api/model/message-response-dto';
 @Injectable({ providedIn: 'root' })
 export class MonumentService {
   private baseUrl = `${environment.apiUrl}/public/monuments`;
-  private importUrl = `${environment.apiUrl}/import`;
 
   constructor(private http: HttpClient) {}
 
@@ -71,11 +70,5 @@ export class MonumentService {
 
   getMonumentById(id: number): Observable<MonumentDto> {
     return this.http.get<MonumentDto>(`${this.baseUrl}/${id}`);
-  }
-
-  importMonumentsFromGeoJson(file: File): Observable<MessageResponseDto> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<MessageResponseDto>(`${this.importUrl}/monuments/geojson`, formData);
   }
 }

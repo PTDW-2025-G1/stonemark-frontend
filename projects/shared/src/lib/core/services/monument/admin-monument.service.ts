@@ -5,6 +5,7 @@ import { environment } from '@env/environment';
 import { MonumentDto } from '@api/model/monument-dto';
 import { MonumentRequestDto } from '@api/model/monument-request-dto';
 import { PageMonumentDto } from '@api/model/page-monument-dto';
+import {MessageResponseDto} from '@api/model/message-response-dto';
 
 @Injectable({ providedIn: 'root' })
 export class AdminMonumentService {
@@ -47,5 +48,11 @@ export class AdminMonumentService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<MonumentDto>(`${this.baseUrl}/${id}/photo`, formData);
+  }
+
+  importMonumentsFromGeoJson(file: File): Observable<MessageResponseDto> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<MessageResponseDto>(`${this.baseUrl}/import/geojson`, formData);
   }
 }

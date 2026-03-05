@@ -353,7 +353,7 @@ export class ManageMonuments implements OnInit, OnDestroy {
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.isImporting.set(true);
-          this.monumentService.importMonumentsFromGeoJson(file).subscribe({
+          this.adminMonumentService.importMonumentsFromGeoJson(file).subscribe({
               next: (response) => {
                 this.isImporting.set(false);
                 this.messageService.add({

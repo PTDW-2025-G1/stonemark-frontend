@@ -170,19 +170,4 @@ describe('MonumentService', () => {
     expect(result).toEqual(mockMonument);
     expect(httpMock.get).toHaveBeenCalledWith(`${baseUrl}/1`);
   });
-
-  it('should import monuments from GeoJSON file', async () => {
-    const file = new File([JSON.stringify({ type: 'FeatureCollection', features: [] })], 'monuments.geojson', { type: 'application/geo+json' });
-    const mockResponse = { message: 'Import successful' };
-
-    (httpMock.post as any).mockReturnValue(of(mockResponse));
-
-    const result = await firstValueFrom(service.importMonumentsFromGeoJson(file));
-
-    expect(result).toEqual(mockResponse);
-    expect(httpMock.post).toHaveBeenCalledWith(
-      `${environment.apiUrl}/import/monuments/geojson`,
-      expect.any(FormData)
-    );
-  });
 });

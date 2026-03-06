@@ -27,11 +27,13 @@
           [type]="type"
           [loading]="(loading$ | async) ?? false">
         </app-search-results>
-        <app-search-pagination
-          [currentPage]="pagination.currentPage"
-          [totalPages]="pagination.totalPages"
-          (pageChange)="onPageChange($event)">
-        </app-search-pagination>
+        @if (pagination.totalPages > 1) {
+          <app-search-pagination
+            [currentPage]="pagination.currentPage"
+            [totalPages]="pagination.totalPages"
+            (pageChange)="onPageChange($event)">
+          </app-search-pagination>
+        }
       </div>
     </div>
   </div>

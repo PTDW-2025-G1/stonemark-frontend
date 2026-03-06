@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MonumentService } from '@core/services/monument/monument.service';
 import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
@@ -13,19 +13,20 @@ import { ReportModalComponent } from '@shared/ui/report-modal/report-modal';
 import { ReportFacade } from '@shared/facades/report.facade';
 import { ImageUtils, ImageVariant } from '@shared/utils/image.utils';
 import { MONUMENTS_ICON, MARKS_ICON } from '@core/constants/content-icons';
-import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import {ButtonComponent} from '@shared/ui/button/button';
 import {ShareFacade} from '@shared/facades/share.facade';
 import {ShareSectionComponent} from '@shared/ui/share-section/share-section';
+import {BreadcrumbComponent, BreadcrumbItem} from '@shared/ui/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-monument-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReportModalComponent, SafeHtmlPipe, ButtonComponent, ShareSectionComponent],
+  imports: [CommonModule, RouterModule, ReportModalComponent, ButtonComponent, ShareSectionComponent, BreadcrumbComponent],
   templateUrl: './monument-detail.html'
 })
 export class MonumentDetailComponent implements OnInit {
   monument$!: Observable<MonumentDto | undefined>;
+  breadcrumbItems$!: Observable<BreadcrumbItem[]>;
   mapUrl: SafeResourceUrl | null = null;
   occurrencesCount = 0;
 
@@ -68,6 +69,13 @@ export class MonumentDetailComponent implements OnInit {
           this.mapUrl = null;
         }
       })
+    );
+
+    this.breadcrumbItems$ = this.monument$.pipe(
+      map(monument => [
+        { label: 'Monuments', link: '/search/monuments', iconHtml: MONUMENTS_ICON },
+        { label: monument?.name ?? 'Monument', active: true, icon: 'bi bi-pin-map-fill' }
+      ])
     );
   }
 

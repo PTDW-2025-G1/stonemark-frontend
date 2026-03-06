@@ -1,115 +1,120 @@
 <main class="flex-1">
 
-
   <!-- Loading Skeleton -->
   @if (loading) {
-    <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      @for (skeleton of [1,2,3,4,5,6,7,8,9]; track skeleton) {
-
-        <div
-          class="relative bg-white rounded-2xl overflow-hidden shadow-md
-                 border border-border min-h-[380px]"
-        >
-
-          <!-- Skeleton Image -->
-          <div
-            class="relative aspect-4/3 bg-surface-alt animate-pulse min-h-[200px]"
-          >
-            <div class="absolute inset-0 bg-gradient-to-br from-surface-muted/50 to-surface-alt"></div>
-
-            <!-- Skeleton badge -->
-            @if (type === 'monuments') {
-              <div class="absolute top-4 left-4">
-                <div class="w-32 h-7 bg-surface-muted/80 rounded-full animate-pulse"></div>
+    @if (type === 'monuments') {
+      <!-- Monument List Loading Skeleton - Apple Style -->
+      <div class="space-y-2">
+        @for (skeleton of [1,2,3,4,5,6,7,8,9]; track skeleton) {
+          <div class="bg-surface/40 rounded-2xl p-6 animate-pulse">
+            <div class="flex items-center justify-between gap-8">
+              <div class="flex-1 space-y-2">
+                <div class="h-5 w-2/3 bg-surface-alt rounded-lg"></div>
+                <div class="h-4 w-1/3 bg-surface-alt rounded"></div>
               </div>
-            }
-
-            <!-- Skeleton bookmark -->
-            <div class="absolute top-3 right-3">
-              <div class="w-10 h-10 bg-surface-muted/80 rounded-full animate-pulse"></div>
+              <div class="flex items-center gap-3">
+                <div class="h-10 w-20 bg-surface-alt rounded-full"></div>
+                <div class="h-10 w-10 bg-surface-alt rounded-full"></div>
+              </div>
             </div>
           </div>
-
-          <!-- Skeleton Content -->
-          <div class="p-4 sm:p-5 space-y-3">
-            <div class="space-y-2">
-              <div class="h-5 w-4/5 bg-surface-alt rounded animate-pulse"></div>
-              <div class="h-5 w-3/5 bg-surface-alt rounded animate-pulse"></div>
+        }
+      </div>
+    } @else {
+      <!-- Marks Grid Loading Skeleton -->
+      <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        @for (skeleton of [1,2,3,4,5,6,7,8,9]; track skeleton) {
+          <div class="relative bg-white rounded-2xl overflow-hidden shadow-md border border-border">
+            <div class="relative aspect-4/3 bg-surface-alt animate-pulse">
+              <div class="absolute inset-0 bg-gradient-to-br from-surface-muted/50 to-surface-alt"></div>
+              <div class="absolute top-3 right-3">
+                <div class="w-10 h-10 bg-surface-muted/80 rounded-full animate-pulse"></div>
+              </div>
             </div>
-
-            <div class="h-4 w-1/2 bg-surface-alt rounded animate-pulse"></div>
           </div>
-
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   }
 
   <!-- Results -->
   @if (!loading && items.length > 0) {
-    <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
-      @for (item of items; track item.id) {
-
+    @if (type === 'monuments') {
+      <!-- Monument List View - Apple Style -->
+      <div class="space-y-2">
+        @for (item of items; track item.id) {
           <a
             [routerLink]="['/', type, item.id]"
-            [class]="'group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 block' + (type === 'monuments' ? ' min-h-[380px]' : '')"
+            class="group flex items-center justify-between gap-8 bg-surface/40 hover:bg-surface/60 rounded-2xl p-6 transition-all duration-200 border border-transparent hover:border-border/50"
           >
+            <!-- Left: Monument Info -->
+            <div class="flex-1 min-w-0 space-y-1">
+              <h3 class="text-xl font-semibold text-text tracking-tight">
+                {{ getItemName(item) }}
+              </h3>
+              <div class="flex items-center gap-2 text-sm text-text-muted">
+                <i class="bi bi-location-dot"></i>
+                <span>{{ getItemSubtitle(item) }}</span>
+              </div>
+            </div>
 
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-3 flex-shrink-0">
+              <!-- Occurrence Count Badge -->
+              <div class="flex items-center gap-2 px-4 py-2.5 bg-text/95 rounded-full">
+                <i class="bi bi-pin-angle-fill text-white"></i>
+                <span class="text-sm font-semibold text-white">{{ occurrenceCount[item.id!] || 0 }}</span>
+              </div>
+
+              <!-- Bookmark Button -->
+              <button
+                (click)="toggleBookmark($event, item)"
+                class="w-10 h-10 rounded-full hover:bg-surface transition-all duration-200 flex items-center justify-center"
+                [attr.aria-label]="isBookmarked(item) ? 'Remove Bookmark' : 'Add Bookmark'"
+              >
+                <i
+                  [class]="isBookmarked(item) ? 'bi bi-bookmark-fill text-primary' : 'bi bi-bookmark text-text-muted'"
+                  class="text-lg"
+                ></i>
+              </button>
+            </div>
+          </a>
+        }
+      </div>
+
+    } @else {
+      <!-- Marks Grid View (unchanged) -->
+      <div class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        @for (item of items; track item.id) {
+          <a
+            [routerLink]="['/', type, item.id]"
+            class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 block"
+          >
             <!-- Bookmark -->
             <button
               (click)="toggleBookmark($event, item)"
-              class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full
-                     bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white
-                     transition-all duration-200 flex items-center justify-center
-                     hover:scale-110 active:scale-95"
-              [attr.aria-label]="isBookmarked(item) ? 'Remove Bookmark' : 'Add Bookmark'">
-
+              class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-200 flex items-center justify-center hover:scale-110 active:scale-95"
+              [attr.aria-label]="isBookmarked(item) ? 'Remove Bookmark' : 'Add Bookmark'"
+            >
               <i
-                [class]="isBookmarked(item)
-                  ? 'bi bi-bookmark-check-fill text-primary'
-                  : 'bi bi-bookmark text-text-muted'"
-                class="text-lg">
-              </i>
+                [class]="isBookmarked(item) ? 'bi bi-bookmark-check-fill text-primary' : 'bi bi-bookmark text-text-muted'"
+                class="text-lg"
+              ></i>
             </button>
 
             <!-- Image -->
-            <div [class]="'relative aspect-4/3 overflow-hidden' + (type === 'monuments' ? ' min-h-[200px]' : '')">
+            <div class="relative aspect-4/3 overflow-hidden">
               <img
                 [src]="getItemCover(item)"
                 [alt]="getItemName(item)"
-                class="w-full h-full object-cover group-hover:scale-105
-                       transition-transform duration-500"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-
-              @if (type === 'monuments') {
-                <div class="absolute top-4 left-4">
-                  <div class="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg text-xs font-semibold flex items-center gap-1.5 text-text">
-                    <i class="bi bi-pin-angle-fill text-primary"></i>
-                    <span>{{ occurrenceCount[item.id!] || 0 }} Occurrences</span>
-                  </div>
-                </div>
-              }
             </div>
-
-            <!-- Content -->
-            @if (type === 'monuments') {
-              <div class="p-4 sm:p-5 space-y-2 pointer-events-none">
-                <h3
-                  class="text-base sm:text-lg font-serif font-semibold text-text
-                         group-hover:text-primary transition-colors line-clamp-2">
-                  {{ getItemName(item) }}
-                </h3>
-
-                <div class="flex items-center gap-1.5 text-xs sm:text-sm text-text-muted">
-                  <i class="bi bi-geo-alt text-xs"></i>
-                  <p class="truncate">{{ getItemSubtitle(item) }}</p>
-                </div>
-              </div>
-            }
           </a>
-      }
-    </div>
+        }
+      </div>
+    }
   }
 
   <!-- Empty State -->
